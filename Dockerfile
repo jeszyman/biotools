@@ -108,32 +108,32 @@ RUN wget https://github.com/samtools/bcftools/releases/download/1.3.1/bcftools-1
 ##############
 #Picard 2.4.1#
 ##############
-# ENV picard_version 2.4.1
+ENV picard_version 2.4.1
 
-# # Assumes Dockerfile lives in root of the git repo. Pull source files into
-# # container
-# RUN apt-get update && apt-get install ant --no-install-recommends -y && \
-#     cd /usr/ && \
-#     git config --global http.sslVerify false && \
-#     git clone --recursive https://github.com/broadinstitute/picard.git && \
-#     cd /usr/picard && \
-#     git checkout tags/${picard_version} && \
-#     cd /usr/picard && \
-#     # Clone out htsjdk. First turn off git ssl verification
-#     git config --global http.sslVerify false && \
-#     git clone https://github.com/samtools/htsjdk.git && \
-#     cd htsjdk && \
-#     git checkout tags/${picard_version} && \
-#     cd .. && \
-#     # Build the distribution jar, clean up everything else
-#     ant clean all && \
-#     mv dist/picard.jar picard.jar && \
-#     mv src/scripts/picard/docker_helper.sh docker_helper.sh && \
-#     ant clean && \
-#     rm -rf htsjdk && \
-#     rm -rf src && \
-#     rm -rf lib && \
-#     rm build.xml
+# Assumes Dockerfile lives in root of the git repo. Pull source files into
+# container
+RUN apt-get update && apt-get install ant --no-install-recommends -y && \
+    cd /usr/ && \
+    git config --global http.sslVerify false && \
+    git clone --recursive https://github.com/broadinstitute/picard.git && \
+    cd /usr/picard && \
+    git checkout tags/${picard_version} && \
+    cd /usr/picard && \
+    # Clone out htsjdk. First turn off git ssl verification
+    git config --global http.sslVerify false && \
+    git clone https://github.com/samtools/htsjdk.git && \
+    cd htsjdk && \
+    git checkout tags/${picard_version} && \
+    cd .. && \
+    # Build the distribution jar, clean up everything else
+    ant clean all && \
+    mv dist/picard.jar picard.jar && \
+    mv src/scripts/picard/docker_helper.sh docker_helper.sh && \
+    ant clean && \
+    rm -rf htsjdk && \
+    rm -rf src && \
+    rm -rf lib && \
+    rm build.xml
 
 # COPY split_interval_list_helper.pl /usr/bin/split_interval_list_helper.pl
 
