@@ -397,3 +397,39 @@ RUN ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime && \
 #UUID is needed to be set for some applications
 RUN apt-get update && apt-get install -y dbus && apt-get clean all
 RUN dbus-uuidgen >/etc/machine-id
+
+# WORKS TO HERE
+
+RUN conda install -c bioconda sambamba 
+
+# WORKDIR /opt
+
+# RUN apt-get update && apt-get install -y \
+# 	autoconf \
+# 	automake \
+# 	make \
+# 	g++ \
+# 	gcc \
+# 	build-essential \ 
+# 	zlib1g-dev \
+# 	libgsl0-dev \
+# 	perl \
+# 	curl \
+# 	git \
+# 	wget \
+# 	unzip \
+# 	tabix \
+# 	libncurses5-dev
+
+# RUN wget https://github.com/ldc-developers/ldc/releases/download/v0.17.1/ldc2-0.17.1-linux-x86_64.tar.xz && \
+#   tar xJf ldc2-0.17.1-linux-x86_64.tar.xz
+
+# ENV PATH=/opt/ldc2-0.17.1-linux-x86_64/bin/:$PATH
+# ENV LIBRARY_PATH=/opt/ldc2-0.17.1-linux-x86_64/lib/
+
+# #RUN wget https://github.com/biod/sambamba/releases/download/v0.7.0/sambamba-0.7.0-linux-static.gz && \
+# tar xJf sambamba-0.7.0-linux-static.gz
+
+# RUN git clone --recursive https://github.com/lomereiter/sambamba.git && cd WHERE && make
+
+
