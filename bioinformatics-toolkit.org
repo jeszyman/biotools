@@ -1,0 +1,48 @@
+- rsem
+  - commands
+    |----------+---------|
+    | function | command |
+    |----------+---------|
+    | <35>     | <35>    |
+    |          |         |
+  - processes
+  - standards and best practice
+  - documentation
+    - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
+    - https://github.com/ENCODE-DCC/long-rna-seq-pipeline/blob/master/DAC/STAR_RSEM.sh
+    - http://deweylab.biostat.wisc.edu/rsem/rsem-calculate-expression.html
+    - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
+    - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
+    - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
+  - applications
+  - reference
+    - [[file:~/.emacs.d/snippets/org-mode/software]]
+- tximport
+  - commands
+    |----------+---------|
+    | function | command |
+    |----------+---------|
+    | <35>     | <35>    |
+    |          |         |
+  - processes
+  - standards and best practice
+  - documentation
+    - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
+  - applications
+  - reference
+    - [[file:~/.emacs.d/snippets/org-mode/software]]
+- STAR
+  - commands
+    |----------+---------|
+    | function | command |
+    |----------+---------|
+    | <35>     | <35>    |
+    |          |         |
+  - processes
+  - standards and best practice
+  - [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][documentation]]
+  - applications
+  - reference
+    - [[file:~/.emacs.d/snippets/org-mode/software]]
+- star-rsem pipeline
+  - cite:djebali2016 
