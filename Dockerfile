@@ -1,7 +1,11 @@
 FROM ubuntu:xenial
 
-# from https://raw.githubusercontent.com/zlskidmore/docker-lumpy/master/Dockerfile
+#########1#########2#########3#########4#########5#########6#########7#########8
+#################### VALIDATED BELOW THIS POINT  ###############################
+# last successful build 2019-10-07 17:30 CST
+#########1#########2#########3#########4#########5#########6#########7#########8
 
+# from https://raw.githubusercontent.com/zlskidmore/docker-lumpy/master/Dockerfile
 # set the environment variables
 ENV lumpy_version 0.3.0
 ENV samblaster_version 0.1.24
@@ -84,11 +88,6 @@ WORKDIR /usr/local/bin
 
 # set default command
 CMD ["lumpy --help"]
-
-#########1#########2#########3#########4#########5#########6#########7#########8
-#################### VALIDATED BELOW THIS POINT  ###############################
-# last successful build 2019-10-07 17:30 CST
-#########1#########2#########3#########4#########5#########6#########7#########8
 #
 # manta
 FROM debian:stretch-slim AS manta-build
@@ -140,73 +139,70 @@ CMD ["/bin/bash"]
 #########1#########2#########3#########4#########5#########6#########7#########8
 # BUILDS ABOVE THIS POINT VALIDATED INDEPENDENTLY 
 #########1#########2#########3#########4#########5#########6#########7#########8
-# #####
-# # STAR
+#####
+# STAR
 
-# ADD https://raw.githubusercontent.com/dceoy/print-github-tags/master/print-github-tags /usr/local/bin/print-github-tags
+ADD https://raw.githubusercontent.com/dceoy/print-github-tags/master/print-github-tags /usr/local/bin/print-github-tags
 
-# RUN set -e \
-#       && apt-get -y update \
-#       && apt-get -y dist-upgrade \
-#       && apt-get -y install --no-install-recommends --no-install-suggests \
-#         ca-certificates curl g++ gcc libz-dev make \
-#       && apt-get -y autoremove \
-#       && apt-get clean \
-#       && rm -rf /var/lib/apt/lists/*
+RUN set -e \
+      && apt-get -y update \
+      && apt-get -y dist-upgrade \
+      && apt-get -y install --no-install-recommends --no-install-suggests \
+        ca-certificates curl g++ gcc libz-dev make \
+      && apt-get -y autoremove \
+      && apt-get clean \
+      && rm -rf /var/lib/apt/lists/*
 
-# RUN set -e \
-#       && chmod +x /usr/local/bin/print-github-tags \
-#       && print-github-tags --release --latest --tar alexdobin/STAR \
-#         | xargs -i curl -SL {} -o /tmp/star.tar.gz \
-#       && tar xvf /tmp/star.tar.gz -C /usr/local/src --remove-files \
-#       && mv /usr/local/src/STAR-* /usr/local/src/STAR \
-#       && cd /usr/local/src/STAR/source \
-#       && make STAR \
-#       && ln -s /usr/local/src/STAR/source/STAR /usr/local/bin/STAR
+RUN set -e \
+      && chmod +x /usr/local/bin/print-github-tags \
+      && print-github-tags --release --latest --tar alexdobin/STAR \
+        | xargs -i curl -SL {} -o /tmp/star.tar.gz \
+      && tar xvf /tmp/star.tar.gz -C /usr/local/src --remove-files \
+      && mv /usr/local/src/STAR-* /usr/local/src/STAR \
+      && cd /usr/local/src/STAR/source \
+      && make STAR \
+      && ln -s /usr/local/src/STAR/source/STAR /usr/local/bin/STAR
 
-# ####
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    build-essential \
+    bzip2 \
+    curl \
+    csh \
+#   default-jdk \
+#   default-jre \
+#   emacs \
+#   emacs-goodies-el \
+#   evince \
+    g++ \
+    gawk \
+    git \
+    grep \
+    less \
+    libcurl4-openssl-dev \
+    libpng-dev \
+    librsvg2-bin \
+    libssl-dev \
+    libxml2-dev \
+    lsof \
+    make \
+    man \
+    ncurses-dev \
+    nodejs \
+    openssh-client \
+    pdftk \
+    pkg-config \
+    python \
+    rsync \
+    screen \
+    tabix \
+    unzip \
+    wget \
+    zip \
+    zlib1g-dev
 
-# #some basic tools
-# RUN apt-get update -y && apt-get install -y --no-install-recommends \
-#     build-essential \
-#     bzip2 \
-#     curl \
-#     csh \
-#     default-jdk \
-#     default-jre \
-#     emacs \
-#     emacs-goodies-el \
-#     evince \
-#     g++ \
-#     gawk \
-#     git \
-#     grep \
-#     less \
-#     libcurl4-openssl-dev \
-#     libpng-dev \
-#     librsvg2-bin \
-#     libssl-dev \
-#     libxml2-dev \
-#     lsof \
-#     make \
-#     man \
-#     ncurses-dev \
-#     nodejs \
-#     openssh-client \
-#     pdftk \
-#     pkg-config \
-#     python \
-#     rsync \
-#     screen \
-#     tabix \
-#     unzip \
-#     wget \
-#     zip \
-#     zlib1g-dev
-
-# ##############
-# #HTSlib 1.3.2#
-# ##############
+##############
+#HTSlib 1.3.2#
+##############
 # ENV HTSLIB_INSTALL_DIR=/opt/htslib
 # WORKDIR /tmp
 # RUN wget https://github.com/samtools/htslib/releases/download/1.3.2/htslib-1.3.2.tar.bz2 && \
@@ -215,62 +211,62 @@ CMD ["/bin/bash"]
 #     ./configure  --enable-plugins --prefix=$HTSLIB_INSTALL_DIR && \
 #     make && \
 #     make install && \
-#     cp $HTSLIB_INSTALL_DIR/lib/libhts.so* /usr/lib/
-#     #&& \
-# #    ln -s $HTSLIB_INSTALL_DIR/bin/tabix /usr/bin/tabix
+#     cp $HTSLIB_INSTALL_DIR/lib/libhts.so* /usr/lib/ && \
+#     ln -s $HTSLIB_INSTALL_DIR/bin/tabix /usr/bin/tabix
 
-# ################
-# #Samtools 1.9  #
-# ################
+################
+#Samtools 1.9  #
+################
 
-# # ENV SAMTOOLS_INSTALL_DIR=/opt/samtools
-# # WORKDIR /tmp
-# # RUN wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2 && \
-# #     tar --bzip2 -xf samtools-1.9.tar.bz2 && \
-# #     cd /tmp/samtools-1.9 && \
-# #     ./configure --with-htslib=$HTSLIB_INSTALL_DIR --prefix=$SAMTOOLS_INSTALL_DIR && \
-# #     make && \
-# #     make install && \
-# #     cd / && \
-# #     rm -rf /tmp/samtools-1.9 && \
-# #     ln -s /opt/samtools/bin/* /usr/bin/
-
-# # ###############
-# # #bam-readcount#
-# # ###############
-# # ENV SAMTOOLS_ROOT=/opt/samtools
-# # RUN apt-get update && apt-get install -y --no-install-recommends \
-# #         cmake \
-# #         patch && \
-# #     mkdir /opt/bam-readcount && \
-# #     cd /opt/bam-readcount && \
-# #     git clone https://github.com/genome/bam-readcount.git /tmp/bam-readcount-0.7.4 && \
-# #     git -C /tmp/bam-readcount-0.7.4 checkout v0.7.4 && \
-# #     cmake /tmp/bam-readcount-0.7.4 && \
-# #     make && \
-# #     rm -rf /tmp/bam-readcount-0.7.4 && \
-# #     ln -s /opt/bam-readcount/bin/bam-readcount /usr/bin/bam-readcount
-
-# # #note - this script needs cyvcf - installed in the python secetion!
-# # COPY bam_readcount_helper.py /usr/bin/bam_readcount_helper.py
-
-# ################
-# #bcftools 1.3.1#
-# ################
-# ENV BCFTOOLS_INSTALL_DIR=/opt/bcftools
+# ENV SAMTOOLS_INSTALL_DIR=/opt/samtools
 # WORKDIR /tmp
-# RUN wget https://github.com/samtools/bcftools/releases/download/1.3.1/bcftools-1.3.1.tar.bz2 && \
-#     tar --bzip2 -xf bcftools-1.3.1.tar.bz2 && \
-#     cd /tmp/bcftools-1.3.1 && \
-#     make prefix=$BCFTOOLS_INSTALL_DIR && \
-#     make prefix=$BCFTOOLS_INSTALL_DIR install && \
+# RUN wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2 && \
+#     tar --bzip2 -xf samtools-1.9.tar.bz2 && \
+#     cd /tmp/samtools-1.9 && \
+#     ./configure --with-htslib=$HTSLIB_INSTALL_DIR --prefix=$SAMTOOLS_INSTALL_DIR && \
+#     make && \
+#     make install && \
 #     cd / && \
-#     rm -rf /tmp/bcftools-1.3.1
+#     rm -rf /tmp/samtools-1.9 && \
+#     ln -s /opt/samtools/bin/* /usr/bin/
+
+###############
+#bam-readcount#
+###############
+# ENV SAMTOOLS_ROOT=/opt/samtools
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#         cmake \
+#         patch && \
+#     mkdir /opt/bam-readcount && \
+#     cd /opt/bam-readcount && \
+#     git clone https://github.com/genome/bam-readcount.git /tmp/bam-readcount-0.7.4 && \
+#     git -C /tmp/bam-readcount-0.7.4 checkout v0.7.4 && \
+#     cmake /tmp/bam-readcount-0.7.4 && \
+#     make && \
+#     rm -rf /tmp/bam-readcount-0.7.4 && \
+#     ln -s /opt/bam-readcount/bin/bam-readcount /usr/bin/bam-readcount
+
+# #note - this script needs cyvcf - installed in the python secetion!
+# COPY bam_readcount_helper.py /usr/bin/bam_readcount_helper.py
+
+################
+#bcftools 1.3.1#
+################
+ENV BCFTOOLS_INSTALL_DIR=/opt/bcftools
+WORKDIR /tmp
+RUN wget https://github.com/samtools/bcftools/releases/download/1.3.1/bcftools-1.3.1.tar.bz2 && \
+    tar --bzip2 -xf bcftools-1.3.1.tar.bz2 && \
+    cd /tmp/bcftools-1.3.1 && \
+    make prefix=$BCFTOOLS_INSTALL_DIR && \
+    make prefix=$BCFTOOLS_INSTALL_DIR install && \
+    cd / && \
+    rm -rf /tmp/bcftools-1.3.1
 
 
-# ##############
-# #Picard 2.4.1#
-# ##############
+##############
+#Picard 2.4.1#
+##############
+
 # ENV picard_version 2.4.1
 
 # # Assumes Dockerfile lives in root of the git repo. Pull source files into
@@ -301,63 +297,63 @@ CMD ["/bin/bash"]
 # # COPY split_interval_list_helper.pl /usr/bin/split_interval_list_helper.pl
 
 
-# # #############
-# # ## IGV 3.0 ##
+# #############
+# ## IGV 3.0 ##
 
-# # RUN apt-get update && apt-get install -y --no-install-recommends \
-# #     software-properties-common \
-# #     glib-networking-common && \
-# #     mkdir -p /igv && \
-# #     cd /igv && \
-# #     wget http://data.broadinstitute.org/igv/projects/downloads/3.0_beta/IGV_3.0_beta.zip && \
-# #     unzip IGV_3.0_beta.zip && \
-# #     cd IGV_3.0_beta && \
-# #     sed -i 's/Xmx4000/Xmx8000/g' igv.sh && \
-# #     cd /usr/bin && \
-# #     ln -s /igv/IGV_3.0_beta/igv.sh ./igv
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     software-properties-common \
+#     glib-networking-common && \
+#     mkdir -p /igv && \
+#     cd /igv && \
+#     wget http://data.broadinstitute.org/igv/projects/downloads/3.0_beta/IGV_3.0_beta.zip && \
+#     unzip IGV_3.0_beta.zip && \
+#     cd IGV_3.0_beta && \
+#     sed -i 's/Xmx4000/Xmx8000/g' igv.sh && \
+#     cd /usr/bin && \
+#     ln -s /igv/IGV_3.0_beta/igv.sh ./igv
 
-# ##############
-# ## bedtools ##
+##############
+## bedtools ##
 
-# WORKDIR /usr/local
-# RUN git clone https://github.com/arq5x/bedtools2.git && \
-#     cd /usr/local/bedtools2 && \
-#     git checkout v2.25.0 && \
-#     make && \
-#     ln -s /usr/local/bedtools2/bin/* /usr/local/bin/
-
-
-# ##############
-# ## vcftools ##
-# ENV ZIP=vcftools-0.1.14.tar.gz
-# ENV URL=https://github.com/vcftools/vcftools/releases/download/v0.1.14/
-# ENV FOLDER=vcftools-0.1.14
-# ENV DST=/tmp
-
-# RUN wget $URL/$ZIP -O $DST/$ZIP && \
-#     tar xvf $DST/$ZIP -C $DST && \
-#     rm $DST/$ZIP && \
-#     cd $DST/$FOLDER && \
-#     ./configure && \
-#     make && \
-#     make install && \
-#     cd / && \
-#     rm -rf $DST/$FOLDER
+WORKDIR /usr/local
+RUN git clone https://github.com/arq5x/bedtools2.git && \
+    cd /usr/local/bedtools2 && \
+    git checkout v2.25.0 && \
+    make && \
+    ln -s /usr/local/bedtools2/bin/* /usr/local/bin/
 
 
-# ##################
-# # ucsc utilities #
-# RUN mkdir -p /tmp/ucsc && \
-#     cd /tmp/ucsc && \
-#     wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedToBed http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToBedGraph http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/wigToBigWig && \
-#     chmod ugo+x * && \
-#     mv * /usr/bin/
+##############
+## vcftools ##
+ENV ZIP=vcftools-0.1.14.tar.gz
+ENV URL=https://github.com/vcftools/vcftools/releases/download/v0.1.14/
+ENV FOLDER=vcftools-0.1.14
+ENV DST=/tmp
+
+RUN wget $URL/$ZIP -O $DST/$ZIP && \
+    tar xvf $DST/$ZIP -C $DST && \
+    rm $DST/$ZIP && \
+    cd $DST/$FOLDER && \
+    ./configure && \
+    make && \
+    make install && \
+    cd / && \
+    rm -rf $DST/$FOLDER
 
 
-# ############################
-# # R, bioconductor packages #
-# # from https://raw.githubusercontent.com/rocker-org/rocker-versioned/master/r-ver/3.4.0/Dockerfile
-# # we'll pin to 3.4.0 for now
+##################
+# ucsc utilities #
+RUN mkdir -p /tmp/ucsc && \
+    cd /tmp/ucsc && \
+    wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedToBed http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToBedGraph http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/wigToBigWig && \
+    chmod ugo+x * && \
+    mv * /usr/bin/
+
+
+############################
+# R, bioconductor packages #
+# from https://raw.githubusercontent.com/rocker-org/rocker-versioned/master/r-ver/3.4.0/Dockerfile
+# we'll pin to 3.4.0 for now
 
 # ARG R_VERSION
 # ARG BUILD_DATE
@@ -468,15 +464,15 @@ CMD ["/bin/bash"]
 #     ln -s /usr/local/lib/R/site-library/littler/examples/installGithub.r /usr/local/bin/installGithub.r && \
 #     ln -s /usr/local/lib/R/site-library/littler/bin/r /usr/local/bin/r
 
-#    # ## install r packages, bioconductor, etc ##
-#    # ADD rpackages.R /tmp/
-#    # RUN R -f /tmp/rpackages.R && \
-#    # ## install fishplot ##
-#    # cd /tmp/ && \
-#    #  wget https://github.com/chrisamiller/fishplot/archive/v0.4.tar.gz && \
-#    #  mv v0.4.tar.gz fishplot_0.4.tar.gz && \
-#    #  R CMD INSTALL fishplot_0.4.tar.gz && \
-#    #  cd && rm -rf /tmp/fishplot_0.4.tar.gz
+#    ## install r packages, bioconductor, etc ##
+#    ADD rpackages.R /tmp/
+#    RUN R -f /tmp/rpackages.R && \
+#    ## install fishplot ##
+#    cd /tmp/ && \
+#     wget https://github.com/chrisamiller/fishplot/archive/v0.4.tar.gz && \
+#     mv v0.4.tar.gz fishplot_0.4.tar.gz && \
+#     R CMD INSTALL fishplot_0.4.tar.gz && \
+#     cd && rm -rf /tmp/fishplot_0.4.tar.gz
 
 #    ## Clean up
 #    RUN cd / && \
@@ -545,80 +541,100 @@ CMD ["/bin/bash"]
 #     pip install openpyxl==2.4.8 && \
 #     source deactivate"
 
-# # COPY tsv2xlsx.py /usr/bin/tsv2xlsx.py
+# COPY tsv2xlsx.py /usr/bin/tsv2xlsx.py
 
-# # needed for MGI data mounts
-# RUN apt-get update && apt-get install -y libnss-sss && apt-get clean all
+# needed for MGI data mounts
+RUN apt-get update && apt-get install -y libnss-sss && apt-get clean all
 
-# #set timezone to CDT
-# #LSF: Java bug that need to change the /etc/timezone.
-# #/etc/localtime is not enough.
-# RUN ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime && \
-#     echo "America/Chicago" > /etc/timezone && \
-#     dpkg-reconfigure --frontend noninteractive tzdata
+#set timezone to CDT
+#LSF: Java bug that need to change the /etc/timezone.
+#/etc/localtime is not enough.
+RUN ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime && \
+    echo "America/Chicago" > /etc/timezone && \
+    dpkg-reconfigure --frontend noninteractive tzdata
 
-# #UUID is needed to be set for some applications
-# RUN apt-get update && apt-get install -y dbus && apt-get clean all
-# RUN dbus-uuidgen >/etc/machine-id
+#UUID is needed to be set for some applications
+RUN apt-get update && apt-get install -y dbus && apt-get clean all
+RUN dbus-uuidgen >/etc/machine-id
 
-# # WORKS TO HERE
+# WORKS TO HERE
+ENV PATH /opt/conda/bin:$PATH
 
-# RUN conda install -c bioconda sambamba 
+RUN apt-get update --fix-missing && apt-get install -y wget bzip2 ca-certificates \
+    libglib2.0-0 libxext6 libsm6 libxrender1 \
+    git mercurial subversion
 
-# # WORKDIR /opt
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda2-4.5.11-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh && \
+    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
+    echo "conda activate base" >> ~/.bashrc
 
-# # RUN apt-get update && apt-get install -y \
-# # 	autoconf \
-# # 	automake \
-# # 	make \
-# # 	g++ \
-# # 	gcc \
-# # 	build-essential \ 
-# # 	zlib1g-dev \
-# # 	libgsl0-dev \
-# # 	perl \
-# # 	curl \
-# # 	git \
-# # 	wget \
-# # 	unzip \
-# # 	tabix \
-# # 	libncurses5-dev
-
-# # RUN wget https://github.com/ldc-developers/ldc/releases/download/v0.17.1/ldc2-0.17.1-linux-x86_64.tar.xz && \
-# #   tar xJf ldc2-0.17.1-linux-x86_64.tar.xz
-
-# # ENV PATH=/opt/ldc2-0.17.1-linux-x86_64/bin/:$PATH
-# # ENV LIBRARY_PATH=/opt/ldc2-0.17.1-linux-x86_64/lib/
-
-# # #RUN wget https://github.com/biod/sambamba/releases/download/v0.7.0/sambamba-0.7.0-linux-static.gz && \
-# # tar xJf sambamba-0.7.0-linux-static.gz
-
-# # RUN git clone --recursive https://github.com/lomereiter/sambamba.git && cd WHERE && make
+RUN apt-get install -y curl grep sed dpkg && \
+    TINI_VERSION=`curl https://github.com/krallin/tini/releases/latest | grep -o "/v.*\"" | sed 's:^..\(.*\).$:\1:'` && \
+    curl -L "https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini_${TINI_VERSION}.deb" > tini.deb && \
+    dpkg -i tini.deb && \
+    rm tini.deb && \
+    apt-get clean
 
 
-# RUN conda install -c bioconda samtools
+RUN conda install -c bioconda sambamba 
+
+# WORKDIR /opt
+
+# RUN apt-get update && apt-get install -y \
+# 	autoconf \
+# 	automake \
+# 	make \
+# 	g++ \
+# 	gcc \
+# 	build-essential \ 
+# 	zlib1g-dev \
+# 	libgsl0-dev \
+# 	perl \
+# 	curl \
+# 	git \
+# 	wget \
+# 	unzip \
+# 	tabix \
+# 	libncurses5-dev
+
+# RUN wget https://github.com/ldc-developers/ldc/releases/download/v0.17.1/ldc2-0.17.1-linux-x86_64.tar.xz && \
+#   tar xJf ldc2-0.17.1-linux-x86_64.tar.xz
+
+# ENV PATH=/opt/ldc2-0.17.1-linux-x86_64/bin/:$PATH
+# ENV LIBRARY_PATH=/opt/ldc2-0.17.1-linux-x86_64/lib/
+
+# #RUN wget https://github.com/biod/sambamba/releases/download/v0.7.0/sambamba-0.7.0-linux-static.gz && \
+# tar xJf sambamba-0.7.0-linux-static.gz
+
+# RUN git clone --recursive https://github.com/lomereiter/sambamba.git && cd WHERE && make
 
 
-# ## bioconductor R install
-# # nuke cache dirs before installing pkgs; tip from Dirk E fixes broken img
-# RUN rm -f /var/lib/dpkg/available && rm -rf  /var/cache/apt/*
+RUN conda install -c bioconda samtools
 
-# # same set of packages for both devel and release
-# RUN apt-get update && \
-# 	apt-get -y --no-install-recommends install --fix-missing \
-# 	gdb \
-# 	libxml2-dev \
-# 	python-pip \
-# 	libz-dev \
-# 	liblzma-dev \
-# 	libbz2-dev \
-# 	libpng-dev \
-# 	libmariadb-client-lgpl-dev \
-# 	&& rm -rf /var/lib/apt/lists/*
 
-# # issues with '/var/lib/dpkg/available' not found
-# # this will recreate
-# RUN dpkg --clear-avail
+## bioconductor R install
+# nuke cache dirs before installing pkgs; tip from Dirk E fixes broken img
+RUN rm -f /var/lib/dpkg/available && rm -rf  /var/cache/apt/*
+
+# same set of packages for both devel and release
+RUN apt-get update && \
+	apt-get -y --no-install-recommends install --fix-missing \
+	gdb \
+	libxml2-dev \
+	python-pip \
+	libz-dev \
+	liblzma-dev \
+	libbz2-dev \
+	libpng-dev \
+	libmariadb-client-lgpl-dev \
+	&& rm -rf /var/lib/apt/lists/*
+
+# issues with '/var/lib/dpkg/available' not found
+# this will recreate
+RUN dpkg --clear-avail
 
 
 # # Add bioc user as requested
@@ -638,9 +654,9 @@ CMD ["/bin/bash"]
 # RUN R -e "install.packages('tseries',dependencies=TRUE, repos='http://cran.rstudio.com/')"
 
 
-# # RSEM
-# #Install Bowtie 
-# RUN conda install -c bioconda bowtie2
+# RSEM
+#Install Bowtie 
+RUN conda install -c bioconda bowtie2
 
 # # Install RSEM 
 # WORKDIR /usr/local/
