@@ -90,8 +90,7 @@ WORKDIR /usr/local/bin
 CMD ["lumpy --help"]
 #
 # manta
-FROM debian:stretch-slim AS manta-build
-LABEL maintainer "Dave Larson <delarson@wustl.edu>"
+
 ARG MANTA_VERSION=1.4.0
 COPY --from=halllab/python2.7-build:v1 /opt/hall-lab/python-2.7.15 /opt/hall-lab/python-2.7.15
 ENV PATH=/opt/hall-lab/python-2.7.15/bin:${PATH}
@@ -112,29 +111,28 @@ RUN curl -O -L https://github.com/Illumina/manta/releases/download/v${MANTA_VERS
 RUN find /opt/hall-lab/python-2.7.15/ -depth \( -name '*.pyo' -o -name '*.pyc' -o -name 'test' -o -name 'tests' \) -exec rm -rf '{}' + ;
 RUN find /opt/hall-lab/python-2.7.15/lib/python2.7/site-packages/ -name '*.so' -print -exec sh -c 'file "{}" | grep -q "not stripped" && strip -s "{}"' \;
 
-FROM debian:stretch-slim
-LABEL maintainer "Dave Larson <delarson@wustl.edu>"
-ARG MANTA_VERSION=1.4.0
 
-COPY --from=manta-build /opt/hall-lab/manta-${MANTA_VERSION}/bin /opt/hall-lab/manta-${MANTA_VERSION}/bin
-COPY --from=manta-build /opt/hall-lab/manta-${MANTA_VERSION}/lib /opt/hall-lab/manta-${MANTA_VERSION}/lib
-COPY --from=manta-build /opt/hall-lab/manta-${MANTA_VERSION}/libexec /opt/hall-lab/manta-${MANTA_VERSION}/libexec
-COPY --from=manta-build /opt/hall-lab/python-2.7.15 /opt/hall-lab/python-2.7.15
+# ARG MANTA_VERSION=1.4.0
 
-# Run dependencies
-RUN apt-get update -qq \
-    && apt-get -y install \
-        --no-install-recommends \
-        libssl1.1 \
-        libcurl3 \
-        libbz2-1.0 \ 
-        liblzma5 \ 
-        libssl1.0.2 \
-        zlib1g
+# COPY --from=manta-build /opt/hall-lab/manta-${MANTA_VERSION}/bin /opt/hall-lab/manta-${MANTA_VERSION}/bin
+# COPY --from=manta-build /opt/hall-lab/manta-${MANTA_VERSION}/lib /opt/hall-lab/manta-${MANTA_VERSION}/lib
+# COPY --from=manta-build /opt/hall-lab/manta-${MANTA_VERSION}/libexec /opt/hall-lab/manta-${MANTA_VERSION}/libexec
+# COPY --from=manta-build /opt/hall-lab/python-2.7.15 /opt/hall-lab/python-2.7.15
 
-ENV PATH=/opt/hall-lab/manta-${MANTA_VERSION}/bin:/opt/hall-lab/python-2.7.15/bin/:$PATH
+# # Run dependencies
+# RUN apt-get update -qq \
+#     && apt-get -y install \
+#         --no-install-recommends \
+#         libssl1.1 \
+#         libcurl3 \
+#         libbz2-1.0 \ 
+#         liblzma5 \ 
+#         libssl1.0.2 \
+#         zlib1g
 
-CMD ["/bin/bash"]
+# ENV PATH=/opt/hall-lab/manta-${MANTA_VERSION}/bin:/opt/hall-lab/python-2.7.15/bin/:$PATH
+
+# CMD ["/bin/bash"]
 
 #########1#########2#########3#########4#########5#########6#########7#########8
 # BUILDS ABOVE THIS POINT VALIDATED INDEPENDENTLY 
@@ -549,9 +547,9 @@ RUN apt-get update && apt-get install -y libnss-sss && apt-get clean all
 #set timezone to CDT
 #LSF: Java bug that need to change the /etc/timezone.
 #/etc/localtime is not enough.
-RUN ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime && \
-    echo "America/Chicago" > /etc/timezone && \
-    dpkg-reconfigure --frontend noninteractive tzdata
+# RUN ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime && \
+#     echo "America/Chicago" > /etc/timezone && \
+#     dpkg-reconfigure --frontend noninteractive tzdata
 
 #UUID is needed to be set for some applications
 RUN apt-get update && apt-get install -y dbus && apt-get clean all
