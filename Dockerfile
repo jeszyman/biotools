@@ -1,164 +1,96 @@
 FROM ubuntu:xenial
+#########1#########2#########3#########4#########5#########6#########7#########8
+### Notes
+#  All tool builds are independent 
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+#########1#########2#########3#########4#########5#########6#########7#########8
+### MANTA
+# https://github.com/Illumina/manta/blob/master/docs/userGuide/installation.md
+#
+# RUN apt-get update -qq
+# RUN apt-get install -qq --no-install-recommends \
+# bzip2 \
+# wget \
+# unzip
+# RUN mkdir -p /tmp
+# WORKDIR /tmp
+# RUN wget --no-check-certificate https://github.com/Illumina/manta/releases/download/v1.6.0/manta-1.6.0.centos6_x86_64.tar.bz2 
+# RUN tar --bzip2 -xvf manta-1.6.0.centos6_x86_64.tar.bz2
+# RUN mv /tmp/manta-1.6.0.centos6_x86_64 /opt/ 
+#
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+### LUMPY
+# from https://raw.githubusercontent.com/zlskidmore/docker-lumpy/master/Dockerfile
+# RUN apt-get update -qq
+# RUN apt-get install -qq --no-install-recommends \
+# python-pip \
+# git \
+# cmake \
+# build-essential \
+# libz-dev
+# RUN cd /opt && git clone https://github.com/hall-lab/lumpy-sv.git && cd /opt/lumpy-sv && make
+#########1#########2#########3#########4#########5#########6#########7#########8
+### ^^^ BUILDS VALIDATED INDEPENDENLY ABOVE THIS POINT ^^^
+### Last successful build 2019-10-17 15:11
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+#########1#########2#########3#########4#########5#########6#########7#########8
+### Samtools 
+RUN apt-get update -qq
+RUN apt-get install -qq --no-install-recommends \
+wget \ 
+bzip2 \
+cmake \
+gcc \
+zlib1g-dev \
+libncurses5-dev 
 
-# # run update and install necessary tools
-# RUN apt-get update -y && apt-get install -y \
-#     build-essential \
-#     libnss-sss \
-#     curl \
-#     vim \
-#     less \
-#     wget \
-#     unzip \
-#     cmake \
-#     python \
-#     gawk \
-#     python-pip \
-#     zlib1g-dev \
-#     libncurses5-dev \
-#     libncursesw5-dev \
-#     libnss-sss \
-#     libbz2-dev \
-#     liblzma-dev \
-#     bzip2 \
-#     libcurl4-openssl-dev \
-#     libssl-dev \
-#     git \
-#     autoconf
-# RUN apt-get install -y software-properties-common
-# RUN add-apt-repository -y ppa:jonathonf/python-3.6 
-# RUN apt-get update && apt-get install -y python3.6 
 
-
-RUN mkdir -p /tmp
+ENV SAMTOOLS_INSTALL_DIR=/opt/samtools
 WORKDIR /tmp
-RUN apt-get update -qq \
-     && apt-get -y install \
-         --no-install-recommends \
-    build-essential \
-    curl \
-    python \
-    wget \
-    unzip
-RUN wget --no-check-certificate https://github.com/Illumina/manta/releases/download/v1.6.0/manta-1.6.0.centos6_x86_64.tar.bz2 
-RUN tar --bzip2 -xvf manta-1.6.0.centos6_x86_64.tar.bz2
-RUN mv /tmp/manta-1.6.0.centos6_x86_64 /opt/ 
+RUN wget --no-check-certificate https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2 && \
+tar --bzip2 -xf samtools-1.9.tar.bz2 && \
+cd /tmp/samtools-1.9 && \
+./configure --prefix=$SAMTOOLS_INSTALL_DIR && \
+make && \
+make install && \
+cd / && \
+rm -rf /tmp/samtools-1.9 && \
+ln -s /opt/samtools/bin/* /usr/bin/
 
-# Configure environment
-ENV CONDA_DIR /opt/conda
-ENV PATH $CONDA_DIR/bin:$PATH
+# # WORKDIR /usr/local/bin/
+# # RUN curl -SL https://github.com/samtools/samtools/releases/download/${samtools_version}/samtools-${samtools_version}.tar.bz2 \
+# #     > /usr/local/bin/samtools-${samtools_version}.tar.bz2
+# # RUN tar -xjf /usr/local/bin/samtools-${samtools_version}.tar.bz2 -C /usr/local/bin/
+# # RUN cd /usr/local/bin/samtools-${samtools_version}/ && ./configure
+# # RUN cd /usr/local/bin/samtools-${samtools_version}/ && make
+# # RUN cd /usr/local/bin/samtools-${samtools_version}/ && make install
 
-
-#########1#########2#########3#########4#########5#########6#########7#########8
-#################### VALIDATED BELOW THIS POINT  ###############################
-# last successful build 2019-10-07 17:30 CST
-#########1#########2#########3#########4#########5#########6#########7#########8
-
-# # from https://raw.githubusercontent.com/zlskidmore/docker-lumpy/master/Dockerfile
-# # set the environment variables
-# ENV lumpy_version 0.3.0
-# ENV samblaster_version 0.1.24
-# ENV sambamba_version 0.6.9
-# ENV samtools_version 1.9
-
-
-
-# # install numpy and pysam
-# RUN pip install --upgrade setuptools
-# RUN pip install ez_setup
-# RUN python -m pip install --upgrade pip
-# WORKDIR /usr/local/bin
-# RUN pip install "numpy"
-
-
-# RUN pip install pysam
-
-# # install samblaster
-# WORKDIR /usr/local/bin
-# RUN wget https://github.com/GregoryFaust/samblaster/archive/v.${samblaster_version}.zip
-# RUN unzip v.${samblaster_version}.zip
-# WORKDIR /usr/local/bin/samblaster-v.${samblaster_version}
-# RUN make
-# RUN ln -s /usr/local/bin/samblaster-v.${samblaster_version}/samblaster /usr/local/bin/samblaster
-
-# # install sambamba
-# WORKDIR /usr/local/bin
-# RUN wget https://github.com/biod/sambamba/releases/download/v${sambamba_version}/sambamba-${sambamba_version}-linux-static.gz
-# RUN gunzip sambamba-${sambamba_version}-linux-static.gz
-# RUN chmod a+x sambamba-${sambamba_version}-linux-static
-# RUN ln -s sambamba-${sambamba_version}-linux-static sambamba
-
-# # install samtools
-# WORKDIR /usr/local/bin/
-# RUN curl -SL https://github.com/samtools/samtools/releases/download/${samtools_version}/samtools-${samtools_version}.tar.bz2 \
-#     > /usr/local/bin/samtools-${samtools_version}.tar.bz2
-# RUN tar -xjf /usr/local/bin/samtools-${samtools_version}.tar.bz2 -C /usr/local/bin/
-# RUN cd /usr/local/bin/samtools-${samtools_version}/ && ./configure
-# RUN cd /usr/local/bin/samtools-${samtools_version}/ && make
-# RUN cd /usr/local/bin/samtools-${samtools_version}/ && make install
-
-# # install lumpy
-# WORKDIR /usr/local/bin
-# RUN wget https://github.com/arq5x/lumpy-sv/releases/download/${lumpy_version}/lumpy-sv.tar.gz
-# RUN tar -xzvf lumpy-sv.tar.gz
-# WORKDIR /usr/local/bin/lumpy-sv
-# RUN make
-# RUN ln -s /usr/local/bin/lumpy-sv/bin/lumpy /usr/local/bin/lumpy
-# RUN ln -s /usr/local/bin/lumpy-sv/bin/lumpy_filter /usr/local/bin/lumpy_filter
-# RUN ln -s /usr/local/bin/lumpy-sv/bin/lumpyexpress /usr/local/bin/lumpyexpress
-# WORKDIR /usr/local/bin
-
-# # set default command
-# CMD ["lumpy --help"]
-# #
-# # manta
-
-# ARG MANTA_VERSION=1.4.0
-# COPY --from=halllab/python2.7-build:v1 /opt/hall-lab/python-2.7.15 /opt/hall-lab/python-2.7.15
-# ENV PATH=/opt/hall-lab/python-2.7.15/bin:${PATH}
+# # # install lumpy
+# # WORKDIR /usr/local/bin
+# # RUN wget https://github.com/arq5x/lumpy-sv/releases/download/${lumpy_version}/lumpy-sv.tar.gz
+# # RUN tar -xzvf lumpy-sv.tar.gz
+# # WORKDIR /usr/local/bin/lumpy-sv
+# # RUN make
+# # RUN ln -s /usr/local/bin/lumpy-sv/bin/lumpy /usr/local/bin/lumpy
+# # RUN ln -s /usr/local/bin/lumpy-sv/bin/lumpy_filter /usr/local/bin/lumpy_filter
+# # RUN ln -s /usr/local/bin/lumpy-sv/bin/lumpyexpress /usr/local/bin/lumpyexpress
+# # https://github.com/hall-lab/sv-pipeline/blob/master/docker/lumpy/Dockerfile
+# # Build dependencies
 # RUN apt-get update -qq \
 #     && apt-get -y install \
-#         --no-install-recommends \
-#         build-essential \
-#         bzip2 \
-#         zlib1g-dev \
-#         curl \
-#         ca-certificates
-# RUN curl -O -L https://github.com/Illumina/manta/releases/download/v${MANTA_VERSION}/manta-${MANTA_VERSION}.release_src.tar.bz2 \
-#     && tar -xjf manta-${MANTA_VERSION}.release_src.tar.bz2 \
-#     && mkdir build \
-#     && cd build \
-#     && ../manta-${MANTA_VERSION}.release_src/configure --prefix=/opt/hall-lab/manta-${MANTA_VERSION} \
-#     && make -j 4 install
-# RUN find /opt/hall-lab/python-2.7.15/ -depth \( -name '*.pyo' -o -name '*.pyc' -o -name 'test' -o -name 'tests' \) -exec rm -rf '{}' + ;
-# RUN find /opt/hall-lab/python-2.7.15/lib/python2.7/site-packages/ -name '*.so' -print -exec sh -c 'file "{}" | grep -q "not stripped" && strip -s "{}"' \;
+#         apt-transport-https \
+#         g++ \
+# 	gawk \
+#         libcurl4-gnutls-dev \
+#         autoconf \
+# 	libssl-dev \
+#         git 
+  
+#########1#########2#########3#########4#########5#########6#########7#########8
 
-
-# # ARG MANTA_VERSION=1.4.0
-
-# # COPY --from=manta-build /opt/hall-lab/manta-${MANTA_VERSION}/bin /opt/hall-lab/manta-${MANTA_VERSION}/bin
-# # COPY --from=manta-build /opt/hall-lab/manta-${MANTA_VERSION}/lib /opt/hall-lab/manta-${MANTA_VERSION}/lib
-# # COPY --from=manta-build /opt/hall-lab/manta-${MANTA_VERSION}/libexec /opt/hall-lab/manta-${MANTA_VERSION}/libexec
-# # COPY --from=manta-build /opt/hall-lab/python-2.7.15 /opt/hall-lab/python-2.7.15
-
-# # # Run dependencies
-# # RUN apt-get update -qq \
-# #     && apt-get -y install \
-# #         --no-install-recommends \
-# #         libssl1.1 \
-# #         libcurl3 \
-# #         libbz2-1.0 \ 
-# #         liblzma5 \ 
-# #         libssl1.0.2 \
-# #         zlib1g
-
-# # ENV PATH=/opt/hall-lab/manta-${MANTA_VERSION}/bin:/opt/hall-lab/python-2.7.15/bin/:$PATH
-
-# # CMD ["/bin/bash"]
-
-# #########1#########2#########3#########4#########5#########6#########7#########8
-# # BUILDS ABOVE THIS POINT VALIDATED INDEPENDENTLY 
-# #########1#########2#########3#########4#########5#########6#########7#########8
-# #####
 # # STAR
 
 # ADD https://raw.githubusercontent.com/dceoy/print-github-tags/master/print-github-tags /usr/local/bin/print-github-tags
@@ -219,35 +151,11 @@ ENV PATH $CONDA_DIR/bin:$PATH
 #     zip \
 #     zlib1g-dev
 
-# ##############
-# #HTSlib 1.3.2#
-# ##############
-# # ENV HTSLIB_INSTALL_DIR=/opt/htslib
-# # WORKDIR /tmp
-# # RUN wget https://github.com/samtools/htslib/releases/download/1.3.2/htslib-1.3.2.tar.bz2 && \
-# #     tar --bzip2 -xvf htslib-1.3.2.tar.bz2 && \
-# #     cd /tmp/htslib-1.3.2 && \
-# #     ./configure  --enable-plugins --prefix=$HTSLIB_INSTALL_DIR && \
-# #     make && \
-# #     make install && \
-# #     cp $HTSLIB_INSTALL_DIR/lib/libhts.so* /usr/lib/ && \
-# #     ln -s $HTSLIB_INSTALL_DIR/bin/tabix /usr/bin/tabix
 
 # ################
 # #Samtools 1.9  #
 # ################
 
-# # ENV SAMTOOLS_INSTALL_DIR=/opt/samtools
-# # WORKDIR /tmp
-# # RUN wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2 && \
-# #     tar --bzip2 -xf samtools-1.9.tar.bz2 && \
-# #     cd /tmp/samtools-1.9 && \
-# #     ./configure --with-htslib=$HTSLIB_INSTALL_DIR --prefix=$SAMTOOLS_INSTALL_DIR && \
-# #     make && \
-# #     make install && \
-# #     cd / && \
-# #     rm -rf /tmp/samtools-1.9 && \
-# #     ln -s /opt/samtools/bin/* /usr/bin/
 
 # ###############
 # #bam-readcount#
@@ -693,3 +601,11 @@ ENV PATH $CONDA_DIR/bin:$PATH
 # #   wget -c https://downloads.sourceforge.net/project/skewer/Binaries/skewer-0.2.2-linux-x86_64 && \
 # #   chmod +x skewer-0.2.2-linux-x86_64 && \
 # #   cp skewer-0.2.2-linux-x86_64 /usr/local/bin/skewer
+
+# # run update and install necessary tools
+# RUN apt-get update -y && apt-get install -y \
+#     build-essential \
+# RUN apt-get install -y software-properties-common
+# RUN add-apt-repository -y ppa:jonathonf/python-3.6 
+# RUN apt-get update && apt-get install -y python3.6 
+
