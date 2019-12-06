@@ -1,101 +1,63 @@
 FROM ubuntu:xenial
-#########1#########2#########3#########4#########5#########6#########7#########8
+# Notes
+## All tool builds are independent, except within Conda 
+## Tools are preferentially
+### 1) managed by apt or 
+### 2) installed into /opt/
+## See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 #
-#############
-### Notes ###
-#############
+#########
+### R ###
+#########
 #
-#  All tool builds are independent 
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+RUN echo "deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu xenial-cran35/" >> /etc/apt/sources.list
+RUN apt upgrade -qq
+RUN apt update -qq 
+RUN apt-get install -qq --no-install-recommends r-base r-base-dev
 #
-#########1#########2#########3#########4#########5#########6#########7#########8
+############################
+### Python 3.6 and Conda ###
+############################
 #
-# # Configure environment
 RUN apt-get update -qq
 RUN apt-get install -qq --no-install-recommends \
 bzip2 \
-curl \
-git \
-python \
-tar \
-wget \
-unzip
-
-ENV CONDA_DIR /opt/conda
-ENV PATH $CONDA_DIR/bin:$PATH
-
-# Install conda
+wget 
 RUN cd /tmp && wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh
 RUN bash /tmp/Miniconda3-4.3.21-Linux-x86_64.sh -b -p /opt/miniconda
-
-    
-RUN /opt/miniconda/bin/conda install -c bioconda sambamba
-######################
-### bcftools 1.3.1 ###
-######################
+ENV PATH="/opt/miniconda/bin:${PATH}"
+RUN conda install -c bioconda bcftools
+RUN conda install -c bioconda bedtools
+RUN conda install -c bioconda sambamba
+RUN conda install -c bioconda samtools
+RUN conda install -c bioconda star
+RUN conda install -c bioconda vcftools
+RUN conda install -c bioconda salmon
+RUN conda install -c bioconda qualimap
+RUN conda install -c bioconda mosdepth
+RUN conda install -c bioconda fastp
+RUN conda install -c bioconda fastqc
+RUN conda install -c bioconda cutadapt
+RUN conda install -c bioconda bowtie2
+RUN conda install -c bioconda bwa
+RUN conda install -c bioconda deeptools
+RUN conda install -c bioconda skewer
+RUN conda install -c bioconda preseq
+RUN conda install -c bioconda samblaster
+RUN conda install -c bioconda gatk
 #
-RUN apt-get update -qq
-RUN apt-get install -qq --no-install-recommends \
-bzip2 \
-git \
-tar \
-wget \
-unzip
-ENV BCFTOOLS_INSTALL_DIR=/opt/bcftools
-WORKDIR /opt 
-RUN wget --no-check-certificate https://github.com/samtools/bcftools/releases/download/1.3.1/bcftools-1.3.1.tar.bz2 && \
-    tar --bzip2 -xf bcftools-1.3.1.tar.bz2
-#RUN cd /opt/bcftools-1.3.1; ./configure; make; make install 
-#
-####################
-### Picard 2.4.1 ###
-####################
-#
-RUN apt-get update -qq && apt-get install -qq --no-install-recommends \
-default-jdk \
-wget
-RUN cd /opt/ && wget --no-check-certificate https://github.com/broadinstitute/picard/releases/download/2.21.4/picard.jar
-
-# RUN apt-get update && apt-get install ant --no-install-recommends -y && \
-#     cd /usr/ && \
-#     git config --global http.sslVerify false && \
-#     git clone --recursive https://github.com/broadinstitute/picard.git && \
-#     cd /usr/picard && \
-#     git checkout tags/${picard_version} && \
-#     cd /usr/picard && \
-#     # Clone out htsjdk. First turn off git ssl verification
-#     git config --global http.sslVerify false && \
-#     git clone https://github.com/samtools/htsjdk.git && \
-#     cd htsjdk && \
-#     git checkout tags/${picard_version} && \
-#     cd .. && \
-#     # Build the distribution jar, clean up everything else
-#     ant clean all && \
-#     mv dist/picard.jar picard.jar && \
-#     mv src/scripts/picard/docker_helper.sh docker_helper.sh && \
-#     ant clean && \
-#     rm -rf htsjdk && \
-#     rm -rf src && \
-#     rm -rf lib && \
-#     rm build.xml
-
-# # COPY split_interval_list_helper.pl #/usr/bin/split_interval_list_helper.pl
-
-# #########1#########2#########3#########4#########5#########6#########7#########8
-# ### MANTA
-# # https://github.com/Illumina/manta/blob/master/docs/userGuide/installation.md
-# #
-# # RUN apt-get update -qq
-# # RUN apt-get install -qq --no-install-recommends \
-# # bzip2 \
-# # wget \
-# # unzip
-# # RUN mkdir -p /tmp
-# # WORKDIR /tmp
-# # RUN wget --no-check-certificate https://github.com/Illumina/manta/releases/download/v1.6.0/manta-1.6.0.centos6_x86_64.tar.bz2 
-# # RUN tar --bzip2 -xvf manta-1.6.0.centos6_x86_64.tar.bz2
-# # RUN mv /tmp/manta-1.6.0.centos6_x86_64 /opt/ 
-# #
-# #########1#########2#########3#########4#########5#########6#########7#########8
+###############################################################
+### ^^^ BUILDS INDEPENDENTLY VALIDATED ABOVE THIS POINT ^^^ ### 
+### Last successful build Fri Dec  6 22:29:25 UTC 2019      ###
+###############################################################
+#RUN conda install -c bioconda tophat
+#RUN conda install -c bioconda cnvkit
+#RUN conda install -c bioconda manta
+#RUN conda install -c bioconda lumpy-sv
+#RUN conda install -c bioconda multiqc
+#RUN conda install -c bioconda flexbar
+###8
 # #
 # ### LUMPY
 # # from https://raw.githubusercontent.com/zlskidmore/docker-lumpy/master/Dockerfile
@@ -107,11 +69,6 @@ RUN cd /opt/ && wget --no-check-certificate https://github.com/broadinstitute/pi
 # # build-essential \
 # # libz-dev
 # # RUN cd /opt && git clone https://github.com/hall-lab/lumpy-sv.git && cd /opt/lumpy-sv && make
-# #########1#########2#########3#########4#########5#########6#########7#########8
-# ### ^^^ BUILDS VALIDATED INDEPENDENLY ABOVE THIS POINT ^^^
-# ### Last successful build 2019-10-17 15:11
-# #########1#########2#########3#########4#########5#########6#########7#########8
-# #
 # #########1#########2#########3#########4#########5#########6#########7#########8
 # ### Samtools 
 # RUN apt-get update -qq
@@ -226,11 +183,6 @@ RUN cd /opt/ && wget --no-check-certificate https://github.com/broadinstitute/pi
 # #     wget \
 # #     zip \
 # #     zlib1g-dev
-
-
-# # ################
-# # #Samtools 1.9  #
-# # ################
 
 
 # # ###############
