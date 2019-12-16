@@ -1,5 +1,6 @@
 FROM ubuntu:xenial
 # Notes
+## test builds with 
 ## All tool builds are independent, except within Conda 
 ## Tools are preferentially
 ### 1) managed by apt or 
@@ -46,6 +47,7 @@ RUN conda install -c bioconda skewer
 RUN conda install -c bioconda preseq
 RUN conda install -c bioconda samblaster
 RUN conda install -c bioconda gatk
+RUN conda install -c bioconda seqkit
 #
 ###############################################################
 ### ^^^ BUILDS INDEPENDENTLY VALIDATED ABOVE THIS POINT ^^^ ### 
