@@ -7,38 +7,41 @@ FROM ubuntu:xenial
 ### 2) installed into /opt/
 ## See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 #
-# ############################
-# ### Python 3.6 and Conda ###
-# ############################
-# #
-# RUN apt-get update -qq
-# RUN apt-get install -qq --no-install-recommends \
-# bzip2 \
-# wget 
-# RUN cd /tmp && wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh
-# RUN bash /tmp/Miniconda3-4.3.21-Linux-x86_64.sh -b -p /opt/miniconda
-# ENV PATH="/opt/miniconda/bin:${PATH}"
-# RUN conda install -c bioconda bcftools
-# RUN conda install -c bioconda bedtools
-# RUN conda install -c bioconda sambamba
-# RUN conda install -c bioconda samtools
-# RUN conda install -c bioconda star
-# RUN conda install -c bioconda vcftools
-# RUN conda install -c bioconda salmon
-# RUN conda install -c bioconda qualimap
-# RUN conda install -c bioconda mosdepth
-# RUN conda install -c bioconda fastp
-# RUN conda install -c bioconda fastqc
-# RUN conda install -c bioconda cutadapt
-# RUN conda install -c bioconda bowtie2
-# RUN conda install -c bioconda bwa
-# RUN conda install -c bioconda deeptools
-# RUN conda install -c bioconda skewer
-# RUN conda install -c bioconda preseq
-# RUN conda install -c bioconda samblaster
-# RUN conda install -c bioconda gatk
-# RUN conda install -c bioconda seqkit
-# RUN conda install -c bioconda picard
+# placeholder variables
+#ENV PATH="{$PATH}"
+#
+############################
+### Python 3.6 and Conda ###
+############################
+#
+RUN apt-get update -qq
+RUN apt-get install -qq --no-install-recommends --allow-unauthenticated \
+bzip2 \
+wget 
+RUN cd /tmp && wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh
+RUN bash /tmp/Miniconda3-4.3.21-Linux-x86_64.sh -b -p /opt/miniconda
+ENV PATH="/opt/miniconda/bin:${PATH}"
+RUN conda install -c bioconda bcftools
+RUN conda install -c bioconda bedtools
+RUN conda install -c bioconda sambamba
+RUN conda install -c bioconda samtools
+RUN conda install -c bioconda star
+RUN conda install -c bioconda vcftools
+RUN conda install -c bioconda salmon
+RUN conda install -c bioconda qualimap
+RUN conda install -c bioconda mosdepth
+RUN conda install -c bioconda fastp
+RUN conda install -c bioconda fastqc
+RUN conda install -c bioconda cutadapt
+RUN conda install -c bioconda bowtie2
+RUN conda install -c bioconda bwa
+RUN conda install -c bioconda deeptools
+RUN conda install -c bioconda skewer
+RUN conda install -c bioconda preseq
+RUN conda install -c bioconda samblaster
+RUN conda install -c bioconda gatk
+RUN conda install -c bioconda seqkit
+RUN conda install -c bioconda picard
 # 
 #########
 ### R ###
@@ -46,7 +49,7 @@ FROM ubuntu:xenial
 #
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 RUN echo "deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu xenial-cran35/" >> /etc/apt/sources.list
-RUN apt upgrade -qq
+#RUN apt upgrade -qq
 RUN apt update -qq 
 RUN apt-get install -qq --no-install-recommends r-base r-base-dev
 RUN apt-get update \
@@ -54,11 +57,11 @@ RUN apt-get update \
    libfftw3-dev \
    gcc && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
-RUN Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) \
-install.packages("BiocManager")'
-RUN Rscript -e 'BiocManager::install(version = "3.10")'
-RUN Rscript -e 'BiocManager::install()'
-RUN Rscript -e 'BiocManager::install(c("polyester"))'
+#RUN Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) \
+#install.packages("BiocManager",repos= "http://cran.us.r-project.org")'
+#RUN Rscript -e 'BiocManager::install(version = "3.10")'
+#RUN Rscript -e 'BiocManager::install()'
+#RUN Rscript -e 'BiocManager::install(c("polyester"))'
 #
 ###############################################################
 ### ^^^ BUILDS INDEPENDENTLY VALIDATED ABOVE THIS POINT ^^^ ### 
