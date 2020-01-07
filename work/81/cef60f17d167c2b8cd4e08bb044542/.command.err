@@ -1,0 +1,15 @@
+[M::bwa_idx_load_from_disk] read 0 ALT contigs
+[M::process] read 10000 sequences (1500000 bp)...
+[M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (0, 3590, 0, 0)
+[M::mem_pestat] skip orientation FF as there are not enough pairs
+[M::mem_pestat] analyzing insert size distribution for orientation FR...
+[M::mem_pestat] (25, 50, 75) percentile: (119, 162, 212)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 398)
+[M::mem_pestat] mean and std.dev: (168.32, 70.01)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 491)
+[M::mem_pestat] skip orientation RF as there are not enough pairs
+[M::mem_pestat] skip orientation RR as there are not enough pairs
+[M::mem_process_seqs] Processed 10000 reads in 15.174 CPU sec, 15.174 real sec
+[main] Version: 0.7.17-r1188
+[main] CMD: bwa mem /store/users/jeszyman/data/ref/bwa-hg19/hg19.fa /store/users/jeszyman/data/toy-5k-HiSeqW43_Undetermined_R6000292_L004_R1_001.fastq.gz /store/users/jeszyman/data/toy-5k-HiSeqW43_Undetermined_R6000292_L004_R2_001.fastq.gz
+[main] Real time: 18.889 sec; CPU: 18.881 sec
