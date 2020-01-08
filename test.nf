@@ -1,27 +1,68 @@
+println "Hello world"
+params.reference_fasta = "$HOME/repos/bioinformatics-toolkit/tmp/chr1-trimmed.fa"
+prev_reference_fasta_file = file(params.reference_fasta)
+params.test = "runit"
 
-process get_genome {
+process get_hg19_chr1 {
 
-        output:
-        file '$HOME/repos/bioinformatics-toolkit/tmp/chr1.fa' into full_chr1
-        
         script:
+        if( !prev_reference_fasta_file.exists () )
         """
         rm -rf $HOME/repos/bioinformatics-toolkit/tmp/
         mkdir -p $HOME/repos/bioinformatics-toolkit/tmp/
         wget https://hgdownload.cse.ucsc.edu/goldenPath/hg19/chromosomes/chr1.fa.gz -O $HOME/repos/bioinformatics-toolkit/tmp/chr1.fa.gz
         gunzip $HOME/repos/bioinformatics-toolkit/tmp/chr1.fa.gz
+        cat $HOME/repos/bioinformatics-toolkit/tmp/chr1.fa | head -n 1200000 > $HOME/repos/bioinformatics-toolkit/tmp/chr1-trimmed.fa
+        rm $HOME/repos/bioinformatics-toolkit/tmp/chr1.fa        
+        """
+        else if( prev_reference_fasta_file.exists () )
+        """
+        echo "reference fasta exists"
         """
 }
 
-process generate_library {
-        input: file full_chr1 from full_chr1
 
-        output:
-        val x into final_channel
+process generate_seq_library {
 
         script:
         """
-        x = wc -l $full_chr1
+        cat $HOME/repos/bioinformatics-toolkit/tmp/chr1-trimmed.fa | simLibrary > seq-library.fa
         """
 }
 
+process test_output_in_docker {
+
+        script:
+        """
+        touch $HOME/repos/bioinformatics-toolkit/tmp/test
+        echo "TEST" > $HOME/repos/bioinformatics-toolkit/tmp/test
+        """
+        }
+/*
+
+process generate_seq_library {
+        """
+        cat $HOME/repos/bioinformatics-toolkit/tmp/chr1-trimmed.fa | simLibrary \
+        --coverage 0.001 > $HOME/repos/bioinformatics-toolkit/tmp/ seq-library.fa
+        """
+}
+
+process generate_seq_reads {
+}
+
+process dna_fastq_qc {
+}
+
+process bwa_index {
+}
+
+process bwa_mem {
+}
+
+output:
+        file 'chr1-trimmed.fa' into reference_fasta
+
+
+
+
+*/
