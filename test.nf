@@ -2,6 +2,7 @@ println "Hello world"
 params.reference_fasta = "$HOME/repos/bioinformatics-toolkit/tmp/chr1-trimmed.fa"
 prev_reference_fasta_file = file(params.reference_fasta)
 params.test = "runit"
+params.outdir = 'results'
 
 process get_hg19_chr1 {
 
@@ -21,6 +22,31 @@ process get_hg19_chr1 {
         """
 }
 
+/*
+
+process foo {
+
+    publishDir 'home/jeszyman/repos/bioinformatics-toolkit', mode: 'move'
+
+    output:
+    file 'results.txt' into ANYCHANNELNAME
+
+    '''
+    mv ~/R-HSA-157118.sbml ~/repos/bioinformatics-toolkit/results.txt
+    '''
+}
+
+
+process randomnum {
+        publishDir '$HOME/repos/bioinformatics-toolkit/tmp'
+        output: file 'results.txt' into numbers
+
+        '''
+        touch results.txt
+        echo "basl;kedfjs" > results.txt
+        '''
+}
+
 
 process generate_seq_library {
 
@@ -38,7 +64,7 @@ process test_output_in_docker {
         echo "TEST" > $HOME/repos/bioinformatics-toolkit/tmp/test
         """
         }
-/*
+m
 
 process generate_seq_library {
         """
