@@ -1,0 +1,1 @@
+2020-01-07 18:06:31	17.8s	mad_koch	ERR	e778553b09516aa46442640935d82f52	226cf24c-d309-4d65-a4b5-99c2ddf9aab5	nextflow /home/jeszyman/repos/bioinformatics-toolkit/test.nf -with-docker jeszyman/bioinformatics-toolkit
