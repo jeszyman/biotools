@@ -2,8 +2,16 @@ println "Hello world"
 params.reference_fasta = "$HOME/repos/bioinformatics-toolkit/tmp/chr1-trimmed.fa"
 prev_reference_fasta_file = file(params.reference_fasta)
 params.test = "runit"
+params.outdir = "/home/jeszyman/repos/bioinformatics-toolkit/results"
+
+
+
+
+
 
 process get_hg19_chr1 {
+
+        output:
 
         script:
         if( !prev_reference_fasta_file.exists () )
@@ -22,38 +30,47 @@ process get_hg19_chr1 {
 }
 
 
-process generate_seq_library {
+reference_fasta = Channel.fromPath ( '/home/jeszyman/repos/bioinformatics-toolkit/tmp/*.fa' )
+
+process bwa_index {
+
+        input:
+        file reference_fasta_file from reference_fasta
+
+        output:
+        file 'reference_fasta_dir' into reference_fasta_dir2
 
         script:
         """
-        cat $HOME/repos/bioinformatics-toolkit/tmp/chr1-trimmed.fa | simLibrary > seq-library.fa
+        bwa index ${reference_fasta_file} > reference_fasta_dir
         """
 }
 
-process test_output_in_docker {
+myFileChannel = Channel.fromPath( '/home/jeszyman/repos/bioinformatics-toolkit/tmp/chr1-trimmed.fa', type: 'any' )
+
+process generate_seq_library {
+
+          publishDir "$params.outdir"
+
+        input:
+        file reference_fasta_file2 from myFileChannel 
+
+        output:
+        file 'test.fa' into reference_fasta_dir3
 
         script:
         """
-        touch $HOME/repos/bioinformatics-toolkit/tmp/test
-        echo "TEST" > $HOME/repos/bioinformatics-toolkit/tmp/test
+        cat ${reference_fasta_file2} | simLibrary > test.fa
         """
-        }
+}
+
 /*
 
-process generate_seq_library {
-        """
-        cat $HOME/repos/bioinformatics-toolkit/tmp/chr1-trimmed.fa | simLibrary \
-        --coverage 0.001 > $HOME/repos/bioinformatics-toolkit/tmp/ seq-library.fa
-        """
-}
-
-process generate_seq_reads {
-}
 
 process dna_fastq_qc {
 }
 
-process bwa_index {
+process generate_seq_reads {
 }
 
 process bwa_mem {
@@ -66,3 +83,4 @@ output:
 
 
 */
+println "END SCRIPT"
