@@ -1,6 +1,8 @@
 FROM ubuntu:xenial
-# Notes
-## test builds with 
+#########1#########2#########3#########4#########5#########6#########7
+#############
+### Notes ###
+#############
 ## All tool builds are independent, except within Conda 
 ## Tools are preferentially
 ### 1) managed by apt or 
@@ -8,7 +10,6 @@ FROM ubuntu:xenial
 ## See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 #
 # placeholder variables
-#ENV PATH="{$PATH}"
 #
 ##############
 ### simNGS ###
@@ -36,27 +37,30 @@ wget
 RUN cd /tmp && wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh
 RUN bash /tmp/Miniconda3-4.3.21-Linux-x86_64.sh -b -p /opt/miniconda
 ENV PATH="/opt/miniconda/bin:${PATH}"
+# Alphebetical 
 RUN conda install -c bioconda bcftools
 RUN conda install -c bioconda bedtools
-RUN conda install -c bioconda sambamba
-RUN conda install -c bioconda samtools
-RUN conda install -c bioconda star
-RUN conda install -c bioconda vcftools
-RUN conda install -c bioconda salmon
-RUN conda install -c bioconda qualimap
-RUN conda install -c bioconda mosdepth
-RUN conda install -c bioconda fastp
-RUN conda install -c bioconda fastqc
-RUN conda install -c bioconda cutadapt
 RUN conda install -c bioconda bowtie2
 RUN conda install -c bioconda bwa
+RUN conda install -c bioconda cutadapt
 RUN conda install -c bioconda deeptools
-RUN conda install -c bioconda skewer
-RUN conda install -c bioconda preseq
-RUN conda install -c bioconda samblaster
+RUN conda install -c bioconda fastp
+RUN conda install -c bioconda fastqc
 RUN conda install -c bioconda gatk
-RUN conda install -c bioconda seqkit
+RUN conda install -c bioconda kallisto
+RUN conda install -c bioconda mosdepth
 RUN conda install -c bioconda picard
+RUN conda install -c bioconda preseq
+RUN conda install -c bioconda qualimap
+#RUN conda install -c bioconda rseqc
+RUN conda install -c bioconda salmon
+RUN conda install -c bioconda sambamba
+RUN conda install -c bioconda samblaster
+RUN conda install -c bioconda samtools
+RUN conda install -c bioconda seqkit
+RUN conda install -c bioconda skewer
+RUN conda install -c bioconda star
+RUN conda install -c bioconda vcftools
 # 
 #########
 ### R ###
@@ -73,22 +77,18 @@ RUN apt-get update \
    gcc && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 #
+ENV PATH="/usr/bin:${PATH}"
+RUN echo 'local({r <- getOption("repos"); r["CRAN"] <- "http://cran.r-project.org"; options(repos=r)})' > ~/.Rprofile
+RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("DESeq2"); BiocManager::install("tximport"); BiocManager::install("readr");'
+#
 ###############################################################
 ### ^^^ BUILDS INDEPENDENTLY VALIDATED ABOVE THIS POINT ^^^ ### 
-### Last successful build 2019-12-16 16:26 CST              ###
+### Last successful build 2020-01-14 15:26 CST              ###
 ###############################################################
 #
-#RUN Rscript -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) \
-#install.packages("BiocManager",repos= "http://cran.us.r-project.org")'
-#RUN Rscript -e 'BiocManager::install(version = "3.10")'
-#RUN Rscript -e 'BiocManager::install()'
-#RUN Rscript -e 'BiocManager::install(c("polyester"))'
-##
-# WORKS, NEED TO ADD TO PATH 
-
+#NEED edger, limma, gage, dseq2, wgcna
 #########1#########2#########3#########4#########5#########6#########7######
 #TESTING
-
 #
 #RUN conda install -c bioconda tophat
 #RUN conda install -c bioconda cnvkit
@@ -162,66 +162,6 @@ RUN apt-get update \
 # #         git 
   
 # #########1#########2#########3#########4#########5#########6#########7#########8
-
-# # # STAR
-
-# # ADD https://raw.githubusercontent.com/dceoy/print-github-tags/master/print-github-tags /usr/local/bin/print-github-tags
-
-# # RUN set -e \
-# #       && apt-get -y update \
-# #       && apt-get -y dist-upgrade \
-# #       && apt-get -y install --no-install-recommends --no-install-suggests \
-# #         ca-certificates curl g++ gcc libz-dev make \
-# #       && apt-get -y autoremove \
-# #       && apt-get clean \
-# #       && rm -rf /var/lib/apt/lists/*
-
-# # RUN set -e \
-# #       && chmod +x /usr/local/bin/print-github-tags \
-# #       && print-github-tags --release --latest --tar alexdobin/STAR \
-# #         | xargs -i curl -SL {} -o /tmp/star.tar.gz \
-# #       && tar xvf /tmp/star.tar.gz -C /usr/local/src --remove-files \
-# #       && mv /usr/local/src/STAR-* /usr/local/src/STAR \
-# #       && cd /usr/local/src/STAR/source \
-# #       && make STAR \
-# #       && ln -s /usr/local/src/STAR/source/STAR /usr/local/bin/STAR
-
-# # RUN apt-get update -y && apt-get install -y --no-install-recommends \
-# #     build-essential \
-# #     bzip2 \
-# #     curl \
-# #     csh \
-# # #   default-jdk \
-# # #   default-jre \
-# # #   emacs \
-# # #   emacs-goodies-el \
-# # #   evince \
-# #     g++ \
-# #     gawk \
-# #     git \
-# #     grep \
-# #     less \
-# #     libcurl4-openssl-dev \
-# #     libpng-dev \
-# #     librsvg2-bin \
-# #     libssl-dev \
-# #     libxml2-dev \
-# #     lsof \
-# #     make \
-# #     man \
-# #     ncurses-dev \
-# #     nodejs \
-# #     openssh-client \
-# #     pdftk \
-# #     pkg-config \
-# #     python \
-# #     rsync \
-# #     screen \
-# #     tabix \
-# #     unzip \
-# #     wget \
-# #     zip \
-# #     zlib1g-dev
 
 
 # # ###############

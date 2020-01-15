@@ -1,0 +1,2 @@
+reference fasta exists
+Error response from daemon: Cannot kill container: nxf-YL6PLrJqfj1bitWVwiucfYY5: Container 7c2f2cf3f9861a33b3db616e3d05efe7df6cf956460dd6755529257bab10cc0b is not running
