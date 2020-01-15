@@ -74,8 +74,7 @@ RUN apt-get install -qq --no-install-recommends r-base r-base-dev
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
    libfftw3-dev \
-   gcc && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+   gcc && apt-get clean 
 #
 ENV PATH="/usr/bin:${PATH}"
 RUN echo 'local({r <- getOption("repos"); r["CRAN"] <- "http://cran.r-project.org"; options(repos=r)})' > ~/.Rprofile
@@ -85,6 +84,17 @@ RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::
 ### ^^^ BUILDS INDEPENDENTLY VALIDATED ABOVE THIS POINT ^^^ ### 
 ### Last successful build 2020-01-14 15:26 CST              ###
 ###############################################################
+# Set the locale
+# https://stackoverflow.com/questions/28405902/how-to-set-the-locale-inside-a-debian-ubuntu-docker-container#28406007
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends locales
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8    
+
+RUN pip install multiqc
 #
 #NEED edger, limma, gage, dseq2, wgcna
 #########1#########2#########3#########4#########5#########6#########7######
