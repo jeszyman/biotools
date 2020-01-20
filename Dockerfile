@@ -105,8 +105,6 @@ RUN pip install -U cython
 RUN pip install -U future futures pandas pomegranate pyfaidx
 RUN conda install -c bioconda pysam
 RUN pip install cnvkit==0.9.6
-# mosdepth
-RUN conda install -c bioconda mosdepth
 #
 #NEED edger, limma, gage, dseq2, wgcna
 #########1#########2#########3#########4#########5#########6#########7######
