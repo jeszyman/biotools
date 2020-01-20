@@ -84,8 +84,12 @@ RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::
 ### ^^^ BUILDS INDEPENDENTLY VALIDATED ABOVE THIS POINT ^^^ ### 
 ### Last successful build 2020-01-14 15:26 CST              ###
 ###############################################################
-# Set the locale
-# https://stackoverflow.com/questions/28405902/how-to-set-the-locale-inside-a-debian-ubuntu-docker-container#28406007
+#
+### TESTING ###
+### Installs below this point are not individually validated and my require dependencies from above
+# multiqc
+## Set the locale
+## https://stackoverflow.com/questions/28405902/how-to-set-the-locale-inside-a-debian-ubuntu-docker-container#28406007
 RUN apt-get update \
  && apt-get install -y --no-install-recommends locales
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
@@ -95,6 +99,14 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8    
 
 RUN pip install multiqc
+#
+# cnvkit
+RUN pip install -U cython
+RUN pip install -U future futures pandas pomegranate pyfaidx
+RUN conda install -c bioconda pysam
+RUN pip install cnvkit==0.9.6
+# mosdepth
+RUN conda install -c bioconda mosdepth
 #
 #NEED edger, limma, gage, dseq2, wgcna
 #########1#########2#########3#########4#########5#########6#########7######
