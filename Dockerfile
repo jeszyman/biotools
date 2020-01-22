@@ -107,11 +107,17 @@ RUN conda install -c bioconda pysam
 RUN pip install cnvkit==0.9.6
 #
 # Ichor
-#RUN apt-get update \
-# && apt-get install -y build-dep libcurl4-gnutls-dev
+## R devtools
+### curl, libcurl4-openssl-dev 
+RUN apt-get update \
+    && apt-get install -y \
+    libcurl4-gnutls-dev \
+    libssl-dev \
+    libxml2-dev
 #
-#RUN R -e "install.packages('devtools')
-#RUN R -e "library(devtools) ; install_github("broadinstitute/ichorCNA")"
+RUN R -e "install.packages('devtools')"
+RUN R -e "install.packages('devtools')"
+#RUN R -e "library(devtools); install_github("broadinstitute/ichorCNA", force = T)"
 ##NEED edger, limma, gage, dseq2, wgcna
 #########1#########2#########3#########4#########5#########6#########7######
 #TESTING
