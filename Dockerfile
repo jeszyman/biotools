@@ -69,13 +69,12 @@ RUN conda install -c bioconda vcftools
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 RUN echo "deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu xenial-cran35/" >> /etc/apt/sources.list
 #RUN apt upgrade -qq
-RUN apt update -qq 
+RUN apt update -qq
 RUN apt-get install -qq --no-install-recommends r-base r-base-dev
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
    libfftw3-dev \
    gcc && apt-get clean 
-#
 ENV PATH="/usr/bin:${PATH}"
 RUN echo 'local({r <- getOption("repos"); r["CRAN"] <- "http://cran.r-project.org"; options(repos=r)})' > ~/.Rprofile
 RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("DESeq2"); BiocManager::install("tximport"); BiocManager::install("readr");'
@@ -109,15 +108,35 @@ RUN pip install cnvkit==0.9.6
 # Ichor
 ## R devtools
 ### curl, libcurl4-openssl-dev 
-RUN apt-get update \
-    && apt-get install -y \
-    libcurl4-gnutls-dev \
-    libssl-dev \
-    libxml2-dev
+#RUN apt-get update \
+#    && apt-get install -y \
+#    libcurl4-gnutls-dev \
+#    libssl-dev \
+#    libxml2-dev
 #
 RUN R -e "install.packages('devtools')"
 RUN R -e "install.packages('devtools')"
 #RUN R -e "library(devtools); install_github("broadinstitute/ichorCNA", force = T)"
+# from 	git clone https://github.com/broadinstitute/ichorCNA.git && \ 
+RUN Rscript -e 'install.packages(c("tidyverse", "git2r", "stringr", "devtools", "optparse"), repos = c(CRAN="http://cran.rstudio.com"))'
+
+RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("HMMcopy"); BiocManager::install("SNPchip");' 
+
+RUN apt-get install -y git 
+
+RUN cd /opt && \
+    git clone https://github.com/broadinstitute/ichorCNA.git && \
+    cd ichorCNA && \
+    R CMD INSTALL . && \
+    cd /opt 
+
+RUN apt-get install -y cmake
+
+RUN cd /opt && \
+    git clone https://github.com/shahcompbio/hmmcopy_utils.git && \
+    cd hmmcopy_utils && \
+    cmake . && \
+    make 
 ##NEED edger, limma, gage, dseq2, wgcna
 #########1#########2#########3#########4#########5#########6#########7######
 #TESTING
