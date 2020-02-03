@@ -119,6 +119,8 @@ RUN R -e "install.packages('devtools')"
 RUN R -e "install.packages('devtools')"
 #RUN R -e "library(devtools); install_github("broadinstitute/ichorCNA", force = T)"
 ##NEED edger, limma, gage, dseq2, wgcna
+RUN apt-get install -y parallel
+
 #########1#########2#########3#########4#########5#########6#########7######
 #TESTING
 #
