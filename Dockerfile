@@ -61,13 +61,17 @@ RUN conda install -c bioconda seqkit
 RUN conda install -c bioconda skewer
 RUN conda install -c bioconda star
 RUN conda install -c bioconda vcftools
-# 
+#
+# TMP NEED TO REMOVE CRAN FROM APT BELOW
+RUN apt-get install -qq --no-install-recommends nano
 #########
 ### R ###
 #########
 #
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-RUN echo "deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu xenial-cran35/" >> /etc/apt/sources.list
+#RUN echo "deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu xenial-cran35/" >> /etc/apt/sources.list
+RUN echo "deb http://cran.wustl.edu/bin/linux/ubuntu xenial-cran35/" \
+>> /etc/apt/sources.list
 #RUN apt upgrade -qq
 RUN apt update -qq
 RUN apt-get install -qq --no-install-recommends r-base r-base-dev
@@ -138,6 +142,9 @@ RUN cd /opt && \
     cmake . && \
     make 
 ##NEED edger, limma, gage, dseq2, wgcna
+#RUN add-apt-repository --remove ppa:
+RUN apt-get update
+RUN apt-get install -qq parallel
 #########1#########2#########3#########4#########5#########6#########7######
 #TESTING
 #
