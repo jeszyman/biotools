@@ -145,6 +145,9 @@ RUN cd /opt && \
 #RUN add-apt-repository --remove ppa:
 RUN apt-get update
 RUN apt-get install -qq parallel
+
+RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("DNAcopy");'
+#
 #########1#########2#########3#########4#########5#########6#########7######
 #TESTING
 #
