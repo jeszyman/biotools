@@ -1,0 +1,49 @@
+Jan-08 13:25:33.743 [main] DEBUG nextflow.cli.Launcher - $> nextflow run /home/jeszyman/repos/bioinformatics-toolkit/test.nf
+Jan-08 13:25:33.893 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 19.10.0
+Jan-08 13:25:33.913 [main] INFO  nextflow.cli.CmdRun - Launching `/home/jeszyman/repos/bioinformatics-toolkit/test.nf` [suspicious_watson] - revision: 593cfbcc31
+Jan-08 13:25:33.946 [main] DEBUG nextflow.config.ConfigBuilder - Found config home: /home/jeszyman/.nextflow/config
+Jan-08 13:25:33.947 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /home/jeszyman/repos/bioinformatics-toolkit/nextflow.config
+Jan-08 13:25:33.948 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/jeszyman/.nextflow/config
+Jan-08 13:25:33.948 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/jeszyman/repos/bioinformatics-toolkit/nextflow.config
+Jan-08 13:25:33.979 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Jan-08 13:25:34.489 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Jan-08 13:25:34.566 [main] DEBUG nextflow.extension.OperatorEx - Dataflow extension methods: branch,buffer,chain,choice,collate,collect,collectFile,combine,concat,count,countBy,countFasta,countFastq,countLines,countText,cross,distinct,filter,first,flatMap,flatten,fork,groupBy,groupTuple,ifEmpty,into,join,last,map,max,mean,merge,min,mix,phase,print,println,randomSample,reduce,separate,set,splitCsv,splitFasta,splitFastq,splitText,spread,subscribe,sum,take,tap,toDouble,toFloat,toInteger,toList,toLong,toSortedList,transpose,unique,until,view
+Jan-08 13:25:34.578 [main] DEBUG nextflow.Session - Session uuid: 61cc214d-c0f4-4656-bd8b-fb24e2ab1a91
+Jan-08 13:25:34.578 [main] DEBUG nextflow.Session - Run name: suspicious_watson
+Jan-08 13:25:34.579 [main] DEBUG nextflow.Session - Executor pool size: 8
+Jan-08 13:25:34.633 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 19.10.0 build 5170
+  Created: 21-10-2019 15:07 UTC (10:07 CDT)
+  System: Linux 5.0.0-37-generic
+  Runtime: Groovy 2.5.8 on OpenJDK 64-Bit Server VM 11.0.5+10-post-Ubuntu-0ubuntu1.118.04
+  Encoding: UTF-8 (UTF-8)
+  Process: 27779@jeszyman-work [127.0.1.1]
+  CPUs: 8 - Mem: 15.5 GB (2.3 GB) - Swap: 976 MB (936.5 MB)
+Jan-08 13:25:34.673 [main] DEBUG nextflow.Session - Work-dir: /home/jeszyman/repos/bioinformatics-toolkit/work [ext2/ext3]
+Jan-08 13:25:34.673 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /home/jeszyman/repos/bioinformatics-toolkit/bin
+Jan-08 13:25:34.699 [main] DEBUG nextflow.Session - Observer factory: TowerFactory
+Jan-08 13:25:34.702 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Jan-08 13:25:35.026 [main] DEBUG nextflow.Session - Session start invoked
+Jan-08 13:25:35.237 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jan-08 13:25:35.340 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-08 13:25:35.340 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-08 13:25:35.348 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Jan-08 13:25:35.356 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=8; memory=15.5 GB; capacity=8; pollInterval=100ms; dumpInterval=5m
+Jan-08 13:25:35.504 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > get_hg19_chr1 -- maxForks: 8
+Jan-08 13:25:35.599 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-08 13:25:35.599 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-08 13:25:35.601 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > foo -- maxForks: 8
+Jan-08 13:25:35.621 [main] DEBUG nextflow.script.BaseScript - No entry workflow defined
+Jan-08 13:25:35.622 [main] DEBUG nextflow.script.ScriptRunner - > Await termination 
+Jan-08 13:25:35.622 [main] DEBUG nextflow.Session - Session await
+Jan-08 13:25:35.896 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jan-08 13:25:35.909 [Task submitter] INFO  nextflow.Session - [3a/61eb1c] Submitted process > foo
+Jan-08 13:25:35.924 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jan-08 13:25:35.925 [Task submitter] INFO  nextflow.Session - [6b/3cad37] Submitted process > get_hg19_chr1
+Jan-08 13:25:37.479 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: get_hg19_chr1; status: COMPLETED; exit: 0; error: -; workDir: /home/jeszyman/repos/bioinformatics-toolkit/work/6b/3cad375ebbd4a6131653a45739eb35]
+Jan-08 13:25:37.497 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: foo; status: COMPLETED; exit: 0; error: -; workDir: /home/jeszyman/repos/bioinformatics-toolkit/work/3a/61eb1c8b29f16e122acca93bebe98b]
+Jan-08 13:25:37.539 [main] DEBUG nextflow.Session - Session await > all process finished
+Jan-08 13:25:37.542 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Jan-08 13:25:37.558 [main] DEBUG nextflow.trace.StatsObserver - Workflow completed > WorkflowStats[succeedCount=2; failedCount=0; ignoredCount=0; cachedCount=0; succeedDuration=3s; failedDuration=0ms; cachedDuration=0ms]
+Jan-08 13:25:37.697 [main] DEBUG nextflow.CacheDB - Closing CacheDB done
+Jan-08 13:25:37.707 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye

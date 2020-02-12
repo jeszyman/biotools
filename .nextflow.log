@@ -1,0 +1,133 @@
+Jan-08 13:39:28.462 [main] DEBUG nextflow.cli.Launcher - $> nextflow run main.nf
+Jan-08 13:39:28.624 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 19.10.0
+Jan-08 13:39:28.643 [main] INFO  nextflow.cli.CmdRun - Launching `main.nf` [high_khorana] - revision: 7573402fc2
+Jan-08 13:39:28.677 [main] DEBUG nextflow.config.ConfigBuilder - Found config home: /home/jeszyman/.nextflow/config
+Jan-08 13:39:28.677 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /home/jeszyman/repos/bioinformatics-toolkit/nextflow.config
+Jan-08 13:39:28.679 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/jeszyman/.nextflow/config
+Jan-08 13:39:28.679 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/jeszyman/repos/bioinformatics-toolkit/nextflow.config
+Jan-08 13:39:28.711 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Jan-08 13:39:29.220 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Jan-08 13:39:29.297 [main] DEBUG nextflow.extension.OperatorEx - Dataflow extension methods: branch,buffer,chain,choice,collate,collect,collectFile,combine,concat,count,countBy,countFasta,countFastq,countLines,countText,cross,distinct,filter,first,flatMap,flatten,fork,groupBy,groupTuple,ifEmpty,into,join,last,map,max,mean,merge,min,mix,phase,print,println,randomSample,reduce,separate,set,splitCsv,splitFasta,splitFastq,splitText,spread,subscribe,sum,take,tap,toDouble,toFloat,toInteger,toList,toLong,toSortedList,transpose,unique,until,view
+Jan-08 13:39:29.308 [main] DEBUG nextflow.Session - Session uuid: 80edb255-3849-4d48-8f70-932ee4f69410
+Jan-08 13:39:29.308 [main] DEBUG nextflow.Session - Run name: high_khorana
+Jan-08 13:39:29.310 [main] DEBUG nextflow.Session - Executor pool size: 8
+Jan-08 13:39:29.366 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 19.10.0 build 5170
+  Created: 21-10-2019 15:07 UTC (10:07 CDT)
+  System: Linux 5.0.0-37-generic
+  Runtime: Groovy 2.5.8 on OpenJDK 64-Bit Server VM 11.0.5+10-post-Ubuntu-0ubuntu1.118.04
+  Encoding: UTF-8 (UTF-8)
+  Process: 30853@jeszyman-work [127.0.1.1]
+  CPUs: 8 - Mem: 15.5 GB (2.2 GB) - Swap: 976 MB (936.5 MB)
+Jan-08 13:39:29.406 [main] DEBUG nextflow.Session - Work-dir: /home/jeszyman/repos/bioinformatics-toolkit/work [ext2/ext3]
+Jan-08 13:39:29.407 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /home/jeszyman/repos/bioinformatics-toolkit/bin
+Jan-08 13:39:29.433 [main] DEBUG nextflow.Session - Observer factory: TowerFactory
+Jan-08 13:39:29.437 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Jan-08 13:39:29.751 [main] DEBUG nextflow.Session - Session start invoked
+Jan-08 13:39:30.000 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jan-08 13:39:30.028 [main] INFO  nextflow.Nextflow - R N A T O Y   P I P E L I N E    
+=============================
+genome: /home/jeszyman/repos/bioinformatics-toolkit/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa
+annot : /home/jeszyman/repos/bioinformatics-toolkit/data/ggal/ggal_1_48850000_49020000.bed.gff
+reads : /home/jeszyman/repos/bioinformatics-toolkit/data/ggal/*_{1,2}.fq
+outdir: results
+
+Jan-08 13:39:30.118 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: /home/jeszyman/repos/bioinformatics-toolkit/data/ggal/; pattern: *_{1,2}.fq; options: [:]
+Jan-08 13:39:30.132 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - No such file: /home/jeszyman/repos/bioinformatics-toolkit/data/ggal/ -- Skipping visit
+Jan-08 13:39:30.234 [Actor Thread 1] ERROR nextflow.extension.OperatorEx - @unknown
+nextflow.exception.ProcessUnrecoverableException: Cannot find any reads matching: /home/jeszyman/repos/bioinformatics-toolkit/data/ggal/*_{1,2}.fq
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:490)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:80)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrapNoCoerce.callConstructor(ConstructorSite.java:105)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:59)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:237)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:249)
+	at nextflow.Nextflow.error(Nextflow.groovy:261)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:101)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
+	at org.codehaus.groovy.runtime.callsite.StaticMetaMethodSite$StaticMetaMethodSiteNoUnwrap.invoke(StaticMetaMethodSite.java:131)
+	at org.codehaus.groovy.runtime.callsite.StaticMetaMethodSite.callStatic(StaticMetaMethodSite.java:100)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallStatic(CallSiteArray.java:55)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callStatic(AbstractCallSite.java:196)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callStatic(AbstractCallSite.java:208)
+	at Script_bf5eba9a$_runScript_closure1.doCall(Script_bf5eba9a:60)
+	at Script_bf5eba9a$_runScript_closure1.doCall(Script_bf5eba9a)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:101)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:263)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1041)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.call(PogoMetaClassSite.java:37)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:115)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:119)
+	at nextflow.extension.OperatorEx$_ifEmpty_closure38.doCall(OperatorEx.groovy:1357)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:101)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
+	at org.codehaus.groovy.runtime.metaclass.ClosureMetaClass.invokeMethod(ClosureMetaClass.java:263)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1041)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.call(PogoMetaClassSite.java:37)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
+	at groovy.lang.Closure$call.call(Unknown Source)
+	at nextflow.extension.DataflowHelper$3.afterStop(DataflowHelper.groovy:257)
+	at groovyx.gpars.dataflow.operator.DataflowProcessor.fireAfterStop(DataflowProcessor.java:324)
+	at groovyx.gpars.dataflow.operator.DataflowProcessorActor.afterStop(DataflowProcessorActor.java:59)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:101)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1217)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1041)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokePojoMethod(InvokerHelper.java:999)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethod(InvokerHelper.java:990)
+	at groovyx.gpars.actor.Actor.callDynamic(Actor.java:369)
+	at groovyx.gpars.actor.Actor.handleTermination(Actor.java:320)
+	at groovyx.gpars.actor.AbstractLoopingActor.terminate(AbstractLoopingActor.java:204)
+	at groovyx.gpars.dataflow.operator.DataflowProcessor.terminate(DataflowProcessor.java:147)
+	at groovyx.gpars.dataflow.operator.DataflowProcessorActor.checkPoison(DataflowProcessorActor.java:115)
+	at groovyx.gpars.dataflow.operator.DataflowOperatorActor.onMessage(DataflowOperatorActor.java:83)
+	at groovyx.gpars.actor.impl.SDAClosure$1.call(SDAClosure.java:43)
+	at groovyx.gpars.actor.AbstractLoopingActor.runEnhancedWithoutRepliesOnMessages(AbstractLoopingActor.java:293)
+	at groovyx.gpars.actor.AbstractLoopingActor.access$400(AbstractLoopingActor.java:30)
+	at groovyx.gpars.actor.AbstractLoopingActor$1.handleMessage(AbstractLoopingActor.java:93)
+	at groovyx.gpars.util.AsyncMessagingCore.run(AsyncMessagingCore.java:132)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Jan-08 13:39:30.264 [Actor Thread 1] DEBUG nextflow.Session - Session aborted -- Cause: Cannot find any reads matching: /home/jeszyman/repos/bioinformatics-toolkit/data/ggal/*_{1,2}.fq
+Jan-08 13:39:30.349 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-08 13:39:30.350 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-08 13:39:30.357 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Jan-08 13:39:30.365 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=8; memory=15.5 GB; capacity=8; pollInterval=100ms; dumpInterval=5m
+Jan-08 13:39:30.432 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > buildIndex -- maxForks: 8
+Jan-08 13:39:30.492 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-08 13:39:30.493 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-08 13:39:30.494 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > mapping -- maxForks: 8
+Jan-08 13:39:30.512 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-08 13:39:30.512 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-08 13:39:30.513 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > makeTranscript -- maxForks: 8
+Jan-08 13:39:30.519 [main] DEBUG nextflow.script.BaseScript - No entry workflow defined
+Jan-08 13:39:30.520 [main] DEBUG nextflow.script.ScriptRunner - > Await termination 
+Jan-08 13:39:30.521 [main] DEBUG nextflow.Session - Session await
+Jan-08 13:39:30.521 [main] DEBUG nextflow.Session - Session await > all process finished
+Jan-08 13:39:30.521 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Jan-08 13:39:30.534 [main] DEBUG nextflow.trace.StatsObserver - Workflow completed > WorkflowStats[succeedCount=0; failedCount=0; ignoredCount=0; cachedCount=0; succeedDuration=0ms; failedDuration=0ms; cachedDuration=0ms]
+Jan-08 13:39:30.588 [Actor Thread 3] DEBUG nextflow.util.CacheHelper - Unable to get file attributes file: /home/jeszyman/repos/bioinformatics-toolkit/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa -- Cause: java.nio.file.NoSuchFileException: /home/jeszyman/repos/bioinformatics-toolkit/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa
+Jan-08 13:39:30.608 [main] DEBUG nextflow.CacheDB - Closing CacheDB done
+Jan-08 13:39:30.632 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye
