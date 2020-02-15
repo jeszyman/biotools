@@ -142,12 +142,17 @@ RUN cd /opt && \
     cmake . && \
     make 
 ##NEED edger, limma, gage, dseq2, wgcna
+<<<<<<< HEAD
+RUN apt-get install -y parallel
+
+=======
 #RUN add-apt-repository --remove ppa:
 RUN apt-get update
 RUN apt-get install -qq parallel
 
 RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("DNAcopy");'
 #
+>>>>>>> 693e48df8967e2b10ad2db95924abae2f26290fd
 #########1#########2#########3#########4#########5#########6#########7######
 #TESTING
 #
