@@ -592,20 +592,10 @@ RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::
 # # # RUN R -e "install.packages('tseries',dependencies=TRUE, repos='http://cran.rstudio.com/')"
 
 
-# # # RSEM
-# # #Install Bowtie 
-# # RUN conda install -c bioconda bowtie2
-
-# # # # Install RSEM 
-# # # WORKDIR /usr/local/
-# # # RUN pwd
-# # # RUN git clone https://github.com/deweylab/RSEM.git
-# # # WORKDIR /usr/local/RSEM
-# # # RUN pwd
-# # # RUN git checkout v1.2.28
-# # # RUN make 
-# # # RUN make ebseq
-# # # ENV PATH /usr/local/RSEM:$PATH
+#RSEM
+RUN cd /opt/
+RUN git clone https://github.com/deweylab/RSEM.git && cd RSEM && make && make install
+ENV PATH /opt/RSEM:$PATH
 
 # # # # install skewer
 # # # RUN \
