@@ -1,30 +1,30 @@
 - tools
   | tool        | function         | input | repo   | doc     | paper | paper(local)     |
   |-------------+------------------+-------+--------+---------+-------+------------------|
-  | CNVkit      | copy#            | bam   | [[https://github.com/etal/cnvkit/tree/fd3555256d2a5aa3978c475d19c88065be68c6c4][repo]]   | [[https://cnvkit.readthedocs.io/en/stable/index.html][doc]]     | [[https://doi.org/10.1371/journal.pcbi.1004873][paper]] |                  |
-  | simNGS      | sim reads        | none  |        | [[https://www.ebi.ac.uk/goldman-srv/simNGS/][website]] |       |                  |
-  | rsem        | transcript quant | bam   | [[https://github.com/deweylab/RSEM][repo]]   |         | [[https://doi.org/10.1186/1471-2105-12-323][paper]] |                  |
-  | tximport    |                  |       |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]     | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                  |
-  | STAR        |                  |       |        | [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]     |       | cite:dobin2019   |
-  | GISTIC2     | copy# diff       |       |        | [[http://portals.broadinstitute.org/cgi-bin/cancer/publications/pub_paper.cgi?mode=view&paper_id=216&p=t][site]]    |       |                  |
-  | ichorCNA    | copy#            |       |        |         |       |                  |
   | annovar     |                  |       |        | [[http://annovar.openbioinformatics.org/en/latest/][doc]]     |       |                  |
   | BEDtools    |                  |       |        | [[http://bedtools.readthedocs.io/en/latest/][doc]]     |       | cite:quinlan2010 |
   | BLAT        |                  |       |        |         |       |                  |
+  | BLAT        |                  |       |        |         |       |                  |
   | bowtie2     |                  |       | [[https://sourceforge.net/projects/bowtie-bio/files/][src]]    | [[http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer][doc]]     |       |                  |
+  | CNVkit      | copy#            | bam   | [[https://github.com/etal/cnvkit/tree/fd3555256d2a5aa3978c475d19c88065be68c6c4][repo]]   | [[https://cnvkit.readthedocs.io/en/stable/index.html][doc]]     | [[https://doi.org/10.1371/journal.pcbi.1004873][paper]] |                  |
   | data-slicer |                  |       |        | [[http://www.1000genomes.org/data-slicer][site]]    |       |                  |
-  | FastQC      |                  |       |        |         |       |                  |
+  | FastQC      |                  |       |        | [[https://www.bioinformatics.babraham.ac.uk/projects/fastqc/INSTALL.txt][site]]    |       |                  |
   | G2P         |                  |       |        |         | [[https://www.nature.com/articles/s41467-019-10016-3][paper]] |                  |
   | GATK        |                  |       |        | [[https://software.broadinstitute.org/gatk/documentation/][doc]]     |       |                  |
+  | GISTIC2     | copy# diff       |       |        | [[http://portals.broadinstitute.org/cgi-bin/cancer/publications/pub_paper.cgi?mode=view&paper_id=216&p=t][site]]    |       |                  |
   | GSNAP       |                  | fastq |        | [[http://research-pub.gene.com/gmap/src/README][doc]]     |       | cite:mathe2016   |
   | histat2     |                  | fastq |        | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]]     |       |                  |
-  | BLAT        |                  |       |        |         |       |                  |
+  | ichorCNA    | copy#            |       |        |         |       |                  |
   | Integrate   | rna fusion       | bam   |        |         |       | cite:zhang2014a  |
   | MultiQC     | seq QC agg       |       | [[https://github.com/ewels/MultiQC][github]] | [[https://multiqc.info/docs/][doc]]     |       |                  |
   | picard      |                  |       |        | [[https://broadinstitute.github.io/picard/index.html][doc]]     |       |                  |
+  | rsem        | transcript quant | bam   | [[https://github.com/deweylab/RSEM][repo]]   |         | [[https://doi.org/10.1186/1471-2105-12-323][paper]] |                  |
   | sambamba    |                  | bam   |        | [[http://lomereiter.github.io/sambamba/docs/sambamba-view.html][online]]  |       |                  |
   | samtools    |                  | bam   |        | [[http://www.htslib.org/doc/samtools.html][online]]  |       |                  |
+  | simNGS      | sim reads        | none  |        | [[https://www.ebi.ac.uk/goldman-srv/simNGS/][website]] |       |                  |
+  | STAR        |                  |       |        | [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]     |       | cite:dobin2019   |
   | tophat2     |                  |       |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]     |       |                  |
+  | tximport    |                  |       |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]     | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                  |
   - rsem
     - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
     - documentation
@@ -38,6 +38,12 @@
     - star-rsem pipeline
       - cite:djebali2016 
 - processes
+  - simulate reads
+    - https://github.com/lh3/wgsim
+  - downsample
+    - fastq
+      - https://www.biostars.org/p/6544/
   - copy number
     - ideas
       - scna method comparison- canvas, copycat, cnvkit
+- see gnu parallel in [[id:cd560390-aa1e-4c9e-8317-08610e5de42a][linux]]
