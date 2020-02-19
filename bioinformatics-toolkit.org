@@ -22,6 +22,7 @@
   | sambamba    |                  | bam   |        | [[http://lomereiter.github.io/sambamba/docs/sambamba-view.html][online]]  |       |                  |
   | samtools    |                  | bam   |        | [[http://www.htslib.org/doc/samtools.html][online]]  |       |                  |
   | simNGS      | sim reads        | none  |        | [[https://www.ebi.ac.uk/goldman-srv/simNGS/][website]] |       |                  |
+  | seqtk       |                  |       | [[https://github.com/lh3/seqtk][github]] | [[https://github.com/lh3/seqtk/blob/master/README.md][README]]  | NA    | NA               |
   | STAR        |                  |       |        | [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]     |       | cite:dobin2019   |
   | tophat2     |                  |       |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]     |       |                  |
   | tximport    |                  |       |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]     | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                  |
@@ -43,6 +44,7 @@
   - downsample
     - fastq
       - https://www.biostars.org/p/6544/
+    - bam (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
   - copy number
     - ideas
       - scna method comparison- canvas, copycat, cnvkit
