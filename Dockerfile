@@ -624,3 +624,5 @@ ENV PATH /opt/RSEM:$PATH
 #RUN cd /opt && wget --no-check-certificate #https://www.ebi.ac.uk/goldman-srv/simNGS/current/simNGS.tgz && tar -xvzf #simNGS.tgz
 #RUN cd /opt/simNGS/src && make -f Makefile.linux
 #ENV PATH="/opt/simNGS/bin:${PATH}"
+
+RUN conda install -c bioconda seqtk
