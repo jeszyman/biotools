@@ -1,3 +1,4 @@
+
 FROM ubuntu:xenial
 #########1#########2#########3#########4#########5#########6#########7
 #############
@@ -623,4 +624,6 @@ ENV PATH /opt/RSEM:$PATH
 # # RUN apt-get install -y software-properties-common
 # # RUN add-apt-repository -y ppa:jonathonf/python-3.6 
 # # RUN apt-get update && apt-get install -y python3.6 
+
+RUN apt-get update -y && apt-get install -y emacs
 
