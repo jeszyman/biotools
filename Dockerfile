@@ -10,22 +10,7 @@ FROM ubuntu:xenial
 ### 2) installed into /opt/
 ## See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 #
-# placeholder variables
 #
-##############
-### simNGS ###
-##############
-#
-RUN apt-get update -qq
-RUN apt-get install -qq --no-install-recommends --allow-unauthenticated \
-    libblas-dev \
-    liblapack-dev \
-    make \
-    tar \
-    wget 
-RUN cd /opt && wget --no-check-certificate https://www.ebi.ac.uk/goldman-srv/simNGS/current/simNGS.tgz && tar -xvzf simNGS.tgz
-RUN cd /opt/simNGS/src && make -f Makefile.linux
-ENV PATH="/opt/simNGS/bin:${PATH}"
 #
 ############################
 ### Python 3.6 and Conda ###
@@ -143,6 +128,7 @@ RUN cd /opt && \
     cmake . && \
     make 
 ##NEED edger, limma, gage, dseq2, wgcna
+
 RUN apt-get install -y parallel
 
 
@@ -625,5 +611,24 @@ ENV PATH /opt/RSEM:$PATH
 # # RUN add-apt-repository -y ppa:jonathonf/python-3.6 
 # # RUN apt-get update && apt-get install -y python3.6 
 
+
 RUN apt-get update -y && apt-get install -y emacs
+
+=======
+##############
+### simNGS ###
+##############
+#
+#RUN apt-get update -qq
+#RUN apt-get install -qq --no-install-recommends --allow-unauthenticated \
+#    libblas-dev \
+#    liblapack-dev \
+#    make \
+#    tar \
+#    wget 
+#RUN cd /opt && wget --no-check-certificate #https://www.ebi.ac.uk/goldman-srv/simNGS/current/simNGS.tgz && tar -xvzf #simNGS.tgz
+#RUN cd /opt/simNGS/src && make -f Makefile.linux
+#ENV PATH="/opt/simNGS/bin:${PATH}"
+
+RUN conda install -c bioconda seqtk
 
