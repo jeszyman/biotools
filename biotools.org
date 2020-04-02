@@ -1,4 +1,15 @@
-- tools
+- processes
+  - simulate reads
+    - https://github.com/lh3/wgsim
+  - downsample
+    - fastq
+      - https://www.biostars.org/p/6544/
+    - bam (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
+  - copy number
+    - ideas
+      - scna method comparison- canvas, copycat, cnvkit
+- see gnu parallel in [[id:cd560390-aa1e-4c9e-8317-08610e5de42a][linux]]
+* tools
   | tool          | function         | input | repo   | doc     | paper | paper(local)     |
   |---------------+------------------+-------+--------+---------+-------+------------------|
   | annovar       |                  |       |        | [[http://annovar.openbioinformatics.org/en/latest/][doc]]     |       |                  |
@@ -22,6 +33,7 @@
   | MultiQC       | seq QC agg       |       | [[https://github.com/ewels/MultiQC][github]] | [[https://multiqc.info/docs/][doc]]     |       |                  |
   | picard        |                  |       |        | [[https://broadinstitute.github.io/picard/index.html][doc]]     |       |                  |
   | rnaseqc       | rnaseq qc        | bam   | [[https://github.com/broadinstitute/rnaseqc][repo]]   | [[https://github.com/broadinstitute/rnaseqc][repo]]    |       |                  |
+  | RSeQC         | rnaseq qc        | bam   |        | [[http://rseqc.sourceforge.net/][repo]]    | [[https://doi.org/10.1093/bioinformatics/bts356][paper]] | cite:wang2012    |
   | rsem          | transcript quant | bam   | [[https://github.com/deweylab/RSEM][repo]]   |         | [[https://doi.org/10.1186/1471-2105-12-323][paper]] | cite:li2011      |
   | sambamba      |                  | bam   |        | [[http://lomereiter.github.io/sambamba/docs/sambamba-view.html][online]]  |       |                  |
   | samtools      |                  | bam   |        | [[http://www.htslib.org/doc/samtools.html][online]]  |       |                  |
@@ -42,17 +54,6 @@
   - STAR
     - star-rsem pipeline
       - cite:djebali2016 
-- processes
-  - simulate reads
-    - https://github.com/lh3/wgsim
-  - downsample
-    - fastq
-      - https://www.biostars.org/p/6544/
-    - bam (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
-  - copy number
-    - ideas
-      - scna method comparison- canvas, copycat, cnvkit
-- see gnu parallel in [[id:cd560390-aa1e-4c9e-8317-08610e5de42a][linux]]
 * RNA-seq
 - best practices
   - cite:conesa2016
