@@ -38,7 +38,6 @@ RUN conda install -c bioconda mosdepth
 RUN conda install -c bioconda picard
 RUN conda install -c bioconda preseq
 RUN conda install -c bioconda qualimap
-#RUN conda install -c bioconda rseqc
 RUN conda install -c bioconda salmon
 RUN conda install -c bioconda sambamba
 RUN conda install -c bioconda samblaster
@@ -47,6 +46,7 @@ RUN conda install -c bioconda seqkit
 RUN conda install -c bioconda skewer
 RUN conda install -c bioconda star
 RUN conda install -c bioconda vcftools
+RUN conda install -c bioconda bedops
 #
 # TMP NEED TO REMOVE CRAN FROM APT BELOW
 RUN apt-get install -qq --no-install-recommends nano
@@ -94,6 +94,9 @@ RUN pip install -U cython
 RUN pip install -U future futures pandas pomegranate pyfaidx
 RUN conda install -c bioconda pysam
 RUN pip install cnvkit==0.9.6
+#
+# RSeQC
+RUN pip install RSeQC 
 #
 # Ichor
 ## R devtools
@@ -614,7 +617,7 @@ ENV PATH /opt/RSEM:$PATH
 
 RUN apt-get update -y && apt-get install -y emacs
 
-=======
+
 ##############
 ### simNGS ###
 ##############
