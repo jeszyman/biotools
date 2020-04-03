@@ -35,6 +35,7 @@
   | rnaseqc       | rnaseq qc        | bam   | [[https://github.com/broadinstitute/rnaseqc][repo]]   | [[https://github.com/broadinstitute/rnaseqc][repo]]    |       |                  |
   | RSeQC         | rnaseq qc        | bam   |        | [[http://rseqc.sourceforge.net/][repo]]    | [[https://doi.org/10.1093/bioinformatics/bts356][paper]] | cite:wang2012    |
   | rsem          | transcript quant | bam   | [[https://github.com/deweylab/RSEM][repo]]   |         | [[https://doi.org/10.1186/1471-2105-12-323][paper]] | cite:li2011      |
+  | salmon        | transcript quat  |       |        |         |       |                  |
   | sambamba      |                  | bam   |        | [[http://lomereiter.github.io/sambamba/docs/sambamba-view.html][online]]  |       |                  |
   | samtools      |                  | bam   |        | [[http://www.htslib.org/doc/samtools.html][online]]  |       |                  |
   | simNGS        | sim reads        | none  |        | [[https://www.ebi.ac.uk/goldman-srv/simNGS/][website]] |       |                  |
