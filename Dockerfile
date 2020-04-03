@@ -597,9 +597,9 @@ RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::
 
 
 #RSEM
-RUN cd /opt/
-RUN git clone https://github.com/deweylab/RSEM.git && cd RSEM && make && make install
-ENV PATH /opt/RSEM:$PATH
+#RUN cd /opt/
+#RUN git clone https://github.com/deweylab/RSEM.git && cd RSEM && make && make install
+#ENV PATH /opt/RSEM:$PATH
 
 # # # # install skewer
 # # # RUN \
