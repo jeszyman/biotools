@@ -1,3 +1,5 @@
+https://www.nature.com/articles/ng1032z.pdf
+https://www.biostars.org/p/101727/
 - processes
   - simulate reads
     - https://github.com/lh3/wgsim
