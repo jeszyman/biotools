@@ -58,7 +58,6 @@
     - star-rsem pipeline
       - cite:djebali2016 
 * RNA-seq
-- https://www.biostars.org/p/101727/
 - general guides
   - https://www.biostat.wisc.edu/bmi776/lectures/rnaseq.pdf
   - https://github.com/crazyhottommy/RNA-seq-analysis
@@ -115,6 +114,8 @@
       - https://link.springer.com/article/10.1186/s12859-015-0597-x#Sec1
   - cite:newman2015 
 - differential expression
+  - heatmaps
+    - http://compbio.ucsd.edu/making-heat-maps-r/
   - cite:tang2015 
   - http://master.bioconductor.org/packages/release/workflows/html/rnaseqGene.html
   - https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
@@ -122,6 +123,7 @@
   - https://nbisweden.github.io/course_rnaseq/presentations/presentation_dge.html#1
   - https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
   - https://www.nature.com/articles/s41598-020-59516-z#data-availability
+  - https://www.biostars.org/p/101727/
 - time course
   - cite:spies2017
   - https://support.bioconductor.org/p/65676/#66860
@@ -129,6 +131,7 @@
   - https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#group-specific-condition-effects-individuals-nested-within-groups
   - https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
   - http://seqanswers.com/forums/showthread.php?t=64039
+  - https://www.sciencedirect.com/science/article/pii/S2001037015000392
 - gene set enrichment
   - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
   - http://software.broadinstitute.org/gsea/msigdb/collections.jsp
