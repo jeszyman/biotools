@@ -1,3 +1,49 @@
+#########1#########2#########3#########4#########5#########6#########7#########8
+# DEV
+# check if inside docker
+# if [ -f /.dockerenv ];then 
+#     dockercontainer=yes
+#     echo "Your are in a docker container"    
+# else 
+#     dockercontainer=no
+#     echo "Not in docker"
+#     # setup NON-docker variables 
+#     shopt -s nocasematch
+#     case $HOSTNAME in
+#         (radonc-cancerbio) server_home="/home/jeszyman" ;;
+#         (jeszyman-*) server_home="/home/jeszyman" ;;
+#         (acl*) server_home="/home/jszymanski" ;; 
+#         (virtual-workstation*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
+#         (blade*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
+#     esac
+#     
+#     localdata="$server_home/data/$project/"
+#     unset $SERVER
+# fi
+#
+# case $dockercontainer in
+#     (yes) server_ask ;;
+#     (no) ;;
+# esac
+# #
+# case $SERVER in
+#     (chaudhuri-roche) projectdir=/drive3/users/jszymanski/repos/$project
+#                       localdata=/drive3/users/jszymanski/data/$project;;
+#     (NA) ;;
+# esac
+# #
+# # test data on cancerbio
+#NOT GENERAL
+#basedir=/media/jeszyman/4edbbc27-7e29-4667-9b24-f5a56d49d94e/users/jeszyman/data/mpnst
+#rm -rf $basedir/fastq-test
+#mkdir -p $basedir/fastq-test
+#zcat $basedir/fastq-nci/MPNST/14_JS0108CD040119_R1.fastq.gz | head -n 8000 > $basedir/fastq-test/short_14_JS0108CD040119_R1.fastq
+#zcat $basedir/fastq-nci/MPNST/14_JS0108CD040119_R2.fastq.gz | head -n 8000 > $basedir/fastq-test/short_14_JS0108CD040119_R2.fastq        
+#zcat $basedir/fastq-washu/new_HiSeq-20_L007001_CTTC_R1.fastq.gz | head -n 8000 > $basedir/fastq-test/short_new_HiSeq-20_L007001_CTTC_R1.fastq.gz
+#gzip $basedir/fastq-test/*.fastq
+# setup project repo
+
+https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf
 - processes
   - simulate reads
     - https://github.com/lh3/wgsim
@@ -58,6 +104,8 @@
     - star-rsem pipeline
       - cite:djebali2016 
 * RNA-seq
+https://europepmc.org/article/PMC/6058388
+https://academic.oup.com/bib/article/16/1/59/240754#26957696
 - general guides
   - https://www.biostat.wisc.edu/bmi776/lectures/rnaseq.pdf
   - https://github.com/crazyhottommy/RNA-seq-analysis
