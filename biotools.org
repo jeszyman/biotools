@@ -1,96 +1,39 @@
-#########1#########2#########3#########4#########5#########6#########7#########8
-# DEV
-# check if inside docker
-# if [ -f /.dockerenv ];then 
-#     dockercontainer=yes
-#     echo "Your are in a docker container"    
-# else 
-#     dockercontainer=no
-#     echo "Not in docker"
-#     # setup NON-docker variables 
-#     shopt -s nocasematch
-#     case $HOSTNAME in
-#         (radonc-cancerbio) server_home="/home/jeszyman" ;;
-#         (jeszyman-*) server_home="/home/jeszyman" ;;
-#         (acl*) server_home="/home/jszymanski" ;; 
-#         (virtual-workstation*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
-#         (blade*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
-#     esac
-#     
-#     localdata="$server_home/data/$project/"
-#     unset $SERVER
-# fi
-#
-# case $dockercontainer in
-#     (yes) server_ask ;;
-#     (no) ;;
-# esac
-# #
-# case $SERVER in
-#     (chaudhuri-roche) projectdir=/drive3/users/jszymanski/repos/$project
-#                       localdata=/drive3/users/jszymanski/data/$project;;
-#     (NA) ;;
-# esac
-# #
-# # test data on cancerbio
-#NOT GENERAL
-#basedir=/media/jeszyman/4edbbc27-7e29-4667-9b24-f5a56d49d94e/users/jeszyman/data/mpnst
-#rm -rf $basedir/fastq-test
-#mkdir -p $basedir/fastq-test
-#zcat $basedir/fastq-nci/MPNST/14_JS0108CD040119_R1.fastq.gz | head -n 8000 > $basedir/fastq-test/short_14_JS0108CD040119_R1.fastq
-#zcat $basedir/fastq-nci/MPNST/14_JS0108CD040119_R2.fastq.gz | head -n 8000 > $basedir/fastq-test/short_14_JS0108CD040119_R2.fastq        
-#zcat $basedir/fastq-washu/new_HiSeq-20_L007001_CTTC_R1.fastq.gz | head -n 8000 > $basedir/fastq-test/short_new_HiSeq-20_L007001_CTTC_R1.fastq.gz
-#gzip $basedir/fastq-test/*.fastq
-# setup project repo
-
-https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf
-- processes
-  - simulate reads
-    - https://github.com/lh3/wgsim
-  - downsample
-    - fastq
-      - https://www.biostars.org/p/6544/
-    - bam (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
-  - copy number
-    - ideas
-      - scna method comparison- canvas, copycat, cnvkit
-- see gnu parallel in [[id:cd560390-aa1e-4c9e-8317-08610e5de42a][linux]]
-* tools
-  | tool          | function         | input | repo   | doc     | paper | paper(local)      |
-  |---------------+------------------+-------+--------+---------+-------+-------------------|
-  | annovar       |                  |       |        | [[http://annovar.openbioinformatics.org/en/latest/][doc]]     |       |                   |
-  | Ballgown      |                  |       |        |         | [[https://www.nature.com/articles/nprot.2016.095][paper]] |                   |
-  | BEDtools      |                  |       |        | [[http://bedtools.readthedocs.io/en/latest/][doc]]     |       | cite:quinlan2010  |
-  | BLAT          |                  |       |        |         |       |                   |
-  | BLAT          |                  |       |        |         |       |                   |
-  | bowtie2       |                  |       | [[https://sourceforge.net/projects/bowtie-bio/files/][src]]    | [[http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer][doc]]     |       |                   |
-  | CNVkit        | copy#            | bam   | [[https://github.com/etal/cnvkit/tree/fd3555256d2a5aa3978c475d19c88065be68c6c4][repo]]   | [[https://cnvkit.readthedocs.io/en/stable/index.html][doc]]     | [[https://doi.org/10.1371/journal.pcbi.1004873][paper]] |                   |
-  | data-slicer   |                  |       |        | [[http://www.1000genomes.org/data-slicer][site]]    |       |                   |
-  | DESeq2        | diff express     |       |        |         |       | cite:love2014     |
-  | edgeR         | diff express     |       |        |         |       | cite:robinson2010 |
-  | FastQC        |                  |       |        | [[https://www.bioinformatics.babraham.ac.uk/projects/fastqc/INSTALL.txt][site]]    |       |                   |
-  | featureCounts |                  |       |        |         | [[https://watermark.silverchair.com/btt656.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAApgwggKUBgkqhkiG9w0BBwagggKFMIICgQIBADCCAnoGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMofurkoV2NWsQqlelAgEQgIICS7iktDnfv1X3fe1vdQQcXCS09zT549UGvBjDCLHoNebBGfiQi_Eo7ZjUHVH_Yay_p1DlFd4eDeXU4WEX6HTQ-MzPqmtZ6RMGegyEptsqxaLnvr3QfpGO6WRT01dViqp6xya9-CqCRGV3E7F37VruIYzZEFjr-2svIgoRydPyF4pkSzA2hkvwV_g-JT2YSnqboZ5DOGtwZXeMaLKf48_aEpuYemRUx8VqOfM8xnOm4_jumLGd_BBqCCv6brLX8z3WVJpWfJ4YfpJXhemFRt8mSvIsAe9pYXV52W7-psxHlM2ocXzdD_7vLSD7iy1NocDXWLFT5HRH_Cq8NyiRq1s4Mq-QYuvQJFlTxWArVC6vdpE40bDr9slGD6KTJ0DpUQeC52q-aoKJXr9Y7Pi2SDo881eFuJxTWuSuMjxcXStn9MkPKZfcKa10Vu4CdJSSnvJAKAvd4GsshsfCVGCvkgy4ZfEabo5nOZaB82UYC-8AZEpdbD3RtJg1FUQJHDz0tlY-2gZYf2VB3KU1JK4wZcHzn8T8R5BSChB6MjFrRdTZeo3M8-ZIK3eWQGH2vLj8_bPsYlBF-wfj2JzSG3zJGgUUa_rSBzoK8Vvw8k_BPxCq63h6u-k49l-X0o-MO6f8mOdm_YliTT0dWu_ujvlbXMw9AIBrKjwBJncq27EwMOX0shm8nnzPMoPTfOzoekZR2nYTDPayGjHhqkAs6haFAQrI8XAAd0PfbMtW4l54ArULWEH6hCVxzDX8_h8F8oWgOc_3h2ktpbTLNsiX6Bxj][paper]] |                   |
-  | G2P           |                  |       |        |         | [[https://www.nature.com/articles/s41467-019-10016-3][paper]] |                   |
-  | GATK          |                  |       |        | [[https://software.broadinstitute.org/gatk/documentation/][doc]]     |       |                   |
-  | GISTIC2       | copy# diff       |       |        | [[http://portals.broadinstitute.org/cgi-bin/cancer/publications/pub_paper.cgi?mode=view&paper_id=216&p=t][site]]    |       |                   |
-  | GSNAP         |                  | fastq |        | [[http://research-pub.gene.com/gmap/src/README][doc]]     |       | cite:mathe2016    |
-  | histat2       |                  | fastq |        | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]]     |       |                   |
-  | ichorCNA      | copy#            |       |        |         |       |                   |
-  | Integrate     | rna fusion       | bam   |        |         |       | cite:zhang2014a   |
-  | limma         | diff express     | count |        |         | [[https://watermark.silverchair.com/gkv007.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAAngwggJ0BgkqhkiG9w0BBwagggJlMIICYQIBADCCAloGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMsxpSKWbqcoVIkhKsAgEQgIICK5TpAPl6lIQcIzSDztcNMdIl7XMdgXJgXRQlmNqzapp-VoQO3DEpAj0A3gEkQVCd9nOl8fXA8LzO0zmzgs4TmLVFBlFXQULtTa78iYvLjQMrqnrGUZYTQus2SFXCNBklNaasJ9-iiedHl9iOT0lM_19o03zr27w2DmjK9KA9qaSt5tmBA1ogIonAO0xYwLodt7UqoDqjAMg5IXUTCrTRuzf79KhJisKQ_CYvgNTHNHNFce0wi9y-rB77jARN3HWmeziwtzLnUw2OyF9z_Wa0gwmjRScuNvUUms_fa9PCgTvrRDGFh40LEQmscM9nw3Tx3QG5qb6Z68BtikTY9WyhhKiOuJT3uwnU6EtJytzZrnfW2kYZHobN_iL7HA2qTfOXRlXC-uHXYX03m7TEasKRk6DEQ0ViBt71jyo5d0a6JDluWB2O7VDDexQuYloTkIOs2D3Vtmxu2RyDiXHeV2V1g6rZbNxNykour5ibcd0xJAeU_noEtLsvb-2cZzEHzablaAxvs3Lun_K6KQ3CYl71BEzyIVmAvvg_nkkz-QDLTfXc6CMpRU6086afrOVUKUnVfShtYRzZf3zsN6Uo0Chc3EV4kzZnnQL3qsVWoQyJd1erZRLenWSI_2o71qUbJ8JLxX-__XoNJeWkHXuNAe2ssdNWIwLg95wrkRyE40dFMbxh0MbuH3ky5qnNmiG5qrnq-kw4A3MTxMD-kmixUFx12gSIepksg__dGW9mPw][paper]] |                   |
-  | MultiQC       | seq QC agg       |       | [[https://github.com/ewels/MultiQC][github]] | [[https://multiqc.info/docs/][doc]]     |       |                   |
-  | picard        |                  |       |        | [[https://broadinstitute.github.io/picard/index.html][doc]]     |       |                   |
-  | rnaseqc       | rnaseq qc        | bam   | [[https://github.com/broadinstitute/rnaseqc][repo]]   | [[https://github.com/broadinstitute/rnaseqc][repo]]    |       |                   |
-  | rsem          | transcript quant | bam   | [[https://github.com/deweylab/RSEM][repo]]   |         | [[https://doi.org/10.1186/1471-2105-12-323][paper]] | cite:li2011       |
-  | RSeQC         | rnaseq qc        | bam   |        | [[http://rseqc.sourceforge.net/][repo]]    | [[https://doi.org/10.1093/bioinformatics/bts356][paper]] | cite:wang2012     |
-  | salmon        | transcript quat  |       |        |         |       |                   |
-  | sambamba      |                  | bam   |        | [[http://lomereiter.github.io/sambamba/docs/sambamba-view.html][online]]  |       |                   |
-  | samtools      |                  | bam   |        | [[http://www.htslib.org/doc/samtools.html][online]]  |       |                   |
-  | seqtk         |                  |       | [[https://github.com/lh3/seqtk][github]] | [[https://github.com/lh3/seqtk/blob/master/README.md][README]]  | NA    | NA                |
-  | simNGS        | sim reads        | none  |        | [[https://www.ebi.ac.uk/goldman-srv/simNGS/][website]] |       |                   |
-  | STAR          |                  |       |        | [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]     |       | cite:dobin2019    |
-  | tophat2       |                  |       |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]     |       |                   |
-  | tximport      |                  |       |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]     | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                   |
+* Tools
+  | tool          | function         | input | repo   | doc      | paper | paper(local)      |
+  |---------------+------------------+-------+--------+----------+-------+-------------------|
+  | annovar       |                  |       |        | [[http://annovar.openbioinformatics.org/en/latest/][doc]]      |       |                   |
+  | Ballgown      |                  |       |        |          | [[https://www.nature.com/articles/nprot.2016.095][paper]] |                   |
+  | BEDtools      |                  |       |        | [[http://bedtools.readthedocs.io/en/latest/][doc]]      |       | cite:quinlan2010  |
+  | BLAT          |                  |       |        |          |       |                   |
+  | BLAT          |                  |       |        |          |       |                   |
+  | bowtie2       |                  |       | [[https://sourceforge.net/projects/bowtie-bio/files/][src]]    | [[http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer][doc]]      |       |                   |
+  | CNVkit        | copy#            | bam   | [[https://github.com/etal/cnvkit/tree/fd3555256d2a5aa3978c475d19c88065be68c6c4][repo]]   | [[https://cnvkit.readthedocs.io/en/stable/index.html][doc]]      | [[https://doi.org/10.1371/journal.pcbi.1004873][paper]] |                   |
+  | data-slicer   |                  |       |        | [[http://www.1000genomes.org/data-slicer][site]]     |       |                   |
+  | DESeq2        | diff express     |       |        |          |       | cite:love2014     |
+  | edgeR         | diff express     |       |        | [[https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf][vignette]] |       | cite:robinson2010 |
+  | FastQC        |                  |       |        | [[https://www.bioinformatics.babraham.ac.uk/projects/fastqc/INSTALL.txt][site]]     |       |                   |
+  | featureCounts |                  |       |        |          | [[https://watermark.silverchair.com/btt656.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAApgwggKUBgkqhkiG9w0BBwagggKFMIICgQIBADCCAnoGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMofurkoV2NWsQqlelAgEQgIICS7iktDnfv1X3fe1vdQQcXCS09zT549UGvBjDCLHoNebBGfiQi_Eo7ZjUHVH_Yay_p1DlFd4eDeXU4WEX6HTQ-MzPqmtZ6RMGegyEptsqxaLnvr3QfpGO6WRT01dViqp6xya9-CqCRGV3E7F37VruIYzZEFjr-2svIgoRydPyF4pkSzA2hkvwV_g-JT2YSnqboZ5DOGtwZXeMaLKf48_aEpuYemRUx8VqOfM8xnOm4_jumLGd_BBqCCv6brLX8z3WVJpWfJ4YfpJXhemFRt8mSvIsAe9pYXV52W7-psxHlM2ocXzdD_7vLSD7iy1NocDXWLFT5HRH_Cq8NyiRq1s4Mq-QYuvQJFlTxWArVC6vdpE40bDr9slGD6KTJ0DpUQeC52q-aoKJXr9Y7Pi2SDo881eFuJxTWuSuMjxcXStn9MkPKZfcKa10Vu4CdJSSnvJAKAvd4GsshsfCVGCvkgy4ZfEabo5nOZaB82UYC-8AZEpdbD3RtJg1FUQJHDz0tlY-2gZYf2VB3KU1JK4wZcHzn8T8R5BSChB6MjFrRdTZeo3M8-ZIK3eWQGH2vLj8_bPsYlBF-wfj2JzSG3zJGgUUa_rSBzoK8Vvw8k_BPxCq63h6u-k49l-X0o-MO6f8mOdm_YliTT0dWu_ujvlbXMw9AIBrKjwBJncq27EwMOX0shm8nnzPMoPTfOzoekZR2nYTDPayGjHhqkAs6haFAQrI8XAAd0PfbMtW4l54ArULWEH6hCVxzDX8_h8F8oWgOc_3h2ktpbTLNsiX6Bxj][paper]] |                   |
+  | G2P           |                  |       |        |          | [[https://www.nature.com/articles/s41467-019-10016-3][paper]] |                   |
+  | GATK          |                  |       |        | [[https://software.broadinstitute.org/gatk/documentation/][doc]]      |       |                   |
+  | GISTIC2       | copy# diff       |       |        | [[http://portals.broadinstitute.org/cgi-bin/cancer/publications/pub_paper.cgi?mode=view&paper_id=216&p=t][site]]     |       |                   |
+  | GSNAP         |                  | fastq |        | [[http://research-pub.gene.com/gmap/src/README][doc]]      |       | cite:mathe2016    |
+  | histat2       |                  | fastq |        | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]]      |       |                   |
+  | ichorCNA      | copy#            |       |        |          |       |                   |
+  | Integrate     | rna fusion       | bam   |        |          |       | cite:zhang2014a   |
+  | limma         | diff express     | count |        |          | [[https://watermark.silverchair.com/gkv007.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAAngwggJ0BgkqhkiG9w0BBwagggJlMIICYQIBADCCAloGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMsxpSKWbqcoVIkhKsAgEQgIICK5TpAPl6lIQcIzSDztcNMdIl7XMdgXJgXRQlmNqzapp-VoQO3DEpAj0A3gEkQVCd9nOl8fXA8LzO0zmzgs4TmLVFBlFXQULtTa78iYvLjQMrqnrGUZYTQus2SFXCNBklNaasJ9-iiedHl9iOT0lM_19o03zr27w2DmjK9KA9qaSt5tmBA1ogIonAO0xYwLodt7UqoDqjAMg5IXUTCrTRuzf79KhJisKQ_CYvgNTHNHNFce0wi9y-rB77jARN3HWmeziwtzLnUw2OyF9z_Wa0gwmjRScuNvUUms_fa9PCgTvrRDGFh40LEQmscM9nw3Tx3QG5qb6Z68BtikTY9WyhhKiOuJT3uwnU6EtJytzZrnfW2kYZHobN_iL7HA2qTfOXRlXC-uHXYX03m7TEasKRk6DEQ0ViBt71jyo5d0a6JDluWB2O7VDDexQuYloTkIOs2D3Vtmxu2RyDiXHeV2V1g6rZbNxNykour5ibcd0xJAeU_noEtLsvb-2cZzEHzablaAxvs3Lun_K6KQ3CYl71BEzyIVmAvvg_nkkz-QDLTfXc6CMpRU6086afrOVUKUnVfShtYRzZf3zsN6Uo0Chc3EV4kzZnnQL3qsVWoQyJd1erZRLenWSI_2o71qUbJ8JLxX-__XoNJeWkHXuNAe2ssdNWIwLg95wrkRyE40dFMbxh0MbuH3ky5qnNmiG5qrnq-kw4A3MTxMD-kmixUFx12gSIepksg__dGW9mPw][paper]] |                   |
+  | MultiQC       | seq QC agg       |       | [[https://github.com/ewels/MultiQC][github]] | [[https://multiqc.info/docs/][doc]]      |       |                   |
+  | picard        |                  |       |        | [[https://broadinstitute.github.io/picard/index.html][doc]]      |       |                   |
+  | rnaseqc       | rnaseq qc        | bam   | [[https://github.com/broadinstitute/rnaseqc][repo]]   | [[https://github.com/broadinstitute/rnaseqc][repo]]     |       |                   |
+  | rsem          | transcript quant | bam   | [[https://github.com/deweylab/RSEM][repo]]   |          | [[https://doi.org/10.1186/1471-2105-12-323][paper]] | cite:li2011       |
+  | RSeQC         | rnaseq qc        | bam   |        | [[http://rseqc.sourceforge.net/][repo]]     | [[https://doi.org/10.1093/bioinformatics/bts356][paper]] | cite:wang2012     |
+  | salmon        | transcript quat  |       |        |          |       |                   |
+  | sambamba      |                  | bam   |        | [[http://lomereiter.github.io/sambamba/docs/sambamba-view.html][online]]   |       |                   |
+  | samtools      |                  | bam   |        | [[http://www.htslib.org/doc/samtools.html][online]]   |       |                   |
+  | seqtk         |                  |       | [[https://github.com/lh3/seqtk][github]] | [[https://github.com/lh3/seqtk/blob/master/README.md][README]]   | NA    | NA                |
+  | simNGS        | sim reads        | none  |        | [[https://www.ebi.ac.uk/goldman-srv/simNGS/][website]]  |       |                   |
+  | STAR          |                  |       |        | [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]      |       | cite:dobin2019    |
+  | tophat2       |                  |       |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                   |
+  | tximport      |                  |       |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                   |
   - rsem
     - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
     - documentation
@@ -103,10 +46,24 @@ https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/
   - STAR
     - star-rsem pipeline
       - cite:djebali2016 
-* RNA-seq
-https://europepmc.org/article/PMC/6058388
-https://academic.oup.com/bib/article/16/1/59/240754#26957696
+- https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf
+* Processes
+:PROPERTIES:
+:CREATED:  [2020-04-23 Thu 08:54]
+:END:
+- processes
+  - simulate reads
+    - https://github.com/lh3/wgsim
+  - downsample
+    - fastq
+      - https://www.biostars.org/p/6544/
+    - bam (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
+  - copy number
+    - ideas
+      - scna method comparison- canvas, copycat, cnvkit
+** RNA-seq
 - general guides
+  - cite:dundar2018
   - https://www.biostat.wisc.edu/bmi776/lectures/rnaseq.pdf
   - https://github.com/crazyhottommy/RNA-seq-analysis
 - best practices
@@ -137,38 +94,36 @@ https://academic.oup.com/bib/article/16/1/59/240754#26957696
 - quantification and normalization
   - https://www.nature.com/articles/ng1032z.pdf
   - methods
+    - TMM
+    - TPM
+    - FPKM
+    - https://europepmc.org/article/PMC/6058388
     - abundance 
       - http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#introduction
   - evaluation
     - linearity
       - https://link.springer.com/article/10.1186/s12859-017-1526-y
+    - https://bioinformatics.stackexchange.com/questions/92/confirm-success-or-failure-of-rna-seq-normalization
+      - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4404308/
   - https://groups.google.com/forum/m/#!topic/rsem-users/GRyJfEOK1BQ
   - https://www.biostars.org/p/68126/
   - https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25
   - https://cgatoxford.wordpress.com/2016/08/17/why-you-should-stop-using-featurecounts-htseq-or-cufflinks2-and-start-using-kallisto-salmon-or-sailfish/
-  - normalization
-    - methods
-      - TMM
-      - TPM
-      - FPKM
-    - sources of bias
-      - 
   - isoform abundance
     - https://cgatoxford.wordpress.com/2016/08/17/why-you-should-stop-using-featurecounts-htseq-or-cufflinks2-and-start-using-kallisto-salmon-or-sailfish/
   - https://www.biostars.org/p/329625/
-- deconvolution
-  - tools
-    - ISOpure
-      - https://link.springer.com/article/10.1186/s12859-015-0597-x#Sec1
-  - cite:newman2015 
+  - sources of bias
+    - 
 - differential expression
-  - DESeq2
-    - [[https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#differential-expression-analysis][package vignette]]
-    - handling nested designs https://support.bioconductor.org/p/64480/
-    - https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
-    - https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf
-  - heatmaps
-    - http://compbio.ucsd.edu/making-heat-maps-r/
+  - methods
+    - comparison
+      - https://academic.oup.com/bib/article/16/1/59/240754#26957696
+    - DESeq2
+      - [[https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#differential-expression-analysis][package vignette]]
+      - handling nested designs https://support.bioconductor.org/p/64480/
+      - https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
+      - https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf
+  - https://europepmc.org/article/PMC/6058388
   - cite:tang2015 
   - http://master.bioconductor.org/packages/release/workflows/html/rnaseqGene.html
   - https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
@@ -177,6 +132,8 @@ https://academic.oup.com/bib/article/16/1/59/240754#26957696
   - https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
   - https://www.nature.com/articles/s41598-020-59516-z#data-availability
   - https://www.biostars.org/p/101727/
+- heatmaps
+  - http://compbio.ucsd.edu/making-heat-maps-r/
 - time course
   - cite:spies2017
   - https://support.bioconductor.org/p/65676/#66860
@@ -189,6 +146,65 @@ https://academic.oup.com/bib/article/16/1/59/240754#26957696
   - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
   - http://software.broadinstitute.org/gsea/msigdb/collections.jsp
   - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
+- deconvolution
+  - tools
+    - ISOpure
+      - https://link.springer.com/article/10.1186/s12859-015-0597-x#Sec1
+  - cite:newman2015 
 - pipelines - [[https://hub.docker.com/r/mgibio/rnaseq/dockerfile][mgi rna-seq dockerfile]]
+- gsea
+  - cite:rahmatallah2016
+  - cite:amadoz2019
+  - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/
+  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-9-559
 
-
+* Reference 
+:PROPERTIES:
+:CREATED:  [2020-04-23 Thu 08:54]
+:END:
+- old docker setup code
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  # DEV
+  # check if inside docker
+  # if [ -f /.dockerenv ];then 
+  #     dockercontainer=yes
+  #     echo "Your are in a docker container"    
+  # else 
+  #     dockercontainer=no
+  #     echo "Not in docker"
+  #     # setup NON-docker variables 
+  #     shopt -s nocasematch
+  #     case $HOSTNAME in
+  #         (radonc-cancerbio) server_home="/home/jeszyman" ;;
+  #         (jeszyman-*) server_home="/home/jeszyman" ;;
+  #         (acl*) server_home="/home/jszymanski" ;; 
+  #         (virtual-workstation*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
+  #         (blade*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
+  #     esac
+  #     
+  #     localdata="$server_home/data/$project/"
+  #     unset $SERVER
+  # fi
+  #
+  # case $dockercontainer in
+  #     (yes) server_ask ;;
+  #     (no) ;;
+  # esac
+  # #
+  # case $SERVER in
+  #     (chaudhuri-roche) projectdir=/drive3/users/jszymanski/repos/$project
+  #                       localdata=/drive3/users/jszymanski/data/$project;;
+  #     (NA) ;;
+  # esac
+  # #
+  # # test data on cancerbio
+  #NOT GENERAL
+  #basedir=/media/jeszyman/4edbbc27-7e29-4667-9b24-f5a56d49d94e/users/jeszyman/data/mpnst
+  #rm -rf $basedir/fastq-test
+  #mkdir -p $basedir/fastq-test
+  #zcat $basedir/fastq-nci/MPNST/14_JS0108CD040119_R1.fastq.gz | head -n 8000 > $basedir/fastq-test/short_14_JS0108CD040119_R1.fastq
+  #zcat $basedir/fastq-nci/MPNST/14_JS0108CD040119_R2.fastq.gz | head -n 8000 > $basedir/fastq-test/short_14_JS0108CD040119_R2.fastq        
+  #zcat $basedir/fastq-washu/new_HiSeq-20_L007001_CTTC_R1.fastq.gz | head -n 8000 > $basedir/fastq-test/short_new_HiSeq-20_L007001_CTTC_R1.fastq.gz
+  #gzip $basedir/fastq-test/*.fastq
+  # setup project repo
+- see gnu parallel in [[id:cd560390-aa1e-4c9e-8317-08610e5de42a][linux]]
