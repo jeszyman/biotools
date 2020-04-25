@@ -1,3 +1,6 @@
+https://www.rdocumentation.org/packages/gplots/versions/3.0.3/topics/heatmap.2
+https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html
+https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/
 * Tools
   | tool          | function         | input | repo   | doc      | paper | paper(local)      |
   |---------------+------------------+-------+--------+----------+-------+-------------------|
