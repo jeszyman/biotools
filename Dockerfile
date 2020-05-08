@@ -634,4 +634,7 @@ RUN apt-get update -y && apt-get install -y emacs
 #ENV PATH="/opt/simNGS/bin:${PATH}"
 
 RUN conda install -c bioconda seqtk
+RUN apt-get install -qq --no-install-recommends --allow-unauthenticated \
+libcurl4-openssl-dev
 
+RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("BSgenome.Hsapiens.UCSC.hg19");'
