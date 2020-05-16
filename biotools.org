@@ -1,6 +1,4 @@
-- http://amp.pharm.mssm.edu/Enrichr/help#basics
-- https://www.rdocumentation.org/packages/gplots/versions/3.0.3/topics/heatmap.2
-- https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html
+
 - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/
 * Tools
   | tool          | function         | input | repo   | doc      | paper | paper(local)      |
@@ -119,6 +117,7 @@
   - sources of bias
     - 
 - differential expression
+  - https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html
   - methods
     - comparison
       - https://academic.oup.com/bib/article/16/1/59/240754#26957696
@@ -136,8 +135,90 @@
   - https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
   - https://www.nature.com/articles/s41598-020-59516-z#data-availability
   - https://www.biostars.org/p/101727/
+- co-expression 
+  - gscna
+    - cite:rahmatallah2014
+  - wgcna
+    - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-02-networkConstr-man.pdf
+    - cite:vanDam2018 
+      #+begin_src bash 
+    mkdir -p /tmp/wgnca-example
+    cd /tmp/wgnca-example/
+    wget https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-Data.zip
+    unzip FemaleLiver-Data.zip
+    #+end_src
+      #+begin_src R 
+setwd("/tmp/wgnca-example")
+source("~/repos/basecamp/bin/setup.R")
+#
+# ez install of wgcna and dependencies for R 3.6
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("fastLiquidAssociation")
+#
+library(WGCNA)
+options(stringsAsFactors=F)
+femData=read.csv("./LiverFemale3600.csv")
+datExpr0=as.data.frame(t(femData[,-c(1:8)]))
+head(datExpr0)
+gsg=goodSamplesGenes(datExpr0, verbose=3)
+gsg$allOK
+if (!gsg$allOK)
+{
+# Optionally, print the gene and sample names that were removed:
+if (sum(!gsg$goodGenes)>0)
+printFlush(paste("Removing genes:", paste(names(datExpr0)[!gsg$goodGenes], collapse = ", ")));
+if (sum(!gsg$goodSamples)>0)
+printFlush(paste("Removing samples:", paste(rownames(datExpr0)[!gsg$goodSamples], collapse = ", ")));
+# Remove the offending genes and samples from the data:
+datExpr0 = datExpr0[gsg$goodSamples, gsg$goodGenes]
+}
+#
+sampleTree=hclust(dist(datExpr0),method="average")
+plot(sampleTree)
+#
+# Plot a line to show the cut
+abline(h = 15, col = "red");
+# Determine cluster under the line
+clust = cutreeStatic(sampleTree, cutHeight = 15, minSize = 10)
+table(clust)
+# clust 1 contains the samples we want to keep.
+keepSamples = (clust==1)
+datExpr = datExpr0[keepSamples, ]
+nGenes = ncol(datExpr)
+nSamples = nrow(datExpr)
+#
+traitData = read.csv("ClinicalTraits.csv")
+dim(traitData)
+names(traitData)
+# remove columns that hold information we do not need.
+allTraits = traitData[, -c(31, 16)]
+allTraits = allTraits[, c(2, 11:36) ]
+dim(allTraits)
+names(allTraits)
+# Form a data frame analogous to expression data that will hold the clinical traits.
+femaleSamples = rownames(datExpr)
+traitRows = match(femaleSamples, allTraits$Mice)
+datTraits = allTraits[traitRows, -1]
+rownames(datTraits) = allTraits[traitRows, 1]
+collectGarbage()
+#
+save(datExpr, datTraits, file = "FemaleLiver-01-dataInput.RData")
+#
+enableWGCNAThreads()
+lnames=load(file="FemaleLiver-01-dataInput.RData")
+#
+lnames
+    #+end_src
+  - gene set enrichment
+    - https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
+    - http://amp.pharm.mssm.edu/Enrichr/help#basics
+    - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
+    - http://software.broadinstitute.org/gsea/msigdb/collections.jsp
+    - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
 - heatmaps
   - http://compbio.ucsd.edu/making-heat-maps-r/
+  - https://www.rdocumentation.org/packages/gplots/versions/3.0.3/topics/heatmap.2 
 - time course
   - cite:spies2017
   - https://support.bioconductor.org/p/65676/#66860
@@ -146,10 +227,6 @@
   - https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
   - http://seqanswers.com/forums/showthread.php?t=64039
   - https://www.sciencedirect.com/science/article/pii/S2001037015000392
-- gene set enrichment
-  - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
-  - http://software.broadinstitute.org/gsea/msigdb/collections.jsp
-  - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
 - deconvolution
   - tools
     - ISOpure
