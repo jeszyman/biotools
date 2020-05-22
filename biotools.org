@@ -1,3 +1,4 @@
+
 - https://www.nature.com/articles/s41591-020-0844-1
 - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/
 * Tools
@@ -68,6 +69,7 @@
   - cite:dundar2018
   - https://www.biostat.wisc.edu/bmi776/lectures/rnaseq.pdf
   - https://github.com/crazyhottommy/RNA-seq-analysis
+  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096346/
 - best practices
   - cite:conesa2016 
   - https://www.reddit.com/r/bioinformatics/comments/eahwak/an_update_on_rnaseq_differential_expression/
@@ -87,6 +89,7 @@
     - do all aligners need adaptor trimming? at least common to do so for all
     - https://www.biostars.org/p/368420/
   - https://www.slideshare.net/joachimjacob/2rna-seqpart2investigatin-rawdata
+  - https://www.michaelchimenti.com/2016/06/trim-rna-seq-reads/
 - alignment
 - quality control
   - https://www.reddit.com/r/bioinformatics/comments/flqb8e/how_do_i_differentiate_outliers_from_ingroup/
@@ -117,6 +120,7 @@
   - sources of bias
     - 
 - differential expression
+  - https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#differential-expression-analysis
   - https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html
   - methods
     - comparison
