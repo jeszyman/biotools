@@ -66,6 +66,9 @@
     - ideas
       - scna method comparison- canvas, copycat, cnvkit
 ** RNA-seq
+- single cell
+  - examples
+    - - see fig 3 & methods https://genome.cshlp.org/content/27/2/208.full.pdf
 - general guides
   - cite:dundar2018
   - https://www.biostat.wisc.edu/bmi776/lectures/rnaseq.pdf
