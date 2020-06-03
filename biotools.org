@@ -1,4 +1,4 @@
-
+for integrate, see - cite:li2020
 - https://www.nature.com/articles/s41591-020-0844-1
 - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/
 * Tools
@@ -38,19 +38,22 @@
   | STAR          |                  |         |        | [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]      |       | cite:dobin2019         |
   | tophat2       |                  |         |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                        |
   | tximport      |                  |         |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
-  - rsem
+- rsem
+  - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
+  - documentation
+    - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
+    - https://github.com/ENCODE-DCC/long-rna-seq-pipeline/blob/master/DAC/STAR_RSEM.sh
+    - http://deweylab.biostat.wisc.edu/rsem/rsem-calculate-expression.html
+    - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
+    - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
     - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
-    - documentation
-      - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
-      - https://github.com/ENCODE-DCC/long-rna-seq-pipeline/blob/master/DAC/STAR_RSEM.sh
-      - http://deweylab.biostat.wisc.edu/rsem/rsem-calculate-expression.html
-      - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
-      - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
-      - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
-  - STAR
-    - star-rsem pipeline
-      - cite:djebali2016 
+- STAR
+  - star-rsem pipeline
+    - cite:djebali2016 
 - https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf
+- INTEGRATE
+  - cite:zhang2016
+    - [[http://apps.webofknowledge.com/summary.do?product=WOS&parentProduct=WOS&search_mode=CitingArticles&qid=2&SID=6ERcSCYD7iSBCZMtAM7&&page=1&action=changePageSize&pageSize=50][WOS citing]]- no cfRNA yet 
 * Processes
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
@@ -66,6 +69,7 @@
     - ideas
       - scna method comparison- canvas, copycat, cnvkit
 ** RNA-seq
+- stranded
 - single cell
   - examples
     - - see fig 3 & methods https://genome.cshlp.org/content/27/2/208.full.pdf
