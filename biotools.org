@@ -1,3 +1,10 @@
+- integrate
+  - cite:zhang2017c
+  - cite:zhang2016
+  - cite:zhang2016a
+  - cite:zhang2016a
+  - - cite:zhang2014a
+  - https://github.com/ChrisMaherLab/INTEGRATE-Vis/blob/master/README.md
 for integrate, see - cite:li2020
 - https://www.nature.com/articles/s41591-020-0844-1
 - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/
