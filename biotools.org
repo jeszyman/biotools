@@ -1,3 +1,5 @@
+https://scvelo.readthedocs.io/
+https://cytotrace.stanford.edu/
 - integrate
   - cite:zhang2017c
   - cite:zhang2016
