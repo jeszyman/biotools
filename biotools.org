@@ -10,12 +10,15 @@
 *** public data
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:18]
+:ID:       7b386a21-a6b8-49d1-ad4b-f5976bf30666
 :END:
 :LOGBOOK:
 CLOCK: [2020-07-02 Thu 13:19]--[2020-07-02 Thu 13:29] =>  0:10
 :END:
 - geo submission   
   - https://www.ncbi.nlm.nih.gov/geo/info/seq.html
+  - [[http://yeolab.github.io/onboarding/geo.html][see for useful ftp commands]]
+  - [[https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138253][example from Rentschler lab]]
 *** testing, modeling, and read simulation
 - downsample
   - fastq
