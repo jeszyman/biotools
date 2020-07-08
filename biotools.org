@@ -1,3 +1,4 @@
+https://blindwith.science/2018/10/442.html/
 * Biotools :career:
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:14]
@@ -1871,6 +1872,8 @@ https://cytotrace.stanford.edu/
   - https://github.com/ChrisMaherLab/INTEGRATE-Vis/blob/master/README.md
   for integrate, see - cite:li2020
 - https://www.nature.com/articles/s41591-020-0844-1
+- gistic2
+  - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
 - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/
 ** Reference 
 :PROPERTIES:
