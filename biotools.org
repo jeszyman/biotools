@@ -1,5 +1,4 @@
-https://blindwith.science/2018/10/442.html/
-* Biotools :career:
+* Biotools                                                           :career:
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:14]
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
@@ -43,7 +42,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
-https://github.com/crazyhottommy/RNA-seq-analysis
+
 - experimental design
   - cite:schurch2016 
   - https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/tuesday/ExperimentalDesign.pdf
@@ -276,52 +275,53 @@ https://github.com/crazyhottommy/RNA-seq-analysis
     - cite:Kalari_2014
     - cite:Van_Keuren_Jensen_2014
 **** general guides, github repos, training, etc
-  - https://rnaseq.uoregon.edu/
-  - https://www.labome.com/method/RNA-seq.html
-  - http://mikelove.github.io/
-  - cite:dundar2018
-  - https://www.biostat.wisc.edu/bmi776/lectures/rnaseq.pdf
-  - https://github.com/crazyhottommy/RNA-seq-analysis
-  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096346/
-  - best practices
-    - cite:conesa2016 
-    - https://www.reddit.com/r/bioinformatics/comments/eahwak/an_update_on_rnaseq_differential_expression/
-  - cite:karow2017
-  - https://hub.docker.com/r/mgibio/rnaseq/dockerfile
-  - http://rseqc.sourceforge.net/
-  - cite:korpelainen2015
-  - cite:griffith2015
-  - https://www.rna-seqblog.com/blog/
-  - https://github.com/genome/gms/wiki/RnaSeq
-  - https://bioinformatics-core-shared-training.github.io/RNAseq_September_2018/slides/DAY_1.pdf
-  - standards and best practices
-    - [[http://gatkforums.broadinstitute.org/gatk/discussion/4067/best-practices-for-variant-discovery-in-rnaseq][Broad best practices for variant discovery in RNA Seq]]
-    - ENCODE RNA-Seq guidelines
-    - [[http://www.fda.gov/ScienceResearch/BioinformaticsTools/MicroarrayQualityControlProject/][Sequencing Quality Control Project (SEQC)]]
-      - [ ] [[http://www.ncbi.nlm.nih.gov/pubmed/?term=SEQC+sequencing+quality+control+project][pubmed: SEQC sequencing quality control project- 8 hits]]
-        - cite:xu2016fda
-          - SEQC Major Findings: 
-            - Relative measurement is more consistent & reproducible than absolute
-            - Comparison w/ microarry
-              - 75% concordance for highly expressed, 35% for lowly expressed (w/ RNA-seq better at low via PCR)
-            - Pipelines
-              - Analyzed 12 pipelines, 278 permutations
-              - Assessment is coming in Nature Methods
-          - cite:Zheng_2015
-          - cite:seqc2014comprehensive
-  - https://ycl6.gitbooks.io/rna-seq-data-analysis/rna-seq_analysis_workflow.html
-  - SEQC
-    - cite:Li_2014
-    - cite:seqc2014comprehensive
-  - genomeweb: [[file:~/Box%20Sync/career/Optimizing%20Whole-Transcriptome%20RNA-Seq%20with%20Improved%20Library%20Prep%20and%20Data%20Analysis-20170316%201700-1.arf][optimizing whole genome RNA seq]]
-  - [[https://blog.sbgenomics.com/rna-seq-the-first-wave/][RNA-seq: The first wave of papers]]
-  - cite:conesa2016
-  - cite:poplawski2015
-  - pipelines 
-    - cite:kalari2014
-    - [[https://hub.docker.com/r/mgibio/rnaseq/dockerfile][mgi rna-seq dockerfile]]
-  - cite:fonseca2014
-  - cite:wilhelm2009
+- general resources- https://github.com/crazyhottommy/RNA-seq-analysis
+- https://rnaseq.uoregon.edu/
+- https://www.labome.com/method/RNA-seq.html
+- http://mikelove.github.io/
+- cite:dundar2018
+- https://www.biostat.wisc.edu/bmi776/lectures/rnaseq.pdf
+- https://github.com/crazyhottommy/RNA-seq-analysis
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096346/
+- best practices
+ - cite:conesa2016 
+ - https://www.reddit.com/r/bioinformatics/comments/eahwak/an_update_on_rnaseq_differential_expression/
+- cite:karow2017
+- https://hub.docker.com/r/mgibio/rnaseq/dockerfile
+- http://rseqc.sourceforge.net/
+- cite:korpelainen2015
+- cite:griffith2015
+- https://www.rna-seqblog.com/blog/
+- https://github.com/genome/gms/wiki/RnaSeq
+- https://bioinformatics-core-shared-training.github.io/RNAseq_September_2018/slides/DAY_1.pdf
+- standards and best practices
+ - [[http://gatkforums.broadinstitute.org/gatk/discussion/4067/best-practices-for-variant-discovery-in-rnaseq][Broad best practices for variant discovery in RNA Seq]]
+ - ENCODE RNA-Seq guidelines
+ - [[http://www.fda.gov/ScienceResearch/BioinformaticsTools/MicroarrayQualityControlProject/][Sequencing Quality Control Project (SEQC)]]
+   - [ ] [[http://www.ncbi.nlm.nih.gov/pubmed/?term=SEQC+sequencing+quality+control+project][pubmed: SEQC sequencing quality control project- 8 hits]]
+     - cite:xu2016fda
+       - SEQC Major Findings: 
+         - Relative measurement is more consistent & reproducible than absolute
+         - Comparison w/ microarry
+           - 75% concordance for highly expressed, 35% for lowly expressed (w/ RNA-seq better at low via PCR)
+         - Pipelines
+           - Analyzed 12 pipelines, 278 permutations
+           - Assessment is coming in Nature Methods
+       - cite:Zheng_2015
+       - cite:seqc2014comprehensive
+- https://ycl6.gitbooks.io/rna-seq-data-analysis/rna-seq_analysis_workflow.html
+- SEQC
+ - cite:Li_2014
+ - cite:seqc2014comprehensive
+- genomeweb: [[file:~/Box%20Sync/career/Optimizing%20Whole-Transcriptome%20RNA-Seq%20with%20Improved%20Library%20Prep%20and%20Data%20Analysis-20170316%201700-1.arf][optimizing whole genome RNA seq]]
+- [[https://blog.sbgenomics.com/rna-seq-the-first-wave/][RNA-seq: The first wave of papers]]
+- cite:conesa2016
+- cite:poplawski2015
+- pipelines 
+ - cite:kalari2014
+ - [[https://hub.docker.com/r/mgibio/rnaseq/dockerfile][mgi rna-seq dockerfile]]
+- cite:fonseca2014
+- cite:wilhelm2009
 ***** Training
 :PROPERTIES:
 :ID:       10F920C2-3B28-4FC0-A91A-02F7229F2619
@@ -1873,6 +1873,7 @@ https://cytotrace.stanford.edu/
   for integrate, see - cite:li2020
 - https://www.nature.com/articles/s41591-020-0844-1
 - gistic2
+  - https://blindwith.science/2018/10/442.html/
   - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
 - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/
 ** Reference 
