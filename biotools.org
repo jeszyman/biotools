@@ -3,6 +3,8 @@
 :CREATED:  [2020-07-02 Thu 13:14]
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :END:
+- https://www.r-bloggers.com/converting-mouse-to-human-gene-names-with-biomart-package/
+- https://en.wikipedia.org/wiki/Immunological_Genome_Project#Gene-expression_compendium
 ** Processes
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
@@ -1805,6 +1807,11 @@ see Love,16 section "Rich visualization and reporting of results"
 [[file:~/Box%20Sync/library/Fonseca,14%20RNA%20seq%20gene%20profiling%20a%20systematic%20empirical%20comparison.PDF][Fonseca,14 RNA seq gene profiling a systematic empirical comparison]]
 [[file:~/Box%20Sync/library/Sigurgeirsson,14%20Analysis%20of%20stranded%20information%20using%20an%20automated%20procedure%20for%20strand%20specific%20RNA%20sequencing.pdf][Sigurgeirsson,14 Analysis of stranded information using an automated procedure for strand specific RNA sequencing]]
 
+*** pathway 
+:PROPERTIES:
+:CREATED:  [2020-07-20 Mon 10:05]
+:END:
+https://www.nature.com/articles/s41598-019-46059-1
 ** Tools
   | tool          | function         | input   | repo   | doc      | paper | paper(local)           |
   |---------------+------------------+---------+--------+----------+-------+------------------------|
@@ -1875,6 +1882,8 @@ https://cytotrace.stanford.edu/
 - gistic2
   - https://blindwith.science/2018/10/442.html/
   - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
+- complexheatmap
+  - https://www.biostars.org/p/286187/#286507
 - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/
 ** Reference 
 :PROPERTIES:
