@@ -1813,6 +1813,9 @@ see Love,16 section "Rich visualization and reporting of results"
 :END:
 https://www.nature.com/articles/s41598-019-46059-1
 ** Tools
+:PROPERTIES:
+:ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
+:END:
   | tool          | function         | input   | repo   | doc      | paper | paper(local)           |
   |---------------+------------------+---------+--------+----------+-------+------------------------|
   | annovar       |                  |         |        | [[http://annovar.openbioinformatics.org/en/latest/][doc]]      |       |                        |
@@ -1849,6 +1852,8 @@ https://www.nature.com/articles/s41598-019-46059-1
   | STAR          |                  |         |        | [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]      |       | cite:dobin2019         |
   | tophat2       |                  |         |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                        |
   | tximport      |                  |         |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
+  | WGCNA         |                  |         |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] | cite:langfelder2008    |
+  |               |                  |         |        |          |       |                        |
 - rsem
   - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
   - documentation
@@ -1865,26 +1870,30 @@ https://www.nature.com/articles/s41598-019-46059-1
 - INTEGRATE
   - cite:zhang2016
     - [[http://apps.webofknowledge.com/summary.do?product=WOS&parentProduct=WOS&search_mode=CitingArticles&qid=2&SID=6ERcSCYD7iSBCZMtAM7&&page=1&action=changePageSize&pageSize=50][WOS citing]]- no cfRNA yet 
+  - integrate
+    - cite:zhang2017c
+    - cite:zhang2016
+    - cite:zhang2016a
+    - cite:zhang2016a
+    - - cite:zhang2014a
+    - https://github.com/ChrisMaherLab/INTEGRATE-Vis/blob/master/README.md
+    for integrate, see - cite:li2020
 - https://github.com/Illumina/canvas
   - https://github.com/chrisamiller/copyCat
   - for cah https://bioconductor.org/packages/release/bioc/html/DNAcopy.html
-https://scvelo.readthedocs.io/
-https://cytotrace.stanford.edu/
-- integrate
-  - cite:zhang2017c
-  - cite:zhang2016
-  - cite:zhang2016a
-  - cite:zhang2016a
-  - - cite:zhang2014a
-  - https://github.com/ChrisMaherLab/INTEGRATE-Vis/blob/master/README.md
-  for integrate, see - cite:li2020
+- https://scvelo.readthedocs.io/
+- https://cytotrace.stanford.edu/
 - https://www.nature.com/articles/s41591-020-0844-1
 - gistic2
   - https://blindwith.science/2018/10/442.html/
   - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
 - complexheatmap
   - https://www.biostars.org/p/286187/#286507
-- https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/
+- wgcna
+  - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/
+  - https://pdfs.semanticscholar.org/7a4a/c56e7d90b48ffda2ff267f9a84072940726b.pdf?_ga=2.194670125.1809056038.1595426853-2099730291.1595426853
+  - [[https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/][author tutorials]]
+  - [[https://www.biostars.org/local/search/page/?q=wgcna][wgcna biostars]]
 ** Reference 
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
