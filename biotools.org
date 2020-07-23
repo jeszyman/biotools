@@ -1899,11 +1899,17 @@ see Love,16 section "Rich visualization and reporting of results"
   - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
 - complexheatmap
   - https://www.biostars.org/p/286187/#286507
-- wgcna
-  - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/
-  - https://pdfs.semanticscholar.org/7a4a/c56e7d90b48ffda2ff267f9a84072940726b.pdf?_ga=2.194670125.1809056038.1595426853-2099730291.1595426853
-  - [[https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/][author tutorials]]
-  - [[https://www.biostars.org/local/search/page/?q=wgcna][wgcna biostars]]
+- 
+*** wgcna
+- https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/
+- https://pdfs.semanticscholar.org/7a4a/c56e7d90b48ffda2ff267f9a84072940726b.pdf?_ga=2.194670125.1809056038.1595426853-2099730291.1595426853
+- [[https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/][author tutorials]]
+- [[https://www.biostars.org/local/search/page/?q=wgcna][wgcna biostars]]
+- [[https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/][Horvath tutorials]]
+#+name: 
+#+begin_src bash 
+wget https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-Data.zip
+#+end_src
 ** Reference 
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
