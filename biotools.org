@@ -1,3 +1,4 @@
+http://www.visantnet.org/visantnet.html
 * Biotools                                                           :career:
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:14]
@@ -1901,6 +1902,12 @@ see Love,16 section "Rich visualization and reporting of results"
   - https://www.biostars.org/p/286187/#286507
 - 
 *** wgcna
+:PROPERTIES:
+:ID:       948289d8-3a77-471a-b068-0507285e0bac
+:END:
+:LOGBOOK:
+:END:
+https://rstudio-pubs-static.s3.amazonaws.com/90587_39301ea4b9514d20880b4c9cda81ca4f.html
 - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/
 - https://pdfs.semanticscholar.org/7a4a/c56e7d90b48ffda2ff267f9a84072940726b.pdf?_ga=2.194670125.1809056038.1595426853-2099730291.1595426853
 - [[https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/][author tutorials]]
@@ -1908,8 +1915,105 @@ see Love,16 section "Rich visualization and reporting of results"
 - [[https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/][Horvath tutorials]]
 #+name: 
 #+begin_src bash 
-wget https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-Data.zip
+wget \
+    -P /tmp/ \
+    -c \
+    - N \
+    https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-Data.zip
+unzip /tmp/FemaleLiver-Data.zip 
 #+end_src
+#+name: 
+#+begin_src R 
+setwd("/tmp")
+library(WGCNA)
+femData = read.csv("./LiverFemale3600.csv", stringsAsFactors = F)
+datExpr0 = as.data.frame(t(femData[, -c(1:8)]))
+names(datExpr0) = femData$substanceBXH
+rownames(datExpr0) = names(femData)[-c(1:8)]
+#
+gsg=goodSamplesGenes(datExpr0)
+if (!gsg$allOK)
+{
+# Optionally, print the gene and sample names that were removed:
+if (sum(!gsg$goodGenes)>0)
+printFlush(paste("Removing genes:", paste(names(datExpr0)[!gsg$goodGenes], collapse = ", ")));
+if (sum(!gsg$goodSamples)>0)
+printFlush(paste("Removing samples:", paste(rownames(datExpr0)[!gsg$goodSamples], collapse = ", ")));
+# Remove the offending genes and samples from the data:
+datExpr0 = datExpr0[gsg$goodSamples, gsg$goodGenes]
+}
+sampleTree = hclust(dist(datExpr0), method = "average");
+clust = cutreeStatic(sampleTree, cutHeight = 15, minSize = 10)
+table(clust)
+# clust 1 contains the samples we want to keep.
+keepSamples = (clust==1)
+datExpr = datExpr0[keepSamples, ]
+nGenes = ncol(datExpr)
+nSamples = nrow(datExpr)
+#
+traitData = read.csv("./ClinicalTraits.csv")
+allTraits = traitData[,-c(31,16)]
+allTraits = allTraits[, c(2,11:36)]
+#
+femaleSamples = rownames(datExpr)
+traitRows= match(femaleSamples, allTraits$Mice)
+datTraits = allTraits[traitRows, -1]
+rownames(datTraits) = allTraits[traitRows, 1]
+collectGarbage()
+#
+#
+save(datExpr, datTraits, file = "FemaleLiver-01-dataInput.RData")
+options(stringsAsFactors = F)
+enableWGCNAThreads()
+lnames=load(file="./FemaleLiver-01-dataInput.RData")
+lnames
+#
+(powers=c(c(1:10), seq(from = 12, to = 20, by = 2)))
+sft = pickSoftThreshold(datExpr, powerVector = powers, verbose = 5)
+# Plot the results:
+sizeGrWindow(9, 5)
+par(mfrow = c(1,2));
+cex1 = 0.9;
+# Scale-free topology fit index as a function of the soft-thresholding power
+plot(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
+xlab="Soft Threshold (power)",ylab="Scale Free Topology Model Fit,signed R^2",type="n",
+main = paste("Scale independence"));
+text(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
+labels=powers,cex=cex1,col="red");
+# this line corresponds to using an R^2 cut-off of h
+abline(h=0.90,col="red")
+# Mean connectivity as a function of the soft-thresholding power
+plot(sft$fitIndices[,1], sft$fitIndices[,5],
+xlab="Soft Threshold (power)",ylab="Mean Connectivity", type="n",
+main = paste("Mean connectivity"))
+text(sft$fitIndices[,1], sft$fitIndices[,5], labels=powers, cex=cex1,col="red")
+#
+net = blockwiseModules(datExpr, power = 6,
+TOMType = "unsigned", minModuleSize = 30,
+reassignThreshold = 0, mergeCutHeight = 0.25,
+numericLabels = TRUE, pamRespectsDendro = FALSE,
+saveTOMs = TRUE,
+saveTOMFileBase = "femaleMouseTOM",
+verbose = 3)
+#
+# open a graphics window
+sizeGrWindow(12, 9)
+# Convert labels to colors for plotting
+mergedColors = labels2colors(net$colors)
+# Plot the dendrogram and the module colors underneath
+plotDendroAndColors(net$dendrograms[[1]], mergedColors[net$blockGenes[[1]]],
+"Module colors",
+dendroLabels = FALSE, hang = 0.03,
+addGuide = TRUE, guideHang = 0.05)
+#
+moduleLabels = net$colors
+moduleColors = labels2colors(net$colors)
+MEs = net$MEs;
+geneTree = net$dendrograms[[1]];
+save(MEs, moduleLabels, moduleColors, geneTree,
+file = "FemaleLiver-02-networkConstruction-auto.RData")
+#+end_src
+
 ** Reference 
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
