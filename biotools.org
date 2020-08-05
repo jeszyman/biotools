@@ -7,6 +7,21 @@
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :END:
+- https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
+*** coverage and depth
+- https://www.htslib.org/doc/samtools-depth.1.html#OPTIONS
+- for coverage https://www.biostars.org/p/104063/
+*** single-cell RNA sequencing (scRNA-seq)
+:PROPERTIES:
+:ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
+:END:
+- cite:qi2019 
+- applications
+  - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
+  - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
+    - cite:lawson2018 
+- cite:stuart2019 
+- [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
 *** variant calling
 **** SCNA variants 
 :PROPERTIES:
@@ -343,7 +358,23 @@ https://wiki.dnanexus.com/Scientific-Notes/human-genome
   - simulate reads
     - https://github.com/lh3/wgsim
 *** immunoprofiling
+:PROPERTIES:
+:ID:       7bb87c84-6b06-44ef-9a1d-1bb9b9e57295
+:END:
+- methods
+  - [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
+- cite:saloura2019 
 - https://en.wikipedia.org/wiki/Immunological_Genome_Project#Gene-expression_compendium
+*** cell enumeration through bulk RNA-seq
+:PROPERTIES:
+:CREATED:  [2020-08-05 Wed 08:36]
+:END:
+**** CIBERSORTx
+- cibersortx
+  - cite:newman2015
+  - [[mu4e:msgid:BYAPR02MB5592ACF7A79C1137A6F0A974B77B0@BYAPR02MB5592.namprd02.prod.outlook.com][Re: cibersortx from docker]]
+  - docker pull lyronctk/cibersortxfractions
+- have access token for docker: https://cibersortx.stanford.edu/getoken.php
 *** RNA-seq                                                          :career:
 :LOGBOOK:
 CLOCK: [2020-06-22 Mon 12:16]--[2020-06-22 Mon 12:43] =>  0:27
@@ -2139,6 +2170,16 @@ see Love,16 section "Rich visualization and reporting of results"
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
+- multiqc
+  - - see for better multiqc handling- https://github.com/nextflow-io/rnaseq-nf/blob/3b5b49f/main.nf#L41-L48
+- ichorcna
+  - ichor
+    - https://github.com/broadinstitute/ichorCNA/wiki/Parameter-tuning-and-settings
+    - https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDDjrSfkvnNDnxMlVJNFgfnfk
+    - [[https://github.com/broadinstitute/ichorCNA/wiki][wiki]] [[file:~/library/adalsteinsson2017.pdf]]
+    - cite:adalsteinsson2017
+    - https://www.biostars.org/local/search/page/?q=ichorcna 
+- https://deeptools.readthedocs.io/en/latest/content/example_usage.html
 - http://www.visantnet.org/visantnet.html
 - table
   | tool          | function         | input   | repo   | doc      | paper | paper(local)           |
