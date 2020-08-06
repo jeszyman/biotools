@@ -2157,6 +2157,8 @@ see Love,16 section "Rich visualization and reporting of results"
 :ID:       e4351ef3-6d41-4121-a2cc-c63d89f997ac
 :END:
 
+- https://www.nature.com/articles/ncomms13427#Sec10
+  - https://github.com/varnivey/ipanda/blob/master/MANUAL.txt
 - https://www.nature.com/articles/s41598-019-46059-1
 - pathway image ideas
   - heatmaps
