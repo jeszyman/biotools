@@ -103,6 +103,7 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 - [[https://www.reddit.com/r/bioinformatics/comments/601fzr/where_can_i_access_free_sequencing_data/][Where can I access free sequencing data]]
 - Variance
   - gnomAD
+    - - https://mail.google.com/mail/u/0/#inbox/FMfcgxwBWKXrqjHPFNdbSqJRRRdhzdGf
     - https://macarthurlab.org/2017/02/27/the-genome-aggregation-database-gnomad/
     - (Subsumes ExAC)
   - ClinVar
@@ -2174,13 +2175,6 @@ see Love,16 section "Rich visualization and reporting of results"
 :END:
 - multiqc
   - - see for better multiqc handling- https://github.com/nextflow-io/rnaseq-nf/blob/3b5b49f/main.nf#L41-L48
-- ichorcna
-  - ichor
-    - https://github.com/broadinstitute/ichorCNA/wiki/Parameter-tuning-and-settings
-    - https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDDjrSfkvnNDnxMlVJNFgfnfk
-    - [[https://github.com/broadinstitute/ichorCNA/wiki][wiki]] [[file:~/library/adalsteinsson2017.pdf]]
-    - cite:adalsteinsson2017
-    - https://www.biostars.org/local/search/page/?q=ichorcna 
 - https://deeptools.readthedocs.io/en/latest/content/example_usage.html
 - http://www.visantnet.org/visantnet.html
 - table
@@ -2257,6 +2251,19 @@ see Love,16 section "Rich visualization and reporting of results"
   - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
 - complexheatmap
   - https://www.biostars.org/p/286187/#286507
+*** ichorcna
+:PROPERTIES:
+:ID:       8c535c38-9310-4fd0-a8fe-c300639493da
+:END:
+- cite:klega2018
+- cite:manier2018 
+- cite:stover2018
+- cite:adalsteinsson2017
+- cite:mouliere2018
+- [[https://github.com/broadinstitute/ichorCNA/wiki][documentation]]
+  - https://github.com/broadinstitute/ichorCNA/wiki/Parameter-tuning-and-settings
+- [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDDjrSfkvnNDnxMlVJNFgfnfk][email from:Sundby re:ichor method]]
+- https://www.biostars.org/local/search/page/?q=ichorcna 
 *** wgcna
 :PROPERTIES:
 :ID:       948289d8-3a77-471a-b068-0507285e0bac
