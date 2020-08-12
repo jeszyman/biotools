@@ -15,6 +15,7 @@
 :PROPERTIES:
 :ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
 :END:
+- https://www.workcast.com/AuditoriumAuthenticator.aspx?cpak=8475927829006248&pak=1763506853003757
 - cite:qi2019 
 - applications
   - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
@@ -2246,7 +2247,7 @@ see Love,16 section "Rich visualization and reporting of results"
 - https://scvelo.readthedocs.io/
 - https://cytotrace.stanford.edu/
 - https://www.nature.com/articles/s41591-020-0844-1
-- gistic2
+- gistic2 
   - https://blindwith.science/2018/10/442.html/
   - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
 - complexheatmap
@@ -2257,9 +2258,9 @@ see Love,16 section "Rich visualization and reporting of results"
 :END:
 - cite:klega2018
 - cite:manier2018 
+- cite:mouliere2018
 - cite:stover2018
 - cite:adalsteinsson2017
-- cite:mouliere2018
 - [[https://github.com/broadinstitute/ichorCNA/wiki][documentation]]
   - https://github.com/broadinstitute/ichorCNA/wiki/Parameter-tuning-and-settings
 - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDDjrSfkvnNDnxMlVJNFgfnfk][email from:Sundby re:ichor method]]
