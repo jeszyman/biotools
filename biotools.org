@@ -55,299 +55,6 @@ CLOCK: [2020-07-02 Thu 13:19]--[2020-07-02 Thu 13:29] =>  0:10
   - https://www.ncbi.nlm.nih.gov/geo/info/seq.html
   - [[http://yeolab.github.io/onboarding/geo.html][see for useful ftp commands]]
   - [[https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138253][example from Rentschler lab]]
-**** databases, data sets, and database browsers
-:PROPERTIES:
-:ID:       FCBA0863-010A-448C-A33C-941D2AA45AD5
-:END:
-:LOGBOOK:
-CLOCK: [2019-07-07 Sun 09:58]--[2019-07-07 Sun 10:01] =>  0:03
-CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
-CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
-:END:
-- https://github.com/czbiohub/tabula-muris
-- https://m.reddit.com/r/science/comments/4ybtym/science_ama_series_we_are_yaniv_erlich_and_joe/ 
-- databases
-  - pathways
-    - http://pathguide.org/
-    - cite:chowdhury2015
-- http://www.mirbase.org/
-- https://www.ebi.ac.uk/services
-- https://exrna.org/resources/data/
-- http://www.reddit.com/r/askscience/comments/znlk6/askscience_special_ama_we_are_the_encyclopedia_of/
-- http://david.abcc.ncifcrf.gov/
-- http://browser.1000genomes.org/index.html
-- http://www.proteinatlas.org/about
-- https://www.nature.com/articles/s41586-019-1629-x
-- [[Question: Selecting Random Pairs From Fastq?]]
-- https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
-- dbGaP
-  - https://www.ncbi.nlm.nih.gov/books/NBK99225/#DArequest.could_you_give_a_demo_about_th
-- [[https://www.ccdatalab.org/blog/2019/3/29/gene-expression-repos-explained][gene expression repos explained]]
-- datasets
-  - https://www.reddit.com/r/bioinformatics/comments/bbocni/is_there_any_way_to_find_rnaseq_datasets_that/
-  - https://github.com/genome/gms/wiki/HCC1395-WGS-Exome-RNA-Seq-Data
-  - https://www.ncbi.nlm.nih.gov/geo/
-  - [[https://www.ebi.ac.uk/ena][European Nucleotide Archive]]
-  - [[https://exrna.org/resources/data/][exRNA]]
-  - [[https://github.com/genome-in-a-bottle][Genome-in-a-bottle]]
-    - https://github.com/genome-in-a-bottle
-  - [[http://www.ebi.ac.uk/gwas/][The NHGRI-EBI Catalog of published genome-wide association studies]]
-- cBioPortal
-  - http://www.cbioportal.org/tutorials
-- AACR GENIE
-  - "regulatory-grade registry aggregating and linking clinical-grade cancer genomic data with clinical outcomes"
-  - https://www.aacr.org/Research/Research/pages/aacr-project-genie.aspx
-- Ensembl
-  - [[https://useast.ensembl.org/info/data/ftp/index.html][Ensembl reference FTP]]
-  - https://useast.ensembl.org/info/genome/variation/
-- [[https://www.encodeproject.org/][ENCODE]]
-- [[https://www.reddit.com/r/bioinformatics/comments/601fzr/where_can_i_access_free_sequencing_data/][Where can I access free sequencing data]]
-- Variance
-  - gnomAD
-    - - https://mail.google.com/mail/u/0/#inbox/FMfcgxwBWKXrqjHPFNdbSqJRRRdhzdGf
-    - https://macarthurlab.org/2017/02/27/the-genome-aggregation-database-gnomad/
-    - (Subsumes ExAC)
-  - ClinVar
-    - [[https://www.ncbi.nlm.nih.gov/projects/clinvar/ClinVarDataDictionary.pdf][ClinVar Data Dictionary]]
-  - phenotype association
-    - https://genematcher.org/?tab=submissionsTab
-    - [[https://www.ncbi.nlm.nih.gov/gap][dbGaP: database of Genotypes and Phenotypes]]
-  - cBioPortal
-    - http://www.cbioportal.org/tutorials
-    - http://www.cbioportal.org/rmatlab
-  - [[https://www.ncbi.nlm.nih.gov/projects/SNP/index.html][dbSNP]]
-  - [[http://exac.broadinstitute.org/][ExAC Exome Aggregation Consortium]]
-- [[https://gtexportal.org/home/datasets][GTEx]]
-  - [[https://biospecimens.cancer.gov/resources/sops/][GTEx SOPs]]
-  - GTEx currently uses the
-    - GRCh37/Hg19 genome
-    - GENCODE v19 annotation
-      - The GENCODE annotation should be patched to use Ensembl chromosome names: zcat gencode.v19.annotation.gtf.gz | sed 's/chrM/chrMT/;s/chr//' > gencode.v19.annotation.patched_contigs.gtf
-  - sample ID
-    - such as GTEX-14753-1626-SM-5NQ9L?
-    - GTEX-YYYYY GTEx donor ID
-    - 2nd number mostly refers to the tissue site, BUT we do not recommend using it for tissue site designation.
-    - 3rd number is the RNA or DNA aliquot ID used for sequencing.
-  - Unstranded 
-  - GTEx
-    - [[https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=phs000424.v7.p2][at dbGAP]]
-- [[https://civic.genome.wustl.edu/#/home][CIViC]]
-  - cite:griffith2017civic
-- [[https://gdc.cancer.gov/][NCI Genomic Data Commons]]
-  - [[https://docs.gdc.cancer.gov/][GDC documentation]]
-  - [[https://gdc.cancer.gov/about-data/data-harmonization-and-generation/genomic-data-harmonization/genomic-data-alignment/rna-seq-pipeline][GDC RNA-seq pipeline]]
-  - [[https://cbiit.nci.nih.gov/ncip/nci-cancer-genomics-cloud-pilots/nci-cloud-initiative][GDC cloud pilots]]
-  - - https://gdc.cancer.gov/developers
-  - https://docs.gdc.cancer.gov/
-  - - https://gdc.cancer.gov/about-data/data-harmonization-and-generation/genomic-data-harmonization/genomic-data-alignment/rna-seq-pipeline
-  - https://cbiit.nci.nih.gov/ncip/nci-cancer-genomics-cloud-pilots/nci-cloud-initiative
-- [[http://www.internationalgenome.org/data#download][IGSR at 1000 Genomes]]
-- cite:beck2015
-
-****** Clinical Fusion Protein Databases
-:PROPERTIES:
-:ID:       51EC0C78-7164-43CA-97B1-1FF2205B46A7
-:END:
-
-chimer- 
-cite:Kim01012010
-
-cite:wang2015fusioncancer
-
-cite:korla2015fare
-
-see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
-
-****** Sequence Databases and Data Sets
-:PROPERTIES:
-:ID:       C137CB28-0517-4A98-8FB4-6D312DDBC325
-:END:
-
-- [[http://www.mitomap.org/MITOMAP][MITOMAP human mitochondrial genome]]
-- https://portal.gdc.cancer.gov/
-- [[https://www.ebi.ac.uk/ega/datasets/EGAD00001000078][EBI Data Browser]]
-- [[http://www.internationalgenome.org/sites/1000genomes.org/files/documents/1000genomes_browser_quickstart.pdf][100s genomes browser]]
-- [[https://genome.ucsc.edu/training/vids/index.html#vid08][ucsc training videos]]
-- [[http://useast.ensembl.org/info/website/tutorials/sequence.html][ensembl sequence tutorials]]
-- General Feature Format (GFF) / GTF Annotation Files
-  - [[http://genome.ucsc.edu/cgi-bin/hgTables?hgsid=494995959_n1VrbO9xpH51JE8qLga6fCvOyV2R&clade=mammal&org=Mouse&db=mm9&hgta_group=genes&hgta_track=refGene&hgta_table=0&hgta_regionType=genome&position=chr12%3A57795963-57815592&hgta_outputType=primaryTable&hgta_outFileName=][make your own]]
-  - a tab-separated value file
-  - see for standard: http://mblab.wustl.edu/GTF22.html
-
-******* Generating Simulated Reads
-:PROPERTIES:
-:ID:       8877C684-C217-4E7C-8E19-3D972A4015B2
-:END:
-
-Generating Simulated Reads
-First, we need a small set of sample read data. A number of tools, including ArtificialFastqGenerator, and SimSeq, will generate artificial or simulated sequence data for you. For this tutorial, I chose to use the wgsim tool (created by Heng Li, also the creator of SAMtools).
-
-******* Stored on neuro server at G:/reference
-:PROPERTIES:
-:ID:       F08101C9-F675-4A35-B9A8-D0159FD74AFF
-:END:
-
-- mouse
-  - gencode fa.gz
-- human
-  - hg38.fa and 
-
-******* Genomes
-:PROPERTIES:
-:ID:       277AAE94-CFE5-400E-B5B9-291677A513D0
-:END:
-
-- [[https://www.biostars.org/p/4405/][reasons to avoid soft-masked genomes for alignment]]
-
-******** Custom Genomes
-:PROPERTIES:
-:ID:       F5506BF8-8A6E-4949-9F5E-15B21511E87E
-:END:
-
-- No hits for "custom" in cite:star_2.5_dobin or cite:dobin2015mapping
-
-
-
-https://www.biostars.org/p/111012/
-http://mblab.wustl.edu/GTF2.html
-http://useast.ensembl.org/info/website/upload/gff.html#fields
-https://www.biostars.org/p/182230/
-https://wiki.galaxyproject.org/Learn/CustomGenomes
-http://wiki.bits.vib.be/index.php/Create_a_valid_gtf_file_for_tophat
-https://support.bioconductor.org/p/66379/
-
-********* Generating a Custom Genome
-:PROPERTIES:
-:ID:       11F1FF38-7F23-4B81-AEA3-AA760DC62C9F
-:END:
-
-********** Trial w/ EWSR1-FLLI1
-:PROPERTIES:
-:ID:       D293BED1-C843-476E-891B-E8FEFB4917F3
-:END:
-
-- Looking for help
-  - no info
-    - cite:beadling16_multip_amplic_approac_detec_gene
-  - bad ideas
-    - don't align to transcriptome- this doesn't save any time
-    - don't try to make a gtf from a fa- the info isn't there
-- Sequence sources
-  - Genome- Downloaded GRCh37.85rm fasta from [[http://ftp.ensembl.org/pub/grch37/release-85/fasta/homo_sapiens/dna/][here]]
-  - Fusions
-    - from ensembl
-      - [[http://useast.ensembl.org/Homo_sapiens/Transcript/Exons?db=core;g=ENSG00000182944;r=22:29268009-29300522;t=ENST00000332050][EWSR1 Exon 7]]
-        - coord- 29,286,923	29,287,134	2	1	212
-        - seq- CTATTCCTCTACACAGCCGACTAGTTATGATCAGAGCAGTTACTCTCAGCAGAACACCTATGGGCAACCGAGCAGCTATGGACAGCAGAGTAGCTATGGTCAACAAAGCAGCTATGGGCAGCAGCCTCCCACTAGTTACCCACCCCAAACTGGATCCTACAGCCAAGCTCCAAGTCAATATAGCCAACAGAGCAGCAGCTACGGGCAGCAGA
-      - FLI1 exon - _complicated by multiple splice variants_
-    - failed
-      - not from UCSC (yet), it will output the whole gene sequence 
-      - ?from bed files? 
-      - EWSR1-FLI1 fusion sequence- COSMIC-Gene-Analysis-Fusions-by prevalance : http://cancer.sanger.ac.uk/cosmic/fusion/summary?id=166 
-- Thought about splitting this to make a little genome to play with, but splits just get me way too many files, a lot with NNNNN only 
-  - [[Split text file by percentage  the file from 533,942,310 lines to 10,000 lines- 53394 files
-- Adding sequences to a fasta][Added fusion sequence programmatically
-
-******** Human genome builds
-:PROPERTIES:
-:ID:       D0BD8791-0AE3-472E-A346-C0DD0D79AFD9
-:END:
-
-[[http://useast.ensembl.org/info/website/tutorials/grch37.html][for converting GRCh37 to GRCh38]]
-
-https://www.biostars.org/p/113100/
-The actual sequences you'll get from NCBI/UCSC/Ensembl will be identical, but their annotations will be different and (importantly) updated at different frequencies. NCBI's annotation is the "refseq" dataset (the "refGene" track in UCSC), which is essentially a subset of the UCSC and Ensembl annotations. UCSC's annotations are kind of a mess.
-
-********* Ensembl GRCh37 fastas
-:PROPERTIES:
-:ID:       B6066026-81E3-49F3-9A0E-C5E610CB86AB
-:END:
-
-[[ftp://ftp.ensembl.org/pub/grch37/current/fasta/homo_sapiens/dna/README][Readme]]
-
-hard masked- low complexity regions by RepeatMasker replaced with N's
-soft masked- nucleotide replaced w/ lower case
-https://www.biostars.org/p/122305/
-[[https://groups.google.com/forum/#!topic/rna-star/2wdHXaPv_vU][Dobin suggests hard masking?]]
-
-******** by Institute
-:PROPERTIES:
-:ID:       48D2EFA9-39A0-4D5F-8AFA-4726E9488D60
-:END:
-
-    - genome reference consortium
-      - [[http://www.slideshare.net/GenomeRef][genome reference consortium presentations]]
-      - [[http://www.ncbi.nlm.nih.gov/projects/genome/assembly/grc/human/][human genome overview]]
-
-        GRC distributes the reference genome in two versions: one as contigs and the other as assembled chromosomes. The latter is in the "assembled_chromosome" directory. I do not know who are using the contigs, but nearly everyone I know use assembled chromosomes only.
-
-        GRCh37/hg19 and GRCh38 are genome builds rather than annotations, which describe where features are in a given genome build. The actual sequences you'll get from NCBI/UCSC/Ensembl will be identical, but their annotations will be different and (importantly) updated at different frequencies. NCBI's annotation is the "refseq" dataset (the "refGene" track in UCSC), which is essentially a subset of the UCSC and Ensembl annotations. UCSC's annotations are kind of a mess. You'll find genes with the same ID on multiple strand and multiple chromosomes, which makes them a bit useless. Ensembl's annotations typically contain more features than UCSC (so a bit more noise), but they're otherwise much better put together (e.g., you'll never find a gene ID on different strand or different chromosomes) and their IDs are typically easier to map to other things (e.g., gene names, GO and pathway memberships). Ensembl also updates its annotation fairly often and versions everything nicely, so it's quite convenient to report what version you used in a paper (reproducibility is always a good thing). Given the choice, use the Ensembl annotation.
-
-        BTW, don't forget that the various sources can use different names for chromosomes (e.g., chr1 in UCSC is just 1 in Ensembl), so don't mix and match them.
-
-******** 37=hg19 sort of
-:PROPERTIES:
-:ID:       604441C8-6BCE-426F-9DE9-5D960F75C3D3
-:END:
-
-https://www.biostars.org/p/123767/
-I believe the genomic content for the two is identical, except for the mitochondrial contig.
-
-The contig names are also different. GRCh37 names them `chr1`, `chr2`,,`chr3`, etc, while hg19 just has `1`, `2`, `3`.
-
-Thus you can use the same GTF file for both (excluding mitochondrial, of course) if you do a simple replace operation for the contig names.
-
-https://wiki.dnanexus.com/Scientific-Notes/human-genome
-
-******** [[http://www.ncbi.nlm.nih.gov/projects/genome/assembly/grc/mouse/][GRC GR/scratch/jeszyman/f/scratch/jeszyman/fishseq/set1/S14-43147_2_sequence.fastq ishseq/set1/S14-43147_2_sequence.fastq Cm38]]
-:PROPERTIES:
-:ID:       A57F0012-6870-4F79-92A3-C580DB1D33AD
-:END:
-
-******** [[http://useast.ensembl.org/info/data/ftp/index.html?redirect=no][Ensembl]]
-:PROPERTIES:
-:ID:       D18360E5-0B07-4AB6-92F6-D4B717A2E159
-:END:
-
-******** [[http://hgdownload.cse.ucsc.edu/downloads.html][UCSC goldenPath bigZips]]
-:PROPERTIES:
-:ID:       B94A8093-3229-41A6-92A6-104D03128BAE
-:END:
-
-********* [[http://hgdownload.cse.ucsc.edu/goldenPath/mm10/bigZips/][Mouse mm10]]
-:PROPERTIES:
-:ID:       D47888B2-1210-4C9D-B30C-81672143987A
-:END:
-
-********* [[http://hgdownload.cse.ucsc.edu/goldenPath/mm9/bigZips/][Mouse mm9]]
-:PROPERTIES:
-:ID:       68A22065-D788-4653-9BBC-2B5F67AD218A
-:END:
-
-********* [[http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/][Human hg38]]
-:PROPERTIES:
-:ID:       687708C8-78BF-4EB9-8C48-F5456E9CF63D
-:END:
-
-********* [[http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/][Human hg19]]
-:PROPERTIES:
-:ID:       B0449C36-57B8-4A2A-AE44-67C96C51706D
-:END:
-
-****** Other Databases and Data Sets
-:PROPERTIES:
-:ID:       396F7A49-ACB4-4F81-8C73-ACC907207BB8
-:END:
-
-- mouse
-  - [[http://www.informatics.jax.org/][Jackson Lab mouse genome informatics]]
-  - [[http://web.stanford.edu/group/barres_lab/brain_rnaseq.html][mouse cerebral cortex RNA Seq database]]
-  - mouse Ensembl genome files
-- any
-  - for datasets
-  - GEO and SRA
-  - [[http://www.ebi.ac.uk/arrayexpress/about.html][ArrayExpress]]
-
 *** testing, modeling, and read simulation
 - downsample
   - fastq
@@ -372,6 +79,7 @@ https://wiki.dnanexus.com/Scientific-Notes/human-genome
 :CREATED:  [2020-08-05 Wed 08:36]
 :END:
 **** CIBERSORTx
+    - raw counts will be converted to CPM in cibersortx- see https://cibersortx.stanford.edu/tutorial.php
 - cibersortx
   - cite:newman2015
   - [[mu4e:msgid:BYAPR02MB5592ACF7A79C1137A6F0A974B77B0@BYAPR02MB5592.namprd02.prod.outlook.com][Re: cibersortx from docker]]
@@ -389,6 +97,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+- cite:conesa2016
 - experimental design
   - https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/tuesday/ExperimentalDesign.pdf
   - http://scotty.genetics.utah.edu/help.html
@@ -622,6 +331,20 @@ CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
     - cite:byron2016translating
     - cite:Kalari_2014
     - cite:Van_Keuren_Jensen_2014
+**** exosome and exRNA small and miRNA-seq from blood plasma
+:PROPERTIES:
+:ID:       729030d7-90ce-485a-a690-0ce8313391a2
+:END:
+- [[id:80cff175-c41d-42d4-aaa0-39546e0a6f1d][plasma exRNA isolation]]
+- [[id:ac5261a8-ea3c-44d3-bfd9-c3e1f2ac1e09][assaying circulating small and miRNA]]
+- full protocols
+  - cite:max2018 - see appendix for detailed protocol https://www.pnas.org/content/suppl/2018/05/17/1714397115.DCSupplemental
+- library prep
+  - cite:wong2019 
+- sequencing
+  - what depth? https://www.researchgate.net/post/how_many_million_reads_for_miRNA_discovery
+- plasma exosomes
+  - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwJWXSsbJRjMvKctpBfhsJkPqbc][[2020-06-23] email Arlise Andress plasma exosome processing]]
 **** general guides, github repos, training, etc
 - general resources- https://github.com/crazyhottommy/RNA-seq-analysis
 - https://rnaseq.uoregon.edu/
@@ -989,6 +712,7 @@ http://www.nature.com/articles/srep06347
 :END:
 
 **** differential expression
+ https://chanzuckerberg.github.io/scRNA-python-workshop/analysis/05-diffexp.html
   http://www.nature.com/nmeth/journal/v7/n10/full/nmeth.1503.html
   - https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#differential-expression-analysis
   - https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html
@@ -1914,16 +1638,6 @@ https://www.datacamp.com/
 - cite:Denny_2011
 - cite:Kho_2011
 
-****** Proteomics
-:PROPERTIES:
-:ID:       4041DE1E-05FD-4A62-80BC-0B9FA02A4CB2
-:END:
-
-- 151125 Christian's espray MALDI 
-- 151021 GEPM Proteomics
-  notes from 151021 proteomics lecture
-  proteome dynamic range is ~10^12, machine limit is usually ~10^3
-  SILAC- stable isotope label, light vs. heavy mutant 
 
 ****** Effector Data Mining
 :PROPERTIES:
@@ -2170,6 +1884,299 @@ see Love,16 section "Rich visualization and reporting of results"
   - bar and lolipop for p-value and set size
     - https://www.nature.com/articles/s41598-018-29420-8
     - https://www.frontiersin.org/articles/10.3389/fgene.2019.00858/full
+** databases, data sets, and database browsers
+:PROPERTIES:
+:ID:       FCBA0863-010A-448C-A33C-941D2AA45AD5
+:END:
+:LOGBOOK:
+CLOCK: [2019-07-07 Sun 09:58]--[2019-07-07 Sun 10:01] =>  0:03
+CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
+CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
+:END:
+- pathways
+  - http://pathguide.org/
+  - cite:chowdhury2015
+
+- https://github.com/czbiohub/tabula-muris
+- https://m.reddit.com/r/science/comments/4ybtym/science_ama_series_we_are_yaniv_erlich_and_joe/ 
+- http://www.mirbase.org/
+- https://www.ebi.ac.uk/services
+- https://exrna.org/resources/data/
+- http://www.reddit.com/r/askscience/comments/znlk6/askscience_special_ama_we_are_the_encyclopedia_of/
+- http://david.abcc.ncifcrf.gov/
+- http://browser.1000genomes.org/index.html
+- http://www.proteinatlas.org/about
+- https://www.nature.com/articles/s41586-019-1629-x
+- [[Question: Selecting Random Pairs From Fastq?]]
+- https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
+- dbGaP
+  - https://www.ncbi.nlm.nih.gov/books/NBK99225/#DArequest.could_you_give_a_demo_about_th
+- [[https://www.ccdatalab.org/blog/2019/3/29/gene-expression-repos-explained][gene expression repos explained]]
+- datasets
+  - https://www.reddit.com/r/bioinformatics/comments/bbocni/is_there_any_way_to_find_rnaseq_datasets_that/
+  - https://github.com/genome/gms/wiki/HCC1395-WGS-Exome-RNA-Seq-Data
+  - https://www.ncbi.nlm.nih.gov/geo/
+  - [[https://www.ebi.ac.uk/ena][European Nucleotide Archive]]
+  - [[https://exrna.org/resources/data/][exRNA]]
+  - [[https://github.com/genome-in-a-bottle][Genome-in-a-bottle]]
+    - https://github.com/genome-in-a-bottle
+  - [[http://www.ebi.ac.uk/gwas/][The NHGRI-EBI Catalog of published genome-wide association studies]]
+- cBioPortal
+  - http://www.cbioportal.org/tutorials
+- AACR GENIE
+  - "regulatory-grade registry aggregating and linking clinical-grade cancer genomic data with clinical outcomes"
+  - https://www.aacr.org/Research/Research/pages/aacr-project-genie.aspx
+- Ensembl
+  - [[https://useast.ensembl.org/info/data/ftp/index.html][Ensembl reference FTP]]
+  - https://useast.ensembl.org/info/genome/variation/
+- [[https://www.encodeproject.org/][ENCODE]]
+- [[https://www.reddit.com/r/bioinformatics/comments/601fzr/where_can_i_access_free_sequencing_data/][Where can I access free sequencing data]]
+- Variance
+  - gnomAD
+    - - https://mail.google.com/mail/u/0/#inbox/FMfcgxwBWKXrqjHPFNdbSqJRRRdhzdGf
+    - https://macarthurlab.org/2017/02/27/the-genome-aggregation-database-gnomad/
+    - (Subsumes ExAC)
+  - ClinVar
+    - [[https://www.ncbi.nlm.nih.gov/projects/clinvar/ClinVarDataDictionary.pdf][ClinVar Data Dictionary]]
+  - phenotype association
+    - https://genematcher.org/?tab=submissionsTab
+    - [[https://www.ncbi.nlm.nih.gov/gap][dbGaP: database of Genotypes and Phenotypes]]
+  - cBioPortal
+    - http://www.cbioportal.org/tutorials
+    - http://www.cbioportal.org/rmatlab
+  - [[https://www.ncbi.nlm.nih.gov/projects/SNP/index.html][dbSNP]]
+  - [[http://exac.broadinstitute.org/][ExAC Exome Aggregation Consortium]]
+- [[https://gtexportal.org/home/datasets][GTEx]]
+  - [[https://biospecimens.cancer.gov/resources/sops/][GTEx SOPs]]
+  - GTEx currently uses the
+    - GRCh37/Hg19 genome
+    - GENCODE v19 annotation
+      - The GENCODE annotation should be patched to use Ensembl chromosome names: zcat gencode.v19.annotation.gtf.gz | sed 's/chrM/chrMT/;s/chr//' > gencode.v19.annotation.patched_contigs.gtf
+  - sample ID
+    - such as GTEX-14753-1626-SM-5NQ9L?
+    - GTEX-YYYYY GTEx donor ID
+    - 2nd number mostly refers to the tissue site, BUT we do not recommend using it for tissue site designation.
+    - 3rd number is the RNA or DNA aliquot ID used for sequencing.
+  - Unstranded 
+  - GTEx
+    - [[https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=phs000424.v7.p2][at dbGAP]]
+- [[https://civic.genome.wustl.edu/#/home][CIViC]]
+  - cite:griffith2017civic
+- [[https://gdc.cancer.gov/][NCI Genomic Data Commons]]
+  - [[https://docs.gdc.cancer.gov/][GDC documentation]]
+  - [[https://gdc.cancer.gov/about-data/data-harmonization-and-generation/genomic-data-harmonization/genomic-data-alignment/rna-seq-pipeline][GDC RNA-seq pipeline]]
+  - [[https://cbiit.nci.nih.gov/ncip/nci-cancer-genomics-cloud-pilots/nci-cloud-initiative][GDC cloud pilots]]
+  - - https://gdc.cancer.gov/developers
+  - https://docs.gdc.cancer.gov/
+  - - https://gdc.cancer.gov/about-data/data-harmonization-and-generation/genomic-data-harmonization/genomic-data-alignment/rna-seq-pipeline
+  - https://cbiit.nci.nih.gov/ncip/nci-cancer-genomics-cloud-pilots/nci-cloud-initiative
+- [[http://www.internationalgenome.org/data#download][IGSR at 1000 Genomes]]
+- cite:beck2015
+- http://www.mirbase.org/cgi-bin/sentences.pl?acc=MI0001445
+**** Sequence Databases and Data Sets
+:PROPERTIES:
+:ID:       C137CB28-0517-4A98-8FB4-6D312DDBC325
+:END:
+- https://tabula-muris.ds.czbiohub.org/
+- [[http://www.mitomap.org/MITOMAP][MITOMAP human mitochondrial genome]]
+- https://portal.gdc.cancer.gov/
+- [[https://www.ebi.ac.uk/ega/datasets/EGAD00001000078][EBI Data Browser]]
+- [[http://www.internationalgenome.org/sites/1000genomes.org/files/documents/1000genomes_browser_quickstart.pdf][100s genomes browser]]
+- [[https://genome.ucsc.edu/training/vids/index.html#vid08][ucsc training videos]]
+- [[http://useast.ensembl.org/info/website/tutorials/sequence.html][ensembl sequence tutorials]]
+- General Feature Format (GFF) / GTF Annotation Files
+  - [[http://genome.ucsc.edu/cgi-bin/hgTables?hgsid=494995959_n1VrbO9xpH51JE8qLga6fCvOyV2R&clade=mammal&org=Mouse&db=mm9&hgta_group=genes&hgta_track=refGene&hgta_table=0&hgta_regionType=genome&position=chr12%3A57795963-57815592&hgta_outputType=primaryTable&hgta_outFileName=][make your own]]
+  - a tab-separated value file
+  - see for standard: http://mblab.wustl.edu/GTF22.html
+
+***** Generating Simulated Reads
+:PROPERTIES:
+:ID:       8877C684-C217-4E7C-8E19-3D972A4015B2
+:END:
+
+Generating Simulated Reads
+First, we need a small set of sample read data. A number of tools, including ArtificialFastqGenerator, and SimSeq, will generate artificial or simulated sequence data for you. For this tutorial, I chose to use the wgsim tool (created by Heng Li, also the creator of SAMtools).
+
+***** Stored on neuro server at G:/reference
+:PROPERTIES:
+:ID:       F08101C9-F675-4A35-B9A8-D0159FD74AFF
+:END:
+
+- mouse
+  - gencode fa.gz
+- human
+  - hg38.fa and 
+
+***** Genomes
+:PROPERTIES:
+:ID:       277AAE94-CFE5-400E-B5B9-291677A513D0
+:END:
+
+- [[https://www.biostars.org/p/4405/][reasons to avoid soft-masked genomes for alignment]]
+
+****** Custom Genomes
+:PROPERTIES:
+:ID:       F5506BF8-8A6E-4949-9F5E-15B21511E87E
+:END:
+
+- No hits for "custom" in cite:star_2.5_dobin or cite:dobin2015mapping
+
+
+
+https://www.biostars.org/p/111012/
+http://mblab.wustl.edu/GTF2.html
+http://useast.ensembl.org/info/website/upload/gff.html#fields
+https://www.biostars.org/p/182230/
+https://wiki.galaxyproject.org/Learn/CustomGenomes
+http://wiki.bits.vib.be/index.php/Create_a_valid_gtf_file_for_tophat
+https://support.bioconductor.org/p/66379/
+
+******* Generating a Custom Genome
+:PROPERTIES:
+:ID:       11F1FF38-7F23-4B81-AEA3-AA760DC62C9F
+:END:
+
+******** Trial w/ EWSR1-FLLI1
+:PROPERTIES:
+:ID:       D293BED1-C843-476E-891B-E8FEFB4917F3
+:END:
+
+- Looking for help
+  - no info
+    - cite:beadling16_multip_amplic_approac_detec_gene
+  - bad ideas
+    - don't align to transcriptome- this doesn't save any time
+    - don't try to make a gtf from a fa- the info isn't there
+- Sequence sources
+  - Genome- Downloaded GRCh37.85rm fasta from [[http://ftp.ensembl.org/pub/grch37/release-85/fasta/homo_sapiens/dna/][here]]
+  - Fusions
+    - from ensembl
+      - [[http://useast.ensembl.org/Homo_sapiens/Transcript/Exons?db=core;g=ENSG00000182944;r=22:29268009-29300522;t=ENST00000332050][EWSR1 Exon 7]]
+        - coord- 29,286,923	29,287,134	2	1	212
+        - seq- CTATTCCTCTACACAGCCGACTAGTTATGATCAGAGCAGTTACTCTCAGCAGAACACCTATGGGCAACCGAGCAGCTATGGACAGCAGAGTAGCTATGGTCAACAAAGCAGCTATGGGCAGCAGCCTCCCACTAGTTACCCACCCCAAACTGGATCCTACAGCCAAGCTCCAAGTCAATATAGCCAACAGAGCAGCAGCTACGGGCAGCAGA
+      - FLI1 exon - _complicated by multiple splice variants_
+    - failed
+      - not from UCSC (yet), it will output the whole gene sequence 
+      - ?from bed files? 
+      - EWSR1-FLI1 fusion sequence- COSMIC-Gene-Analysis-Fusions-by prevalance : http://cancer.sanger.ac.uk/cosmic/fusion/summary?id=166 
+- Thought about splitting this to make a little genome to play with, but splits just get me way too many files, a lot with NNNNN only 
+  - [[Split text file by percentage  the file from 533,942,310 lines to 10,000 lines- 53394 files
+- Adding sequences to a fasta][Added fusion sequence programmatically
+
+****** Human genome builds
+:PROPERTIES:
+:ID:       D0BD8791-0AE3-472E-A346-C0DD0D79AFD9
+:END:
+
+[[http://useast.ensembl.org/info/website/tutorials/grch37.html][for converting GRCh37 to GRCh38]]
+
+https://www.biostars.org/p/113100/
+The actual sequences you'll get from NCBI/UCSC/Ensembl will be identical, but their annotations will be different and (importantly) updated at different frequencies. NCBI's annotation is the "refseq" dataset (the "refGene" track in UCSC), which is essentially a subset of the UCSC and Ensembl annotations. UCSC's annotations are kind of a mess.
+
+******* Ensembl GRCh37 fastas
+:PROPERTIES:
+:ID:       B6066026-81E3-49F3-9A0E-C5E610CB86AB
+:END:
+
+[[ftp://ftp.ensembl.org/pub/grch37/current/fasta/homo_sapiens/dna/README][Readme]]
+
+hard masked- low complexity regions by RepeatMasker replaced with N's
+soft masked- nucleotide replaced w/ lower case
+https://www.biostars.org/p/122305/
+[[https://groups.google.com/forum/#!topic/rna-star/2wdHXaPv_vU][Dobin suggests hard masking?]]
+
+****** by Institute
+:PROPERTIES:
+:ID:       48D2EFA9-39A0-4D5F-8AFA-4726E9488D60
+:END:
+
+    - genome reference consortium
+      - [[http://www.slideshare.net/GenomeRef][genome reference consortium presentations]]
+      - [[http://www.ncbi.nlm.nih.gov/projects/genome/assembly/grc/human/][human genome overview]]
+
+        GRC distributes the reference genome in two versions: one as contigs and the other as assembled chromosomes. The latter is in the "assembled_chromosome" directory. I do not know who are using the contigs, but nearly everyone I know use assembled chromosomes only.
+
+        GRCh37/hg19 and GRCh38 are genome builds rather than annotations, which describe where features are in a given genome build. The actual sequences you'll get from NCBI/UCSC/Ensembl will be identical, but their annotations will be different and (importantly) updated at different frequencies. NCBI's annotation is the "refseq" dataset (the "refGene" track in UCSC), which is essentially a subset of the UCSC and Ensembl annotations. UCSC's annotations are kind of a mess. You'll find genes with the same ID on multiple strand and multiple chromosomes, which makes them a bit useless. Ensembl's annotations typically contain more features than UCSC (so a bit more noise), but they're otherwise much better put together (e.g., you'll never find a gene ID on different strand or different chromosomes) and their IDs are typically easier to map to other things (e.g., gene names, GO and pathway memberships). Ensembl also updates its annotation fairly often and versions everything nicely, so it's quite convenient to report what version you used in a paper (reproducibility is always a good thing). Given the choice, use the Ensembl annotation.
+
+        BTW, don't forget that the various sources can use different names for chromosomes (e.g., chr1 in UCSC is just 1 in Ensembl), so don't mix and match them.
+
+****** 37=hg19 sort of
+:PROPERTIES:
+:ID:       604441C8-6BCE-426F-9DE9-5D960F75C3D3
+:END:
+
+https://www.biostars.org/p/123767/
+I believe the genomic content for the two is identical, except for the mitochondrial contig.
+
+The contig names are also different. GRCh37 names them `chr1`, `chr2`,,`chr3`, etc, while hg19 just has `1`, `2`, `3`.
+
+Thus you can use the same GTF file for both (excluding mitochondrial, of course) if you do a simple replace operation for the contig names.
+
+https://wiki.dnanexus.com/Scientific-Notes/human-genome
+
+****** [[http://www.ncbi.nlm.nih.gov/projects/genome/assembly/grc/mouse/][GRC GR/scratch/jeszyman/f/scratch/jeszyman/fishseq/set1/S14-43147_2_sequence.fastq ishseq/set1/S14-43147_2_sequence.fastq Cm38]]
+:PROPERTIES:
+:ID:       A57F0012-6870-4F79-92A3-C580DB1D33AD
+:END:
+
+****** [[http://useast.ensembl.org/info/data/ftp/index.html?redirect=no][Ensembl]]
+:PROPERTIES:
+:ID:       D18360E5-0B07-4AB6-92F6-D4B717A2E159
+:END:
+
+****** [[http://hgdownload.cse.ucsc.edu/downloads.html][UCSC goldenPath bigZips]]
+:PROPERTIES:
+:ID:       B94A8093-3229-41A6-92A6-104D03128BAE
+:END:
+
+******* [[http://hgdownload.cse.ucsc.edu/goldenPath/mm10/bigZips/][Mouse mm10]]
+:PROPERTIES:
+:ID:       D47888B2-1210-4C9D-B30C-81672143987A
+:END:
+
+******* [[http://hgdownload.cse.ucsc.edu/goldenPath/mm9/bigZips/][Mouse mm9]]
+:PROPERTIES:
+:ID:       68A22065-D788-4653-9BBC-2B5F67AD218A
+:END:
+
+******* [[http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/][Human hg38]]
+:PROPERTIES:
+:ID:       687708C8-78BF-4EB9-8C48-F5456E9CF63D
+:END:
+
+******* [[http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/][Human hg19]]
+:PROPERTIES:
+:ID:       B0449C36-57B8-4A2A-AE44-67C96C51706D
+:END:
+
+**** Clinical Fusion Protein Databases
+:PROPERTIES:
+:ID:       51EC0C78-7164-43CA-97B1-1FF2205B46A7
+:END:
+
+chimer- 
+cite:Kim01012010
+
+cite:wang2015fusioncancer
+
+cite:korla2015fare
+
+see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
+
+**** Other Databases and Data Sets
+:PROPERTIES:
+:ID:       396F7A49-ACB4-4F81-8C73-ACC907207BB8
+:END:
+
+- mouse
+  - [[http://www.informatics.jax.org/][Jackson Lab mouse genome informatics]]
+  - [[http://web.stanford.edu/group/barres_lab/brain_rnaseq.html][mouse cerebral cortex RNA Seq database]]
+  - mouse Ensembl genome files
+- any
+  - for datasets
+  - GEO and SRA
+  - [[http://www.ebi.ac.uk/arrayexpress/about.html][ArrayExpress]]
+
 ** Tools
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
@@ -2272,6 +2279,7 @@ see Love,16 section "Rich visualization and reporting of results"
 :LOGBOOK:
 CLOCK: [2020-07-26 Sun 09:40]--[2020-07-26 Sun 10:43] =>  1:03
 :END:
+- https://www.nature.com/articles/nature16965#Sec1
 - [[https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/][Horvath tutorials]]
   #+name:tutorial1-input
   #+begin_src R 
