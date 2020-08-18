@@ -98,6 +98,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+- 
 - cite:conesa2016
 - experimental design
   - https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/tuesday/ExperimentalDesign.pdf
@@ -235,11 +236,6 @@ CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
   - HISAT2
 - read annotation
   - https://github.com/griffithlab/rnaseq_tutorial/wiki/Annotation
-- visualization
-  - heatmaps
-    - http://compbio.ucsd.edu/making-heat-maps-r/
-    - https://www.rdocumentation.org/packages/gplots/versions/3.0.3/topics/heatmap.2 
-  - mapped reads were visualized by SeqMonk[[file:org.org_imgs/20161220_180037_4849srR.png]]
 - time course
   - cite:spies2017
   - https://support.bioconductor.org/p/65676/#66860
@@ -332,6 +328,13 @@ CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
     - cite:byron2016translating
     - cite:Kalari_2014
     - cite:Van_Keuren_Jensen_2014
+**** visualization
+- volcano
+  - https://www.biostars.org/p/203876/
+- heatmaps
+  - http://compbio.ucsd.edu/making-heat-maps-r/
+  - https://www.rdocumentation.org/packages/gplots/versions/3.0.3/topics/heatmap.2 
+- mapped reads were visualized by SeqMonk[[file:org.org_imgs/20161220_180037_4849srR.png]]
 **** exosome and exRNA small and miRNA-seq from blood plasma
 :PROPERTIES:
 :ID:       729030d7-90ce-485a-a690-0ce8313391a2
