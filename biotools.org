@@ -98,7 +98,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
-- 
+- http://bioinformatics.sdstate.edu/idep/
 - cite:conesa2016
 - experimental design
   - https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/tuesday/ExperimentalDesign.pdf
@@ -329,6 +329,8 @@ CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
     - cite:Kalari_2014
     - cite:Van_Keuren_Jensen_2014
 **** visualization
+- examples
+  - [[https://www.cell.com/cell-reports/pdf/S2211-1247(20)30669-0.pdf][good seq analysis and visual example]]
 - volcano
   - https://www.biostars.org/p/203876/
 - heatmaps
