@@ -1902,7 +1902,8 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 - pathways
   - http://pathguide.org/
   - cite:chowdhury2015
-
+  - https://www.bioconductor.org/packages/devel/data/experiment/vignettes/gskb/inst/doc/gskb.pdf
+  - - https://www.bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
 - https://github.com/czbiohub/tabula-muris
 - https://m.reddit.com/r/science/comments/4ybtym/science_ama_series_we_are_yaniv_erlich_and_joe/ 
 - http://www.mirbase.org/
