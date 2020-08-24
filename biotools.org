@@ -1,4 +1,3 @@
-https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=The%20output%20from%20FastQC%2C%20after,or%20%E2%80%9CFail%E2%80%9D%20is%20assigned.
 * Biotools                                                           :career:
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:14]
@@ -8,8 +7,10 @@ https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :END:
+*** sequence qc
 - https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
-*** coverage and depth
+- https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=The%20output%20from%20FastQC%2C%20after,or%20%E2%80%9CFail%E2%80%9D%20is%20assigned.
+**** coverage and depth
 - https://www.htslib.org/doc/samtools-depth.1.html#OPTIONS
 - for coverage https://www.biostars.org/p/104063/
 *** single-cell RNA sequencing (scRNA-seq)
@@ -2192,6 +2193,41 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
   - - see for better multiqc handling- https://github.com/nextflow-io/rnaseq-nf/blob/3b5b49f/main.nf#L41-L48
 - https://deeptools.readthedocs.io/en/latest/content/example_usage.html
 - http://www.visantnet.org/visantnet.html
+- rsem
+  - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
+  - documentation
+    - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
+    - https://github.com/ENCODE-DCC/long-rna-seq-pipeline/blob/master/DAC/STAR_RSEM.sh
+    - http://deweylab.biostat.wisc.edu/rsem/rsem-calculate-expression.html
+    - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
+    - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
+    - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
+- STAR
+  - star-rsem pipeline
+    - cite:djebali2016 
+- https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf
+- INTEGRATE
+  - cite:zhang2016
+    - [[http://apps.webofknowledge.com/summary.do?product=WOS&parentProduct=WOS&search_mode=CitingArticles&qid=2&SID=6ERcSCYD7iSBCZMtAM7&&page=1&action=changePageSize&pageSize=50][WOS citing]]- no cfRNA yet 
+  - integrate
+    - cite:zhang2017c
+    - cite:zhang2016
+    - cite:zhang2016a
+    - cite:zhang2016a
+    - - cite:zhang2014a
+    - https://github.com/ChrisMaherLab/INTEGRATE-Vis/blob/master/README.md
+    for integrate, see - cite:li2020
+- https://github.com/Illumina/canvas
+  - https://github.com/chrisamiller/copyCat
+  - for cah https://bioconductor.org/packages/release/bioc/html/DNAcopy.html
+- https://scvelo.readthedocs.io/
+- https://cytotrace.stanford.edu/
+- https://www.nature.com/articles/s41591-020-0844-1
+- gistic2 
+  - https://blindwith.science/2018/10/442.html/
+  - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
+- complexheatmap
+  - https://www.biostars.org/p/286187/#286507
 - table
   | tool          | function         | input   | repo   | doc      | paper | paper(local)           |
   |---------------+------------------+---------+--------+----------+-------+------------------------|
@@ -2231,41 +2267,6 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
   | tximport      |                  |         |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
   | WGCNA         |                  |         |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] | cite:langfelder2008    |
   |               |                  |         |        |          |       |                        |
-- rsem
-  - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
-  - documentation
-    - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
-    - https://github.com/ENCODE-DCC/long-rna-seq-pipeline/blob/master/DAC/STAR_RSEM.sh
-    - http://deweylab.biostat.wisc.edu/rsem/rsem-calculate-expression.html
-    - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
-    - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
-    - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
-- STAR
-  - star-rsem pipeline
-    - cite:djebali2016 
-- https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf
-- INTEGRATE
-  - cite:zhang2016
-    - [[http://apps.webofknowledge.com/summary.do?product=WOS&parentProduct=WOS&search_mode=CitingArticles&qid=2&SID=6ERcSCYD7iSBCZMtAM7&&page=1&action=changePageSize&pageSize=50][WOS citing]]- no cfRNA yet 
-  - integrate
-    - cite:zhang2017c
-    - cite:zhang2016
-    - cite:zhang2016a
-    - cite:zhang2016a
-    - - cite:zhang2014a
-    - https://github.com/ChrisMaherLab/INTEGRATE-Vis/blob/master/README.md
-    for integrate, see - cite:li2020
-- https://github.com/Illumina/canvas
-  - https://github.com/chrisamiller/copyCat
-  - for cah https://bioconductor.org/packages/release/bioc/html/DNAcopy.html
-- https://scvelo.readthedocs.io/
-- https://cytotrace.stanford.edu/
-- https://www.nature.com/articles/s41591-020-0844-1
-- gistic2 
-  - https://blindwith.science/2018/10/442.html/
-  - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
-- complexheatmap
-  - https://www.biostars.org/p/286187/#286507
 *** ichorcna
 :PROPERTIES:
 :ID:       8c535c38-9310-4fd0-a8fe-c300639493da
