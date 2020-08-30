@@ -1755,30 +1755,31 @@ https://software.broadinstitute.org/gatk/documentation/article?id=3891
 - For differential expression, if coverage across transcript is poor, consider using only uniquely mappable reads
 
 **** quantification and normalization
-  - https://github.com/griffithlab/rnaseq_tutorial/wiki/Transcript-Assembly-Merge
-  - https://www.nature.com/articles/ng1032z.pdf
-  - methods
-    - TMM
-    - TPM
-    - FPKM
-    - https://europepmc.org/article/PMC/6058388
-    - abundance 
-      - http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#introduction
-  - evaluation
-    - linearity
-      - https://link.springer.com/article/10.1186/s12859-017-1526-y
-    - https://bioinformatics.stackexchange.com/questions/92/confirm-success-or-failure-of-rna-seq-normalization
-      - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4404308/
-  - https://groups.google.com/forum/m/#!topic/rsem-users/GRyJfEOK1BQ
-  - https://www.biostars.org/p/68126/
-  - https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25
+- https://github.com/griffithlab/rnaseq_tutorial/wiki/Transcript-Assembly-Merge
+- https://www.reddit.com/r/bioinformatics/comments/i6qhrx/samples_from_different_studies_de_analysis_help/
+- https://www.nature.com/articles/ng1032z.pdf
+- methods
+  - TMM
+  - TPM
+  - FPKM
+  - https://europepmc.org/article/PMC/6058388
+  - abundance 
+    - http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#introduction
+- evaluation
+  - linearity
+    - https://link.springer.com/article/10.1186/s12859-017-1526-y
+  - https://bioinformatics.stackexchange.com/questions/92/confirm-success-or-failure-of-rna-seq-normalization
+    - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4404308/
+- https://groups.google.com/forum/m/#!topic/rsem-users/GRyJfEOK1BQ
+- https://www.biostars.org/p/68126/
+- https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25
+- https://cgatoxford.wordpress.com/2016/08/17/why-you-should-stop-using-featurecounts-htseq-or-cufflinks2-and-start-using-kallisto-salmon-or-sailfish/
+- isoform abundance
   - https://cgatoxford.wordpress.com/2016/08/17/why-you-should-stop-using-featurecounts-htseq-or-cufflinks2-and-start-using-kallisto-salmon-or-sailfish/
-  - isoform abundance
-    - https://cgatoxford.wordpress.com/2016/08/17/why-you-should-stop-using-featurecounts-htseq-or-cufflinks2-and-start-using-kallisto-salmon-or-sailfish/
-  - https://www.biostars.org/p/329625/
-  - sources of bias
-    - 
-  - https://htseq.readthedocs.io/en/release_0.11.1/tour.html#counting-reads-by-genes
+- https://www.biostars.org/p/329625/
+- sources of bias
+  - 
+- https://htseq.readthedocs.io/en/release_0.11.1/tour.html#counting-reads-by-genes
 ***** featureCounts in Rsubread
 :PROPERTIES:
 :ID:       0FB3EE5E-DD17-4438-BF35-011555A41DF9
@@ -3650,6 +3651,9 @@ consModules[cmod])
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :END:
+- good github repos
+  - https://github.com/ding-labrecip
+  - https://github.com/pstew
 - old docker setup code
   #########1#########2#########3#########4#########5#########6#########7#########8
   # DEV
@@ -3696,3 +3700,4 @@ consModules[cmod])
   #gzip $basedir/fastq-test/*.fastq
   # setup project repo
 - see gnu parallel in [[id:cd560390-aa1e-4c9e-8317-08610e5de42a][linux]]
+- https://www.reddit.com/r/bioinformatics/comments/191ykr/resources_for_learning_bioinformatics/
