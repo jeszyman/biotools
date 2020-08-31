@@ -3,6 +3,7 @@
 :CREATED:  [2020-07-02 Thu 13:14]
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :END:
+https://www.sciencedirect.com/science/article/pii/S009286741830309X#sec4
 ** Processes
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
