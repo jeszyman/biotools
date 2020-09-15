@@ -1,4 +1,3 @@
-
 FROM ubuntu:xenial
 #########1#########2#########3#########4#########5#########6#########7
 #############
@@ -86,8 +85,8 @@ RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
 ENV LANG en_US.UTF-8  
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8    
-
-RUN pip install multiqc
+#
+RUN pip install -U multiqc
 #
 # cnvkit
 RUN pip install -U cython
