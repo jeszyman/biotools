@@ -12,6 +12,11 @@
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :END:
+*** cfDNA WGS copy number 
+:PROPERTIES:
+:ID:       21d876e8-8646-4773-91c1-c4385c3218c7
+:END:
+- https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
 *** sequence qc
 - https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
 - https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=The%20output%20from%20FastQC%2C%20after,or%20%E2%80%9CFail%E2%80%9D%20is%20assigned.
