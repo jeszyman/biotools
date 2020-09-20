@@ -3,6 +3,8 @@
 :CREATED:  [2020-07-02 Thu 13:14]
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :END:
+https://www.reddit.com/r/bioinformatics/comments/iv7xjj/biologist_with_minimal_coding_background/
+- https://ai.googleblog.com/2020/09/improving-accuracy-of-genomic-analysis.html?m=1
 - [[https://www.biostars.org/p/383522/][good CN,purity,ploid discussion]]
 - [[https://www.bioconductor.org/packages/devel/bioc/vignettes/TitanCNA/inst/doc/TitanCNA.pdf][see ploidy purity correction math]]
 - https://docs.cbioportal.org/5.1-data-loading/data-loading/file-formats#gistic-2-0-data
