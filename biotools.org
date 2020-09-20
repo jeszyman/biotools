@@ -2280,6 +2280,384 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
   | tximport      |                  |         |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
   | WGCNA         |                  |         |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] | cite:langfelder2008    |
   |               |                  |         |        |          |       |                        |
+*** cnvkit
+oldcode from mpnst
+
+# tumor_bam="/duo4/capp-runs/HiSeqW11/demultiplexed/Sample_PC3-N1_Normal/Sample_PC3-N1_Normal.sorted.samtools-deduped.sorted.bam"
+# normal_bam="/duo4/capp-runs/HiSeqW11/demultiplexed/Sample_69-C1_cfDNA/Sample_69-C1_cfDNA.sorted.samtools-deduped.sorted.bam"
+# bait_bed="/duo4/users/jszymanski/projects/mpnst/170907_HG38_CCDS1X_REZ_capture_targets.bed"
+# fasta="/duo4/users/jszymanski/data/ref/hg19.fa"
+
+# cd $workdir/analysis/
+
+
+# nohup cnvkit.py batch \
+# 	  $tumor_bam \
+# 	  --normal $normal_bam \
+# 	  --targets $bait_bed \
+#           --fasta $fasta \
+#           --output-reference my_reference.cnn \
+# 	  --output-dir results/ \
+#           --diagram --scatter
+
+# # Reusing a reference for additional samples
+# cnvkit.py batch *Tumor.bam -r Reference.cnn -d results/
+
+# # Reusing targets and antitargets to build a new reference, but no analysis
+# cnvkit.py batch -n *Normal.bam --output-reference new_reference.cnn \
+#     -t my_targets.bed -a my_antitargets.bed \
+#     -f hg19.fasta -g data/access-5kb-mappable.hg19.bed
+# https://cnvkit.readthedocs.io/en/stable/nonhybrid.html
+## considers WGS as jsut no off-target regions
+## so no target file
+## NEED TO ANNOTATE
+#wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/refFlat.txt.gz
+#mv refFlat.txt.gz /duo4/users/jszymanski/data/ref/
+#cd /duo4/users/jszymanski/data/ref/
+#gunzip refFlat.txt.gz
+
+source ~/repos/mpnst/bin/local-setup.sh
+docker_interactive
+biotools
+mkdir -p /duo4/mpnst/downsample-cnn
+cd /duo4/mpnst/downsample-cnn
+
+cnvkit.py batch /duo4/mpnst/downsample-bam/pn*.sorted.bam /duo4/mpnst/downsample-bam/mp*.sorted.bam\
+          -n /duo4/mpnst/downsample-bam/nm*.sorted.bam \
+          -m wgs -f /drive3/users/jszymanski/data/ref/bwa-hg19/hg19.fa \
+          --annotate /drive3/users/jszymanski/data/ref/refFlat.txt -p 32
+
+
+for sample in /duo4/mpnst/downsample-cnn/*.cnr;
+do
+    filename=$(basename -- "$sample")
+    extension="${filename##*.}"
+    filename="${filename%.*}"
+    cnvkit.py scatter -s ${filename}.cns ${filename}.cnr -o /duo4/mpnst/downsample-cnn/$filename-scatter.pdf 
+    cnvkit.py diagram -s ${filename}.cns ${filename}.cnr -o /duo4/mpnst/downsample-cnn/$filename-diagram.pdf 
+    cnvkit.py heatmap ${filename}.cns ${filename}.cnr -o /duo4/mpnst/downsample-cnn/$filename-heatmap.pdf 
+done
+
+# washu plex ref
+# 11 normal reference 
+cnvkit.py reference \
+          new_HiSeqW31_Undetermined_R6000232_L005001_ATCG.sorted.antitargetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_ATCG.sorted.targetcoverage.cnn \
+          new_HiSeq11GTGT.sorted.antitargetcoverage.cnn \
+          new_HiSeq11GTGT.sorted.targetcoverage.cnn \
+          new_HiSeq-19_L006001_GAAG.sorted.antitargetcoverage.cnn \
+          new_HiSeq-19_L006001_GAAG.sorted.targetcoverage.cnn \
+          new_HiSeq-19_L006001_GCTA.sorted.antitargetcoverage.cnn \
+          new_HiSeq-19_L006001_GCTA.sorted.targetcoverage.cnn \
+          new_HiSeq-19_L006001_CTTC.sorted.antitargetcoverage.cnn \
+          new_HiSeq-19_L006001_CTTC.sorted.targetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_TAGC.sorted.antitargetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_TAGC.sorted.targetcoverage.cnn \
+          new_HiSeq-19_L006001_AGGT.sorted.antitargetcoverage.cnn \
+          new_HiSeq-19_L006001_AGGT.sorted.targetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_GCTA.sorted.antitargetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_GCTA.sorted.targetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_CACA.sorted.antitargetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_CACA.sorted.targetcoverage.cnn \
+          new_HiSeq-19_L006001_GTGT.sorted.antitargetcoverage.cnn \
+          new_HiSeq-19_L006001_GTGT.sorted.targetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_GAAG.sorted.antitargetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_GAAG.sorted.targetcoverage.cnn \
+          -f /drive3/users/jszymanski/data/ref/bwa-hg19/hg19.fa -o normal-reference.cnn
+
+# my best mpnst vs normals
+cnvkit.py fix --no-edge new_HiSeq40_Undetermined_R6000281_L006001_GTGT.sorted.targetcoverage.cnn new_HiSeq40_Undetermined_R6000281_L006001_GTGT.sorted.antitargetcoverage.cnn normal-reference.cnn -o testMPNST.cnr
+cnvkit.py segment -t 1e-6 testMPNST.cnr -o testMPNST.cns
+cnvkit.py scatter -s testMPNST.cn{s,r} -o test2.png
+# vs. nci plex ref
+cnvkit.py fix --no-edge new_HiSeq40_Undetermined_R6000281_L006001_GTGT.sorted.targetcoverage.cnn new_HiSeq40_Undetermined_R6000281_L006001_GTGT.sorted.antitargetcoverage.cnn reference.cnn -o testMPNST_nciPlexRef.cnr
+cnvkit.py segment -t 1e-6 testMPNST_nciPlexRef.cnr -o testMPNST_nciPlexRef.cns
+cnvkit.py scatter -s testMPNST_nciPlexRef.cn{s,r} -o testMPNST_nciPlexRef.png
+
+
+#NOTE           new_HiSeqW31_Undetermined_R6000232_L005001_TGTG. d/n exist- mislabel? 
+# testing nci mpnst vs our normals 
+for fullfile in MPNST_*antitargetcoverage.cnn; do
+    filename=$(basename -- "$fullfile")
+    filename2="${filename%%.*}"
+    echo $filename2
+    cnvkit.py fix --no-edge /duo4/mpnst/cnn/${filename2}.sorted.targetcoverage.cnn \
+              $fullfile normal-reference.cnn -o /duo4/mpnst/cnn/${filename2}.normref.cnr
+done
+#
+# normal ref vs all cnns
+for fullfile in *antitargetcoverage.cnn; do
+    filename=$(basename -- "$fullfile")
+    filename2="${filename%%.*}"
+    echo $filename2
+    cnvkit.py fix --no-edge /duo4/mpnst/cnn/${filename2}.sorted.targetcoverage.cnn \
+              $fullfile normal-reference.cnn -o /duo4/mpnst/cnn/${filename2}.normref.cnr
+done
+
+#
+for file in *.normref.cnr; do
+    filename="${file%.*}"
+    cnvkit.py segment -t 1e-6 $file -o ${filename}.cns     
+done
+#
+for file in *.normref.cnr; do
+    filename="${file%.*}"
+    cnvkit.py scatter $file -s ${filename}.cns -o ${filename}.png
+done
+
+# renaming
+##MOVE TO bam consolidation script
+for file in new_HiSeq-19*; do mv $file NORMAL_${file}; done
+for file in new_HiSeq-20*AGGT*; do mv $file PN_${file}; done
+for file in new_HiSeq-20*ATCG*; do mv $file MPNST_${file}; done
+for file in new_HiSeq-20*CTTC*; do mv $file PN_${file}; done
+for file in new_HiSeq-20*GTGT*; do mv $file MPNST_${file}; done
+for file in new_HiSeq-20*TAGC*; do mv $file MPNST_${file}; done
+for file in new_HiSeq-20*TCCT*; do mv $file MPNST_${file}; done
+for file in new_HiSeq15*ACAC*; do mv $file PN_${file}; done
+for file in new_HiSeq15*ATCG*; do mv $file MPNST_${file}; done
+for file in new_HiSeq15*CGAT*; do mv $file PN_${file}; done
+for file in new_HiSeq15*GAAG*; do mv $file MPNST_${file}; done
+for file in new_HiSeq15*GTGT*; do mv $file MPNST_${file}; done
+for file in new_HiSeq15*TAGC*; do mv $file MPNST_${file}; done
+for file in new_HiSeq28_*ACAC*; do mv $file PN_${file}; done
+for file in new_HiSeq28_*AGGT*; do mv $file PN_${file}; done
+for file in new_HiSeq28_*ATCG*; do mv $file MPNST_${file}; done
+for file in new_HiSeq28_*CACA*; do mv $file PN_${file}; done
+for file in new_HiSeq28_*CTTC*; do mv $file PN_${file}; done
+for file in new_HiSeq28_*GAAG*; do mv $file PN_${file}; done
+for file in new_HiSeq28_*GCTA*; do mv $file PN_${file}; done
+for file in new_HiSeq28_*GTGT*; do mv $file MPNST_${file}; done
+for file in new_HiSeq28_*TAGC*; do mv $file MPNST_${file}; done
+for file in new_HiSeq28_*TCCT*; do mv $file MPNST_${file}; done
+for file in new_HiSeq28_*TGTG*; do mv $file PN_${file}; done
+for file in new_HiSeq38_*; do mv $file MPNST_${file}; done
+for file in new_HiSeq39_*; do mv $file MPNST_${file}; done
+for file in new_HiSeq40_*; do mv $file MPNST_${file}; done
+for file in new_HiSeq41_*; do mv $file MPNST_${file}; done
+for file in new_HiSeq43_*; do mv $file MPNST_${file}; done
+for file in new_HiSeqW30_*; do mv $file MPNST_${file}; done
+for file in new_HiSeqW31_*; do mv $file NORMAL_${file}; done
+for file in new_HiSeqW34_*; do mv $file MPNST_${file}; done
+for file in new_HiSeqW35_*; do mv $file MPNST_${file}; done
+for file in new_HiSeqW36_*; do mv $file PN_${file}; done
+#
+=======
+
+# washu plex ref
+# 11 normal reference 
+cnvkit.py reference \
+          new_HiSeqW31_Undetermined_R6000232_L005001_ATCG.sorted.antitargetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_ATCG.sorted.targetcoverage.cnn \
+          new_HiSeq11GTGT.sorted.antitargetcoverage.cnn \
+          new_HiSeq11GTGT.sorted.targetcoverage.cnn \
+          new_HiSeq-19_L006001_GAAG.sorted.antitargetcoverage.cnn \
+          new_HiSeq-19_L006001_GAAG.sorted.targetcoverage.cnn \
+          new_HiSeq-19_L006001_GCTA.sorted.antitargetcoverage.cnn \
+          new_HiSeq-19_L006001_GCTA.sorted.targetcoverage.cnn \
+          new_HiSeq-19_L006001_CTTC.sorted.antitargetcoverage.cnn \
+          new_HiSeq-19_L006001_CTTC.sorted.targetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_TAGC.sorted.antitargetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_TAGC.sorted.targetcoverage.cnn \
+          new_HiSeq-19_L006001_AGGT.sorted.antitargetcoverage.cnn \
+          new_HiSeq-19_L006001_AGGT.sorted.targetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_GCTA.sorted.antitargetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_GCTA.sorted.targetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_CACA.sorted.antitargetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_CACA.sorted.targetcoverage.cnn \
+          new_HiSeq-19_L006001_GTGT.sorted.antitargetcoverage.cnn \
+          new_HiSeq-19_L006001_GTGT.sorted.targetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_GAAG.sorted.antitargetcoverage.cnn \
+          new_HiSeqW31_Undetermined_R6000232_L005001_GAAG.sorted.targetcoverage.cnn \
+          -f /drive3/users/jszymanski/data/ref/bwa-hg19/hg19.fa -o normal-reference.cnn
+
+# my best mpnst vs normals
+cnvkit.py fix --no-edge new_HiSeq40_Undetermined_R6000281_L006001_GTGT.sorted.targetcoverage.cnn new_HiSeq40_Undetermined_R6000281_L006001_GTGT.sorted.antitargetcoverage.cnn normal-reference.cnn -o testMPNST.cnr
+cnvkit.py segment -t 1e-6 testMPNST.cnr -o testMPNST.cns
+cnvkit.py scatter -s testMPNST.cn{s,r} -o test2.png
+# vs. nci plex ref
+cnvkit.py fix --no-edge new_HiSeq40_Undetermined_R6000281_L006001_GTGT.sorted.targetcoverage.cnn new_HiSeq40_Undetermined_R6000281_L006001_GTGT.sorted.antitargetcoverage.cnn reference.cnn -o testMPNST_nciPlexRef.cnr
+cnvkit.py segment -t 1e-6 testMPNST_nciPlexRef.cnr -o testMPNST_nciPlexRef.cns
+cnvkit.py scatter -s testMPNST_nciPlexRef.cn{s,r} -o testMPNST_nciPlexRef.png
+
+
+#NOTE           new_HiSeqW31_Undetermined_R6000232_L005001_TGTG. d/n exist- mislabel? 
+# testing nci mpnst vs our normals 
+for fullfile in MPNST_*antitargetcoverage.cnn; do
+    filename=$(basename -- "$fullfile")
+    filename2="${filename%%.*}"
+    echo $filename2
+    cnvkit.py fix --no-edge /duo4/mpnst/cnn/${filename2}.sorted.targetcoverage.cnn \
+              $fullfile normal-reference.cnn -o /duo4/mpnst/cnn/${filename2}.normref.cnr
+done
+#
+for file in *.normref.cnr; do
+    filename="${file%.*}"
+    cnvkit.py segment -t 1e-6 $file -o ${filename}.cns     
+done
+#
+for file in *.normref.cnr; do
+    filename="${file%.*}"
+    cnvkit.py scatter $file -s ${filename}.cns -o ${filename}.png
+done
+
+>>>>>>> 0ec20f73fda99d63d7625bd25a8c38d6952566dd
+# our mpnst vs nci plex ref
+declare -a washu_mpnst=("new_HiSeq41_Undetermined_R6000281_L007001_AGGT.sorted.antitargetcoverage.cnn" "new_HiSeq39_Undetermined_R6000281_L005001_TCCT.sorted.antitargetcoverage.cnn")
+for fullfile in "${washu_mpnst[@]}"; do
+    filename=$(basename -- "$fullfile")
+    filename2="${filename%%.*}"
+    echo $filename2       
+    cnvkit.py fix --no-edge /duo4/mpnst/cnn/${filename2}.sorted.targetcoverage.cnn \
+              $fullfile reference.cnn -o /duo4/mpnst/cnn/${filename2}.nciPnRef.cnr
+    cnvkit.py segment -t 1e-6 /duo4/mpnst/cnn/${filename2}.nciPnRef.cnr -o /duo4/mpnst/cnn/${filename2}.nciPnRef.cns
+    cnvkit.py scatter /duo4/mpnst/cnn/${filename2}.nciPnRef.cnr -s /duo4/mpnst/cnn/${filename2}.nciPnRef.cns -o /duo4/mpnst/cnn/${filename2}.nciPnRef.png
+done
+#
+<<<<<<< HEAD
+# nci plex vs normal ref
+for fullfile in PN_*_*.antitargetcoverage.cnn; do
+    filename=$(basename -- "$fullfile")
+    filename2="${filename%%.*}"
+    echo $filename2
+    cnvkit.py fix --no-edge /duo4/mpnst/cnn/${filename2}.sorted.targetcoverage.cnn \
+              $fullfile normal-reference.cnn -o /duo4/mpnst/cnn/${filename2}.normRef.cnr
+    cnvkit.py segment -t 1e-6 /duo4/mpnst/cnn/${filename2}.normRef.cnr -o /duo4/mpnst/cnn/${filename2}.normRef.cns
+    cnvkit.py scatter /duo4/mpnst/cnn/${filename2}.normRef.cnr -s /duo4/mpnst/cnn/${filename2}.normRef.cns -o /duo4/mpnst/cnn/${filename2}.normRef.png
+done
+
+#
+
+
+=======
+#
+
+>>>>>>> 0ec20f73fda99d63d7625bd25a8c38d6952566dd
+cnvkit.py batch /duo4/mpnst/bam-nci/MPNST_14_JS0108CD040119.sorted.bam -n /duo4/mpnst/bam-nci/PN_13_JS0028CD111918.sorted.bam -m wgs -f /drive3/users/jszymanski/data/ref/bwa-hg19/hg19.fa --annotate /drive3/users/jszymanski/data/ref/refFlat.txt --targets /drive3/users/jszymanski/data/ref/genic_hg19.bed -p 36
+
+cnvkit.py batch /duo4/mpnst/bam-nci/MPNST_*.sorted.bam -n /duo4/mpnst/bam-nci/PN_*.sorted.bam -m wgs -f /drive3/users/jszymanski/data/ref/bwa-hg19/hg19.fa --annotate /drive3/users/jszymanski/data/ref/refFlat.txt --targets /drive3/users/jszymanski/data/ref/genic_hg19.bed -p 36
+
+cnvkit.py batch /duo4/mpnst/bam-washu/*.sorted.bam -n /duo4/mpnst/bam-nci/PN_*.sorted.bam -m wgs -f /drive3/users/jszymanski/data/ref/bwa-hg19/hg19.fa --annotate /drive3/users/jszymanski/data/ref/refFlat.txt --targets /drive3/users/jszymanski/data/ref/genic_hg19.bed -p 36
+
+cnvkit.py scatter -s new_HiSeq28_Undetermined_R6000204_L006001_TCCT.sorted.cnr -o test2.png
+
+cnvkit.py coverage /duo4/mpnst/bam-nci/*.sorted.bam \
+          /drive3/users/jszymanski/data/ref/genic_hg19.bed \
+          
+          
+
+          /duo4/capp-runs/HiSeqW28/demultiplexed/Sample_NF487C1_cfDNA/Sample_NF487C1_cfDNA.sorted.samtools-deduped.sorted.bam \
+          /duo4/capp-runs/HiSeqW28/demultiplexed/Sample_NF561C1_cfDNA/Sample_NF561C1_cfDNA.sorted.samtools-deduped.sorted.bam \
+          /duo4/capp-runs/HiSeqW28/demultiplexed/Sample_NF564C1_cfDNA/Sample_NF564C1_cfDNA.sorted.samtools-deduped.sorted.bam \
+          /duo4/capp-runs/HiSeqW28/demultiplexed/Sample_NF570C1_cfDNA/Sample_NF570C1_cfDNA.sorted.samtools-deduped.sorted.bam \
+          /duo4/capp-runs/HiSeqW28/demultiplexed/Sample_NF536C1_cfDNA/Sample_NF536C1_cfDNA.sorted.samtools-deduped.sorted.bam \
+          -n \
+          /duo4/capp-runs/HiSeqW28/demultiplexed/Sample_NF544C1_cfDNA/Sample_NF544C1_cfDNA.sorted.samtools-deduped.sorted.bam \
+          /duo4/capp-runs/HiSeqW28/demultiplexed/Sample_NF574C1_cfDNA/Sample_NF574C1_cfDNA.sorted.samtools-deduped.sorted.bam \
+          /duo4/capp-runs/HiSeqW28/demultiplexed/Sample_NF575C1_cfDNA/Sample_NF575C1_cfDNA.sorted.samtools-deduped.sorted.bam \
+          /duo4/capp-runs/HiSeqW28/demultiplexed/Sample_NF576C1_cfDNA/Sample_NF576C1_cfDNA.sorted.samtools-deduped.sorted.bam \
+          /duo4/capp-runs/HiSeqW28/demultiplexed/Sample_NF531C1_cfDNA/Sample_NF531C1_cfDNA.sorted.samtools-deduped.sorted.bam \
+          /duo4/capp-runs/HiSeqW28/demultiplexed/Sample_NF571C1_cfDNA/Sample_NF571C1_cfDNA.sorted.samtools-deduped.sorted.bam \
+          -m wgs -f /duo4/users/jszymanski/data/ref/hg19.fa --annotate /duo4/users/jszymanski/data/ref/refFlat.txt
+
+cd $basedir
+cnvkit.py batch $basedir/nci-bam/MPNST*.sorted.bam \
+          -n $basedir/nci-bam/PN*.sorted.bam \
+          -m wgs -f /media/jeszyman/4edbbc27-7e29-4667-9b24-f5a56d49d94e/users/jeszyman/data/ref/bwa-hg19/hg19.fa --annotate /media/jeszyman/4edbbc27-7e29-4667-9b24-f5a56d49d94e/users/jeszyman/data/ref/refFlat.txt
+
+
+# start copy-number docker
+bsub -Is -q docker-interactive -a 'docker(jeszyman/copy-number)' /bin/bash
+workdir="/gscmnt/gc2561/pfeifer/ad_hoc/szymanski/projects/mpnst"
+fasta="/gscmnt/gc2561/pfeifer/ad_hoc/szymanski/data/ref/Homo_sapiens.GRCh37.dna.toplevel.fa"
+baits="/gscmnt/gc2561/pfeifer/ad_hoc/szymanski/projects/mpnst/data/ref/trim_bait.bed"
+cnvkit.py target $baits --split -o $workdir/data/ref/my_targets.bed
+# batch run
+## NOHUP- takes order of days to run 
+cd $workdir
+rm nohup.out 
+nohup cnvkit.py batch $workdir/data/*_tumor.bam \
+          --normal $workdir/data/*_normal.bam \
+          --targets $workdir/data/ref/my_targets.bed \
+          --fasta $fasta \
+          --access $workdir/data/ref/access.hg37.bed \
+          --output-reference my_reference.cnn \
+          --output-dir $workdir/analysis/batch/ \
+          -p 8 \
+          --diagram --scatter
+# step-by-step cnvkit copy number pipeline
+cd $workdir/data/ref
+## target
+cnvkit.py target $baits --split -o $workdir/data/ref/my_targets.bed
+## access: calculate the sequence-accessible coordinates in chromosomes from the given reference genome, output as a BED file
+cnvkit.py access $fasta -o $workdir/data/ref/access.hg37.bed
+## prebuild with low-complexity excluded: 
+wget https://raw.githubusercontent.com/etal/cnvkit/master/data/access-5k-mappable.hg19.bed > $workdir/data/ref/access-5k-mappable.hg19.bed
+
+## antitarget
+### using 5k mappable: 
+cnvkit.py antitarget $workdir/data/ref/my_targets.bed -g $workdir/data/ref/access-5k-mappable.hg19.bed -o $workdir/data/ref/my_antitargets.bed
+## autobin
+cnvkit.py autobin $workdir/data/*.bam -t $workdir/data/ref/my_targets.bed -g $workdir/data/ref/access-5k-mappable.hg19.bed
+## coverage
+### NEEDS NOHUP AND ~days to run
+## reference
+## fix
+## segment
+## call
+
+
+
+
+# autobin will get bam depths and estimate on and off target bin sizes as bed files
+#  in batch, autobin is run for normal samples
+# nohup cnvkit.py autobin $workdir/data/*_normal.bam -t $workdir/data/ref/trim_bait.bed -g ./access-5k-mappable.hg19.bed
+# the above failed starting with SK436_normal.bam, maybe a bad bam file? 
+### current command here ####
+
+# nohup cnvkit.py batch $workidr/data/*tumor.bam \
+# --normal $workdir/data/*normal.bam --targets $workdir/data/ref/trim_bait.bed \
+# --fasta /gscmnt/gc2561/pfeifer/ad_hoc/szymanski/data/ref/Homo_sapiens/GRCh38.dna.toplevel.fa
+
+# # NOT WORKING cnvkit.py scatter BI386_tumor.cnr -s BI386_tumor.cns
+
+
+# # szymanski@virtual-workstation4:~$ tail -n +2 ~/projects/mpnst/data/ref/trim_bait.bed > ~/projects/mpnst/data/ref/trim_bait.bed 
+# # ADD SAMTOOLS THEN FOR
+# # ValueError: BED file './bait.target.bed' chromosome names don't match any in BAM file         'BI386_normal.bam'
+# # do samtools idxstats <>.bam | head -n 3 
+
+
+
+# # Generate Plots
+# ## Scatter
+
+# ########1########2########3########4########5########6########7########8
+mkdir -p /duo4/users/jszymanski/repos/mpnst/analysis/cfDNA-WGS/
+cd /duo4/users/jszymanski/data/mpnst/
+
+for sample in /duo4/users/jszymanski/data/mpnst/*.cnr;
+do
+    filename=$(basename -- "$sample")
+    extension="${filename##*.}"
+    filename="${filename%.*}"
+    cnvkit.py scatter -s ${filename}.cns ${filename}.cnr -o /duo4/users/jszymanski/repos/mpnst/analysis/cfDNA-WGS/$filename-scatter.pdf 
+    cnvkit.py diagram -s ${filename}.cns ${filename}.cnr -o /duo4/users/jszymanski/repos/mpnst/analysis/cfDNA-WGS/$filename-diagram.pdf 
+    cnvkit.py heatmap ${filename}.cns ${filename}.cnr -o /duo4/users/jszymanski/repos/mpnst/analysis/cfDNA-WGS/$filename-heatmap.pdf 
+done
+
+
+
+
+for sample in /duo4/users/jszymanski/data/mpnst/*.cnr;
+do
+    filename=$(basename -- "$sample")
+    extension="${filename##*.}"
+    filename="${filename%.*}"
+    cnvkit.py scatter -s ${filename}.cns ${filename}.cnr -c chr8 -o /duo4/users/jszymanski/repos/mpnst/analysis/cfDNA-WGS/$filename-scatter-chr8.pdf 
+done
+
+
 *** ichorcna
 :PROPERTIES:
 :ID:       8c535c38-9310-4fd0-a8fe-c300639493da
