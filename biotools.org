@@ -3,22 +3,52 @@
 :CREATED:  [2020-07-02 Thu 13:14]
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :END:
-https://www.reddit.com/r/bioinformatics/comments/iv7xjj/biologist_with_minimal_coding_background/
-- https://ai.googleblog.com/2020/09/improving-accuracy-of-genomic-analysis.html?m=1
-- [[https://www.biostars.org/p/383522/][good CN,purity,ploid discussion]]
-- [[https://www.bioconductor.org/packages/devel/bioc/vignettes/TitanCNA/inst/doc/TitanCNA.pdf][see ploidy purity correction math]]
-- https://docs.cbioportal.org/5.1-data-loading/data-loading/file-formats#gistic-2-0-data
-- https://rockefelleruniversity.github.io/RU_GenomicVariants/
-- https://www.sciencedirect.com/science/article/pii/S009286741830309X#sec4
+:LOGBOOK:
+CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
+:END:
 ** Processes
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :END:
-*** cfDNA WGS copy number 
+*** testing, modeling, and read simulation
+- downsample
+  - fastq
+    - https://www.biostars.org/p/6544/
+  - bam (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
+- read simulation 
+  - RNA-seq reads https://rdrr.io/bioc/polyester/
+  - http://bioinform.github.io/varsim/
+  - https://omictools.com/data-simulation3-category?sortby=recency
+  - simulate reads
+    - https://github.com/lh3/wgsim
+*** sequence variation
+**** copy number
+- [[https://www.bioconductor.org/packages/devel/bioc/vignettes/TitanCNA/inst/doc/TitanCNA.pdf][see ploidy purity correction math]]
+- [[https://www.biostars.org/p/383522/][good CN,purity,ploid discussion]]
+***** cfDNA WGS copy number 
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
 :END:
 - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
+**** variant calling
+***** SCNA variants 
+:PROPERTIES:
+:ID:       179ce37c-f8cf-44b3-872b-e32677bcb49c
+:END:
+- SCNAs
+  - https://pmbio.org/module-05-somatic/0005/04/02/Somatic_CNV_FilteringAnnotationReview/
+  - https://www.annualreviews.org/doi/full/10.1146/annurev-genom-082410-101404?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub%3Dpubmed
+  - cite:quigley2018
+  - https://bioconductor.org/packages/release/bioc/html/DNAcopy.html
+  - cite:talevich2016
+  - [[file:~/repos/copy-number/]]
+  - [[file:~/repos/copy-number/copy-number.org]]
+  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-S11-S1
+  - https://www.youtube.com/watch?v=m9XPWJrMThY&t=8s
+  - https://deeptools.readthedocs.io/en/latest/content/installation.html
+  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5737511/
+- WGS callers
+  - https://github.com/GavinHaLab
 *** sequence qc
 - https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
 - https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=The%20output%20from%20FastQC%2C%20after,or%20%E2%80%9CFail%E2%80%9D%20is%20assigned.
@@ -37,25 +67,6 @@ https://www.reddit.com/r/bioinformatics/comments/iv7xjj/biologist_with_minimal_c
     - cite:lawson2018 
 - cite:stuart2019 
 - [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
-*** variant calling
-**** SCNA variants 
-:PROPERTIES:
-:ID:       179ce37c-f8cf-44b3-872b-e32677bcb49c
-:END:
-- SCNAs
-  - https://pmbio.org/module-05-somatic/0005/04/02/Somatic_CNV_FilteringAnnotationReview/
-  - https://www.annualreviews.org/doi/full/10.1146/annurev-genom-082410-101404?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub%3Dpubmed
-  - cite:quigley2018
-  - https://bioconductor.org/packages/release/bioc/html/DNAcopy.html
-  - cite:talevich2016
-  - [[file:~/repos/copy-number/]]
-  - [[file:~/repos/copy-number/copy-number.org]]
-  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-S11-S1
-  - https://www.youtube.com/watch?v=m9XPWJrMThY&t=8s
-  - https://deeptools.readthedocs.io/en/latest/content/installation.html
-  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5737511/
-- WGS callers
-  - https://github.com/GavinHaLab
 *** public data, data mapping
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:18]
@@ -69,17 +80,6 @@ CLOCK: [2020-07-02 Thu 13:19]--[2020-07-02 Thu 13:29] =>  0:10
   - https://www.ncbi.nlm.nih.gov/geo/info/seq.html
   - [[http://yeolab.github.io/onboarding/geo.html][see for useful ftp commands]]
   - [[https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138253][example from Rentschler lab]]
-*** testing, modeling, and read simulation
-- downsample
-  - fastq
-    - https://www.biostars.org/p/6544/
-  - bam (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
-- read simulation 
-  - RNA-seq reads https://rdrr.io/bioc/polyester/
-  - http://bioinform.github.io/varsim/
-  - https://omictools.com/data-simulation3-category?sortby=recency
-  - simulate reads
-    - https://github.com/lh3/wgsim
 *** immunoprofiling
 :PROPERTIES:
 :ID:       7bb87c84-6b06-44ef-9a1d-1bb9b9e57295
@@ -2202,9 +2202,9 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
+- https://ai.googleblog.com/2020/09/improving-accuracy-of-genomic-analysis.html?m=1
 - multiqc
   - - see for better multiqc handling- https://github.com/nextflow-io/rnaseq-nf/blob/3b5b49f/main.nf#L41-L48
-- https://deeptools.readthedocs.io/en/latest/content/example_usage.html
 - http://www.visantnet.org/visantnet.html
 - rsem
   - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
@@ -2236,9 +2236,6 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 - https://scvelo.readthedocs.io/
 - https://cytotrace.stanford.edu/
 - https://www.nature.com/articles/s41591-020-0844-1
-- gistic2 
-  - https://blindwith.science/2018/10/442.html/
-  - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
 - complexheatmap
   - https://www.biostars.org/p/286187/#286507
 - table
@@ -2280,6 +2277,12 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
   | tximport      |                  |         |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
   | WGCNA         |                  |         |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] | cite:langfelder2008    |
   |               |                  |         |        |          |       |                        |
+- deeptools
+  - https://deeptools.readthedocs.io/en/latest/content/example_usage.html
+*** gistic2 
+- https://docs.cbioportal.org/5.1-data-loading/data-loading/file-formats#gistic-2-0-data
+- https://blindwith.science/2018/10/442.html/
+- http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
 *** cnvkit
 oldcode from mpnst
 
@@ -4041,9 +4044,15 @@ consModules[cmod])
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :END:
-- good github repos
-  - https://github.com/ding-labrecip
-  - https://github.com/pstew
+- examples
+  - papers
+    - https://www.sciencedirect.com/science/article/pii/S009286741830309X#sec4
+    - good github repos
+      - https://github.com/ding-labrecip
+      - https://github.com/pstew
+- https://www.rockefeller.edu/genomics/
+
+- https://www.reddit.com/r/bioinformatics/comments/iv7xjj/biologist_with_minimal_coding_background/
 - old docker setup code
   #########1#########2#########3#########4#########5#########6#########7#########8
   # DEV
@@ -4091,3 +4100,16 @@ consModules[cmod])
   # setup project repo
 - see gnu parallel in [[id:cd560390-aa1e-4c9e-8317-08610e5de42a][linux]]
 - https://www.reddit.com/r/bioinformatics/comments/191ykr/resources_for_learning_bioinformatics/
+** Local Variables                                                 :noexport:
+#+startup: overview
+#+property: header-args    :results silent
+#+property: header-args+    :cache yes
+#+property: header-args+    :eval never-export
+#+property: header-args+    :exports code
+#+property: header-args+    :tangle no
+#+property: header-args:R    :session *mpnst*
+#+startup: overview
+#+todo: WAITING TODO INPROCESS | DONE
+# Local Variables:
+# truncate-lines: nil
+# End:
