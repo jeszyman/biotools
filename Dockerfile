@@ -3,22 +3,27 @@ FROM ubuntu:xenial
 #############
 ### Notes ###
 #############
-## All tool builds are independent, except within Conda 
+## All tool builds are independent, except using apt or Conda 
 ## Tools are preferentially
 ### 1) managed by apt or 
 ### 2) installed into /opt/
 ## See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 #
 #
+RUN apt-get update -yq\
+ && apt-get install -yq --no-install-recommends --allow-unauthenticated \
+   libfftw3-dev \
+   gcc \
+   bzip2 \
+   wget \
+   cmake \   
+   && apt-get clean 
 #
 ############################
 ### Python 3.6 and Conda ###
 ############################
 #
-RUN apt-get update -qq
-RUN apt-get install -qq --no-install-recommends --allow-unauthenticated \
-bzip2 \
-wget 
+#
 RUN cd /tmp && wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh
 RUN bash /tmp/Miniconda3-4.3.21-Linux-x86_64.sh -b -p /opt/miniconda
 ENV PATH="/opt/miniconda/bin:${PATH}"
@@ -46,6 +51,7 @@ RUN conda install -c bioconda skewer
 RUN conda install -c bioconda star
 RUN conda install -c bioconda vcftools
 RUN conda install -c bioconda bedops
+RUN conda install -c bioconda goleft
 #
 # TMP NEED TO REMOVE CRAN FROM APT BELOW
 RUN apt-get install -qq --no-install-recommends nano
@@ -60,10 +66,6 @@ RUN echo "deb http://cran.wustl.edu/bin/linux/ubuntu xenial-cran35/" \
 #RUN apt upgrade -qq
 RUN apt update -qq
 RUN apt-get install -qq --no-install-recommends r-base r-base-dev
-RUN apt-get update \
- && apt-get install -y --no-install-recommends \
-   libfftw3-dev \
-   gcc && apt-get clean 
 ENV PATH="/usr/bin:${PATH}"
 RUN echo 'local({r <- getOption("repos"); r["CRAN"] <- "http://cran.r-project.org"; options(repos=r)})' > ~/.Rprofile
 RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("DESeq2"); BiocManager::install("tximport"); BiocManager::install("readr");'
@@ -110,19 +112,21 @@ RUN R -e "install.packages('devtools')"
 RUN R -e "install.packages('devtools')"
 #RUN R -e "library(devtools); install_github("broadinstitute/ichorCNA", force = T)"
 # from 	git clone https://github.com/broadinstitute/ichorCNA.git && \ 
-RUN Rscript -e 'install.packages(c("tidyverse", "git2r", "stringr", "devtools", "optparse"), repos = c(CRAN="http://cran.rstudio.com"))'
+RUN Rscript -e 'install.packages(c("tidyverse", "git2r", "stringr", "devtools", "optparse", "plyr"), repos = c(CRAN="http://cran.rstudio.com"))'
 
 RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("HMMcopy"); BiocManager::install("SNPchip");' 
 
-RUN apt-get install -y git 
+#RUN apt-get update && apt-get install -yq git --no-install-recommends 
 
-RUN cd /opt && \
-    git clone https://github.com/broadinstitute/ichorCNA.git && \
-    cd ichorCNA && \
-    R CMD INSTALL . && \
-    cd /opt 
+RUN apt-get update -yq\
+ && apt-get install -yq --no-install-recommends --allow-unauthenticated \
+   git 
 
-RUN apt-get install -y cmake
+RUN cd /opt \
+    && git clone https://github.com/broadinstitute/ichorCNA.git \
+    && cd ichorCNA \
+    && R CMD INSTALL . \
+    && cd /opt 
 
 RUN cd /opt && \
     git clone https://github.com/shahcompbio/hmmcopy_utils.git && \
@@ -635,5 +639,25 @@ RUN apt-get update -y && apt-get install -y emacs
 RUN conda install -c bioconda seqtk
 RUN apt-get install -qq --no-install-recommends --allow-unauthenticated \
 libcurl4-openssl-dev
-
+#
 RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("BSgenome.Hsapiens.UCSC.hg19");'
+#
+# WORKS TO HERE [2020-09-21]
+#
+# GISTIC 2.0
+RUN mkdir -p /opt/GISTIC2 \
+    && cd /opt/GISTIC2 \
+    && wget --no-check-certificate ftp://ftp.broadinstitute.org/pub/GISTIC2.0/GISTIC_2_0_23.tar.gz \
+    && tar --owner=root --group=root -vxf GISTIC_2_0_23.tar.gz 
+RUN cd /opt/GISTIC2/MCR_Installer \
+    && unzip MCRInstaller.zip \
+    && ./install -mode silent -agreeToLicense yes -destinationFolder /opt/GISTIC2 
+RUN cd /opt/GISTIC2 \
+    && wget --no-check-certificate ftp://ftp.broadinstitute.org/pub/GISTIC2.0/hg19.mat
+ENV PATH="/opt/GISTIC2/:${PATH}"
+RUN chown -R root:root /opt/GISTIC2
+ENV MCR_ROOT=/opt/GISTIC2/MATLAB_Compiler_Runtime
+#
+RUN apt-get install -qq --no-install-recommends --allow-unauthenticated \
+libxmu-dev
+

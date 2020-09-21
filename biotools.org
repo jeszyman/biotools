@@ -4,8 +4,18 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :END:
 :LOGBOOK:
+CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+
+#+name: docker_build
+#+begin_src bash :tangle no
+cd ~/repos/biotools
+docker build . --file Dockerfile --tag jeszyman/test
+docker build . --file Dockerfile --tag jeszyman/biotools
+#+end_src
+
+
 ** Processes
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
@@ -14,7 +24,9 @@ CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 - downsample
   - fastq
     - https://www.biostars.org/p/6544/
-  - bam (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
+  - bam
+    - https://bioinformatics.stackexchange.com/questions/402/how-can-i-downsample-a-bam-file-while-keeping-both-reads-in-pairs
+    - (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
 - read simulation 
   - RNA-seq reads https://rdrr.io/bioc/polyester/
   - http://bioinform.github.io/varsim/
@@ -53,6 +65,8 @@ CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 - https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
 - https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=The%20output%20from%20FastQC%2C%20after,or%20%E2%80%9CFail%E2%80%9D%20is%20assigned.
 **** coverage and depth
+- https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/hiseq-x-30x-coverage-technical-note-770-2014-042.pdf
+- https://www.biostars.org/p/331957/
 - https://www.htslib.org/doc/samtools-depth.1.html#OPTIONS
 - for coverage https://www.biostars.org/p/104063/
 *** single-cell RNA sequencing (scRNA-seq)
