@@ -15,6 +15,13 @@ docker build . --file Dockerfile --tag jeszyman/test
 docker build . --file Dockerfile --tag jeszyman/biotools
 #+end_src
 
+## identifies server in docker containers
+server_ask() {
+    echo -n "Choose your server: "
+    read SERVER
+    SERVER="${SERVER:=chaudhuri-roche}"
+}
+
 
 ** Processes
 :PROPERTIES:
@@ -2294,6 +2301,18 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 - deeptools
   - https://deeptools.readthedocs.io/en/latest/content/example_usage.html
 *** gistic2 
+https://www.genepattern.org/file-formats-guide
+
+segmentation file column 6 is log2(x)-1 of the copy number, so
+| interp  | copy number |   log2(x)-1 |
+|---------+-------------+-------------|
+| neutral |           2 |           0 |
+| gain    |           3 |        0.58 |
+| amp     |           4 |           1 |
+| loss    |           1 |          -1 |
+| del     |           0 | - inf -> NA |
+|         |             |             |
+
 - https://docs.cbioportal.org/5.1-data-loading/data-loading/file-formats#gistic-2-0-data
 - https://blindwith.science/2018/10/442.html/
 - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
