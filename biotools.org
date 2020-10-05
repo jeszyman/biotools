@@ -330,18 +330,42 @@ server_ask() {
 
 
 *** testing, modeling, and read simulation
-- downsample
-  - fastq
-    - https://www.biostars.org/p/6544/
-  - bam
-    - https://bioinformatics.stackexchange.com/questions/402/how-can-i-downsample-a-bam-file-while-keeping-both-reads-in-pairs
-    - (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
 - read simulation 
   - RNA-seq reads https://rdrr.io/bioc/polyester/
   - http://bioinform.github.io/varsim/
   - https://omictools.com/data-simulation3-category?sortby=recency
   - simulate reads
     - https://github.com/lh3/wgsim
+- downsample
+  - fastq
+    - https://www.biostars.org/p/6544/
+  - bam
+    - subsample function for reads instead of fraction
+# #https://www.biostars.org/p/76791/
+# function SubSample {
+# FACTOR=$(samtools idxstats $1 | cut -f3 | awk -v COUNT=$2 'BEGIN {total=0} {total += $1} END {print COUNT/total}')
+# }
+# SubSample $localdata/bams/lib080.dedup.bam
+# if [[ $FACTOR > 1 ]]
+#   then 
+#   echo '[ERROR]: Requested number of reads exceeds total read count in' $1 '-- exiting' && exit 1
+# fi
+
+# sambamba view -s $FACTOR -t 2 -f bam -l 5 $1
+
+# }
+
+# export -f SubSample
+
+# ls *.bam | parallel "SubSample {} 50000000 > {.}_subsampled.bam"
+
+    - https://bioinformatics.stackexchange.com/questions/402/how-can-i-downsample-a-bam-file-while-keeping-both-reads-in-pairs
+    - (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
+    - w/ sambamba # bam_sample(){
+#     base=`basename -s .bam $1`
+#     sambamba view -f sam -t 30 $1 | shuf -n $2 > $3/${base}_${2}_sample
+# }
+
 *** sequence variation
 **** copy number
 - [[https://www.bioconductor.org/packages/devel/bioc/vignettes/TitanCNA/inst/doc/TitanCNA.pdf][see ploidy purity correction math]]
