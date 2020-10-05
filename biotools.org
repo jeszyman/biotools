@@ -7,7 +7,14 @@
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+https://www.sciencedirect.com/science/article/pii/S2215016118300773
+https://dnatech.genomecenter.ucdavis.edu/faqs/which-protocols-or-kits-do-you-recommend-for-rna-isolations-from-human-and-animal-samples/
+https://www.neb.com/products/nucleic-acid-purification/rna-cleanup/rna-cleanup
+https://www.thermofisher.com/us/en/home/references/ambion-tech-support/rna-isolation/tech-notes/maximize-your-rna-yield.html
 https://github.com/genome/bfx-workshop
+- omics integration
+  - cite:wu2019
+  - https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
 ** databases, data sets, and database browsers
 :PROPERTIES:
 :ID:       FCBA0863-010A-448C-A33C-941D2AA45AD5
@@ -343,6 +350,7 @@ server_ask() {
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
 :END:
+- cite:huang2019 
 - cite:feng2020 
 - cite:xu2018 
 - cite:ge2020
@@ -668,7 +676,7 @@ CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
     - cite:byron2016translating
     - cite:Kalari_2014
     - cite:Van_Keuren_Jensen_2014
-**** visualization
+**** RNA-seq visualization
 - examples
   - [[https://www.cell.com/cell-reports/pdf/S2211-1247(20)30669-0.pdf][good seq analysis and visual example]]
 - volcano
