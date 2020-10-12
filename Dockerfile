@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM jeszyman:basecamp
 #########1#########2#########3#########4#########5#########6#########7
 #############
 ### Notes ###
@@ -10,24 +10,14 @@ FROM ubuntu:xenial
 ## See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 #
 #
-RUN apt-get update -yq\
- && apt-get install -yq --no-install-recommends --allow-unauthenticated \
-   libfftw3-dev \
-   gcc \
-   bzip2 \
-   wget \
-   cmake \   
-   && apt-get clean 
 #
 ############################
 ### Python 3.6 and Conda ###
 ############################
 #
 #
-RUN cd /tmp && wget --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh
-RUN bash /tmp/Miniconda3-4.3.21-Linux-x86_64.sh -b -p /opt/miniconda
-ENV PATH="/opt/miniconda/bin:${PATH}"
 # Alphebetical 
+RUN conda install -c bioconda pysam
 RUN conda install -c bioconda bcftools
 RUN conda install -c bioconda bedtools
 RUN conda install -c bioconda bowtie2
@@ -54,20 +44,11 @@ RUN conda install -c bioconda bedops
 RUN conda install -c bioconda goleft
 #
 # TMP NEED TO REMOVE CRAN FROM APT BELOW
-RUN apt-get install -qq --no-install-recommends nano
+
 #########
 ### R ###
 #########
 #
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-#RUN echo "deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu xenial-cran35/" >> /etc/apt/sources.list
-RUN echo "deb http://cran.wustl.edu/bin/linux/ubuntu xenial-cran35/" \
->> /etc/apt/sources.list
-#RUN apt upgrade -qq
-RUN apt update -qq
-RUN apt-get install -qq --no-install-recommends r-base r-base-dev
-ENV PATH="/usr/bin:${PATH}"
-RUN echo 'local({r <- getOption("repos"); r["CRAN"] <- "http://cran.r-project.org"; options(repos=r)})' > ~/.Rprofile
 RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("DESeq2"); BiocManager::install("tximport"); BiocManager::install("readr");'
 #
 ###############################################################
@@ -80,20 +61,12 @@ RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::
 # multiqc
 ## Set the locale
 ## https://stackoverflow.com/questions/28405902/how-to-set-the-locale-inside-a-debian-ubuntu-docker-container#28406007
-RUN apt-get update \
- && apt-get install -y --no-install-recommends locales
-RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    locale-gen
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8    
 #
 RUN pip install -U multiqc
 #
 # cnvkit
 RUN pip install -U cython
 RUN pip install -U future futures pandas pomegranate pyfaidx
-RUN conda install -c bioconda pysam
 RUN pip install cnvkit==0.9.6
 #
 # RSeQC
@@ -109,39 +82,24 @@ RUN pip install RSeQC
 #    libxml2-dev
 #
 RUN R -e "install.packages('devtools')"
-RUN R -e "install.packages('devtools')"
 #RUN R -e "library(devtools); install_github("broadinstitute/ichorCNA", force = T)"
 # from 	git clone https://github.com/broadinstitute/ichorCNA.git && \ 
-RUN Rscript -e 'install.packages(c("tidyverse", "git2r", "stringr", "devtools", "optparse", "plyr"), repos = c(CRAN="http://cran.rstudio.com"))'
-
+#
 RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("HMMcopy"); BiocManager::install("SNPchip");' 
-
-#RUN apt-get update && apt-get install -yq git --no-install-recommends 
-
-RUN apt-get update -yq\
- && apt-get install -yq --no-install-recommends --allow-unauthenticated \
-   git 
-
+#
 RUN cd /opt \
     && git clone https://github.com/broadinstitute/ichorCNA.git \
     && cd ichorCNA \
     && R CMD INSTALL . \
     && cd /opt 
-
+#
 RUN cd /opt && \
     git clone https://github.com/shahcompbio/hmmcopy_utils.git && \
     cd hmmcopy_utils && \
     cmake . && \
     make 
 ##NEED edger, limma, gage, dseq2, wgcna
-
-RUN apt-get install -y parallel
-
-
-#RUN add-apt-repository --remove ppa:
-RUN apt-get update
-RUN apt-get install -qq parallel
-
+#
 RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("DNAcopy");'
 #
 

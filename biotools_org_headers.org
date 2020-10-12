@@ -1,0 +1,16 @@
+* Local Variables                                                  :noexport:
+:PROPERTIES:
+:CREATED:  [2020-09-22 Tue 18:55]
+:END:
+#+startup: overview
+#+property: header-args    :results silent
+#+property: header-args+    :cache yes
+#+property: header-args+    :eval never-export
+#+property: header-args+    :exports code
+#+property: header-args+    :tangle no
+#+property: header-args:R    :session *mpnst*
+#+startup: overview
+#+todo: WAITING READYDEV INDEV TODO INRUN | DONE
+# Local Variables:
+# truncate-lines: nil
+# End:
