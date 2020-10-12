@@ -490,7 +490,11 @@ CLOCK: [2019-06-12 Wed 14:40]--[2019-06-12 Wed 14:58] =>  0:18
 CLOCK: [2019-05-29 Wed 15:23]--[2019-05-29 Wed 15:34] =>  0:11
 CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 :END:
+<<<<<<< HEAD
 
+=======
+https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
+>>>>>>> 0e63e75f069079bf88c28a56983b00954c035320
 *** DNA-seq
 - https://www.genscript.com/molecular-biology-glossary/11941/genomic-equivalent
 - ATAC-Seq
@@ -538,6 +542,7 @@ CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
   - cite:spencer2013
 - Fonseca,12 Tools for mapping high throughput sequencing data(2)
 - [[file:~/Box%20Sync/scientific_technique/Cruchaga%20lab%20eQTLs.pptx][Cruchaga eQTLs]]
+<<<<<<< HEAD
 
 ***** Post-alignment Samtools
 :PROPERTIES:
@@ -657,6 +662,127 @@ noncoding, known mis-spliced, mitochondrial, x/y in mixed sex, unannotated
 :ID:       2A4B2B42-C088-4479-BC65-670CC8377D39
 :END:
 
+=======
+
+***** Post-alignment Samtools
+:PROPERTIES:
+:ID:       2D153E08-9F4A-4564-ACA7-5B4932D1022B
+:END:
+
+- nice header review https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
+- Post-alignment
+  - samtools
+    - [[http://www.htslib.org/][website]]
+      - [[http://www.htslib.org/workflow/][workflows]]
+      - [[http://www.htslib.org/doc/][documentation]]
+        - [[http://www.htslib.org/doc/#publications][publications]]
+    - [[https://github.com/samtools/][github]]
+    - cite:li2009 
+    - samtools view sorted.bam | awk '{sum+=$5} END { print "Mean MAPQ =",sum/NR}'
+    - [[https://www.biostars.org/p/15953/][biostars: calculate MAPQ]]
+    - calc mapq w/ samtools- https://www.biostars.org/p/15953/][Malachi Griffith biostars
+- [[http://www.htslib.org/doc/samtools-1.2.html][Documentation]]
+- Subset a bam
+  - By chromosome
+    - e.g.: ​samtools view -b in.bam chr1 > in_chr1.bam
+- [[http://barcwiki.wi.mit.edu/wiki/SOPs/miningSAMBAM][some common Samtools tasks]]
+- [[http://davetang.org/wiki/tiki-index.php?page=SAMTools][a Samtools tutorial]]
+- [[http://biobits.org/samtools_primer.html][another Samtools tutorial]]
+- [[http://broadinstitute.github.io/picard/explain-flags.html][SAM flags]]
+- [[https://www.biostars.org/p/17361/][Picard is Samtools!]]
+- Find ummapped reads by flags
+- [[http://davetang.org/wiki/tiki-index.php?page=SAMTools#Converting_a_SAM_file_to_a_BAM_file][Sam to Bam, indexing ]]   
+
+***** Ideas
+:PROPERTIES:
+:ID:       F6511EA3-A5B4-455E-99F1-D536EE81F22D
+:END:
+
+- [[http://zvfak.blogspot.com/2012/02/samtools-in-parallel.html][run in parallel]]
+
+- incorporate samtools in R workflow via Rsamtools
+
+***** Exome Sequencing Pipeline
+:PROPERTIES:
+:ID:       57992D53-D767-4E44-9E3F-B4A05E5B4EF1
+:END:
+
+***** Specialized Applications
+:PROPERTIES:
+:ID:       7A9FC47A-2E9E-46D5-8E3E-E7C7C5C5AD9E
+:END:
+
+****** Detecting Internal Tandem Duplications
+:PROPERTIES:
+:ID:       4B340D6D-E38D-42E5-AD1F-3CB0BDF62545
+:END:
+
+[[file:~/Box%20Sync/library/Spencer,12%20Detection%20of%20FLT3%20ITD%20in%20short%20read%20length%20NGS.pdf][Spencer,12 Detection of FLT3 ITD in short read length NGS]]
+
+***** DNA Alignment
+:PROPERTIES:
+:ID:       B2F17B06-C1BA-487A-93EC-D9737584BC0E
+:END:
+
+- https://www.youtube.com/watch?v=4n7NPk5lwbI 
+- - https://www.youtube.com/watch?v=hpb-mH-yjLc&list=PL2mpR0RYFQsBiCWVJSvVAO3OJ2t7DzoHA
+- tutorials
+  - http://seqinformatics.com/?page_id=160
+    - near perfect matches (BLAST not specific)
+  - https://www.youtube.com/watch?v=zMAa9gFd2Gs
+  - http://www.ngscourse.org/Course_Materials/alignment/tutorial/example.html
+  - https://wikis.utexas.edu/display/bioiteam/Mapping+tutorial
+
+****** Novoalign
+:PROPERTIES:
+:ID:       22097A02-1E18-40BD-BA2F-0D3BC645F0D5
+:END:
+
+- cite:Novocraft
+- [[http://www.novocraft.com/support/download/][Novoalign]]
+
+****** BWA
+:PROPERTIES:
+:ID:       83F91393-2108-4785-9696-BDE8EC09FA88
+:END:
+
+-"bwa concatenates all the references sequences together before aligning. So if a read hangs off of one sequence onto the next, it's given the appropriate mapping position, and the unmapped flag is also set, as a sign that something is off about the alignment."
+
+- sequences should be <3% difference from reference
+- A block sorting lossless data compression algorithm
+- Compresses the genome as a BWT index
+- Identical sequences (genome repeats) only occur once in the index, reads that match the genome in multiple locations get a mapping quality of 0
+- output is SAM
+- [[http://bio-bwa.sourceforge.net/][Burrows-Wheeler Aligner]]
+- [[https://www.biostars.org/t/bwa%20mem/][Biostars BWA Posts]]
+- [[http://bio-bwa.sourceforge.net/bwa.shtml][bwa manual]]
+  - algorithms
+    - backtrack illumina to 100 bp
+    - 70 bp to 1 mb
+      - sw 
+      - mem
+    - mem is generally recommended
+    - 
+
+***** Post-Alignment QC
+:PROPERTIES:
+:ID:       F689D6FA-071C-4167-BC21-85A7EC20DA41
+:END:
+
+filtering
+noncoding, known mis-spliced, mitochondrial, x/y in mixed sex, unannotated 
+
+****** Inspection
+:PROPERTIES:
+:ID:       07602EB8-5EFD-4179-9F55-320190ECE670
+:END:
+
+****** Processing
+:PROPERTIES:
+:ID:       2A4B2B42-C088-4479-BC65-670CC8377D39
+:END:
+
+>>>>>>> 0e63e75f069079bf88c28a56983b00954c035320
 ****** FASTX-Toolkit
 :PROPERTIES:
 :ID:       8169C9DC-FDB6-473E-9B54-E154261186EA
@@ -726,6 +852,7 @@ https://software.broadinstitute.org/gatk/documentation/topic?name=methods
 :CREATED:  [2019-10-03 Thu 10:22]
 :ID:       e07fee1b-d7fd-42ce-9639-ff803cfc9c8e
 :END:
+<<<<<<< HEAD
 :LOGBOOK:
 CLOCK: [2020-02-13 Thu 11:25]--[2020-02-13 Thu 11:33] =>  0:08
 CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
@@ -1001,6 +1128,283 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 - For protein, SOMAscan has a higher dynamic range and lower limit of detection than comparable Luminex antibody-based assays (cite doi.org/10.1038/s41591-019-0665-2). Moreover, SOMAscan includes targets such as Jagged-1 and -2 not available for multiplexed antibody assays.
 *** RNA-seq                                                          :career:
 :LOGBOOK:
+=======
+:LOGBOOK:
+CLOCK: [2020-02-13 Thu 11:25]--[2020-02-13 Thu 11:33] =>  0:08
+CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
+:END:
+- https://www.ncbi.nlm.nih.gov/pubmed/32036085
+- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1257-4
+- cite:newman2015
+- for rna-seq data, see cite:newman2019 suppliment, do transcript TPM (salmon) and sum to gene 
+- The following metrics are provided for each mixture sample:
+  - P-value: Statistical significance of the deconvolution result across all cell subsets; useful for filtering out results with a poor "goodness of fit." Increase the number of permutations (input page) to increase the number of significant digits.
+  - Correlation: Pearson's correlation coefficient (R), generated from comparing the original mixture with the estimated mixture, the latter of which is calculated using imputed cell fractions and corresponding expression profiles from the signature genes file. Of note, the correlation is restricted to signature genes.
+  - RMSE: Root mean squared error between the original mixture and the imputed mixture, restricted to genes in the signature gene file.
+- in mouse
+  - generating a reference from published data
+    - single cell 
+    - array
+      - cite:chen2017
+        - https://github.com/wuaipinglab/ImmuCC/tree/master/tissue_immucc
+  - using pre-compiled reference
+    - cite:wang2017a
+      - https://github.com/lintian0616/bica
+    - convert to human and use lm22
+- enrichment- ID at pathway or gene set
+  - by ssGSEA
+    - ESTIMATE
+    - xCell
+- cite:liu2019a
+  - immune repetoire sequencing- see liu2019a ref83, table 4, ref88-92
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5996037/
+- https://www.nature.com/articles/s43018-019-0022-x
+- https://www.sciencedirect.com/science/article/pii/S2589004218301871
+- https://www.nature.com/articles/nbt.3724
+- cite:yalcin2012
+- https://mixcr.readthedocs.io/en/master/index.html
+- https://www.nature.com/articles/s41592-019-0529-1
+- https://www.biostars.org/p/354696/
+- cite:vonstechow2017
+- cell type enumeration with RNA-seq
+  - https://www.nature.com/articles/s41586-019-1773-3
+
+***** immunoprofiling / immunophenotyping
+:PROPERTIES:
+:CREATED:  [2019-10-30 Wed 10:52]
+:ID:       a143e3d0-35b3-4579-8831-9710791e0a6a
+:END:
+- cite:liu2019a
+  
+
+*** [[id:5738AF1F-8621-40C3-AF80-0C396CDC889B][LINK TO Clinical NGS]]
+*** massively parallel sequencing 
+:PROPERTIES:
+:ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
+:END:
+- https://en.m.wikibooks.org/wiki/Next_Generation_Sequencing_(NGS)
+- commercial sequencing entities
+  - medgeneome
+    - https://research.medgenome.com/qc-reports/
+    - https://research.medgenome.com/ngs-services/whole-genome-exome-sequencing/
+- https://www.illumina.com/systems/sequencing-platforms/comparison-tool.html
+- cite:glenn2011 
+- https://www.illumina.com/content/dam/illumina-marketing/documents/techniques/high-throughput-flipbook-web.pdf
+- http://www.opiniomics.org/hiseq-move-over-here-comes-nova-a-first-look-at-illumina-novaseq/
+- Sequencing platform overview and limitations
+  - cite:payton2016
+- https://www.biostars.org/p/198143/
+- https://www.illumina.com/content/dam/illumina-marketing/documents/products/brochures/ngs-buyers-guide.pdf
+- https://www.illumina.com/products/by-type/sequencing-kits/library-prep-kits.html
+- https://dnatech.genomecenter.ucdavis.edu/2015/05/28/hiseq-3000-sequencing/
+- https://www.nature.com/articles/s41598-018-29325-6
+- x10
+- analytical sensitivity of pcr/ ngs methods/ fish/ etc...
+- NGS has shorter sequences, higher base-call error, non-uniform coverage, platform-specific artificats 
+- https://github.com/pughlab/ConsensusCruncher
+
+
+Seq platforms tbl 
+Error rates 
+Speed 
+Cost
+Read length
+Companies
+....
+
+**** illumina platform
+:PROPERTIES:
+:ID:       BD6D148D-BF63-4A9A-A14E-1AB6954BFA40
+:END:
+
+output- *.bcl files- base call and quality score per cycle
+convert *.bcl to .fastq.gz w/ CASAVA
+also demultiplexes 
+
+**** [[Overview of Sequencing Methods]] Molecular Micro
+:PROPERTIES:
+:ID:       6F399263-D04E-441A-B990-BB669F61F25E
+:END:
+
+**** Low Throughput Methods
+:PROPERTIES:
+:ID:       E58E9F68-2814-4BC2-9D1E-54D129BD1454
+:END:
+
+- 141013.1000 nextgen payton
+  - sanger is up to 1000 bp
+    - variable read ~200 clinically vs. 800 bp read
+
+**** High Throughput Sequencing Platforms
+:PROPERTIES:
+:ID:       DF6FFA19-8867-49AC-947D-FD57B403761A
+:END:
+
+- [[https://www.youtube.com/watch?v=v1DbcJD4Ry0][youtube Mardis NGS]]
+- [[http://www.broadinstitute.org/scientific-community/science/platforms/genome-sequencing/broadillumina-genome-analyzer-boot-camp][Broad / Illumina Genome Analyzer Boot Camp]]
+- [[file:~/Box%20Sync/library/Mardis,08%20Next-Generation%20DNA%20%20Sequencing%20Methods.pdf][Mardis,08 Next-Generation DNA  Sequencing Methods]]
+- 150924.1600Mardis talk
+  - Illumina read length limit is signal to noise
+  - Ion torrent difficult for indels with runs of single nucleotide
+  - Paired end allows placement of repetitive sequences where one side might be repetitive, the other not
+  - Evaluate coverage by comparison to snp array
+  - Clinical sequencing false positive if variants have patterns
+
+***** Ion Torrent
+:PROPERTIES:
+:ID:       EC631BCD-1A9B-4B8B-877E-7861C27D948B
+:END:
+
+***** Illumina
+:PROPERTIES:
+:ID:       D1A3EF94-7933-4854-99ED-C63DE8F7741D
+:END:
+
+****** Illumina TruSeq
+:PROPERTIES:
+:ID:       3CE663C4-BF37-4E2E-9A0D-0E822241D05E
+:END:
+
+- See Kukurba,15
+- Steps
+  - RNA isolation
+  - Poly-A purification
+  - Fragmentation
+  - cDNA synthesis
+  - Adaptor ligation
+  - Size selection
+  - PCR amplification
+
+******* Removal of rRNA and tRNA
+:PROPERTIES:
+:ID:       D509473A-536B-46D2-8639-22DC19DF41E2
+:END:
+
+**** NGS vs. Sanger
+:PROPERTIES:
+:ID:       4AAD4446-DE69-45CD-A1FE-F8C3A5768C17
+:END:
+
+**** Massively parallel sequencing / Next Generation Sequencing (NGS)
+:PROPERTIES:
+:ID:       7CC63676-4CA4-46F1-A7E5-9A3D1D0B6ADD
+:END:
+
+- seq artefacts and errors
+  - review of seq errors
+  - types and sources
+- seq error correction
+  - as an information model, propogation of errors, random vs. nonrandom
+  - random start-stop- allows ID of PCR duplicates- by start/stop regardless of internal seq
+  - ligation umi
+    - umi strategies
+    - umi actaully adds back 'false' pcr duplicates which can now be positively IDed as unique molecules
+  - duplexing and asymmetric strand artifacts
+    - distinguishing strands 
+- Low sequence complexity
+  - GC bias
+    - cite:chen2013 
+- 1st exon GC-rich, poorly seq by illumina 
+- cite:Lee_2016
+- cite:Goodwin_2016
+
+*** metabolomics
+:PROPERTIES:
+:CREATED:  [2020-10-08 Thu 09:15]
+:END:
+- http://www.visantnet.org/visantnet.html
+*** methylation                                                     :biopipe:
+:PROPERTIES:
+:CREATED:  [2019-05-29 Wed 14:46]
+:ID:       b8db46d3-8329-4fef-82b1-4d99c2c9312b
+:END:
+:LOGBOOK:
+CLOCK: [2019-06-26 Wed 14:06]--[2019-06-26 Wed 14:45] =>  0:39
+:END:
+- "All the cell line datasets generated during and/or analysed during the current study are available in the GEO repository under accession code GSE79838. The
+cfMeDIP-seq NGS data for patient samples that support the findings of this study are available upon request from the corresponding author (D.D.C) to comply with
+institutional ethics regulation. Source data for Fig. 1d and e are provided in Supplementary Table 9, and for Figure 1G are provided in Supplementary Table 10.
+Additional source data can be found on Zenodo (Supplementary Table 13)."
+- to add
+  - R
+    - MethylKit
+    - DESeq2
+    - caret
+    - minfi
+    - Rtsne
+  - SAMtools
+  - Bowtie
+  - MEDIPS
+  - BWA
+  - GATK IndelRealigner
+  - MuTect
+  - TrimGalore
+  - Bismark6
+  - Bowtie
+  - 
+- from cite:shen2018
+  - "The generated SAM files from hg19 alignment were converted to BAM format, ensuring the removal of duplicate reads, and the reads were then sorted and indexed using SAMtools21 before subsequent analysis with the R package MEDIPS22. The CpG enrichment score, as a quality control measure for the immunoprecipitation reaction, was calculated as part of the MEDIPS package."
+  - Shell scripts were used to process MeDIP sequencing data to produce RPKM estimates for downstream analysis. Custom R scripts with a collection of R/Bioconductor packages were used to analyse the resulting dataset. The code used for analysis is available in the form of R markdowns deposited onto Zenodo as detailed in Supplementary Table 13.
+  - 
+| Description                                                                                    | Zenodo DOI for Data    | Zenodo DOI for Code    |
+| <25>                                                                                           | <25>                   | <25>                   |
+| IHEC Figure                                                                                    | 10.5281/zenodo.1205714 |                        |
+| Simulations                                                                                    | 10.5281/zenodo.1205730 | 10.5281/zenodo.1205728 |
+| Extended Data Fig. 6 violin plots                                                              | 10.5281/zenodo.1205744 | 10.5281/zenodo.1205735 |
+| Bed file of genomic windows that contain CpGs                                                  | 10.5281/zenodo.1205752 |                        |
+| TCGA and COSMIC tSNEs                                                                          | 10.5281/zenodo.1205754 |                        |
+| Machine learning                                                                               |                        | 10.5281/zenodo.1242697 |
+| Markdown with ensemble of non-machine learning scripts including Extended Data Fig. 6 heatmaps |                        | 10.5281/zenodo.1205756 |
+| Stand alone scripts called by non-machine learning markdown                                    |                        | 10.5281/zenodo.1205746 |
+
+- Open source code/packages used for data analysis: R, SAMtools (v. 1.3.1), Bowtie (v. 0.12.9), MEDIPS (v. 1.22.0), BWA (v. 0.7.1220),
+- Genome Analysis ToolKit (GATK) IndelRealigner, MuTect (v.1.1.5) , Trim Galore! (v. 0.4.4), Bismark (v. 0.10.1), Bowtie2 (v. 2.0.5),
+- MethylKit (v 0.99.2), DESeq2 (v. 1.4.5), caret R package, minfi bioconductor package, Rtsne
+- Commercial software used for data analysis: Microsoft Excel for Mac (v. 16.16.1)
+
+- [[id:333E498B-E0EA-460C-95EC-1931ACE19473][pipeline development]]
+
+*** omics integration
+  - cite:wu2019
+  - https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
+*** pathway analysis
+:PROPERTIES:
+:CREATED:  [2020-07-20 Mon 10:05]
+:ID:       e4351ef3-6d41-4121-a2cc-c63d89f997ac
+:END:
+- gsea
+    - https://software.broadinstitute.org/gsea/doc/GSEAUserGuideTEXT.htm#_Consistent_Feature_Identifiers_Acro
+    - http://software.broadinstitute.org/cancer/software/genepattern/modules/docs/ssGSEAProjection/4
+- http://www.visantnet.org/visantnet.html
+- https://www.nature.com/articles/ncomms13427#Sec10
+  - https://github.com/varnivey/ipanda/blob/master/MANUAL.txt
+- https://www.nature.com/articles/s41598-019-46059-1
+- pathway image ideas
+  - heatmaps
+    - https://www.frontiersin.org/files/Articles/425394/fgene-10-00858-HTML/image_m/fgene-10-00858-g002.jpg
+    - https://www.bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
+  - wire diagrams
+  - bar and lolipop for p-value and set size
+    - https://www.nature.com/articles/s41598-018-29420-8
+    - https://www.frontiersin.org/articles/10.3389/fgene.2019.00858/full
+*** proteomics
+- proteome dynamic range is ~10^12, machine limit is usually ~10^3
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096388/
+- https://www.agilent.com/cs/library/eseminars/public/SomaLogic_Agilent_081816.pdf
+- http://mohanlab.bme.uh.edu/wp-content/uploads/2015/09/HOU-SOMAscan-Methods-2016.pdf
+
+**** SOMAscan
+:PROPERTIES:
+:ID:       89b4ec6d-992d-4551-81da-19011597732a
+:END:
+- [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd][email: GTAC SOMAscan notes]]
+- cite:candia2017 
+- https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd
+- https://www.sciencedirect.com/science/article/pii/S1874391916304006
+- For protein, SOMAscan has a higher dynamic range and lower limit of detection than comparable Luminex antibody-based assays (cite doi.org/10.1038/s41591-019-0665-2). Moreover, SOMAscan includes targets such as Jagged-1 and -2 not available for multiplexed antibody assays.
+*** RNA-seq                                                          :career:
+:LOGBOOK:
+>>>>>>> 0e63e75f069079bf88c28a56983b00954c035320
 CLOCK: [2020-10-08 Thu 10:15]--[2020-10-08 Thu 10:25] =>  0:10
 CLOCK: [2020-10-08 Thu 09:17]--[2020-10-08 Thu 10:05] =>  0:48
 CLOCK: [2020-06-22 Mon 12:16]--[2020-06-22 Mon 12:43] =>  0:27
@@ -1338,6 +1742,10 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
           - accounting for fragment bias- https://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-3-r22
         - Sequencing adaptors
           - Y-adaptor PCR: blunt cDNA ends, add adenosine overhangs
+<<<<<<< HEAD
+=======
+- cite:oneil2013
+>>>>>>> 0e63e75f069079bf88c28a56983b00954c035320
 **** [[id:3BC41E6A-00D3-4498-A48C-463F68CFD76B][LINK TO massively parallel sequencing]]
 **** raw sequence processing
   - adapter trimming
