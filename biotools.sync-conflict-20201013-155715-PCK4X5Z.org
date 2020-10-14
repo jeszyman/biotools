@@ -416,19 +416,6 @@ mandatory
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
-*** aligned sequence qc
-:PROPERTIES:
-:ID:       1165bc2b-9373-4313-94bd-2a1d7be34fb8
-:END:
-- https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
-- coverage
-  - cite:illumina2014
-  - Picard CollectWgsMetrics
-**** coverage and depth
-- https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/hiseq-x-30x-coverage-technical-note-770-2014-042.pdf
-- https://www.biostars.org/p/331957/
-- https://www.htslib.org/doc/samtools-depth.1.html#OPTIONS
-- for coverage https://www.biostars.org/p/104063/
 *** capture probes and barcoding
 https://support.illumina.com/bulletins/2018/08/understanding-unique-dual-indexes--udi--and-associated-library-p.html
 https://www.illumina.com/content/dam/illumina-marketing/documents/products/whitepapers/index-hopping-white-paper-770-2017-004.pdf
@@ -437,7 +424,6 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
 - capture probe design
   - https://ascopubs.org/doi/full/10.1200/CCI.19.00077?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub%3Dpubmed
    Contigs: group of sequences representing overlapping regions from a genome or transcriptome.
-- [[https://wikis.utexas.edu/display/GSAF/Illumina+-+all+flavors][illumina adaptors explained]]
 - adaptor strategies
   - https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/case-study/idt_improved-coverage-uniformity-with-xgen-lockdown-panels-case-study.pdf?sfvrsn=c33d1907_6
   - https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/protocol/idt_xgen-prism-dna-library-prep-kit-quick-reference-guide.pdf?sfvrsn=6fe71207_4
@@ -481,19 +467,14 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
   - docker pull lyronctk/cibersortxfractions
 - have access token for docker: https://cibersortx.stanford.edu/getoken.php
 *** common sequence file manipulation
-:PROPERTIES:
-:ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
-:END:
   - [[https://www.biostars.org/p/68283/][count total length of regions in bed file]]
   - https://gatkforums.broadinstitute.org/gatk/discussion/6484/how-to-generate-an-unmapped-bam-from-fastq-or-aligned-bam
 
-- https://www.biostars.org/p/247903/
 - https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
-- [[https://github.com/lh3/seqtk][seqtk]] 
 - sequence file manipulation
   - https://gist.github.com/davfre/8596159
   - [[https://www.biostars.org/p/6544/][look at all the ways to split a bam file!]]
-*** copy-number                                                     :biopipe:
+*** copy-number                                             
 :PROPERTIES:
 :CREATED:  [2019-05-29 Wed 14:46]
 :ID:       0206fb96-8785-47fb-87ca-1f597de0ee85
@@ -509,7 +490,9 @@ CLOCK: [2019-06-12 Wed 14:40]--[2019-06-12 Wed 14:58] =>  0:18
 CLOCK: [2019-05-29 Wed 15:23]--[2019-05-29 Wed 15:34] =>  0:11
 CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 :END:
+
 https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
+
 *** DNA-seq
 - https://www.genscript.com/molecular-biology-glossary/11941/genomic-equivalent
 - ATAC-Seq
@@ -557,6 +540,7 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
   - cite:spencer2013
 - Fonseca,12 Tools for mapping high throughput sequencing data(2)
 - [[file:~/Box%20Sync/scientific_technique/Cruchaga%20lab%20eQTLs.pptx][Cruchaga eQTLs]]
+<<<<<<< HEAD
 
 ***** Post-alignment Samtools
 :PROPERTIES:
@@ -676,6 +660,127 @@ noncoding, known mis-spliced, mitochondrial, x/y in mixed sex, unannotated
 :ID:       2A4B2B42-C088-4479-BC65-670CC8377D39
 :END:
 
+=======
+
+***** Post-alignment Samtools
+:PROPERTIES:
+:ID:       2D153E08-9F4A-4564-ACA7-5B4932D1022B
+:END:
+
+- nice header review https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
+- Post-alignment
+  - samtools
+    - [[http://www.htslib.org/][website]]
+      - [[http://www.htslib.org/workflow/][workflows]]
+      - [[http://www.htslib.org/doc/][documentation]]
+        - [[http://www.htslib.org/doc/#publications][publications]]
+    - [[https://github.com/samtools/][github]]
+    - cite:li2009 
+    - samtools view sorted.bam | awk '{sum+=$5} END { print "Mean MAPQ =",sum/NR}'
+    - [[https://www.biostars.org/p/15953/][biostars: calculate MAPQ]]
+    - calc mapq w/ samtools- https://www.biostars.org/p/15953/][Malachi Griffith biostars
+- [[http://www.htslib.org/doc/samtools-1.2.html][Documentation]]
+- Subset a bam
+  - By chromosome
+    - e.g.: ​samtools view -b in.bam chr1 > in_chr1.bam
+- [[http://barcwiki.wi.mit.edu/wiki/SOPs/miningSAMBAM][some common Samtools tasks]]
+- [[http://davetang.org/wiki/tiki-index.php?page=SAMTools][a Samtools tutorial]]
+- [[http://biobits.org/samtools_primer.html][another Samtools tutorial]]
+- [[http://broadinstitute.github.io/picard/explain-flags.html][SAM flags]]
+- [[https://www.biostars.org/p/17361/][Picard is Samtools!]]
+- Find ummapped reads by flags
+- [[http://davetang.org/wiki/tiki-index.php?page=SAMTools#Converting_a_SAM_file_to_a_BAM_file][Sam to Bam, indexing ]]   
+
+***** Ideas
+:PROPERTIES:
+:ID:       F6511EA3-A5B4-455E-99F1-D536EE81F22D
+:END:
+
+- [[http://zvfak.blogspot.com/2012/02/samtools-in-parallel.html][run in parallel]]
+
+- incorporate samtools in R workflow via Rsamtools
+
+***** Exome Sequencing Pipeline
+:PROPERTIES:
+:ID:       57992D53-D767-4E44-9E3F-B4A05E5B4EF1
+:END:
+
+***** Specialized Applications
+:PROPERTIES:
+:ID:       7A9FC47A-2E9E-46D5-8E3E-E7C7C5C5AD9E
+:END:
+
+****** Detecting Internal Tandem Duplications
+:PROPERTIES:
+:ID:       4B340D6D-E38D-42E5-AD1F-3CB0BDF62545
+:END:
+
+[[file:~/Box%20Sync/library/Spencer,12%20Detection%20of%20FLT3%20ITD%20in%20short%20read%20length%20NGS.pdf][Spencer,12 Detection of FLT3 ITD in short read length NGS]]
+
+***** DNA Alignment
+:PROPERTIES:
+:ID:       B2F17B06-C1BA-487A-93EC-D9737584BC0E
+:END:
+
+- https://www.youtube.com/watch?v=4n7NPk5lwbI 
+- - https://www.youtube.com/watch?v=hpb-mH-yjLc&list=PL2mpR0RYFQsBiCWVJSvVAO3OJ2t7DzoHA
+- tutorials
+  - http://seqinformatics.com/?page_id=160
+    - near perfect matches (BLAST not specific)
+  - https://www.youtube.com/watch?v=zMAa9gFd2Gs
+  - http://www.ngscourse.org/Course_Materials/alignment/tutorial/example.html
+  - https://wikis.utexas.edu/display/bioiteam/Mapping+tutorial
+
+****** Novoalign
+:PROPERTIES:
+:ID:       22097A02-1E18-40BD-BA2F-0D3BC645F0D5
+:END:
+
+- cite:Novocraft
+- [[http://www.novocraft.com/support/download/][Novoalign]]
+
+****** BWA
+:PROPERTIES:
+:ID:       83F91393-2108-4785-9696-BDE8EC09FA88
+:END:
+
+-"bwa concatenates all the references sequences together before aligning. So if a read hangs off of one sequence onto the next, it's given the appropriate mapping position, and the unmapped flag is also set, as a sign that something is off about the alignment."
+
+- sequences should be <3% difference from reference
+- A block sorting lossless data compression algorithm
+- Compresses the genome as a BWT index
+- Identical sequences (genome repeats) only occur once in the index, reads that match the genome in multiple locations get a mapping quality of 0
+- output is SAM
+- [[http://bio-bwa.sourceforge.net/][Burrows-Wheeler Aligner]]
+- [[https://www.biostars.org/t/bwa%20mem/][Biostars BWA Posts]]
+- [[http://bio-bwa.sourceforge.net/bwa.shtml][bwa manual]]
+  - algorithms
+    - backtrack illumina to 100 bp
+    - 70 bp to 1 mb
+      - sw 
+      - mem
+    - mem is generally recommended
+    - 
+
+***** Post-Alignment QC
+:PROPERTIES:
+:ID:       F689D6FA-071C-4167-BC21-85A7EC20DA41
+:END:
+
+filtering
+noncoding, known mis-spliced, mitochondrial, x/y in mixed sex, unannotated 
+
+****** Inspection
+:PROPERTIES:
+:ID:       07602EB8-5EFD-4179-9F55-320190ECE670
+:END:
+
+****** Processing
+:PROPERTIES:
+:ID:       2A4B2B42-C088-4479-BC65-670CC8377D39
+:END:
+
+>>>>>>> 0e63e75f069079bf88c28a56983b00954c035320
 ****** FASTX-Toolkit
 :PROPERTIES:
 :ID:       8169C9DC-FDB6-473E-9B54-E154261186EA
@@ -745,6 +850,7 @@ https://software.broadinstitute.org/gatk/documentation/topic?name=methods
 :CREATED:  [2019-10-03 Thu 10:22]
 :ID:       e07fee1b-d7fd-42ce-9639-ff803cfc9c8e
 :END:
+<<<<<<< HEAD
 :LOGBOOK:
 CLOCK: [2020-02-13 Thu 11:25]--[2020-02-13 Thu 11:33] =>  0:08
 CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
@@ -798,7 +904,6 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
-- [[http://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-2-r18][amplification bias]]
 - https://en.m.wikibooks.org/wiki/Next_Generation_Sequencing_(NGS)
 - commercial sequencing entities
   - medgeneome
@@ -1019,132 +1124,285 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 - https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd
 - https://www.sciencedirect.com/science/article/pii/S1874391916304006
 - For protein, SOMAscan has a higher dynamic range and lower limit of detection than comparable Luminex antibody-based assays (cite doi.org/10.1038/s41591-019-0665-2). Moreover, SOMAscan includes targets such as Jagged-1 and -2 not available for multiplexed antibody assays.
-*** raw sequence QC and processing
-:PROPERTIES:
-:ID:       1EE731A3-83DD-46AF-B988-2311307C335F
-:CREATED:  [2020-10-14 Wed 08:47]
-:END:
-:LOGBOOK:
-CLOCK: [2020-10-13 Tue 14:00]--[2020-10-13 Tue 14:47] =>  0:47
-CLOCK: [2016-04-05 Tue 17:21]--[2016-04-05 Tue 17:32] =>  0:11
-CLOCK: [2016-04-05 Tue 17:06]--[2016-04-05 Tue 17:15] =>  0:09
-CLOCK: [2016-04-05 Tue 10:44]--[2016-04-05 Tue 11:30] =>  0:46
-CLOCK: [2019-07-23 Tue 20:35]--[2019-07-23 Tue 21:13] =>  0:38
-CLOCK: [2019-07-23 Tue 19:27]--[2019-07-23 Tue 19:40] =>  0:13
-CLOCK: [2019-07-16 Tue 14:46]--[2019-07-16 Tue 15:03] =>  0:17
-CLOCK: [2019-07-07 Sun 11:18]--[2019-07-07 Sun 11:34] =>  0:16
-CLOCK: [2019-07-06 Sat 08:11]--[2019-07-06 Sat 09:07] =>  0:56
-CLOCK: [2019-07-05 Fri 21:00]--[2019-07-05 Fri 22:04] =>  1:04
-CLOCK: [2019-06-05 Wed 09:07]--[2019-06-05 Wed 09:47] =>  0:40
-CLOCK: [2019-06-03 Mon 18:40]--[2019-06-03 Mon 20:30] =>  1:22
-CLOCK: [2019-06-04 Tue 12:39]--[2019-06-04 Tue 13:12] =>  0:33
-CLOCK: [2020-10-13 Tue 13:38]--[2020-10-13 Tue 14:00] =>  0:22
-:END:
-- [[id:c0c0ee28-2e41-41a7-9a3b-ae195117a93e][common sequence file manipulation]]
-- QC outputs explained- https://sequencing.qcfail.com/
-- see - cite:chen2013 for GC bias and effects on assembly
-- RNA
-  - https://www.slideshare.net/joachimjacob/2rna-seqpart2investigatin-rawdata
-  - Do not
-    - quality-trim RNA- cite:williams2016a
-      - see also - http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0085024
-        - w/ commentary here- http://genomebio.org/is-trimming-is-beneficial-in-rna-seq/
-      - - https://www.michaelchimenti.com/2016/06/trim-rna-seq-reads/
-    - remove duplicate- no necessarly PCR artifact
-      - https://www.biostars.org/p/55648/
-      - https://www.biostars.org/p/14283/
-  - https://sequencing.qcfail.com/applications/mrna-seq/
-- [[http://bioinformatics-core-shared-training.github.io/cruk-bioinf-sschool/Day1/fastqc_sweave.pdf][de Santiago,15]]
-- Garbe,12
-  - trimming- removing bad ends
-    - adaptors
-    - low quality bases
-  - filering- removing bad reads
-    - low quality reads
-    - contamination
-    - low complexity reads
-    - short reads
-  - see Tagbust 
-- [[https://www.danielecook.com/double-checking-fastqs/][nice fastq python]]
-- https://wikis.utexas.edu/display/bioiteam/Evaluating+your+raw+sequencing+data
-- Read trimming
-  - https://www.biostars.org/p/368420/
-  - adapter
-    - https://www.ecseq.com/support/ngs/trimming-adapter-sequences-is-it-necessary
-    - https://www.biostars.org/p/267388/
-    - http://seqanswers.com/forums/showthread.php?t=51226
-    - https://github.com/griffithlab/rnaseq_tutorial/wiki/Adapter-Trim
-    - do all aligners need adaptor trimming? at least common to do so for all
-    - https://www.biostars.org/p/368420/
-- [[id:1165bc2b-9373-4313-94bd-2a1d7be34fb8][aligned sequence qc]]
-- reference
-  - yas
-  - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]] 
-    - dockerfile - include current build status in comments
-    - sequencing dockerfile repos
-      - https://github.com/broadinstitte/gtex-pipeline.git
-      - https://hub.docker.com/u/mgibio/
-      - https://hub.docker.com/u/biocontainers
-  - https://github.com/genome/gms
-  - best practices
-    - each tool install as standalone
-    - Version control 
-    - File organization
-      - https://libraries.mit.edu/data-management/
-      - See [[file:~/maintenance.org::Information Maintenance][information maintenance]] Organization -> File tree structure
-    - http://www.broadinstitute.org/gatk/guide/best-practices
-      best practices include recording everything
-      record of all commands
-      record of all software versions
-      see Emacs, rpubs.com, sessionInfo and knitR
-    - [[http://www.nature.com/sdata/for-authors/submission-guidelines][Nature data submission guidelines]]
-    - https://kieranhealy.org/resources/
-    - http://kieranhealy.org/files/misc/workflow-apps.pdf
-    - see Anders,13
-    - no docker in docker for dev- confuses vols, etc. instead add emacs to each container and have local repos of .emacs and org
-  - associated mods
-    - [[id:43331BB8-4234-48FE-B510-E92F631D5D7B][Code]]
-  - compendia
-    - [[file:~/Box%20Sync/org/compend.org::*UNIX][UNIX]]
-    - [[file:~/.emacs.d/settings.org::*Emacs][Emacs]]
-    - git
-  - [ ] information management- see cite:griffith2015b           
-  - https://github.com/cbcrg/lncrna-annotation-nf
-  - set alias https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
-  - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
-  - https://hub.docker.com/r/mgibio/mark_duplicates-cwl/dockerfile
-  - https://hub.docker.com/r/broadinstitute/picard/dockerfile
-  - stack
-    - ubuntu
-    - git and github
-    - docker
-      - https://github.com/bioinformatics-core-shared-training/docker-4-bioinformatics
-      - https://gatkforums.broadinstitute.org/firecloud/discussion/6886/guidelines-for-working-with-docker-images-and-dockerfiles-broadies-only
-    - nextflow
-      - https://www.youtube.com/watch?v=jsxTC8pNPUc&t=579s
-      - https://github.com/cbcrg/lncrna-annotation-nf
-      - https://www.nextflow.io/example1.html
-      - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
-      - commands
-        |----------+---------|
-        | function | command |
-        |----------+---------|
-        | <35>     | <35>    |
-        |          |         |
-      - processes
-      - documentation
-- ideas
-  - Consider more emacs shell work: 
-  - add to gatk docker
-    - https://hub.docker.com/u/broadinstitute
-    - https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_cancer_m2_MuTect2.php
-  - ideas
-    - link to documentation- maybe an org and/or markdown file?
-    - script comment design
-  - https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
-
 *** RNA-seq                                                          :career:
 :LOGBOOK:
+=======
+:LOGBOOK:
+CLOCK: [2020-02-13 Thu 11:25]--[2020-02-13 Thu 11:33] =>  0:08
+CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
+:END:
+- https://www.ncbi.nlm.nih.gov/pubmed/32036085
+- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1257-4
+- cite:newman2015
+- for rna-seq data, see cite:newman2019 suppliment, do transcript TPM (salmon) and sum to gene 
+- The following metrics are provided for each mixture sample:
+  - P-value: Statistical significance of the deconvolution result across all cell subsets; useful for filtering out results with a poor "goodness of fit." Increase the number of permutations (input page) to increase the number of significant digits.
+  - Correlation: Pearson's correlation coefficient (R), generated from comparing the original mixture with the estimated mixture, the latter of which is calculated using imputed cell fractions and corresponding expression profiles from the signature genes file. Of note, the correlation is restricted to signature genes.
+  - RMSE: Root mean squared error between the original mixture and the imputed mixture, restricted to genes in the signature gene file.
+- in mouse
+  - generating a reference from published data
+    - single cell 
+    - array
+      - cite:chen2017
+        - https://github.com/wuaipinglab/ImmuCC/tree/master/tissue_immucc
+  - using pre-compiled reference
+    - cite:wang2017a
+      - https://github.com/lintian0616/bica
+    - convert to human and use lm22
+- enrichment- ID at pathway or gene set
+  - by ssGSEA
+    - ESTIMATE
+    - xCell
+- cite:liu2019a
+  - immune repetoire sequencing- see liu2019a ref83, table 4, ref88-92
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5996037/
+- https://www.nature.com/articles/s43018-019-0022-x
+- https://www.sciencedirect.com/science/article/pii/S2589004218301871
+- https://www.nature.com/articles/nbt.3724
+- cite:yalcin2012
+- https://mixcr.readthedocs.io/en/master/index.html
+- https://www.nature.com/articles/s41592-019-0529-1
+- https://www.biostars.org/p/354696/
+- cite:vonstechow2017
+- cell type enumeration with RNA-seq
+  - https://www.nature.com/articles/s41586-019-1773-3
+
+***** immunoprofiling / immunophenotyping
+:PROPERTIES:
+:CREATED:  [2019-10-30 Wed 10:52]
+:ID:       a143e3d0-35b3-4579-8831-9710791e0a6a
+:END:
+- cite:liu2019a
+  
+
+*** [[id:5738AF1F-8621-40C3-AF80-0C396CDC889B][LINK TO Clinical NGS]]
+*** massively parallel sequencing 
+:PROPERTIES:
+:ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
+:END:
+- https://en.m.wikibooks.org/wiki/Next_Generation_Sequencing_(NGS)
+- commercial sequencing entities
+  - medgeneome
+    - https://research.medgenome.com/qc-reports/
+    - https://research.medgenome.com/ngs-services/whole-genome-exome-sequencing/
+- https://www.illumina.com/systems/sequencing-platforms/comparison-tool.html
+- cite:glenn2011 
+- https://www.illumina.com/content/dam/illumina-marketing/documents/techniques/high-throughput-flipbook-web.pdf
+- http://www.opiniomics.org/hiseq-move-over-here-comes-nova-a-first-look-at-illumina-novaseq/
+- Sequencing platform overview and limitations
+  - cite:payton2016
+- https://www.biostars.org/p/198143/
+- https://www.illumina.com/content/dam/illumina-marketing/documents/products/brochures/ngs-buyers-guide.pdf
+- https://www.illumina.com/products/by-type/sequencing-kits/library-prep-kits.html
+- https://dnatech.genomecenter.ucdavis.edu/2015/05/28/hiseq-3000-sequencing/
+- https://www.nature.com/articles/s41598-018-29325-6
+- x10
+- analytical sensitivity of pcr/ ngs methods/ fish/ etc...
+- NGS has shorter sequences, higher base-call error, non-uniform coverage, platform-specific artificats 
+- https://github.com/pughlab/ConsensusCruncher
+
+
+Seq platforms tbl 
+Error rates 
+Speed 
+Cost
+Read length
+Companies
+....
+
+**** illumina platform
+:PROPERTIES:
+:ID:       BD6D148D-BF63-4A9A-A14E-1AB6954BFA40
+:END:
+
+output- *.bcl files- base call and quality score per cycle
+convert *.bcl to .fastq.gz w/ CASAVA
+also demultiplexes 
+
+**** [[Overview of Sequencing Methods]] Molecular Micro
+:PROPERTIES:
+:ID:       6F399263-D04E-441A-B990-BB669F61F25E
+:END:
+
+**** Low Throughput Methods
+:PROPERTIES:
+:ID:       E58E9F68-2814-4BC2-9D1E-54D129BD1454
+:END:
+
+- 141013.1000 nextgen payton
+  - sanger is up to 1000 bp
+    - variable read ~200 clinically vs. 800 bp read
+
+**** High Throughput Sequencing Platforms
+:PROPERTIES:
+:ID:       DF6FFA19-8867-49AC-947D-FD57B403761A
+:END:
+
+- [[https://www.youtube.com/watch?v=v1DbcJD4Ry0][youtube Mardis NGS]]
+- [[http://www.broadinstitute.org/scientific-community/science/platforms/genome-sequencing/broadillumina-genome-analyzer-boot-camp][Broad / Illumina Genome Analyzer Boot Camp]]
+- [[file:~/Box%20Sync/library/Mardis,08%20Next-Generation%20DNA%20%20Sequencing%20Methods.pdf][Mardis,08 Next-Generation DNA  Sequencing Methods]]
+- 150924.1600Mardis talk
+  - Illumina read length limit is signal to noise
+  - Ion torrent difficult for indels with runs of single nucleotide
+  - Paired end allows placement of repetitive sequences where one side might be repetitive, the other not
+  - Evaluate coverage by comparison to snp array
+  - Clinical sequencing false positive if variants have patterns
+
+***** Ion Torrent
+:PROPERTIES:
+:ID:       EC631BCD-1A9B-4B8B-877E-7861C27D948B
+:END:
+
+***** Illumina
+:PROPERTIES:
+:ID:       D1A3EF94-7933-4854-99ED-C63DE8F7741D
+:END:
+
+****** Illumina TruSeq
+:PROPERTIES:
+:ID:       3CE663C4-BF37-4E2E-9A0D-0E822241D05E
+:END:
+
+- See Kukurba,15
+- Steps
+  - RNA isolation
+  - Poly-A purification
+  - Fragmentation
+  - cDNA synthesis
+  - Adaptor ligation
+  - Size selection
+  - PCR amplification
+
+******* Removal of rRNA and tRNA
+:PROPERTIES:
+:ID:       D509473A-536B-46D2-8639-22DC19DF41E2
+:END:
+
+**** NGS vs. Sanger
+:PROPERTIES:
+:ID:       4AAD4446-DE69-45CD-A1FE-F8C3A5768C17
+:END:
+
+**** Massively parallel sequencing / Next Generation Sequencing (NGS)
+:PROPERTIES:
+:ID:       7CC63676-4CA4-46F1-A7E5-9A3D1D0B6ADD
+:END:
+
+- seq artefacts and errors
+  - review of seq errors
+  - types and sources
+- seq error correction
+  - as an information model, propogation of errors, random vs. nonrandom
+  - random start-stop- allows ID of PCR duplicates- by start/stop regardless of internal seq
+  - ligation umi
+    - umi strategies
+    - umi actaully adds back 'false' pcr duplicates which can now be positively IDed as unique molecules
+  - duplexing and asymmetric strand artifacts
+    - distinguishing strands 
+- Low sequence complexity
+  - GC bias
+    - cite:chen2013 
+- 1st exon GC-rich, poorly seq by illumina 
+- cite:Lee_2016
+- cite:Goodwin_2016
+
+*** metabolomics
+:PROPERTIES:
+:CREATED:  [2020-10-08 Thu 09:15]
+:END:
+- http://www.visantnet.org/visantnet.html
+*** methylation                                                     :biopipe:
+:PROPERTIES:
+:CREATED:  [2019-05-29 Wed 14:46]
+:ID:       b8db46d3-8329-4fef-82b1-4d99c2c9312b
+:END:
+:LOGBOOK:
+CLOCK: [2019-06-26 Wed 14:06]--[2019-06-26 Wed 14:45] =>  0:39
+:END:
+- "All the cell line datasets generated during and/or analysed during the current study are available in the GEO repository under accession code GSE79838. The
+cfMeDIP-seq NGS data for patient samples that support the findings of this study are available upon request from the corresponding author (D.D.C) to comply with
+institutional ethics regulation. Source data for Fig. 1d and e are provided in Supplementary Table 9, and for Figure 1G are provided in Supplementary Table 10.
+Additional source data can be found on Zenodo (Supplementary Table 13)."
+- to add
+  - R
+    - MethylKit
+    - DESeq2
+    - caret
+    - minfi
+    - Rtsne
+  - SAMtools
+  - Bowtie
+  - MEDIPS
+  - BWA
+  - GATK IndelRealigner
+  - MuTect
+  - TrimGalore
+  - Bismark6
+  - Bowtie
+  - 
+- from cite:shen2018
+  - "The generated SAM files from hg19 alignment were converted to BAM format, ensuring the removal of duplicate reads, and the reads were then sorted and indexed using SAMtools21 before subsequent analysis with the R package MEDIPS22. The CpG enrichment score, as a quality control measure for the immunoprecipitation reaction, was calculated as part of the MEDIPS package."
+  - Shell scripts were used to process MeDIP sequencing data to produce RPKM estimates for downstream analysis. Custom R scripts with a collection of R/Bioconductor packages were used to analyse the resulting dataset. The code used for analysis is available in the form of R markdowns deposited onto Zenodo as detailed in Supplementary Table 13.
+  - 
+| Description                                                                                    | Zenodo DOI for Data    | Zenodo DOI for Code    |
+| <25>                                                                                           | <25>                   | <25>                   |
+| IHEC Figure                                                                                    | 10.5281/zenodo.1205714 |                        |
+| Simulations                                                                                    | 10.5281/zenodo.1205730 | 10.5281/zenodo.1205728 |
+| Extended Data Fig. 6 violin plots                                                              | 10.5281/zenodo.1205744 | 10.5281/zenodo.1205735 |
+| Bed file of genomic windows that contain CpGs                                                  | 10.5281/zenodo.1205752 |                        |
+| TCGA and COSMIC tSNEs                                                                          | 10.5281/zenodo.1205754 |                        |
+| Machine learning                                                                               |                        | 10.5281/zenodo.1242697 |
+| Markdown with ensemble of non-machine learning scripts including Extended Data Fig. 6 heatmaps |                        | 10.5281/zenodo.1205756 |
+| Stand alone scripts called by non-machine learning markdown                                    |                        | 10.5281/zenodo.1205746 |
+
+- Open source code/packages used for data analysis: R, SAMtools (v. 1.3.1), Bowtie (v. 0.12.9), MEDIPS (v. 1.22.0), BWA (v. 0.7.1220),
+- Genome Analysis ToolKit (GATK) IndelRealigner, MuTect (v.1.1.5) , Trim Galore! (v. 0.4.4), Bismark (v. 0.10.1), Bowtie2 (v. 2.0.5),
+- MethylKit (v 0.99.2), DESeq2 (v. 1.4.5), caret R package, minfi bioconductor package, Rtsne
+- Commercial software used for data analysis: Microsoft Excel for Mac (v. 16.16.1)
+
+- [[id:333E498B-E0EA-460C-95EC-1931ACE19473][pipeline development]]
+
+*** omics integration
+  - cite:wu2019
+  - https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
+*** pathway analysis
+:PROPERTIES:
+:CREATED:  [2020-07-20 Mon 10:05]
+:ID:       e4351ef3-6d41-4121-a2cc-c63d89f997ac
+:END:
+- gsea
+    - https://software.broadinstitute.org/gsea/doc/GSEAUserGuideTEXT.htm#_Consistent_Feature_Identifiers_Acro
+    - http://software.broadinstitute.org/cancer/software/genepattern/modules/docs/ssGSEAProjection/4
+- http://www.visantnet.org/visantnet.html
+- https://www.nature.com/articles/ncomms13427#Sec10
+  - https://github.com/varnivey/ipanda/blob/master/MANUAL.txt
+- https://www.nature.com/articles/s41598-019-46059-1
+- pathway image ideas
+  - heatmaps
+    - https://www.frontiersin.org/files/Articles/425394/fgene-10-00858-HTML/image_m/fgene-10-00858-g002.jpg
+    - https://www.bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
+  - wire diagrams
+  - bar and lolipop for p-value and set size
+    - https://www.nature.com/articles/s41598-018-29420-8
+    - https://www.frontiersin.org/articles/10.3389/fgene.2019.00858/full
+*** proteomics
+- proteome dynamic range is ~10^12, machine limit is usually ~10^3
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096388/
+- https://www.agilent.com/cs/library/eseminars/public/SomaLogic_Agilent_081816.pdf
+- http://mohanlab.bme.uh.edu/wp-content/uploads/2015/09/HOU-SOMAscan-Methods-2016.pdf
+
+**** SOMAscan
+:PROPERTIES:
+:ID:       89b4ec6d-992d-4551-81da-19011597732a
+:END:
+- [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd][email: GTAC SOMAscan notes]]
+- cite:candia2017 
+- https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd
+- https://www.sciencedirect.com/science/article/pii/S1874391916304006
+- For protein, SOMAscan has a higher dynamic range and lower limit of detection than comparable Luminex antibody-based assays (cite doi.org/10.1038/s41591-019-0665-2). Moreover, SOMAscan includes targets such as Jagged-1 and -2 not available for multiplexed antibody assays.
+*** RNA-seq                                                          :career:
+:LOGBOOK:
+>>>>>>> 0e63e75f069079bf88c28a56983b00954c035320
 CLOCK: [2020-10-08 Thu 10:15]--[2020-10-08 Thu 10:25] =>  0:10
 CLOCK: [2020-10-08 Thu 09:17]--[2020-10-08 Thu 10:05] =>  0:48
 CLOCK: [2020-06-22 Mon 12:16]--[2020-06-22 Mon 12:43] =>  0:27
@@ -1158,21 +1416,7 @@ CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
 **** general guides, github repos, training, etc
-- cite:picardi2015
-  - intro
-    - raw sequence metrics (d/n require alignment, ensure sequencing platform did it’s job)
-    - read quality- Phred quality (Q) = -10 log10 (probability of erroneous base calling) reported as ASCII (or numbers for SOLiD)
-      - no objective good/bad, but usually 20-30
-      - variant requires greater quality than expression profiling
-    - nucleotide composition
-      - GC 3 vs AT 2 hydrogen bonds, exons have higher GC
-      - first 12 bases (from 5’) will have large deviation from random hex priming
-      - if there is GC bias, coverage uniformity and transcript abundance will be off
-    - PCR duplication
-      - chance of random duplication is 1/(4^(read length *2)), so still slim up to depth of 100s of millions
-- cite:garve2012
 - standards and best practices- cite:conesa2016
-- cite:williams2014
 - general resources- https://github.com/crazyhottommy/RNA-seq-analysis
 - https://rnaseq.uoregon.edu/
 - https://www.labome.com/method/RNA-seq.html
@@ -1496,16 +1740,34 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
           - accounting for fragment bias- https://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-3-r22
         - Sequencing adaptors
           - Y-adaptor PCR: blunt cDNA ends, add adenosine overhangs
+<<<<<<< HEAD
+=======
 - cite:oneil2013
+>>>>>>> 0e63e75f069079bf88c28a56983b00954c035320
 **** [[id:3BC41E6A-00D3-4498-A48C-463F68CFD76B][LINK TO massively parallel sequencing]]
-**** [[id:1EE731A3-83DD-46AF-B988-2311307C335F][LINK TO raw sequence quality control]]
+**** raw sequence processing
+  - adapter trimming
+    - https://www.ecseq.com/support/ngs/trimming-adapter-sequences-is-it-necessary
+    - https://www.biostars.org/p/267388/
+    - http://seqanswers.com/forums/showthread.php?t=51226
+    - https://github.com/griffithlab/rnaseq_tutorial/wiki/Adapter-Trim
+    - do all aligners need adaptor trimming? at least common to do so for all
+    - https://www.biostars.org/p/368420/
+  - https://www.slideshare.net/joachimjacob/2rna-seqpart2investigatin-rawdata
+  - https://www.michaelchimenti.com/2016/06/trim-rna-seq-reads/
+  - Trimming
+    - Adaptor
+    - Quality
 **** RNA-seq quality control
+- [[id:1EE731A3-83DD-46AF-B988-2311307C335F][sequence quality control]]
 - https://www.reddit.com/r/bioinformatics/comments/flqb8e/how_do_i_differentiate_outliers_from_ingroup/
 - https://www.rna-seqblog.com/an-rna-seq-qc-overview/
 - https://www.biostars.org/p/368420/
 - https://bioinformatics.stackexchange.com/questions/3572/strange-per-sequence-gc-content-results
 - cite:wang2012
-
+- dv200
+  - RIN and DV 200 d/n correlate
+  - [[file:~/data/library/illumina2016.pdf]] Agilent Technologies. (2004) RNA Integrity Number (RIN) - Standardization of RNA Quality Control Publication PN 5989-1165EN.
 - bias
   - cite:li2014  
 - https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/evaluating-rna-quality-from-ffpe-samples-technical-note-470-2014-001.pdf
@@ -3133,9 +3395,8 @@ http://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-2-r14
 http://www.nature.com/articles/srep06347
 
 **** examples
-- my RNA-seq work
-  - [[file:~/org/career.org::*high-grade head and neck characterization][high-grade head and neck characterization]]
-  - [[id:e7a8362d-f4cf-45ec-a3f8-91b0ffbdc500][ffpe rna-seq project]]
+  - my RNA-seq work
+    - [[id:e7a8362d-f4cf-45ec-a3f8-91b0ffbdc500][ffpe rna-seq project]]
 **** reference
 [[id:386d899a-9208-4d5c-93d8-3750b22d9748][RNA methods]]
 **** Ideas
@@ -3155,6 +3416,354 @@ see Love,16 section "Rich visualization and reporting of results"
 
 [[file:~/Box%20Sync/library/Fonseca,14%20RNA%20seq%20gene%20profiling%20a%20systematic%20empirical%20comparison.PDF][Fonseca,14 RNA seq gene profiling a systematic empirical comparison]]
 [[file:~/Box%20Sync/library/Sigurgeirsson,14%20Analysis%20of%20stranded%20information%20using%20an%20automated%20procedure%20for%20strand%20specific%20RNA%20sequencing.pdf][Sigurgeirsson,14 Analysis of stranded information using an automated procedure for strand specific RNA sequencing]]
+*** sequence quality control
+:PROPERTIES:
+:ID:       1EE731A3-83DD-46AF-B988-2311307C335F
+:END:
+- Bioanalyzer
+  - http://www.mbl.edu/jbpc/files/2014/05/Bioanalyzer_for_NGS_slideshow.pdf
+  - https://stanford.edu/~jwfoley/bioanalyzeR.html
+- https://www.biostars.org/p/247903/
+- [[https://www.biostars.org/p/56088/#56102][Fastq Quality Read And Score Length Check]]
+- sequence quality and characterization
+  - [[https://www.biostars.org/p/56088/#56102][Fastq Quality Read And Score Length Check]]
+- Trim Galore
+  - wrapper for Cutadapt and FastQC
+  - [[https://github.com/FelixKrueger/TrimGalore][github]]
+    - [[https://github.com/FelixKrueger/TrimGalore/blob/master/Docs/Trim_Galore_User_Guide.md][user guide]]
+  - on CHPC cluster - http://mgt2.chpc.wustl.edu/wiki119/index.php/Software
+- consider [[https://www.bioconductor.org/packages/release/bioc/vignettes/seqTools/inst/doc/seqTools.pdf][seqTools]]
+  - cite:seqTools
+- https://github.com/FelixKrueger/TrimGalore
+- https://www.google.com/search?q=sequencing+detect+adaptors
+
+**** Inspection
+:PROPERTIES:
+:ID:       87F66FE3-C000-4F77-AC57-A612053CA02C
+:END:
+
+- cite:williams2014rna for a FastQC aggregator Perl script 
+- cite:garve_rnaseq 
+
+***** Notes
+:PROPERTIES:
+:ID:       13E8BF29-97EB-4F3A-9702-6F5DC25E93F3
+:END:
+
+  - [[http://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-2-r18][amplification bias]]
+  - References
+    - [[file:~/Box%20Sync/comp_bio/Picardi,15 RNA Bioinformatics.pdf][Picardi,15]] chap 8
+      - intro
+        - raw sequence metrics (d/n require alignment, ensure sequencing platform did it’s job)
+        - read quality- Phred quality (Q) = -10 log10 (probability of erroneous base calling) reported as ASCII (or numbers for SOLiD)
+          - no objective good/bad, but usually 20-30
+          - variant requires greater quality than expression profiling
+        - nucleotide composition
+          - GC 3 vs AT 2 hydrogen bonds, exons have higher GC
+          - first 12 bases (from 5’) will have large deviation from random hex priming
+          - if there is GC bias, coverage uniformity and transcript abundance will be off
+        - PCR duplication
+          - chance of random duplication is 1/(4^(read length *2)), so still slim up to depth of 100s of millions
+  - for read quality check out sickle
+  - b/w sample same lane GC content should be identical 
+    Other software to check out
+    solexaWC
+
+**** Sequence Preprocessing Protocol
+:PROPERTIES:
+:ID:       94591E7B-5C84-48F0-B4A0-4724D59DCC3E
+:END:
+
+[[file:~/Box%20Sync/comp_bio/RNA-seq/Williams,16%20Trimming%20of%20sequence%20reads%20alters%20RNA-Seq%20gene%20expression%20estimates.pdf][Williams,16 Trimming of sequence reads alters RNA-Seq gene expression estimates]]
+
+
+http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0085024
+w/ commentary here- http://genomebio.org/is-trimming-is-beneficial-in-rna-seq/
+for RNA-seq, do not remove duplicate- no necessarly PCR artifact, see from the griffith bros: 
+https://www.biostars.org/p/55648/
+https://www.biostars.org/p/14283/
+(millions of reads to a single short transcript will look like duplicates- see dupRadar)
+although should remove duplicates for re-sequencing (i.e. whole genome or exome) 
+[[http://bioinformatics.ucdavis.edu/research-computing/software/][see tools here]]
+[[http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf][trimmomatic]] looks promising 
+I really like ngsShoRT, but it's a Perl script, so hard to run on the cluster. FASTX Toolkit is on the cluster. 
+[[file:work.org_imgs/20160405_111919_532677JP.png]] from Chen,13
+FOR RNA-seq, maybe don't trim at all, see- 
+https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-0956-2
+[[https://genomicsadventures.wordpress.com/2013/05/02/trimming-illumina-sequencing-adapters/][some more adaptor info]]
+[[http://www.ark-genomics.org/events-online-training-eu-training-course/adapter-and-quality-trimming-illumina-data][another good adaptor example]] [[http://www.ark-genomics.org/events/online-training][also see their general training]]
+[[https://github.com/vsbuffalo/scythe][Scythe]]
+
+***** [[http://research.bioinformatics.udel.edu/genomics/ngsShoRT/tutorial.html][ngsShoRT]]
+:PROPERTIES:
+:ID:       7DF394EF-7BA9-4DF6-B8CE-A29D99224A62
+:END:
+:LOGBOOK:  
+CLOCK: [2016-04-05 Tue 17:21]--[2016-04-05 Tue 17:32] =>  0:11
+CLOCK: [2016-04-05 Tue 17:06]--[2016-04-05 Tue 17:15] =>  0:09
+CLOCK: [2016-04-05 Tue 10:44]--[2016-04-05 Tue 11:30] =>  0:46
+:END:      
+- Manual 2.2
+  - Basic trimming concepts
+    - set minimum read length b/c de Brujin assemblers have minimum length
+    - pairs are removed together
+- Nasty basic trimming trial from startup for the impatient
+  - using TTGCCCC
+  - copied those to the same file path as for the ngsShort sample data
+  - ran:
+- can't run on cluster w/o some heavy modification- http://mgt2.chpc.wustl.edu/wiki119/index.php/Perl
+
+****** Work- [[https://www.google.com/search?q=put+perl+script+on+path&oq=put+perl+script+on+path&aqs=chrome..69i57j69i64.10231j0j4&sourceid=chrome&ie=UTF-8][run perl script from anywhere]]
+:PROPERTIES:
+:ID:       6FF107EF-7104-46EC-B28D-8AE31076664F
+:END:
+
+***** Notes
+:PROPERTIES:
+:ID:       79D76DA1-155A-42AD-AD87-B9C06B8743D3
+:END:
+
+      - [[http://bioinformatics-core-shared-training.github.io/cruk-bioinf-sschool/Day1/fastqc_sweave.pdf][de Santiago,15]]
+      - regenerate quality plots after preprocessing, branched pipeline to continue w/ both datasets
+      - Deduplicating 
+        Clipping
+        unwanted sequences
+        adaptors
+        poly-A tails
+        trimming w/ cutadapt
+        with fastq-mcf
+
+        - Software
+          - FastX 
+          - SAMStat
+        http://davetang.org/wiki/tiki-index.php?page=SAMStat
+        - [[file:~/Box%20Sync/comp_bio/Morgan,13 ShortRead.pdf][ShortRead ]]
+        - NGS-QC-Toolkit
+        - Garbe,12
+          - trimming- removing bad ends
+            - adaptors
+            - low quality bases
+          - filering- removing bad reads
+            - low quality reads
+            - contamination
+            - low complexity reads
+            - short reads
+          - see Tagbust 
+
+***** Projects
+:PROPERTIES:
+:ID:       E4BB7B1C-4A9A-4EFC-9B01-D07F2575F5B8
+:END:
+
+****** Install [[http://hannonlab.cshl.edu/fastx_toolkit/commandline.html][FASTX-Toolkit]]
+:PROPERTIES:
+:ID:       D6000575-EBF3-46FC-9582-C31AF7FA92A5
+:END:
+
+***** see [[Preprocessing- Aggressive truncation w/ FASTX
+:PROPERTIES:
+:ID:       CF1B5233-6154-4730-A1B5-0ADC21555FA7
+:END:
+
+**** for fast trimming on local, try [[https://github.com/lh3/seqtk][seqtk]] (d/n install from git repo via command)
+:PROPERTIES:
+:ID:       EDCA630C-3295-4BA9-8254-884E287E7039
+:END:
+
+[[https://wikis.utexas.edu/display/GSAF/Illumina+-+all+flavors][illumina adaptors explained]]
+https://wikis.utexas.edu/display/bioiteam/Evaluating+your+raw+sequencing+data
+
+**** QC                                                             :biopipe:
+:PROPERTIES:
+:CREATED:  [2019-06-03 Mon 18:26]
+:ID:       0952980a-d510-46cf-b718-96849480d78f
+:END:
+:LOGBOOK:
+CLOCK: [2019-07-23 Tue 20:35]--[2019-07-23 Tue 21:13] =>  0:38
+CLOCK: [2019-07-23 Tue 19:27]--[2019-07-23 Tue 19:40] =>  0:13
+CLOCK: [2019-07-16 Tue 14:46]--[2019-07-16 Tue 15:03] =>  0:17
+CLOCK: [2019-07-07 Sun 11:18]--[2019-07-07 Sun 11:34] =>  0:16
+CLOCK: [2019-07-06 Sat 08:11]--[2019-07-06 Sat 09:07] =>  0:56
+CLOCK: [2019-07-05 Fri 21:00]--[2019-07-05 Fri 22:04] =>  1:04
+CLOCK: [2019-06-05 Wed 09:07]--[2019-06-05 Wed 09:47] =>  0:40
+CLOCK: [2019-06-03 Mon 18:40]--[2019-06-03 Mon 20:30] =>  1:22
+CLOCK: [2019-06-04 Tue 12:39]--[2019-06-04 Tue 13:12] =>  0:33
+:END:
+- https://www.danielecook.com/double-checking-fastqs/
+- coverage
+  - cite:illumina2014
+  - Picard CollectWgsMetrics
+- https://hpc.nih.gov/images/WGS-test_multiqc_report.html
+- https://github.com/CCBR/Pipeliner/wiki/2a.-Example-MultiQC-Report
+- https://sequencing.qcfail.com/applications/mrna-seq/
+- https://sequencing.qcfail.com/software/fastqc/
+- https://www.biostars.org/p/368420/
+- [[file:~/repos/qc/]]
+- file:~/repos/qc/Dockerfile 
+- protocols
+  - dev
+    - initial
+      - online accounts
+        - github repo
+          - base dockerfile
+        - link github repo to dockerhub repo
+      - dockerfile- edit in emacs and build local
+        - interactive- run base image, test commands, and add to Dockerfile
+        - non-interactive- add to Dockerfile and rebuild image
+      - pull 
+    - get software running
+    - cleanup dockerfile
+    - push to remote
+    - set stable repos
+    - setup repo 
+    - build docker image
+      - select and build from base image file
+      - push REPO to github  
+      - docker image and dockerfile
+        - select base image
+        - add tools
+        - validate build
+        - Confirm path and run
+    - script
+      - small local example
+        - docker run -it -v /home:/home jeszyman/copy-number /bin/bash
+        - develop in emacs w/ esshell in container
+        - validate output
+        - parameterize 
+  - optimize
+    - Lock pipe
+    - [[https://www.biostars.org/p/241437/][bioinformatics software distribution]] 
+  - extend    
+  - setup new local
+    - repo 
+    - org header
+- artifacts
+  - github repo with 
+    - Dockerfile
+    - nextflow script
+      - Shell scripts
+  - shell scripts
+    - call docker from w/i shell script!
+      - docker run -it -v /home/jszymanski/:/home/jszymanski/ -v /duo4/users/jszymanski/:/duo4/users/jszymanski/ jeszyman/bioinformatics-toolkit -u jszymanski /bin/bash 
+  - make dockerfile per-software builds standalone, build superfat? 
+- reference
+  - yas
+  - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]] 
+    - dockerfile - include current build status in comments
+    - sequencing dockerfile repos
+      - https://github.com/broadinstitte/gtex-pipeline.git
+      - https://hub.docker.com/u/mgibio/
+      - https://hub.docker.com/u/biocontainers
+  - https://github.com/genome/gms
+  - best practices
+    - each tool install as standalone
+    - Version control 
+    - File organization
+      - https://libraries.mit.edu/data-management/
+      - See [[file:~/maintenance.org::Information Maintenance][information maintenance]] Organization -> File tree structure
+    - http://www.broadinstitute.org/gatk/guide/best-practices
+      best practices include recording everything
+      record of all commands
+      record of all software versions
+      see Emacs, rpubs.com, sessionInfo and knitR
+    - [[http://www.nature.com/sdata/for-authors/submission-guidelines][Nature data submission guidelines]]
+    - https://kieranhealy.org/resources/
+    - http://kieranhealy.org/files/misc/workflow-apps.pdf
+    - see Anders,13
+    - no docker in docker for dev- confuses vols, etc. instead add emacs to each container and have local repos of .emacs and org
+  - associated mods
+    - [[id:43331BB8-4234-48FE-B510-E92F631D5D7B][Code]]
+  - compendia
+    - [[file:~/Box%20Sync/org/compend.org::*UNIX][UNIX]]
+    - [[file:~/.emacs.d/settings.org::*Emacs][Emacs]]
+    - git
+  - [ ] information management- see cite:griffith2015b           
+  - https://github.com/cbcrg/lncrna-annotation-nf
+  - set alias https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
+  - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
+  - https://hub.docker.com/r/mgibio/mark_duplicates-cwl/dockerfile
+  - https://hub.docker.com/r/broadinstitute/picard/dockerfile
+  - stack
+    - ubuntu
+    - git and github
+    - docker
+      - https://github.com/bioinformatics-core-shared-training/docker-4-bioinformatics
+      - https://gatkforums.broadinstitute.org/firecloud/discussion/6886/guidelines-for-working-with-docker-images-and-dockerfiles-broadies-only
+    - nextflow
+      - https://www.youtube.com/watch?v=jsxTC8pNPUc&t=579s
+      - https://github.com/cbcrg/lncrna-annotation-nf
+      - https://www.nextflow.io/example1.html
+      - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
+      - commands
+        |----------+---------|
+        | function | command |
+        |----------+---------|
+        | <35>     | <35>    |
+        |          |         |
+      - processes
+      - documentation
+- ideas
+  - Consider more emacs shell work: 
+  - add to gatk docker
+    - https://hub.docker.com/u/broadinstitute
+    - https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_cancer_m2_MuTect2.php
+  - ideas
+    - link to documentation- maybe an org and/or markdown file?
+    - script comment design
+  - https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
+- [ ] export
+  - principles and philosophy
+    - [[https://en.wikipedia.org/wiki/Robustness_(computer_science)][robustness]]
+    - [[https://en.wikipedia.org/wiki/Minification_(programming)][minification]]  
+    - transparency
+    - reproducibility
+
+***** fastq (base call + quality)
+:PROPERTIES:
+:ID:       4361C444-1EFD-492C-B108-69066D87C37F
+:END:
+
+[[file:work.org_imgs/20160405_091950_53267u_I.png]]
+illumina fastq
+read in galaxy or textwrangler 
+each block has 4 elements so 4 lines
+sequence identifier @EAS4_6_R1
+actual sequence CTGGTGGGAGRRGG
+sequence name again (optional) or +
+base quality ;;;;3;;;;;;;;;;;;;;7;;;;;;;;898
+via ASCII 33
+Phred scaled Q
+Phred value = -10*log(10)(error rate)
+90% confident is Q10
+99% is Q20
+99.9 is Q30
+
+****** Adding sequences to a fasta- just cat
+:PROPERTIES:
+:ID:       8D135E1A-815D-4551-B636-94A4DB44D0BB
+:END:
+
+****** Ideas
+:PROPERTIES:
+:ID:       4FC3F4EA-880B-4585-8882-9EC88197B456
+:END:
+
+******* Can I remove sequences from paired end fastq to shorten file for testing?
+:PROPERTIES:
+:ID:       45E50579-D180-4549-A60F-A4C559F25641
+:END:
+
+I didn't find anything googling this, but it appears if the fastas have the same order, then I can just trim them 
+
+**** sequence qc
+fastqc- how to paralelize?
+- https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
+- https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=The%20output%20from%20FastQC%2C%20after,or%20%E2%80%9CFail%E2%80%9D%20is%20assigned.
+***** coverage and depth
+- https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/hiseq-x-30x-coverage-technical-note-770-2014-042.pdf
+- https://www.biostars.org/p/331957/
+- https://www.htslib.org/doc/samtools-depth.1.html#OPTIONS
+- for coverage https://www.biostars.org/p/104063/
 *** Sequence variation and variant calling
 :PROPERTIES:
 :ID:       57E81A44-3233-479B-8264-2CD5F1904A60
@@ -3877,107 +4486,49 @@ https://www.ncbi.nlm.nih.gov/pubmed/?term=nextflow
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
 *** table of tools
-| tool           | function         | input     | repo   | doc      | paper | paper(local)           |
-|----------------+------------------+-----------+--------+----------+-------+------------------------|
-| - [[https://github.com/vsbuffalo/scythe][Scythe]]       |                  |           |        |          |       |                        |
-| [[http://hannonlab.cshl.edu/fastx_toolkit/commandline.html][FASTX-Toolkit]]  |                  |           |        |          |       |                        |
-| annovar        |                  |           |        | [[http://annovar.openbioinformatics.org/en/latest/][doc]]      |       |                        |
-| annotationDb   |                  |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf][doc]]      |       |                        |
-| Ballgown       |                  |           |        |          | [[https://www.nature.com/articles/nprot.2016.095][paper]] |                        |
-| BEDtools       |                  |           |        | [[http://bedtools.readthedocs.io/en/latest/][doc]]      |       | cite:quinlan2010       |
-| BLAT           |                  |           |        |          |       |                        |
-| BLAT           |                  |           |        |          |       |                        |
-| bowtie2        |                  |           | [[https://sourceforge.net/projects/bowtie-bio/files/][src]]    | [[http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer][doc]]      |       |                        |
-| CNVkit         | copy#            | bam       | [[https://github.com/etal/cnvkit/tree/fd3555256d2a5aa3978c475d19c88065be68c6c4][repo]]   | [[https://cnvkit.readthedocs.io/en/stable/index.html][doc]]      | [[https://doi.org/10.1371/journal.pcbi.1004873][paper]] |                        |
-| complexheatmap |                  |           |        |          |       |                        |
-| data-slicer    |                  |           |        | [[http://www.1000genomes.org/data-slicer][site]]     |       |                        |
-| deepTools      |                  |           |        | [[https://deeptools.readthedocs.io/en/latest/content/example_usage.html][site]]     |       |                        |
-| DESeq2         | diff express     |           |        |          |       | cite:love2014          |
-| edgeR          | diff express     |           |        | [[https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf][vignette]] |       | cite:robinson2010      |
-| fastp          | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]]           | fastq     | [[https://github.com/OpenGene/fastp][repo]]   |          | [[https://watermark.silverchair.com/bty560.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAAuEwggLdBgkqhkiG9w0BBwagggLOMIICygIBADCCAsMGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMUQnq5IYxgkrFnt0WAgEQgIIClChzxtpO28QYuBn1woUVAMnQOwkPRZWSY20cwnzbVuF3DlOcpwjeNjNrO_ixNp6csW5pOdBZ81CHjV65BMcqsZmP9KOT-yVGy4r_7mWKLuzm7Siid24pM9-xF3k7y1RoBK4-PrnZgzp-J1svrUvOZAphbBPmsezuOowSuj9o9EZyTciDJbUQ2klUbYSRDO_InWNOVu23eOzGpJQwer81BL2iS8TsCfeWF-eZtzNBRuZZr1UZ2PhX_mVQGu4bHvKn1Bmoe64CFYkEJGLoka87zVVfo--J_hAledjiW1_-wEj8kZSyb2diZoP9ABDGOJA6aQ7fzx8qNGgNAb_oK-uAmEdfAfepI_0LECDdlk9EIxIJITC-Z59gk_vNVophJOydBimGZHFK0iACl-N-nZNALjIqRXeRmqOxcEdRFmNy6onzLalfCV0wyqFae42JIVzEYFSLW1oQVC0ugMfKTTmOfysRZ8-4bboBo1UbskpGVlKvrSBTFuDyvuBlPoUTECbOrO6bsdeNk8yfTMTeMQzNzOzZYZ1mQVCULZtuE_YDCuKmwukT3EeUy8iOJbp7pD2Ew5kphJ9q0sV-_io3h0jBZEdJmUr6dTPSRcv56pLP6gtqso6ZdB9bWk3sFNt--tBwIGhQvnLXgyV7xGqRYNPrDeMbs2tPLlK-v4D8XKj-BHGi1sOVuzL1rCvFve0knpL4btsqw_BDp8P2XuFDyp0OOXtmE3dKJktLR0QyQZ3u4-aKksDMfkqrglbPoBjEhInpdpfiDQbEDTFO9qiaL9iajdsV8T636x_KHXpdGkFqO3GpcFyJv1QJyPW2qhAXuneiqWx6t60pJ8f0IyAzRV9BIUoQ4B3soV9TXIuSP171Tf0JYmcY5Q][paper]] | cite:chen2018b         |
-| seqTools       | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]]           |           |        | [[https://www.bioconductor.org/packages/release/bioc/vignettes/seqTools/inst/doc/seqTools.pdf][seqTools]] |       |                        |
-| [[id:0a319950-3215-4846-a020-a08b78f3323d][FastQC]]         | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]]           |           |        | [[https://www.bioinformatics.babraham.ac.uk/projects/fastqc/INSTALL.txt][site]]     |       |                        |
-| featureCounts  |                  |           |        |          | [[https://watermark.silverchair.com/btt656.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAApgwggKUBgkqhkiG9w0BBwagggKFMIICgQIBADCCAnoGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMofurkoV2NWsQqlelAgEQgIICS7iktDnfv1X3fe1vdQQcXCS09zT549UGvBjDCLHoNebBGfiQi_Eo7ZjUHVH_Yay_p1DlFd4eDeXU4WEX6HTQ-MzPqmtZ6RMGegyEptsqxaLnvr3QfpGO6WRT01dViqp6xya9-CqCRGV3E7F37VruIYzZEFjr-2svIgoRydPyF4pkSzA2hkvwV_g-JT2YSnqboZ5DOGtwZXeMaLKf48_aEpuYemRUx8VqOfM8xnOm4_jumLGd_BBqCCv6brLX8z3WVJpWfJ4YfpJXhemFRt8mSvIsAe9pYXV52W7-psxHlM2ocXzdD_7vLSD7iy1NocDXWLFT5HRH_Cq8NyiRq1s4Mq-QYuvQJFlTxWArVC6vdpE40bDr9slGD6KTJ0DpUQeC52q-aoKJXr9Y7Pi2SDo881eFuJxTWuSuMjxcXStn9MkPKZfcKa10Vu4CdJSSnvJAKAvd4GsshsfCVGCvkgy4ZfEabo5nOZaB82UYC-8AZEpdbD3RtJg1FUQJHDz0tlY-2gZYf2VB3KU1JK4wZcHzn8T8R5BSChB6MjFrRdTZeo3M8-ZIK3eWQGH2vLj8_bPsYlBF-wfj2JzSG3zJGgUUa_rSBzoK8Vvw8k_BPxCq63h6u-k49l-X0o-MO6f8mOdm_YliTT0dWu_ujvlbXMw9AIBrKjwBJncq27EwMOX0shm8nnzPMoPTfOzoekZR2nYTDPayGjHhqkAs6haFAQrI8XAAd0PfbMtW4l54ArULWEH6hCVxzDX8_h8F8oWgOc_3h2ktpbTLNsiX6Bxj][paper]] |                        |
-| G2P            |                  |           |        |          | [[https://www.nature.com/articles/s41467-019-10016-3][paper]] |                        |
-| GAGE           | enrichment       | express   |        |          | [[https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-10-161][paper]] |                        |
-| GATK           |                  |           |        | [[https://software.broadinstitute.org/gatk/documentation/][doc]]      |       |                        |
-| GISTIC2        | copy# diff       |           |        | [[http://portals.broadinstitute.org/cgi-bin/cancer/publications/pub_paper.cgi?mode=view&paper_id=216&p=t][site]]     |       |                        |
-| GSNAP          |                  | fastq     |        | [[http://research-pub.gene.com/gmap/src/README][doc]]      |       | cite:mathe2016         |
-| histat2        |                  | fastq     |        | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]]      |       |                        |
-| ichorCNA       | copy#            | wig       | [[https://github.com/broadinstitute/ichorCNA][repo]]   | [[https://github.com/broadinstitute/ichorCNA/wiki][doc]]      | [[https://www.nature.com/articles/s41467-017-00965-y][paper]] | cite:adalsteinsson2017 |
-| Integrate      | rna fusion       | bam       |        |          |       | cite:zhang2014a        |
-| limma          | diff express     | count     |        |          | [[https://watermark.silverchair.com/gkv007.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAAngwggJ0BgkqhkiG9w0BBwagggJlMIICYQIBADCCAloGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMsxpSKWbqcoVIkhKsAgEQgIICK5TpAPl6lIQcIzSDztcNMdIl7XMdgXJgXRQlmNqzapp-VoQO3DEpAj0A3gEkQVCd9nOl8fXA8LzO0zmzgs4TmLVFBlFXQULtTa78iYvLjQMrqnrGUZYTQus2SFXCNBklNaasJ9-iiedHl9iOT0lM_19o03zr27w2DmjK9KA9qaSt5tmBA1ogIonAO0xYwLodt7UqoDqjAMg5IXUTCrTRuzf79KhJisKQ_CYvgNTHNHNFce0wi9y-rB77jARN3HWmeziwtzLnUw2OyF9z_Wa0gwmjRScuNvUUms_fa9PCgTvrRDGFh40LEQmscM9nw3Tx3QG5qb6Z68BtikTY9WyhhKiOuJT3uwnU6EtJytzZrnfW2kYZHobN_iL7HA2qTfOXRlXC-uHXYX03m7TEasKRk6DEQ0ViBt71jyo5d0a6JDluWB2O7VDDexQuYloTkIOs2D3Vtmxu2RyDiXHeV2V1g6rZbNxNykour5ibcd0xJAeU_noEtLsvb-2cZzEHzablaAxvs3Lun_K6KQ3CYl71BEzyIVmAvvg_nkkz-QDLTfXc6CMpRU6086afrOVUKUnVfShtYRzZf3zsN6Uo0Chc3EV4kzZnnQL3qsVWoQyJd1erZRLenWSI_2o71qUbJ8JLxX-__XoNJeWkHXuNAe2ssdNWIwLg95wrkRyE40dFMbxh0MbuH3ky5qnNmiG5qrnq-kw4A3MTxMD-kmixUFx12gSIepksg__dGW9mPw][paper]] |                        |
-| MultiQC        | seq QC agg       |           | [[https://github.com/ewels/MultiQC][github]] | [[https://multiqc.info/docs/][doc]]      |       |                        |
-| oligocalc      |                  |           |        | [[http://www.basic.northwestern.edu/biotools/oligocalc.html][site]]     |       |                        |
-| picard         |                  |           |        | [[https://broadinstitute.github.io/picard/index.html][doc]]      |       |                        |
-| polyester      | RNA simulation   | fasta,gtf |        | [[http://bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html][vignette]] |       |                        |
-| rnaseqc        | rnaseq qc        | bam       | [[https://github.com/broadinstitute/rnaseqc][repo]]   | [[https://github.com/broadinstitute/rnaseqc][repo]]     |       |                        |
-| rsem           | transcript quant | bam       | [[https://github.com/deweylab/RSEM][repo]]   |          | [[https://doi.org/10.1186/1471-2105-12-323][paper]] | cite:li2011            |
-| RSeQC          | rnaseq qc        | bam       |        | [[http://rseqc.sourceforge.net/][repo]]     | [[https://doi.org/10.1093/bioinformatics/bts356][paper]] | cite:wang2012          |
-| salmon         | transcript quat  |           |        |          |       |                        |
-| sambamba       |                  | bam       |        | [[http://lomereiter.github.io/sambamba/docs/sambamba-view.html][online]]   |       |                        |
-| samtools       |                  | bam       |        | [[http://www.htslib.org/doc/samtools.html][online]]   |       |                        |
-| scVelo         | RNA velocity     |           |        | [[https://scvelo.readthedocs.io/][site]]     |       |                        |
-| seqtk          |                  |           | [[https://github.com/lh3/seqtk][github]] | [[https://github.com/lh3/seqtk/blob/master/README.md][README]]   | NA    | NA                     |
-| simNGS         | sim reads        | none      |        | [[https://www.ebi.ac.uk/goldman-srv/simNGS/][website]]  |       |                        |
-| STAR           |                  |           |        | [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]      |       | cite:dobin2019         |
-| tophat2        |                  |           |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                        |
-| tximport       |                  |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
-| WGCNA          |                  |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] | cite:langfelder2008    |
-|                |                  |           |        |          |       |                        |
-*** Trim Galore 
-- 
-  - wrapper for Cutadapt and FastQC
-  - [[https://github.com/FelixKrueger/TrimGalore][github]]
-    - [[https://github.com/FelixKrueger/TrimGalore/blob/master/Docs/Trim_Galore_User_Guide.md][user guide]]
-  - on CHPC cluster - http://mgt2.chpc.wustl.edu/wiki119/index.php/Software
-- https://github.com/FelixKrueger/TrimGalore
-
-*** fastqc
-:PROPERTIES:
-:ID:       0a319950-3215-4846-a020-a08b78f3323d
-:END:
-- https://sequencing.qcfail.com/software/fastqc/
-- https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=The%20output%20from%20FastQC%2C%20after,or%20%E2%80%9CFail%E2%80%9D%20is%20assigned.
-- cite:williams2014 for a FastQC aggregator Perl script 
-- [[https://www.biostars.org/p/56088/#56102][Fastq Quality Read And Score Length Check]]
-***** fastq (base call + quality)
-:PROPERTIES:
-:ID:       4361C444-1EFD-492C-B108-69066D87C37F
-:END:
-
-[[file:work.org_imgs/20160405_091950_53267u_I.png]]
-illumina fastq
-read in galaxy or textwrangler 
-each block has 4 elements so 4 lines
-sequence identifier @EAS4_6_R1
-actual sequence CTGGTGGGAGRRGG
-sequence name again (optional) or +
-base quality ;;;;3;;;;;;;;;;;;;;7;;;;;;;;898
-via ASCII 33
-Phred scaled Q
-Phred value = -10*log(10)(error rate)
-90% confident is Q10
-99% is Q20
-99.9 is Q30
-
-****** Adding sequences to a fasta- just cat
-:PROPERTIES:
-:ID:       8D135E1A-815D-4551-B636-94A4DB44D0BB
-:END:
-
-****** Ideas
-:PROPERTIES:
-:ID:       4FC3F4EA-880B-4585-8882-9EC88197B456
-:END:
-
-******* Can I remove sequences from paired end fastq to shorten file for testing?
-:PROPERTIES:
-:ID:       45E50579-D180-4549-A60F-A4C559F25641
-:END:
-
-I didn't find anything googling this, but it appears if the fastas have the same order, then I can just trim them 
-
+| tool           | function         | input   | repo   | doc      | paper | paper(local)           |
+|----------------+------------------+---------+--------+----------+-------+------------------------|
+| annovar        |                  |         |        | [[http://annovar.openbioinformatics.org/en/latest/][doc]]      |       |                        |
+| annotationDb   |                  |         |        | [[https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf][doc]]      |       |                        |
+| Ballgown       |                  |         |        |          | [[https://www.nature.com/articles/nprot.2016.095][paper]] |                        |
+| BEDtools       |                  |         |        | [[http://bedtools.readthedocs.io/en/latest/][doc]]      |       | cite:quinlan2010       |
+| BLAT           |                  |         |        |          |       |                        |
+| BLAT           |                  |         |        |          |       |                        |
+| bowtie2        |                  |         | [[https://sourceforge.net/projects/bowtie-bio/files/][src]]    | [[http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer][doc]]      |       |                        |
+| CNVkit         | copy#            | bam     | [[https://github.com/etal/cnvkit/tree/fd3555256d2a5aa3978c475d19c88065be68c6c4][repo]]   | [[https://cnvkit.readthedocs.io/en/stable/index.html][doc]]      | [[https://doi.org/10.1371/journal.pcbi.1004873][paper]] |                        |
+| complexheatmap |                  |         |        |          |       |                        |
+| data-slicer    |                  |         |        | [[http://www.1000genomes.org/data-slicer][site]]     |       |                        |
+| deepTools      |                  |         |        | [[https://deeptools.readthedocs.io/en/latest/content/example_usage.html][site]]     |       |                        |
+| DESeq2         | diff express     |         |        |          |       | cite:love2014          |
+| edgeR          | diff express     |         |        | [[https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf][vignette]] |       | cite:robinson2010      |
+| FastQC         |                  |         |        | [[https://www.bioinformatics.babraham.ac.uk/projects/fastqc/INSTALL.txt][site]]     |       |                        |
+| featureCounts  |                  |         |        |          | [[https://watermark.silverchair.com/btt656.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAApgwggKUBgkqhkiG9w0BBwagggKFMIICgQIBADCCAnoGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMofurkoV2NWsQqlelAgEQgIICS7iktDnfv1X3fe1vdQQcXCS09zT549UGvBjDCLHoNebBGfiQi_Eo7ZjUHVH_Yay_p1DlFd4eDeXU4WEX6HTQ-MzPqmtZ6RMGegyEptsqxaLnvr3QfpGO6WRT01dViqp6xya9-CqCRGV3E7F37VruIYzZEFjr-2svIgoRydPyF4pkSzA2hkvwV_g-JT2YSnqboZ5DOGtwZXeMaLKf48_aEpuYemRUx8VqOfM8xnOm4_jumLGd_BBqCCv6brLX8z3WVJpWfJ4YfpJXhemFRt8mSvIsAe9pYXV52W7-psxHlM2ocXzdD_7vLSD7iy1NocDXWLFT5HRH_Cq8NyiRq1s4Mq-QYuvQJFlTxWArVC6vdpE40bDr9slGD6KTJ0DpUQeC52q-aoKJXr9Y7Pi2SDo881eFuJxTWuSuMjxcXStn9MkPKZfcKa10Vu4CdJSSnvJAKAvd4GsshsfCVGCvkgy4ZfEabo5nOZaB82UYC-8AZEpdbD3RtJg1FUQJHDz0tlY-2gZYf2VB3KU1JK4wZcHzn8T8R5BSChB6MjFrRdTZeo3M8-ZIK3eWQGH2vLj8_bPsYlBF-wfj2JzSG3zJGgUUa_rSBzoK8Vvw8k_BPxCq63h6u-k49l-X0o-MO6f8mOdm_YliTT0dWu_ujvlbXMw9AIBrKjwBJncq27EwMOX0shm8nnzPMoPTfOzoekZR2nYTDPayGjHhqkAs6haFAQrI8XAAd0PfbMtW4l54ArULWEH6hCVxzDX8_h8F8oWgOc_3h2ktpbTLNsiX6Bxj][paper]] |                        |
+| G2P            |                  |         |        |          | [[https://www.nature.com/articles/s41467-019-10016-3][paper]] |                        |
+| GAGE           | enrichment       | express |        |          | [[https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-10-161][paper]] |                        |
+| GATK           |                  |         |        | [[https://software.broadinstitute.org/gatk/documentation/][doc]]      |       |                        |
+| GISTIC2        | copy# diff       |         |        | [[http://portals.broadinstitute.org/cgi-bin/cancer/publications/pub_paper.cgi?mode=view&paper_id=216&p=t][site]]     |       |                        |
+| GSNAP          |                  | fastq   |        | [[http://research-pub.gene.com/gmap/src/README][doc]]      |       | cite:mathe2016         |
+| histat2        |                  | fastq   |        | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]]      |       |                        |
+| ichorCNA       | copy#            | wig     | [[https://github.com/broadinstitute/ichorCNA][repo]]   | [[https://github.com/broadinstitute/ichorCNA/wiki][doc]]      | [[https://www.nature.com/articles/s41467-017-00965-y][paper]] | cite:adalsteinsson2017 |
+| Integrate      | rna fusion       | bam     |        |          |       | cite:zhang2014a        |
+| limma          | diff express     | count   |        |          | [[https://watermark.silverchair.com/gkv007.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAAngwggJ0BgkqhkiG9w0BBwagggJlMIICYQIBADCCAloGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMsxpSKWbqcoVIkhKsAgEQgIICK5TpAPl6lIQcIzSDztcNMdIl7XMdgXJgXRQlmNqzapp-VoQO3DEpAj0A3gEkQVCd9nOl8fXA8LzO0zmzgs4TmLVFBlFXQULtTa78iYvLjQMrqnrGUZYTQus2SFXCNBklNaasJ9-iiedHl9iOT0lM_19o03zr27w2DmjK9KA9qaSt5tmBA1ogIonAO0xYwLodt7UqoDqjAMg5IXUTCrTRuzf79KhJisKQ_CYvgNTHNHNFce0wi9y-rB77jARN3HWmeziwtzLnUw2OyF9z_Wa0gwmjRScuNvUUms_fa9PCgTvrRDGFh40LEQmscM9nw3Tx3QG5qb6Z68BtikTY9WyhhKiOuJT3uwnU6EtJytzZrnfW2kYZHobN_iL7HA2qTfOXRlXC-uHXYX03m7TEasKRk6DEQ0ViBt71jyo5d0a6JDluWB2O7VDDexQuYloTkIOs2D3Vtmxu2RyDiXHeV2V1g6rZbNxNykour5ibcd0xJAeU_noEtLsvb-2cZzEHzablaAxvs3Lun_K6KQ3CYl71BEzyIVmAvvg_nkkz-QDLTfXc6CMpRU6086afrOVUKUnVfShtYRzZf3zsN6Uo0Chc3EV4kzZnnQL3qsVWoQyJd1erZRLenWSI_2o71qUbJ8JLxX-__XoNJeWkHXuNAe2ssdNWIwLg95wrkRyE40dFMbxh0MbuH3ky5qnNmiG5qrnq-kw4A3MTxMD-kmixUFx12gSIepksg__dGW9mPw][paper]] |                        |
+| MultiQC        | seq QC agg       |         | [[https://github.com/ewels/MultiQC][github]] | [[https://multiqc.info/docs/][doc]]      |       |                        |
+| oligocalc      |                  |         |        | [[http://www.basic.northwestern.edu/biotools/oligocalc.html][site]]     |       |                        |
+| picard         |                  |         |        | [[https://broadinstitute.github.io/picard/index.html][doc]]      |       |                        |
+| rnaseqc        | rnaseq qc        | bam     | [[https://github.com/broadinstitute/rnaseqc][repo]]   | [[https://github.com/broadinstitute/rnaseqc][repo]]     |       |                        |
+| rsem           | transcript quant | bam     | [[https://github.com/deweylab/RSEM][repo]]   |          | [[https://doi.org/10.1186/1471-2105-12-323][paper]] | cite:li2011            |
+| RSeQC          | rnaseq qc        | bam     |        | [[http://rseqc.sourceforge.net/][repo]]     | [[https://doi.org/10.1093/bioinformatics/bts356][paper]] | cite:wang2012          |
+| salmon         | transcript quat  |         |        |          |       |                        |
+| sambamba       |                  | bam     |        | [[http://lomereiter.github.io/sambamba/docs/sambamba-view.html][online]]   |       |                        |
+| samtools       |                  | bam     |        | [[http://www.htslib.org/doc/samtools.html][online]]   |       |                        |
+| scVelo         | RNA velocity     |         |        | [[https://scvelo.readthedocs.io/][site]]     |       |                        |
+| seqtk          |                  |         | [[https://github.com/lh3/seqtk][github]] | [[https://github.com/lh3/seqtk/blob/master/README.md][README]]   | NA    | NA                     |
+| simNGS         | sim reads        | none    |        | [[https://www.ebi.ac.uk/goldman-srv/simNGS/][website]]  |       |                        |
+| STAR           |                  |         |        | [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]      |       | cite:dobin2019         |
+| tophat2        |                  |         |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                        |
+| tximport       |                  |         |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
+| WGCNA          |                  |         |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] | cite:langfelder2008    |
+|                |                  |         |        |          |       |                        |
 *** samtools
 - [[http://biobits.org/samtools_primer.html][another Samtools tutorial]]
 *** canvas
