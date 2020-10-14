@@ -1040,34 +1040,7 @@ CLOCK: [2019-06-03 Mon 18:40]--[2019-06-03 Mon 20:30] =>  1:22
 CLOCK: [2019-06-04 Tue 12:39]--[2019-06-04 Tue 13:12] =>  0:33
 CLOCK: [2020-10-13 Tue 13:38]--[2020-10-13 Tue 14:00] =>  0:22
 :END:
-- [[id:c0c0ee28-2e41-41a7-9a3b-ae195117a93e][common sequence file manipulation]]
-- QC outputs explained- https://sequencing.qcfail.com/
-- see - cite:chen2013 for GC bias and effects on assembly
-- RNA
-  - https://www.slideshare.net/joachimjacob/2rna-seqpart2investigatin-rawdata
-  - Do not
-    - quality-trim RNA- cite:williams2016a
-      - see also - http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0085024
-        - w/ commentary here- http://genomebio.org/is-trimming-is-beneficial-in-rna-seq/
-      - - https://www.michaelchimenti.com/2016/06/trim-rna-seq-reads/
-    - remove duplicate- no necessarly PCR artifact
-      - https://www.biostars.org/p/55648/
-      - https://www.biostars.org/p/14283/
-  - https://sequencing.qcfail.com/applications/mrna-seq/
-- [[http://bioinformatics-core-shared-training.github.io/cruk-bioinf-sschool/Day1/fastqc_sweave.pdf][de Santiago,15]]
-- Garbe,12
-  - trimming- removing bad ends
-    - adaptors
-    - low quality bases
-  - filering- removing bad reads
-    - low quality reads
-    - contamination
-    - low complexity reads
-    - short reads
-  - see Tagbust 
-- [[https://www.danielecook.com/double-checking-fastqs/][nice fastq python]]
-- https://wikis.utexas.edu/display/bioiteam/Evaluating+your+raw+sequencing+data
-- Read trimming
+- raw read trimming and filtering
   - https://www.biostars.org/p/368420/
   - adapter
     - https://www.ecseq.com/support/ngs/trimming-adapter-sequences-is-it-necessary
@@ -1076,7 +1049,32 @@ CLOCK: [2020-10-13 Tue 13:38]--[2020-10-13 Tue 14:00] =>  0:22
     - https://github.com/griffithlab/rnaseq_tutorial/wiki/Adapter-Trim
     - do all aligners need adaptor trimming? at least common to do so for all
     - https://www.biostars.org/p/368420/
-- [[id:1165bc2b-9373-4313-94bd-2a1d7be34fb8][aligned sequence qc]]
+  - trimming- removing bad ends
+    - adaptors
+    - low quality bases
+  - filering- removing bad reads
+    - low quality reads
+    - contamination
+    - low complexity reads
+    - short reads
+- RNA
+  - Do not
+    - quality-trim RNA- cite:williams2016a
+      - see also - http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0085024
+        - w/ commentary here- http://genomebio.org/is-trimming-is-beneficial-in-rna-seq/
+      - - https://www.michaelchimenti.com/2016/06/trim-rna-seq-reads/
+    - remove duplicate- no necessarly PCR artifact
+      - https://www.biostars.org/p/55648/
+      - https://www.biostars.org/p/14283/
+  - https://www.slideshare.net/joachimjacob/2rna-seqpart2investigatin-rawdata
+  - https://sequencing.qcfail.com/applications/mrna-seq/
+- [[id:c0c0ee28-2e41-41a7-9a3b-ae195117a93e][LINK TO common sequence file manipulation]]
+- QC outputs explained- https://sequencing.qcfail.com/
+- see - cite:chen2013 for GC bias and effects on assembly
+- [[http://bioinformatics-core-shared-training.github.io/cruk-bioinf-sschool/Day1/fastqc_sweave.pdf][de Santiago,15]]
+- [[https://www.danielecook.com/double-checking-fastqs/][nice fastq python]]
+- https://wikis.utexas.edu/display/bioiteam/Evaluating+your+raw+sequencing+data
+- [[id:1165bc2b-9373-4313-94bd-2a1d7be34fb8][LINK TO aligned sequence qc]]
 - reference
   - yas
   - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]] 
@@ -1142,7 +1140,6 @@ CLOCK: [2020-10-13 Tue 13:38]--[2020-10-13 Tue 14:00] =>  0:22
     - link to documentation- maybe an org and/or markdown file?
     - script comment design
   - https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
-
 *** RNA-seq                                                          :career:
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:15]--[2020-10-08 Thu 10:25] =>  0:10
@@ -1573,6 +1570,9 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
 
 - For differential expression, if coverage across transcript is poor, consider using only uniquely mappable reads
 **** alignment
+:PROPERTIES:
+:ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
+:END:
   - https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
   - prerequisites
     - adaptor identification and trimming
@@ -1598,8 +1598,11 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
   - HISAT2
 - [[*STAR][STAR]]
 **** read annotation
-  - https://github.com/griffithlab/rnaseq_tutorial/wiki/Annotation
+- https://github.com/griffithlab/rnaseq_tutorial/wiki/Annotation
 **** quantification and normalization
+:PROPERTIES:
+:ID:       853dd34c-27be-4be8-9794-19f04a1e22b0
+:END:
 - [[*rsem][rsem]]
 - https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/
 - https://github.com/griffithlab/rnaseq_tutorial/wiki/Transcript-Assembly-Merge
@@ -1697,6 +1700,9 @@ counting is computationally intensive- script HTseq and
 summarizeOverlaps on the cluster 
 variabilize RNA seq workflow- make into function 
 **** differential expression
+:PROPERTIES:
+:ID:       ee030cef-74d4-435d-8228-b85f0e6203db
+:END:
  https://chanzuckerberg.github.io/scRNA-python-workshop/analysis/05-diffexp.html
   http://www.nature.com/nmeth/journal/v7/n10/full/nmeth.1503.html
   - https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#differential-expression-analysis
