@@ -4,6 +4,7 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :END:
 :LOGBOOK:
+CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
@@ -17,6 +18,7 @@ CLOCK: [2019-07-07 Sun 09:58]--[2019-07-07 Sun 10:01] =>  0:03
 CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
 CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :END:
+- http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/
 - https://www.ebi.ac.uk/gxa/experiments/E-MTAB-513/Results
 - SRA (sequence read archive)
   - https://edwards.sdsu.edu/research/fastq-dump/
@@ -509,6 +511,7 @@ CLOCK: [2019-06-12 Wed 14:40]--[2019-06-12 Wed 14:58] =>  0:18
 CLOCK: [2019-05-29 Wed 15:23]--[2019-05-29 Wed 15:34] =>  0:11
 CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 :END:
+https://www.nature.com/scitable/topicpage/copy-number-variation-and-human-disease-741737/
 https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 *** DNA-seq
 - https://www.genscript.com/molecular-biology-glossary/11941/genomic-equivalent
@@ -989,6 +992,7 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 :CREATED:  [2020-07-20 Mon 10:05]
 :ID:       e4351ef3-6d41-4121-a2cc-c63d89f997ac
 :END:
+https://old.reddit.com/r/bioinformatics/comments/jbmw6t/which_software_to_use_for_gene_functionalpathway/
 - gsea
     - https://software.broadinstitute.org/gsea/doc/GSEAUserGuideTEXT.htm#_Consistent_Feature_Identifiers_Acro
     - http://software.broadinstitute.org/cancer/software/genepattern/modules/docs/ssGSEAProjection/4
@@ -1057,6 +1061,8 @@ CLOCK: [2020-10-13 Tue 13:38]--[2020-10-13 Tue 14:00] =>  0:22
     - contamination
     - low complexity reads
     - short reads
+  - https://www.biostars.org/p/212136/
+  - https://www.ecseq.com/support/ngs/trimming-adapter-sequences-is-it-necessary
 - RNA
   - Do not
     - quality-trim RNA- cite:williams2016a
@@ -1154,6 +1160,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+- [[file:~/data/career/pathology/molecular-pathology/ffpe-rna/ffpe-rnaseq.org]]
 **** general guides, github repos, training, etc
 - cite:picardi2015
   - intro
@@ -1598,6 +1605,7 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
   - HISAT2
 - [[*STAR][STAR]]
 **** read annotation
+https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-015-1308-8
 - https://github.com/griffithlab/rnaseq_tutorial/wiki/Annotation
 **** quantification and normalization
 :PROPERTIES:
@@ -5801,27 +5809,31 @@ consModules[cmod])
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :END:
+http://genomewiki.ucsc.edu/index.php/Main_Page
+https://genome.ucsc.edu/FAQ/index.html
   - https://basespace.illumina.com/dashboard
     - - dragon aligner 
   - https://www.reddit.com/r/bioinformatics/comments/5wo75h/ben_ward_julia_for_bioinformatics_and/
   - https://platform.dnanexus.com/login
-- repos
-      - https://github.com/Illumina
-      - https://github.com/chrisamiller  
-- https://www.reddit.com/r/bioinformatics/comments/cxlsh5/outdated_software_still_in_use/
-- https://github.com/pditommaso/awesome-pipeline
-- https://coding4medicine.com/cheatsheets/
-- https://github.com/genome/bfx-workshop
-- examples
-  - papers
-    - https://www.sciencedirect.com/science/article/pii/S009286741830309X#sec4
-    - good github repos
-      - https://github.com/ding-labrecip
-      - https://github.com/pstew
-- https://www.rockefeller.edu/genomics/
+  - https://www.ecseq.com/
+    - https://www.ecseq.com/workshops/ngs-data-analysis-courses
+  - repos
+    - https://github.com/Illumina
+    - https://github.com/chrisamiller  
+  - https://www.reddit.com/r/bioinformatics/comments/cxlsh5/outdated_software_still_in_use/
+  - https://github.com/pditommaso/awesome-pipeline
+  - https://coding4medicine.com/cheatsheets/
+  - https://github.com/genome/bfx-workshop
+  - examples
+    - papers
+      - https://www.sciencedirect.com/science/article/pii/S009286741830309X#sec4
+      - good github repos
+        - https://github.com/ding-labrecip
+        - https://github.com/pstew
+  - https://www.rockefeller.edu/genomics/
 
-- https://www.reddit.com/r/bioinformatics/comments/iv7xjj/biologist_with_minimal_coding_background/
-- old docker setup code
+  - https://www.reddit.com/r/bioinformatics/comments/iv7xjj/biologist_with_minimal_coding_background/
+  - old docker setup code
   #########1#########2#########3#########4#########5#########6#########7#########8
   # DEV
   # check if inside docker
