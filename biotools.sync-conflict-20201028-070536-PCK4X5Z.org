@@ -8,77 +8,25 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-- https://cloud.genepattern.org/gp/pages/login.jsf
-- https://github.com/google/deepvariant
-- https://pages.10xgenomics.com/ugm-2020-10-event-ra_g-user-group-meeting-amr_on-demand.html?src=email&utm_medium=email&lss=internal&utm_source=internal&cnm=ugm-2020-10-event-ra_g-user-group-meeting-amr&utm_campaign=ugm-2020-10-event-ra_g-user-group-meeting-amr&useroffertype=event&userresearcharea=ra_g&userregion=multi&mktouserid=1629122
-- https://www.broadinstitute.org/genome-sequencing/broadillumina-genome-analyzer-boot-camp
-- https://ieeexplore.ieee.org/document/7347331
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302505/
-- https://www.youtube.com/channel/UCv4IbnP9j9RC_aZAs8wqdeQ
-- https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
-- https://informatics.fas.harvard.edu/category/tutorials.html
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
 :PROPERTIES:
 :ID:       105ca7c0-0f10-4f28-bb52-b255d91cfb9e
 :END:
-** references, databases, and data sets
+** databases, data sets, and database browsers
 :PROPERTIES:
 :ID:       FCBA0863-010A-448C-A33C-941D2AA45AD5
 :END:
 :LOGBOOK:
-CLOCK: [2020-11-17 Tue 12:07]--[2020-11-17 Tue 13:23] =>  1:16
 CLOCK: [2019-07-07 Sun 09:58]--[2019-07-07 Sun 10:01] =>  0:03
 CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
 CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
-:END:  
-*** [[id:c0c0ee28-2e41-41a7-9a3b-ae195117a93e][LINK TO common bioinformatics file manipulation]]
-*** by organism
-:PROPERTIES:
-:CREATED:  [2020-10-26 Mon 12:18]
 :END:
-**** human
-- http://browser.1000genomes.org/index.html
-**** mouse
-- https://github.com/czbiohub/tabula-muris
-- [[http://www.informatics.jax.org/vocab/gene_ontology][jax mouse gene ontology browser]]
-- cite:lai2016
-- https://www.biorxiv.org/content/10.1101/082511v1#disqus_thread
-*** by data type
-- extracellular RNA
-  - https://exrna.org/resources/data/
-- protein - http://www.proteinatlas.org/about
-- integrated
-  - https://www.nature.com/articles/s41586-019-1629-x
-- [[id:333ebad6-9ed4-4d5b-a50e-f9fe9a8c3a92][gene expression]]
-- [[id:629e512e-60ac-4283-bc0e-028b8cad3dcc][sequence variation]]
-- miRNA
-  - http://www.mirbase.org/cgi-bin/sentences.pl?acc=MI0001445
-*** reference data 
-- homology 
-  - http://bioinf.wehi.edu.au/MSigDB/
-  - cite:lai2016
-    - https://bioconductor.org/packages/release/data/experiment/vignettes/gskb/inst/doc/gskb.pdf
-    - http://ge-lab.org/gskb/
-  - http://www.informatics.jax.org/homology.shtml
-- gene sets and pathways
-  - cite:liberzon2015
-  - cite:lai2016
-  - KEGG- note mostly orthology mapping for non-human organisms
-  - http://pathguide.org/
-  - cite:chowdhury2015
-  - https://www.bioconductor.org/packages/devel/data/experiment/vignettes/gskb/inst/doc/gskb.pdf
-  - - https://www.bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
-  - MSigDB
-  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4707969/
-  - [[https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/MSigDB_v7.0_Release_Notes#Changes_to_MSigDB_Gene_Symbol_Mapping_Procedures][orthology mapping]] 
-- https://github.com/genome/gms/wiki/HCC1395-WGS-Exome-RNA-Seq-Data
-- [[https://github.com/genome-in-a-bottle][Genome-in-a-bottle]]
-  - https://github.com/genome-in-a-bottle
+- http://gdac.broadinstitute.org/
 - http://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/
-- http://www.mirbase.org/
-- annotaiton
-  - http://daid.abcc.ncifcrf.gov/
-- alignment 
+- https://www.ebi.ac.uk/gxa/experiments/E-MTAB-513/Results
+- SRA (sequence read archive)
+  - https://edwards.sdsu.edu/research/fastq-dump/
+- alignment references
   - terminology
     - abinitio is predicted genes
   - organizations
@@ -90,41 +38,52 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
   - https://useast.ensembl.org/info/data/ftp/index.html
   - Genome Reference Consortium
     - https://www.slideshare.net/ShaojunXie/hg19-grch37-vs-hg38-grch38
-  - Ensembl
-    - [[https://useast.ensembl.org/info/data/ftp/index.html][Ensembl reference FTP]]
-    - https://useast.ensembl.org/info/genome/variation/
-*** individual subject / sample level data
-- [[https://www.ebi.ac.uk/ena][European Nucleotide Archive]]
-- https://www.ncbi.nlm.nih.gov/geo/
-- [[http://www.ebi.ac.uk/gwas/][The NHGRI-EBI Catalog of published genome-wide association studies]]
-- https://www.ebi.ac.uk/gxa/experiments/E-MTAB-513/Results
-- SRA (sequence read archive)
-  - https://edwards.sdsu.edu/research/fastq-dump/
+  - ucsc
+    - table browser
+      - https://genomebrowser.wustl.edu/goldenPath/help/hgTextHelp.html#Introduction
+    - https://www.biostars.org/p/19029/
+    - http://genome.ucsc.edu/FAQ/FAQreleases.html
+    - cite:karolchik2011
+- http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&chromInfoPage=
+- pathways
+  - http://pathguide.org/
+  - cite:chowdhury2015
+  - https://www.bioconductor.org/packages/devel/data/experiment/vignettes/gskb/inst/doc/gskb.pdf
+  - - https://www.bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
+- https://github.com/czbiohub/tabula-muris
+- https://m.reddit.com/r/science/comments/4ybtym/science_ama_series_we_are_yaniv_erlich_and_joe/ 
+- http://www.mirbase.org/
+- https://www.ebi.ac.uk/services
+- https://exrna.org/resources/data/
+- http://www.reddit.com/r/askscience/comments/znlk6/askscience_special_ama_we_are_the_encyclopedia_of/
+- http://david.abcc.ncifcrf.gov/
+- http://browser.1000genomes.org/index.html
+- http://www.proteinatlas.org/about
+- https://www.nature.com/articles/s41586-019-1629-x
+- [[Question: Selecting Random Pairs From Fastq?]]
+- https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
 - dbGaP
   - https://www.ncbi.nlm.nih.gov/books/NBK99225/#DArequest.could_you_give_a_demo_about_th
 - [[https://www.ccdatalab.org/blog/2019/3/29/gene-expression-repos-explained][gene expression repos explained]]
+- datasets
+  - https://www.reddit.com/r/bioinformatics/comments/bbocni/is_there_any_way_to_find_rnaseq_datasets_that/
+  - https://github.com/genome/gms/wiki/HCC1395-WGS-Exome-RNA-Seq-Data
+  - https://www.ncbi.nlm.nih.gov/geo/
+  - [[https://www.ebi.ac.uk/ena][European Nucleotide Archive]]
+  - [[https://exrna.org/resources/data/][exRNA]]
+  - [[https://github.com/genome-in-a-bottle][Genome-in-a-bottle]]
+    - https://github.com/genome-in-a-bottle
+  - [[http://www.ebi.ac.uk/gwas/][The NHGRI-EBI Catalog of published genome-wide association studies]]
+- cBioPortal
+  - http://www.cbioportal.org/tutorials
+- AACR GENIE
+  - "regulatory-grade registry aggregating and linking clinical-grade cancer genomic data with clinical outcomes"
+  - https://www.aacr.org/Research/Research/pages/aacr-project-genie.aspx
+- Ensembl
+  - [[https://useast.ensembl.org/info/data/ftp/index.html][Ensembl reference FTP]]
+  - https://useast.ensembl.org/info/genome/variation/
 - [[https://www.encodeproject.org/][ENCODE]]
-  - http://www.reddit.com/r/askscience/comments/znlk6/askscience_special_ama_we_are_the_encyclopedia_of/
-
-- cite:beck2015
 - [[https://www.reddit.com/r/bioinformatics/comments/601fzr/where_can_i_access_free_sequencing_data/][Where can I access free sequencing data]]
-- [[https://www.aacr.org/professionals/research/aacr-project-genie/][GENIE]]
-**** GDC: Genomic Data Commons
-- [[https://gdc.cancer.gov/][NCI Genomic Data Commons]]
-  - [[https://docs.gdc.cancer.gov/][GDC documentation]]
-  - [[https://gdc.cancer.gov/about-data/data-harmonization-and-generation/genomic-data-harmonization/genomic-data-alignment/rna-seq-pipeline][GDC RNA-seq pipeline]]
-  - [[https://cbiit.nci.nih.gov/ncip/nci-cancer-genomics-cloud-pilots/nci-cloud-initiative][GDC cloud pilots]]
-  - - https://gdc.cancer.gov/developers
-  - https://docs.gdc.cancer.gov/
-  - - https://gdc.cancer.gov/about-data/data-harmonization-and-generation/genomic-data-harmonization/genomic-data-alignment/rna-seq-pipeline
-  - https://cbiit.nci.nih.gov/ncip/nci-cancer-genomics-cloud-pilots/nci-cloud-initiative
-- http://www.cbioportal.org/tutorials
-*** sequence variation
-:PROPERTIES:
-:ID:       629e512e-60ac-4283-bc0e-028b8cad3dcc
-:END:
-- [[http://firebrowse.org/?cohort=ACC&download_dialog=true][firehose]]
-- http://browser.1000genomes.org/index.html
 - Variance
   - gnomAD
     - - https://mail.google.com/mail/u/0/#inbox/FMfcgxwBWKXrqjHPFNdbSqJRRRdhzdGf
@@ -140,16 +99,6 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
     - http://www.cbioportal.org/rmatlab
   - [[https://www.ncbi.nlm.nih.gov/projects/SNP/index.html][dbSNP]]
   - [[http://exac.broadinstitute.org/][ExAC Exome Aggregation Consortium]]
-- polymorphism
-  - [[http://www.internationalgenome.org/data#download][IGSR at 1000 Genomes]]
-- [[https://civic.genome.wustl.edu/#/home][CIViC]]
-  - cite:griffith2017civic
-*** gene expression 
-:PROPERTIES:
-:ID:       333ebad6-9ed4-4d5b-a50e-f9fe9a8c3a92
-:END:
-- https://github.com/czbiohub/tabula-muris
-- [[http://firebrowse.org/?cohort=ACC&download_dialog=true][firehose]]
 - [[https://gtexportal.org/home/datasets][GTEx]]
   - [[https://biospecimens.cancer.gov/resources/sops/][GTEx SOPs]]
   - GTEx currently uses the
@@ -164,6 +113,24 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
   - Unstranded 
   - GTEx
     - [[https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=phs000424.v7.p2][at dbGAP]]
+- [[https://civic.genome.wustl.edu/#/home][CIViC]]
+  - cite:griffith2017civic
+- [[https://gdc.cancer.gov/][NCI Genomic Data Commons]]
+  - [[https://docs.gdc.cancer.gov/][GDC documentation]]
+  - [[https://gdc.cancer.gov/about-data/data-harmonization-and-generation/genomic-data-harmonization/genomic-data-alignment/rna-seq-pipeline][GDC RNA-seq pipeline]]
+  - [[https://cbiit.nci.nih.gov/ncip/nci-cancer-genomics-cloud-pilots/nci-cloud-initiative][GDC cloud pilots]]
+  - - https://gdc.cancer.gov/developers
+  - https://docs.gdc.cancer.gov/
+  - - https://gdc.cancer.gov/about-data/data-harmonization-and-generation/genomic-data-harmonization/genomic-data-alignment/rna-seq-pipeline
+  - https://cbiit.nci.nih.gov/ncip/nci-cancer-genomics-cloud-pilots/nci-cloud-initiative
+- [[http://www.internationalgenome.org/data#download][IGSR at 1000 Genomes]]
+- cite:beck2015
+- http://www.mirbase.org/cgi-bin/sentences.pl?acc=MI0001445
+*** by organism
+:PROPERTIES:
+:CREATED:  [2020-10-26 Mon 12:18]
+:END:
+- [[http://www.informatics.jax.org/vocab/gene_ontology][jax mouse gene ontology browser]]
 *** public data, data mapping
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:18]
@@ -459,7 +426,7 @@ mandatory
   - GATK tools treat all read groups with the same SM value as containing sequencing data for the same sample
   - https://gatkforums.broadinstitute.org/gatk/discussion/6472/read-groups
 
-** Processes
+** Processes (flat list)
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       eaac4fb0-ebc3-43c3-9b27-d0633f728fc9
@@ -467,28 +434,7 @@ mandatory
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
-*** miRNA-seq
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
-*** atac-seq
-- protocols and guidelines
-  - https://informatics.fas.harvard.edu/atac-seq-guidelines.html
-- atac-seq and mirna-seq https://www.sciencedirect.com/science/article/pii/S193459091730320X?via%3Dihub
-- bioinformatics
-  - cite:yan2020
-- method-establishing papers
-  - cite:buenrostro2013
-  - cite:buenrostro2015
-- for tissue
-  - cite:corces2017 
-- ENCODE pipeline
-  - https://docs.google.com/document/d/1f0Cm4vRyDQDu0bMehHD7P7KOMxTOP-HiNoIvL1VcBt8/edit
-  - https://github.com/ENCODE-DCC/atac-seq-pipeline
-  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5170597/
-- https://www.illumina.com/techniques/popular-applications/epigenetics/atac-seq-chromatin-accessibility.html
-- https://www.activemotif.com/blog-single-cell-atac-seq
 *** transcription factor enrichment
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4009616/
-- https://science.sciencemag.org/content/352/6288/aad3018
 - motif-based- high false pos
 - benchtop with ChIP-seq 
 *** aligned sequence qc
@@ -565,14 +511,12 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
   - [[mu4e:msgid:BYAPR02MB5592ACF7A79C1137A6F0A974B77B0@BYAPR02MB5592.namprd02.prod.outlook.com][Re: cibersortx from docker]]
   - docker pull lyronctk/cibersortxfractions
 - have access token for docker: https://cibersortx.stanford.edu/getoken.php
-*** common bioinformatics file manipulation
+*** common sequence file manipulation
 :PROPERTIES:
 :ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
 :END:
-- [[Question: Selecting Random Pairs From Fastq?]]  
-- https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
-- [[https://www.biostars.org/p/68283/][count total length of regions in bed file]]
-- https://gatkforums.broadinstitute.org/gatk/discussion/6484/how-to-generate-an-unmapped-bam-from-fastq-or-aligned-bam
+  - [[https://www.biostars.org/p/68283/][count total length of regions in bed file]]
+  - https://gatkforums.broadinstitute.org/gatk/discussion/6484/how-to-generate-an-unmapped-bam-from-fastq-or-aligned-bam
 
 - https://www.biostars.org/p/247903/
 - https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
@@ -598,8 +542,6 @@ CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 :END:
 https://www.nature.com/scitable/topicpage/copy-number-variation-and-human-disease-741737/
 https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
-*** whole-genome sequencing
-- duplication rate as a measure of lib complexity
 *** DNA-seq
 :PROPERTIES:
 :ID:       728e8984-696f-4531-8e76-bf6d78bfa3b7
@@ -929,15 +871,11 @@ Companies
 :PROPERTIES:
 :ID:       BD6D148D-BF63-4A9A-A14E-1AB6954BFA40
 :END:
-https://www.illumina.com/systems/sequencing-platforms/novaseq/specifications.html
+
 output- *.bcl files- base call and quality score per cycle
 convert *.bcl to .fastq.gz w/ CASAVA
 also demultiplexes 
-- [[https://www.illumina.com/systems.html][system specs]]
-- PhiX phasing and cluster ctrl https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/hiseq-phix-control-v3-technical-note.pdf
-- library preparation kits
-  - [[https://www.illumina.com/library-prep-array-kit-selector.html][selector]]
-  - https://support.illumina.com/sequencing/sequencing_kits/truseq-small-rna-kit.html
+
 **** [[Overview of Sequencing Methods]] Molecular Micro
 :PROPERTIES:
 :ID:       6F399263-D04E-441A-B990-BB669F61F25E
@@ -1086,38 +1024,23 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
 :END:
-- https://danielhomola.com/assets/DanielHomola_PhD.pdf
-- cite:bersanelli2016
-- cite:rappoport2018
-- cite:subramanian2020
-- cite:wu2019
-- https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
+  - cite:wu2019
+  - https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
 *** pathway analysis
 :PROPERTIES:
 :CREATED:  [2020-07-20 Mon 10:05]
 :ID:       e4351ef3-6d41-4121-a2cc-c63d89f997ac
 :END:
-- https://link.springer.com/article/10.1186/s40246-019-0226-2
-- methods papers
-  - cite:reimand2019
-  - cite:creixell2015 
-- https://academic.oup.com/bioinformatics/article/33/3/414/2875813
+- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1790-4
+- https://www.nature.com/articles/s41598-019-46059-1
+- https://www.nature.com/articles/ncomms13427#Sec10
+- cite:amadoz2019
+- [[id:D68E1182-1F7B-4160-A6DD-BD2635F8085F][GSEA]]
 - tools
   - https://old.reddit.com/r/bioinformatics/comments/jbmw6t/which_software_to_use_for_gene_functionalpathway/
   - http://www.visantnet.org/visantnet.html
   - https://www.nature.com/articles/ncomms13427#Sec10
     - https://github.com/varnivey/ipanda/blob/master/MANUAL.txt
-  - [[id:D68E1182-1F7B-4160-A6DD-BD2635F8085F][GSEA]]
-- tutorials
-  - https://sbc.shef.ac.uk/workshops/2019-01-14-rna-seq-r/rna-seq-gene-set-testing.nb.html
-  - https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2019/RNAseq/html/06_Gene_set_testing.html
-- https://academic.oup.com/nar/article/48/D1/D479/5626534#190997651
-- - http://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-2-r14
-- https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btt285
-- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1790-4
-- https://www.nature.com/articles/s41598-019-46059-1
-- https://www.nature.com/articles/ncomms13427#Sec10
-- cite:amadoz2019
 - https://www.nature.com/articles/s41598-019-46059-1
 - visualization
   - heatmaps
@@ -1286,11 +1209,11 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+- [[file:~/data/career/pathology/molecular-pathology/ffpe-rna/ffpe-rnaseq.org]]
 **** general guides, github repos, training, etc
 :PROPERTIES:
 :ID:       945cb660-b2c2-4416-be64-b24b9fb79a0f
 :END:
-- [[https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#differential-expression-analysis][easy as 1-2-3]]
 - cite:picardi2015
   - intro
     - raw sequence metrics (d/n require alignment, ensure sequencing platform did it’s job)
@@ -1543,57 +1466,56 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
 :PROPERTIES:
 :ID:       19780d7c-afa7-4195-b1f9-df9c563de303
 :END:
-- https://www.degruyter.com/view/journals/sagmb/18/1/article-20180021.xml?language=en
-- https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/tuesday/ExperimentalDesign.pdf
-- http://scotty.genetics.utah.edu/help.html
-- Depth
-  - - determine directly using technical replicates
-  - expression estimate correspondence among technical replicates (no biological variation) for genes with above-median coverage stabilized at about 10 million reads per sample (Wang et al. 2011).  
-- Replicates and power
-  - sufficient replication has to occur at every level of comparison. In a fully "factorial" design, for example, more than one experimental "factor" is of interest, each with two or more treatments, such that any individual receives one of multiple possible treatments at each factor. In this case, every possible combination of treatments across factors needs to be replicated sufficiently,
-  - biological variation is more important than technical variation- See Bullard,10 Evaluation of statistical methods for normalization and differential expression in mRNA-Seq experiments, fig. 4
-  - adding depth vs. replicate- replicates preferred, gives less uncertainty 
-  - remember, more comparisons require more replicates 
-  - cite:schurch2016 
-  - Power
-    - https://cofactorgenomics.com/6-changes-thatll-make-big-difference-rna-seq-part-5/
-    - cite:peixoto2015
-    - the rewards in statistical power due to additional biological replicates will surpass the improved parameterization of technical variation garnered from additional technical replicates
-    - low counts mean low power- see rna seqlopedia fig 1.1
-  - [[http://scotty.genetics.utah.edu/help.html][Scotty]]
-  - consider a "bank" of more sample replicates than are acutally sequenced 
-- By specific experimental question
-  - Differential expression
-    - [[http://rnaseq.uoregon.edu/#exp-design][RNA-seqlopedia]]
-      - qualitative or quantitative (DE, ect.) design- usually quant
-      - need bio replicates
-      - stranded and paired library prep not required
-- Prefer “balanced block” design w/ barcode-> mixed prep-> all samples on all lanes
-- cite:auer2010
-- cite:williams2014
-  - contains the 30-50 mil read for DE recommendation
-- Examples of experimental objectives
-  - cite:Cabanski_2014 RNA sequencing (RNA-Seq) approaches are designed to characterize the expressed genome in numerous ways1,2 from defining different types of RNA, such as long non- coding RNAs,3 to comparing RNA expression,4 splice iso- forms,5e7 allele-specific expression,8e10 fusions,11e14 RNA editing,15,16 
-- sequencing platforms
-  - cite:li2014
-- cite:su2014
-- cite:rajkumar2015
-- http://www.slideshare.net/YaoyuEWang/rnaseq-analysis-ngsapplication2
-- http://michelebusby.tumblr.com/post/26913184737/thinking-about-designing-rna-seq-experiments-to
-- Parameters affecting sequencing
-  - Variance is bimodal
-    - low @ low counts b/c Poisson
-    - low @ high counts b/c?
-  - biological
-    - transcript abundence 10^5-10^7 see cite:Griffith_2015 refs 85,86
-  - technical @ platform
-    - specialized
-      - On target efficiency with bedtools 
-    - read length
-    - read depth
-    - strandedness problem[[file:org.org_imgs/20170224_132238_567aRU.png]]
-  - Strandedness
-    - cite:Zhao_2015
+  - https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/tuesday/ExperimentalDesign.pdf
+  - http://scotty.genetics.utah.edu/help.html
+  - Depth
+    - - determine directly using technical replicates
+    - expression estimate correspondence among technical replicates (no biological variation) for genes with above-median coverage stabilized at about 10 million reads per sample (Wang et al. 2011).  
+  - Replicates and power
+    - sufficient replication has to occur at every level of comparison. In a fully "factorial" design, for example, more than one experimental "factor" is of interest, each with two or more treatments, such that any individual receives one of multiple possible treatments at each factor. In this case, every possible combination of treatments across factors needs to be replicated sufficiently,
+    - biological variation is more important than technical variation- See Bullard,10 Evaluation of statistical methods for normalization and differential expression in mRNA-Seq experiments, fig. 4
+    - adding depth vs. replicate- replicates preferred, gives less uncertainty 
+    - remember, more comparisons require more replicates 
+    - cite:schurch2016 
+    - Power
+      - https://cofactorgenomics.com/6-changes-thatll-make-big-difference-rna-seq-part-5/
+      - cite:peixoto2015
+      - the rewards in statistical power due to additional biological replicates will surpass the improved parameterization of technical variation garnered from additional technical replicates
+      - low counts mean low power- see rna seqlopedia fig 1.1
+    - [[http://scotty.genetics.utah.edu/help.html][Scotty]]
+    - consider a "bank" of more sample replicates than are acutally sequenced 
+  - By specific experimental question
+    - Differential expression
+      - [[http://rnaseq.uoregon.edu/#exp-design][RNA-seqlopedia]]
+        - qualitative or quantitative (DE, ect.) design- usually quant
+        - need bio replicates
+        - stranded and paired library prep not required
+  - Prefer “balanced block” design w/ barcode-> mixed prep-> all samples on all lanes
+  - cite:auer2010
+  - cite:williams2014
+    - contains the 30-50 mil read for DE recommendation
+  - Examples of experimental objectives
+    - cite:Cabanski_2014 RNA sequencing (RNA-Seq) approaches are designed to characterize the expressed genome in numerous ways1,2 from defining different types of RNA, such as long non- coding RNAs,3 to comparing RNA expression,4 splice iso- forms,5e7 allele-specific expression,8e10 fusions,11e14 RNA editing,15,16 
+  - sequencing platforms
+    - cite:li2014
+  - cite:su2014
+  - cite:rajkumar2015
+  - http://www.slideshare.net/YaoyuEWang/rnaseq-analysis-ngsapplication2
+  - http://michelebusby.tumblr.com/post/26913184737/thinking-about-designing-rna-seq-experiments-to
+  - Parameters affecting sequencing
+    - Variance is bimodal
+      - low @ low counts b/c Poisson
+      - low @ high counts b/c?
+    - biological
+      - transcript abundence 10^5-10^7 see cite:Griffith_2015 refs 85,86
+    - technical @ platform
+      - specialized
+        - On target efficiency with bedtools 
+      - read length
+      - read depth
+      - strandedness problem[[file:org.org_imgs/20170224_132238_567aRU.png]]
+    - Strandedness
+      - cite:Zhao_2015
 - [[*testing, modeling, and read simulation][testing, modeling, and read simulation]]
 **** [[id:7BF989EC-4DA7-4B0C-AAA9-0175156447FF][LINK TO RNA extraction, solubilization, and isolation]]
 :PROPERTIES:
@@ -1765,9 +1687,6 @@ https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-015-1308-8
 :PROPERTIES:
 :ID:       853dd34c-27be-4be8-9794-19f04a1e22b0
 :END:
-- https://www.slideshare.net/mobile/jakonix/part-1-of-rnaseq-for-de-defining-the-goal
-- https://www.biostars.org/p/404211/#:~:text=What%20is%20the%20difference%20between,as%20fragment%20length%20distribution%20etc.
-- https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html
 - [[*rsem][rsem]]
 - https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/
 - https://github.com/griffithlab/rnaseq_tutorial/wiki/Transcript-Assembly-Merge
@@ -1795,8 +1714,6 @@ https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-015-1308-8
 - sources of bias
   - 
 - https://htseq.readthedocs.io/en/release_0.11.1/tour.html#counting-reads-by-genes
-- RSEM
-  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
 ***** featureCounts in Rsubread
 :PROPERTIES:
 :ID:       0FB3EE5E-DD17-4438-BF35-011555A41DF9
@@ -1870,38 +1787,39 @@ variabilize RNA seq workflow- make into function
 :PROPERTIES:
 :ID:       ee030cef-74d4-435d-8228-b85f0e6203db
 :END:
-:LOGBOOK:
-CLOCK: [2020-11-23 Mon 10:43]--[2020-11-23 Mon 10:57] =>  0:14
-:END:
-- specialized DE datasets
-  - long non-coding- https://europepmc.org/article/PMC/6058388
-- methods comparisons
+ https://chanzuckerberg.github.io/scRNA-python-workshop/analysis/05-diffexp.html
+  http://www.nature.com/nmeth/journal/v7/n10/full/nmeth.1503.html
+  - https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#differential-expression-analysis
+  - https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html
+  - https://europepmc.org/article/PMC/6058388
   - cite:tang2015 
-- tutorials
   - http://master.bioconductor.org/packages/release/workflows/html/rnaseqGene.html
   - https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
-- https://www.nature.com/articles/s41598-020-59516-z#data-availability
-- https://www.biostars.org/p/101727/
-- methods
-  - limma
-    - https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/decideTests
-    - https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/ebayes
-    - https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/toptable
-  - comparison
-    - https://academic.oup.com/bib/article/16/1/59/240754#26957696
+  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-015-0794-7
+  - https://nbisweden.github.io/course_rnaseq/presentations/presentation_dge.html#1
+  - https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
+  - https://www.nature.com/articles/s41598-020-59516-z#data-availability
+  - https://www.biostars.org/p/101727/
+  - methods
+    - limma
+      - https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/decideTests
+      - https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/ebayes
+      - https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/toptable
+    - comparison
+      - https://academic.oup.com/bib/article/16/1/59/240754#26957696
+    - DESeq2
+      - [[https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#differential-expression-analysis][package vignette]]
+      - handling nested designs https://support.bioconductor.org/p/64480/
+      - https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
+      - https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf
+  - cite:parekh2016
+  - https://www.the-scientist.com/news-opinion/technical-bias-widespread-in-rna-seq-datasets-66766?utm_campaign=TS_DAILY%20NEWSLETTER_2019&utm_source=hs_email&utm_medium=email&utm_content=79783848&_hsenc=p2ANqtz-_TvsXNNQSHgNWR9yE8Q6vZP04TRSx3T-W0rLk0NLucSkrSI0wQ0GDQ2L1Vs_Jf1x1_21ou8yVG1ur9nXtXbBYl91OsUg&_hsmi=79783848
+  - bulk transcriptomics
+    - 
+  - https://bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#useful-graphical-representations-of-differential-expression-results
   - DESeq2
-    - [[https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#differential-expression-analysis][package vignette]]
-    - handling nested designs https://support.bioconductor.org/p/64480/
-    - https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
-    - https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf
-- cite:parekh2016
-- https://www.the-scientist.com/news-opinion/technical-bias-widespread-in-rna-seq-datasets-66766?utm_campaign=TS_DAILY%20NEWSLETTER_2019&utm_source=hs_email&utm_medium=email&utm_content=79783848&_hsenc=p2ANqtz-_TvsXNNQSHgNWR9yE8Q6vZP04TRSx3T-W0rLk0NLucSkrSI0wQ0GDQ2L1Vs_Jf1x1_21ou8yVG1ur9nXtXbBYl91OsUg&_hsmi=79783848
-- bulk transcriptomics
-  - 
-- https://bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#useful-graphical-representations-of-differential-expression-results
-- DESeq2
-- edgeR
-- limma
+  - edgeR
+  - limma
 - https://informatics.fas.harvard.edu/best-practices-for-de-novo-transcriptome-assembly-with-trinity.html
 
 ***** RNA-seq Differential Expression (DE)
@@ -3311,13 +3229,6 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 - my RNA-seq work
   - [[file:~/org/career.org::*high-grade head and neck characterization][high-grade head and neck characterization]]
   - [[id:e7a8362d-f4cf-45ec-a3f8-91b0ffbdc500][ffpe rna-seq project]]
-  - [[file:~/data/career/pathology/molecular-pathology/ffpe-rna/ffpe-rnaseq.org]]
-***** published pipelines
-- [[https://webshare.bioinf.unc.edu/public/mRNAseq_TCGA/UNC_mRNAseq_summary.pdf][TCGA RSEM]]
-  - https://support.bioconductor.org/p/131066/
-  - http://zyxue.github.io/2017/06/02/understanding-TCGA-mRNA-Level3-analysis-results-files-from-firebrose.html
-  - https://bsbludwig.com/post/94066296740/what-do-tcgas-rnaseq-files-actually-show
-  - http://seqanswers.com/forums/showthread.php?t=42911
 **** reference
 :PROPERTIES:
 :ID:       70491293-d832-4947-b1bd-a0f4ae066c17
@@ -3660,7 +3571,6 @@ CLOSED: [2016-12-05 Mon 14:22]
 :PROPERTIES:
 :ID:       dbb73cad-ec08-40bb-8f9f-168d13822933
 :END:
-- allele-specific copy number: the number of copies of each inherited allele, allows for the detection of copy-neutral loss of heterozygosity https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5627665/
 - [[https://www.bioconductor.org/packages/devel/bioc/vignettes/TitanCNA/inst/doc/TitanCNA.pdf][see ploidy purity correction math]]
 - [[https://www.biostars.org/p/383522/][good CN,purity,ploid discussion]]
 ****** cfDNA WGS copy number calling
@@ -3702,10 +3612,69 @@ CLOSED: [2016-12-05 Mon 14:22]
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5737511/
 - WGS callers
   - https://github.com/GavinHaLab
+*** single-cell RNA sequencing (scRNA-seq)
+:PROPERTIES:
+:ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
+:END:
 
-**** structural variation 
-https://www.nature.com/articles/s41598-020-71168-7
-***** sv
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6914766/
+- https://www.nature.com/articles/s41467-019-12235-0
+- http://www.kumc.edu/genomics/genome-sequencing-facility/services/chromium-single-cell-5-and-v(d)j-enrichment.html
+- https://www.10xgenomics.com/solutions/vdj/
+- https://research.medgenome.com/ngs-services/single-cell-sequencing/
+- https://www.sciencedirect.com/science/article/pii/S1097276517300497#fig1
+- https://www.biorxiv.org/content/10.1101/615013v1
+- https://www.youtube.com/watch?v=Wbusqowyu6g&t=147s
+- cite:monaco2019
+- cite:see2018 
+- toolkits
+  - Seurat
+  - Monocle 2
+  - scVI
+- clustering
+  - SC3
+  - SIMLR
+  - CIDR
+  - SNN-Cliq
+  - Biscuit
+- trajectory inference
+  - Monocle 2
+  - Slingshot
+  - TSCAN
+  - Wishbone
+- imputing dropouts
+  - MAGIC
+  - scImpute
+  - SAVER
+- https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/mkfastq
+- http://www.partek.com/free-trial/
+- https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
+- https://github.com/koash/cellranger-docker
+- https://satijalab.org/seurat/v3.0/pbmc3k_tutorial.html
+- http://core-genomics.blogspot.com/2016/07/10x-genomics-single-cell-3mrna-seq.html
+- https://www.frontiersin.org/articles/10.3389/fcell.2018.00108/full
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6292934/
+- https://www.sciencedirect.com/science/article/pii/S1097276515002610?via%3Dihub
+- https://www.ncbi.nlm.nih.gov/pubmed/26000846/
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5561556/
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6131190/
+- https://www.nature.com/articles/s41598-019-46932-z
+- https://www.biorxiv.org/content/biorxiv/early/2018/03/05/275859.full.pdf
+- cite:wohnhaas2019 
+- cite:papalexi2018
+- https://support.10xgenomics.com/single-cell-gene-expression/datasets
+- https://www.cell.com/cell-reports/pdf/S2211-1247(19)30059-2.pdf
+
+- https://www.nature.com/articles/s41591-020-0844-1
+- https://www.workcast.com/AuditoriumAuthenticator.aspx?cpak=8475927829006248&pak=1763506853003757
+- cite:qi2019 
+- applications
+  - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
+  - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
+    - cite:lawson2018 
+- cite:stuart2019 
+- [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
+*** sv
 :PROPERTIES:
 :CREATED:  [2019-08-15 Thu 15:43]
 :ID:       5ff1bbbb-3471-4f2a-b9eb-43b293eee807
@@ -3831,70 +3800,6 @@ CLOCK: [2019-10-07 Mon 17:34]--[2019-10-07 Mon 17:43] =>  0:09
   - [ ] update mod- consolidate and functionalize common tasks
   - [ ] export
 
-*** single-cell RNA sequencing (scRNA-seq)
-:PROPERTIES:
-:ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
-:END:
-- https://chanzuckerberg.github.io/scRNA-python-workshop/analysis/05-diffexp.html
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6914766/
-- https://www.nature.com/articles/s41467-019-12235-0
-- http://www.kumc.edu/genomics/genome-sequencing-facility/services/chromium-single-cell-5-and-v(d)j-enrichment.html
-- https://www.10xgenomics.com/solutions/vdj/
-- https://research.medgenome.com/ngs-services/single-cell-sequencing/
-- https://www.sciencedirect.com/science/article/pii/S1097276517300497#fig1
-- https://www.biorxiv.org/content/10.1101/615013v1
-- https://www.youtube.com/watch?v=Wbusqowyu6g&t=147s
-- cite:monaco2019
-- cite:see2018 
-- toolkits
-  - Seurat
-  - Monocle 2
-  - scVI
-- clustering
-  - SC3
-  - SIMLR
-  - CIDR
-  - SNN-Cliq
-  - Biscuit
-- trajectory inference
-  - Monocle 2
-  - Slingshot
-  - TSCAN
-  - Wishbone
-- imputing dropouts
-  - MAGIC
-  - scImpute
-  - SAVER
-- https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/mkfastq
-- http://www.partek.com/free-trial/
-- https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
-- https://github.com/koash/cellranger-docker
-- https://satijalab.org/seurat/v3.0/pbmc3k_tutorial.html
-- http://core-genomics.blogspot.com/2016/07/10x-genomics-single-cell-3mrna-seq.html
-- https://www.frontiersin.org/articles/10.3389/fcell.2018.00108/full
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6292934/
-- https://www.sciencedirect.com/science/article/pii/S1097276515002610?via%3Dihub
-- https://www.ncbi.nlm.nih.gov/pubmed/26000846/
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5561556/
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6131190/
-- https://www.nature.com/articles/s41598-019-46932-z
-- https://www.biorxiv.org/content/biorxiv/early/2018/03/05/275859.full.pdf
-- cite:wohnhaas2019 
-- cite:papalexi2018
-- https://support.10xgenomics.com/single-cell-gene-expression/datasets
-- https://www.cell.com/cell-reports/pdf/S2211-1247(19)30059-2.pdf
-
-- https://www.nature.com/articles/s41591-020-0844-1
-- https://www.workcast.com/AuditoriumAuthenticator.aspx?cpak=8475927829006248&pak=1763506853003757
-- cite:qi2019 
-- applications
-  - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
-  - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
-    - cite:lawson2018 
-- cite:stuart2019 
-- [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
-*** small RNA sequencing 
-- https://www.encodeproject.org/data-standards/rna-seq/small-rnas/
 *** systems biology
 :PROPERTIES:
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
@@ -4085,8 +3990,6 @@ https://www.ncbi.nlm.nih.gov/pubmed/?term=nextflow
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
-- 
-- https://www.ebi.ac.uk/services
 *** table of tools
 :PROPERTIES:
 :ID:       a0923938-4021-44cd-a8f3-94c0eb10cdb5
@@ -4121,7 +4024,7 @@ https://www.ncbi.nlm.nih.gov/pubmed/?term=nextflow
 | histat2        |                  | fastq     |        | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]]      |       |                        |
 | ichorCNA       | copy#            | wig       | [[https://github.com/broadinstitute/ichorCNA][repo]]   | [[https://github.com/broadinstitute/ichorCNA/wiki][doc]]      | [[https://www.nature.com/articles/s41467-017-00965-y][paper]] | cite:adalsteinsson2017 |
 | Integrate      | rna fusion       | bam       |        |          |       | cite:zhang2014a        |
-| limma          | diff express     | count     |        |          | [[https://dx.doi.org/10.1093%2Fnar%2Fgkv007][paper]] |                        |
+| limma          | diff express     | count     |        |          | [[https://watermark.silverchair.com/gkv007.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAAngwggJ0BgkqhkiG9w0BBwagggJlMIICYQIBADCCAloGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMsxpSKWbqcoVIkhKsAgEQgIICK5TpAPl6lIQcIzSDztcNMdIl7XMdgXJgXRQlmNqzapp-VoQO3DEpAj0A3gEkQVCd9nOl8fXA8LzO0zmzgs4TmLVFBlFXQULtTa78iYvLjQMrqnrGUZYTQus2SFXCNBklNaasJ9-iiedHl9iOT0lM_19o03zr27w2DmjK9KA9qaSt5tmBA1ogIonAO0xYwLodt7UqoDqjAMg5IXUTCrTRuzf79KhJisKQ_CYvgNTHNHNFce0wi9y-rB77jARN3HWmeziwtzLnUw2OyF9z_Wa0gwmjRScuNvUUms_fa9PCgTvrRDGFh40LEQmscM9nw3Tx3QG5qb6Z68BtikTY9WyhhKiOuJT3uwnU6EtJytzZrnfW2kYZHobN_iL7HA2qTfOXRlXC-uHXYX03m7TEasKRk6DEQ0ViBt71jyo5d0a6JDluWB2O7VDDexQuYloTkIOs2D3Vtmxu2RyDiXHeV2V1g6rZbNxNykour5ibcd0xJAeU_noEtLsvb-2cZzEHzablaAxvs3Lun_K6KQ3CYl71BEzyIVmAvvg_nkkz-QDLTfXc6CMpRU6086afrOVUKUnVfShtYRzZf3zsN6Uo0Chc3EV4kzZnnQL3qsVWoQyJd1erZRLenWSI_2o71qUbJ8JLxX-__XoNJeWkHXuNAe2ssdNWIwLg95wrkRyE40dFMbxh0MbuH3ky5qnNmiG5qrnq-kw4A3MTxMD-kmixUFx12gSIepksg__dGW9mPw][paper]] |                        |
 | MultiQC        | seq QC agg       |           | [[https://github.com/ewels/MultiQC][github]] | [[https://multiqc.info/docs/][doc]]      |       |                        |
 | oligocalc      |                  |           |        | [[http://www.basic.northwestern.edu/biotools/oligocalc.html][site]]     |       |                        |
 | picard         |                  |           |        | [[https://broadinstitute.github.io/picard/index.html][doc]]      |       |                        |
@@ -4140,64 +4043,42 @@ https://www.ncbi.nlm.nih.gov/pubmed/?term=nextflow
 | tximport       |                  |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
 | WGCNA          |                  |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] | cite:langfelder2008    |
 |                |                  |           |        |          |       |                        |
-*** pathvisio
-https://pathvisio.github.io/
-- to switch to java 8 https://askubuntu.com/questions/1133216/downgrading-java-11-to-java-8
-*** UCSC table browser
-- ucsc
-  - table browser
-    - https://genomebrowser.wustl.edu/goldenPath/help/hgTextHelp.html#Introduction
-  - https://www.biostars.org/p/19029/
-  - http://genome.ucsc.edu/FAQ/FAQreleases.html
-  - cite:karolchik2011
-*** Cytoscape
-- [[http://manual.cytoscape.org/en/stable/index.html][documentation]]
-- https://stackoverflow.com/questions/tagged/cytoscape
 *** GSEA
 :PROPERTIES:
 :ID:       D68E1182-1F7B-4160-A6DD-BD2635F8085F
 :END:
 :LOGBOOK:
-CLOCK: [2020-11-17 Tue 09:56]--[2020-11-17 Tue 12:07] =>  2:11
 CLOCK: [2020-10-26 Mon 13:01]--[2020-10-26 Mon 13:55] =>  0:54
 CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
 :END:
 - [[https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideTEXT.htm#_Consistent_Feature_Identifiers_Acro][documentation]]
-  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/FAQ#Why_does_GSEA_use_a_false_discovery_rate_.28FDR.29_of_0.25_rather_than_the_more_classic_0.05.3F][FDR discussion]]
-  - FAQ
-    - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/FAQ#What_array_platforms_and_organism_species_does_GSEA_support.3F][using for mouse data]]
-  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Using_RNA-seq_Datasets_with_GSEA][RNA-seq data]]
-    - with RNA-seq, use TMM
-  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats][file formats]]
-    - GMT: gene matrix transposed file (*.gmt)
-    - chip files ftp://ftp.broadinstitute.org/pub/gsea/annotations (use ENSEMBL)
-  - [[https://www.gsea-msigdb.org/gsea/msigdb/search.jsp][gene sets]]
-- gene sets for mouse GSEA
-  - https://cran.r-project.org/web/packages/msigdbr/vignettes/msigdbr-intro.html
-  - recent, high impact papers citing MSigDB and aligning to mm10
-    - https://science.sciencemag.org/content/352/6288/aad3018
-    - http://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC5924693&blobtype=pdf
-    - https://www.cell.com/cell/pdf/S0092-8674(17)31385-5.pdf
-    - https://stm.sciencemag.org/content/scitransmed/suppl/2018/01/12/10.424.eaan5488.DC1/aan5488_SM.pdf
+  - with RNA-seq, use TMM
+  - http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Using_RNA-seq_Datasets_with_GSEA
+  - http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/FAQ#Can_I_use_GSEA_to_analyze_my_own_ranked_list_of_genes.3F
+  - file formats http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats
+  - chip files ftp://ftp.broadinstitute.org/pub/gsea/annotations (use ENSEMBL)
+- platforms
+  - online http://www.webgestalt.org/
+- [[https://www.gsea-msigdb.org/gsea/msigdb/search.jsp][gene sets]]
+- see to create .rnk file https://github.com/BaderLab/EM-tutorials-docker/blob/master/R_scripts/supplemental_protocol2_rnaseq.R
+- R implimentation: [[https://bioconductor.org/packages/release/bioc/html/fgsea.html][fast GSEA]] 
+  #+name:
+  #+begin_src R :tangle no
+setwd("~/repos/biotools")
+source("./src/setup.R")
+#+end_src
+
+- for mouse data
+  - https://www.biostars.org/p/209855/
 - used in 
   - [[id:e4351ef3-6d41-4121-a2cc-c63d89f997ac][pathway analysis]]
   - [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][RNA-seq coexpression]]
-- processes
-  - download data
-  - file creation and formatting
-    - see to create .rnk file https://github.com/BaderLab/EM-tutorials-docker/blob/master/R_scripts/supplemental_protocol2_rnaseq.R
-- [[https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp][MSigDB]] [[https://data.broadinstitute.org/gsea-msigdb/msigdb/][data]]
-- [[https://enrichmentmap.readthedocs.io/en/docs-2.2/QuickStartGuide.html][enrichement map]]
-- platforms
-  - online http://www.webgestalt.org/
-  - R implimentation: [[https://bioconductor.org/packages/release/bioc/html/fgsea.html][fast GSEA]] 
-    #+name:
-    #+begin_src R :tangle no
-  setwd("~/repos/biotools")
-  source("./src/setup.R")
-  #+end_src
-- [[http://software.broadinstitute.org/cancer/software/genepattern/modules/docs/ssGSEAProjection/4][ssGSEA]] calculates enrichment for each sample-gene set pair
-- cite:mootha2003 
+- [[http://software.broadinstitute.org/cancer/software/genepattern/modules/docs/ssGSEAProjection/4][ssGSEA]]
+- https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btu090
+- https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btt285
+- http://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-2-r14
+- http://www.nature.com/articles/srep06347
+- http://software.broadinstitute.org/gsea/index.jsp 
 *** Trim Galore 
 :PROPERTIES:
 :ID:       3e4ca528-a604-4bfe-b235-2052e6d2d4a9
@@ -6109,7 +5990,6 @@ consModules[cmod])
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
-https://github.com/seanken
 http://genomewiki.ucsc.edu/index.php/Main_Page
 https://genome.ucsc.edu/FAQ/index.html
   - https://basespace.illumina.com/dashboard
