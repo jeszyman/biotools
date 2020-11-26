@@ -4162,6 +4162,8 @@ CLOCK: [2020-11-17 Tue 09:56]--[2020-11-17 Tue 12:07] =>  2:11
 CLOCK: [2020-10-26 Mon 13:01]--[2020-10-26 Mon 13:55] =>  0:54
 CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
 :END:
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6607905/
+- leading edge https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5066188/
 - [[https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideTEXT.htm#_Consistent_Feature_Identifiers_Acro][documentation]]
   - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/FAQ#Why_does_GSEA_use_a_false_discovery_rate_.28FDR.29_of_0.25_rather_than_the_more_classic_0.05.3F][FDR discussion]]
   - FAQ
@@ -4188,6 +4190,10 @@ CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
     - see to create .rnk file https://github.com/BaderLab/EM-tutorials-docker/blob/master/R_scripts/supplemental_protocol2_rnaseq.R
 - [[https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp][MSigDB]] [[https://data.broadinstitute.org/gsea-msigdb/msigdb/][data]]
 - [[https://enrichmentmap.readthedocs.io/en/docs-2.2/QuickStartGuide.html][enrichement map]]
+<<<<<<< HEAD
+=======
+  - https://enrichmentmap.readthedocs.io/en/latest/Parameters.html
+>>>>>>> 7a8fc2437ffe355caf92f4b4a12c48cac3ca8e4d
 - platforms
   - online http://www.webgestalt.org/
   - R implimentation: [[https://bioconductor.org/packages/release/bioc/html/fgsea.html][fast GSEA]] 
