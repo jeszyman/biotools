@@ -1,0 +1,101 @@
+################################################################################
+####################### Docker Image Development Process #######################
+################################################################################
+
+# Header
+
+## Declare base image: 
+FROM ubuntu:xenial
+
+# BEST PRACTICE- Use offical Docker images: 
+#  https://docs.docker.com/docker-hub/official_images/
+#  In particular https://hub.docker.com/_/alpine/
+
+## Declare maintainer:
+
+MAINTAINER Jeffrey Szymanski <jeszyman@gmail.com>
+
+LABEL dev personal build
+
+# Install tools
+# RUN apt-get update -y && apt-get install -y --no-install-recommends \
+# build-essential \
+# emacs \
+# git \
+# ssh \
+# wget \
+
+# Grab data 
+
+### USE ###
+# https://docs.docker.com/engine/reference/builder/
+# Save and version control Dockerfile
+# https://docs.docker.com/engine/reference/commandline/build/
+# Create empty directory
+# Call e.g. docker build -f ~/Dockerfiles/dev -t jeszyman/dev .
+
+### RESOURCES ###
+
+# From Chris Miller
+#some basic tools
+#some basic tools
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    build-essential \
+    bzip2 \
+    curl \
+    csh \
+    default-jdk \
+    default-jre \
+    emacs \
+    emacs-goodies-el \
+    evince \
+    g++ \
+    gawk \
+    git \
+    grep \
+    less \
+    libcurl4-openssl-dev \
+    libpng-dev \
+    librsvg2-bin \
+    libssl-dev \
+    libxml2-dev \
+    lsof \
+    make \
+    man \
+    ncurses-dev \
+    nodejs \
+    openssh-client \
+    pdftk \
+    pkg-config \
+    python \
+    rsync \
+    screen \
+    tabix \
+    unzip \
+    wget \
+    zip \
+    zlib1g-dev \
+    tzdatax
+
+# Set this environment variable to true to set timezone on container start.
+# ENV SET_CONTAINER_TIMEZONE true
+# Default container timezone as found under the directory /usr/share/zoneinfo/.
+# ENV CONTAINER_TIMEZONE "America/Chicago"
+
+# RUN sudo echo "America/Chicago" > /etc/timezone
+# RUN sudo dpkg-reconfigure -f noninteractive tzdata
+
+# needed for MGI data mounts
+# RUN apt-get update && apt-get install -y libnss-sss && apt-get clean all
+
+# #set timezone to CDT
+# #LSF: Java bug that need to change the /etc/timezone.
+# #/etc/localtime is not enough.
+# RUN ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime && \
+#     echo "America/Chicago" > /etc/timezone && \
+#     dpkg-reconfigure --frontend noninteractive tzdata
+
+# #UUID is needed to be set for some applications
+# RUN apt-get update && apt-get install -y dbus && apt-get clean all
+# RUN dbus-uuidgen >/etc/machine-id
+
