@@ -24,12 +24,17 @@ CLOCK: [2019-07-07 Sun 09:58]--[2019-07-07 Sun 10:01] =>  0:03
 CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
 CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :END:  
-https://pubmed.ncbi.nlm.nih.gov/33237278/
+- https://pubmed.ncbi.nlm.nih.gov/33237278/
 *** [[id:c0c0ee28-2e41-41a7-9a3b-ae195117a93e][LINK TO common bioinformatics file manipulation]]
 *** by organism
 :PROPERTIES:
 :CREATED:  [2020-10-26 Mon 12:18]
 :END:
+**** rat
+- https://useast.ensembl.org/Rattus_norvegicus/Info/Index
+- most recent assembly is Rnor_6.0
+  - https://rgd.mcw.edu/rgdweb/report/genomeInformation/genomeInformation.html?species=Rat&mapKey=360&details=true
+- https://rgd.mcw.edu/
 **** human
 - http://browser.1000genomes.org/index.html
 **** mouse
@@ -1296,30 +1301,30 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
 :PROPERTIES:
 :ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
 :END:
-  - https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
-  - prerequisites
-    - adaptor identification and trimming
-  - pseudoaligner
-    - kallisto
-    - Salmon
-  - Aligners
-    - TopHat2
-    - Specialized aligners
-      - Fusions
-        - TopHat Fusion
-          - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html 
-        - STAR for chimeric reads / STAR-Fusion
-          - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
-          - From cite:star_2.5_dobin Chapter 5
-          - From cite:dobin2015mapping Alternate Protocol 6
-            - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
-          - additional outputs are
-            - Chimeric.out.sam
-            - Chimeric.out.junction- a STAR-specific format
-      - To transcriptome
-        - 
-  - HISAT2
-- [[*STAR][STAR]]
+- https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
+- prerequisites
+  - adaptor identification and trimming
+- pseudoaligner
+  - kallisto
+  - Salmon
+- Aligners
+  - TopHat2
+  - Specialized aligners
+    - Fusions
+      - TopHat Fusion
+        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html 
+      - STAR for chimeric reads / STAR-Fusion
+        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
+        - From cite:star_2.5_dobin Chapter 5
+        - From cite:dobin2015mapping Alternate Protocol 6
+          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
+        - additional outputs are
+          - Chimeric.out.sam
+          - Chimeric.out.junction- a STAR-specific format
+    - To transcriptome
+      - 
+  - [[*STAR][STAR]]
+- HISAT2
 **** read annotation
 :PROPERTIES:
 :ID:       8e435b88-6895-4e75-a728-cfdaa272bddb
@@ -4348,8 +4353,9 @@ https://github.com/Illumina/canvas
 :PROPERTIES:
 :ID:       d1d5d554-57c4-4b9c-8385-2bb72369375e
 :END:
-  - star-rsem pipeline
-    - cite:djebali2016 
+- used in [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][alignment]]
+- star-rsem pipeline
+  - cite:djebali2017
 *** INTEGRATE
 :PROPERTIES:
 :ID:       7519d47f-18e8-4a28-be11-9d081b68b52d

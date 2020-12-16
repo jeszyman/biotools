@@ -14,7 +14,7 @@ docker_interactive() {
     read -p "repo name: " repo
     case $HOSTNAME in
         (radonc-cancerbio) docker run -it \
-                                  -v /media/:/media/ \
+                                  -v /mnt/:/mnt/ \
                                   -v /home/:/home/ \
                             -u $(id -u ${USER}) \
                             jeszyman/$repo \
