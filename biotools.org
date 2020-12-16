@@ -851,6 +851,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+- https://rnabio.org/module-02-alignment/0002/02/01/Adapter_Trim/
 - cite:sahraeian2017
 - cite:li2018rnastat
 - cite:van_den_berge2019
@@ -4341,14 +4342,15 @@ https://github.com/Illumina/canvas
 :PROPERTIES:
 :ID:       85db5c34-b5fd-4b6c-bdb7-88263e553ba3
 :END:
+- cite:li2011
+- https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
+- documentation
+  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
+  - https://github.com/ENCODE-DCC/long-rna-seq-pipeline/blob/master/DAC/STAR_RSEM.sh
+  - http://deweylab.biostat.wisc.edu/rsem/rsem-calculate-expression.html
+  - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
+  - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
   - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
-  - documentation
-    - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
-    - https://github.com/ENCODE-DCC/long-rna-seq-pipeline/blob/master/DAC/STAR_RSEM.sh
-    - http://deweylab.biostat.wisc.edu/rsem/rsem-calculate-expression.html
-    - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
-    - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
-    - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
 *** STAR
 :PROPERTIES:
 :ID:       d1d5d554-57c4-4b9c-8385-2bb72369375e
