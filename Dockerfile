@@ -1,4 +1,5 @@
-FROM jeszyman:basecamp
+FROM jeszyman/basecamp
+
 #########1#########2#########3#########4#########5#########6#########7
 #############
 ### Notes ###
@@ -619,3 +620,4 @@ ENV MCR_ROOT=/opt/GISTIC2/MATLAB_Compiler_Runtime
 RUN apt-get install -qq --no-install-recommends --allow-unauthenticated \
 libxmu-dev
 
+RUN conda install -c bioconda bbmap
