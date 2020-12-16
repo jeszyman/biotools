@@ -1,0 +1,3 @@
+[submodule "basecamp"]
+	path = basecamp
+	url = git@github.com:jeszyman/basecamp
