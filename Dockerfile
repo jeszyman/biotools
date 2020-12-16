@@ -628,4 +628,7 @@ ENV MCR_ROOT=/opt/GISTIC2/MATLAB_Compiler_Runtime
 RUN apt-get install -qq --no-install-recommends --allow-unauthenticated \
 libxmu-dev
 
+RUN conda install -c bioconda rsem 
 RUN conda install -c bioconda bbmap
+
+
