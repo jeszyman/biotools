@@ -1,4 +1,4 @@
-FROM jeszyman:basecamp
+FROM jeszyman/basecamp
 #########1#########2#########3#########4#########5#########6#########7
 #############
 ### Notes ###
@@ -49,7 +49,15 @@ RUN conda install -c bioconda goleft
 ### R ###
 #########
 #
-RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("DESeq2"); BiocManager::install("tximport"); BiocManager::install("readr");'
+RUN R -e 'install.packages("BiocManager"); \
+    BiocManager::install(); \
+    BiocManager::install("DESeq2"); \
+    BiocManager::install("polyester"); \    
+    BiocManager::install("readr"); \
+    BiocManager::install("tximport");'
+#
+# Get test data
+##
 #
 ###############################################################
 ### ^^^ BUILDS INDEPENDENTLY VALIDATED ABOVE THIS POINT ^^^ ### 
