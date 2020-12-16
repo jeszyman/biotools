@@ -4,37 +4,12 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :END:
 :LOGBOOK:
+CLOCK: [2020-12-16 Wed 07:08]--[2020-12-16 Wed 07:25] =>  0:17
 CLOCK: [2020-12-15 Tue 20:02]--[2020-12-15 Tue 21:02] =>  1:00
 CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-
-#+name: 
-#+begin_src bash :tangle no
-cd ~/repos/biotools/
-docker build . --file Dockerfile --tag jeszyman/test
-#+end_src
-
-- https://github.com/genome/bfx-workshop
-- https://github.com/genome/analysis-workflows
-- https://cloud.genepattern.org/gp/pages/login.jsf
-- https://github.com/google/deepvariant
-- https://pages.10xgenomics.com/ugm-2020-10-event-ra_g-user-group-meeting-amr_on-demand.html?src=email&utm_medium=email&lss=internal&utm_source=internal&cnm=ugm-2020-10-event-ra_g-user-group-meeting-amr&utm_campaign=ugm-2020-10-event-ra_g-user-group-meeting-amr&useroffertype=event&userresearcharea=ra_g&userregion=multi&mktouserid=1629122
-- https://www.broadinstitute.org/genome-sequencing/broadillumina-genome-analyzer-boot-camp
-- https://ieeexplore.ieee.org/document/7347331
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302505/
-- https://www.youtube.com/channel/UCv4IbnP9j9RC_aZAs8wqdeQ
-- https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
-- https://informatics.fas.harvard.edu/category/tutorials.html
-
-#+name: 
-#+begin_src bash :tangle no
-cd ~/repos/biotools
-docker build . --file ./Dockerfile
-#+end_src
-
-
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
 :PROPERTIES:
 :ID:       105ca7c0-0f10-4f28-bb52-b255d91cfb9e
@@ -486,6 +461,13 @@ mandatory
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
+- build biotools docker container
+  #+begin_src bash :tangle no
+cd ~/repos/biotools/
+docker build . --file Dockerfile --tag jeszyman/biotools
+#+end_src
+- cut and run - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302505/
+- https://ieeexplore.ieee.org/document/7347331
 *** miRNA-seq
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
 *** atac-seq
@@ -3009,6 +2991,9 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
+- https://www.broadinstitute.org/genome-sequencing/broadillumina-genome-analyzer-boot-camp
+- https://pages.10xgenomics.com/ugm-2020-10-event-ra_g-user-group-meeting-amr_on-demand.html?src=email&utm_medium=email&lss=internal&utm_source=internal&cnm=ugm-2020-10-event-ra_g-user-group-meeting-amr&utm_campaign=ugm-2020-10-event-ra_g-user-group-meeting-amr&useroffertype=event&userresearcharea=ra_g&userregion=multi&mktouserid=1629122
+
 - [[http://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-2-r18][amplification bias]]
 - https://en.m.wikibooks.org/wiki/Next_Generation_Sequencing_(NGS)
 - commercial sequencing entities
@@ -3398,6 +3383,7 @@ CLOCK: [2019-04-26 Fri 11:28]--[2019-04-26 Fri 11:44] =>  0:16
 CLOCK: [2019-04-26 Fri 11:03]--[2019-04-26 Fri 11:13] =>  0:10
 CLOCK: [2019-04-26 Fri 10:43]--[2019-04-26 Fri 10:57] =>  0:14
 :END:
+- https://github.com/google/deepvariant 
 - variant calling
   - fusion
     - - https://www.biorxiv.org/content/biorxiv/early/2019/01/16/521039.full.pdf
@@ -4135,9 +4121,11 @@ https://www.ncbi.nlm.nih.gov/pubmed/?term=nextflow
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
-- 
-- https://www.ebi.ac.uk/services
-*** BBmap
+- polyester - https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
+
+*** tool collections
+- [[https://www.ebi.ac.uk/services][EMBL-EBI Tools]]
+*** BBmap / BBSplit 
 :PROPERTIES:
 :ID:       52363054-5138-419c-8d45-4ec9b0b02b24
 :END:
@@ -6173,6 +6161,12 @@ consModules[cmod])
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://informatics.fas.harvard.edu/category/tutorials.html
+- https://www.youtube.com/channel/UCv4IbnP9j9RC_aZAs8wqdeQ
+- https://www.broadinstitute.org/genome-sequencing/broadillumina-genome-analyzer-boot-camp
+- https://cloud.genepattern.org/gp/pages/login.jsf
+- https://github.com/genome/analysis-workflows
+- https://github.com/genome/bfx-workshop
 https://github.com/seanken
 http://genomewiki.ucsc.edu/index.php/Main_Page
 https://genome.ucsc.edu/FAQ/index.html
