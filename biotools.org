@@ -9,6 +9,12 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+#+name: 
+#+begin_src bash :tangle no
+cd ~/repos/bergom_rna/biotools/
+docker build . --file ./Dockerfile --tag jeszyman/biotools
+
+#+end_src
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
 :PROPERTIES:
 :ID:       105ca7c0-0f10-4f28-bb52-b255d91cfb9e
