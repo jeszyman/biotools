@@ -4,6 +4,7 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :END:
 :LOGBOOK:
+CLOCK: [2020-12-16 Wed 07:08]--[2020-12-16 Wed 07:25] =>  0:17
 CLOCK: [2020-12-15 Tue 20:02]--[2020-12-15 Tue 21:02] =>  1:00
 CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
@@ -471,8 +472,69 @@ mandatory
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
+- setup common references
+  #+name: setup_common_references
+#+begin_src bash :tangle no
+#
+# Setup
+/bin/bash
+alias wget_common=wget --noclobber
+refdata=
+#
+# Download reference genomes
+## Human
+### UCSC Hg38
+wget_common https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz -O $refdata/hg38.fa.gz
+### Ensembl
+#### TopLevel
+wget_common ftp://ftp.ensembl.org/pub/release-102/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz -O $refdata/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
+#### Primary assembly
+wget --no-clobber ftp://ftp.ensembl.org/pub/release-102/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz -O $refdata/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+##
+## Rattus norvegicus
+### UCSC
+wget_common ftp://hgdownload.cse.ucsc.edu/goldenPath/rn6/bigZips/rn6.fa.gz -O $refdata/rn6.fa.gz
+### Ensembl
+#### TopLevel
+wget_common ftp://ftp.ensembl.org/pub/release-102/fasta/rattus_norvegicus/dna/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.gz -O $refdata/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.gz
+#### NOTE: No Rattus primary assembly
+#### cDNA
+wget_common ftp://ftp.ensembl.org/pub/release-102/fasta/rattus_norvegicus/cdna/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz -O /home/jeszyman/data/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz
+gunzip /home/jeszyman/data/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz
+#### GTF
+wget_common ftp://ftp.ensembl.org/pub/release-102/gtf/rattus_norvegicus/Rattus_norvegicus.Rnor_6.0.102.gtf.gz -O /home/jeszyman/data/Rattus_norvegicus.Rnor_6.0.102.gtf.gz
+#
+# Unzip
+for file in $refdata/*.fa.gz $refdata/*.gtf.gz;
+do
+    gunzip_common $file
+done
+#
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+# ideas
+#in/out from csv
+# get readmes
+#########1#########2#########3#########4#########5#########6#########7#########8
+#+end_src
+- build biotools docker container
+  #+begin_src bash :tangle no
+cd ~/repos/biotools/
+docker build . --file Dockerfile --tag jeszyman/biotools
+#+end_src
+- cut and run - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302505/
+- https://ieeexplore.ieee.org/document/7347331
+*** Adaptive TCR-beta immunosequencing 
+:PROPERTIES:
+:CREATED:  [2020-12-20 Sun 16:45]
+:END:
 *** miRNA-seq
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
+*** computer clusters
+:PROPERTIES:
+:CREATED:  [2020-12-18 Fri 18:50]
+:END:
+https://singularity.lbl.gov/install-linux
 *** atac-seq
 - protocols and guidelines
   - https://informatics.fas.harvard.edu/atac-seq-guidelines.html
@@ -849,6 +911,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+- https://rnabio.org/module-02-alignment/0002/02/01/Adapter_Trim/
 - cite:sahraeian2017
 - cite:li2018rnastat
 - cite:van_den_berge2019
@@ -2994,6 +3057,9 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
+- https://www.broadinstitute.org/genome-sequencing/broadillumina-genome-analyzer-boot-camp
+- https://pages.10xgenomics.com/ugm-2020-10-event-ra_g-user-group-meeting-amr_on-demand.html?src=email&utm_medium=email&lss=internal&utm_source=internal&cnm=ugm-2020-10-event-ra_g-user-group-meeting-amr&utm_campaign=ugm-2020-10-event-ra_g-user-group-meeting-amr&useroffertype=event&userresearcharea=ra_g&userregion=multi&mktouserid=1629122
+
 - [[http://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-2-r18][amplification bias]]
 - https://en.m.wikibooks.org/wiki/Next_Generation_Sequencing_(NGS)
 - commercial sequencing entities
@@ -3383,6 +3449,7 @@ CLOCK: [2019-04-26 Fri 11:28]--[2019-04-26 Fri 11:44] =>  0:16
 CLOCK: [2019-04-26 Fri 11:03]--[2019-04-26 Fri 11:13] =>  0:10
 CLOCK: [2019-04-26 Fri 10:43]--[2019-04-26 Fri 10:57] =>  0:14
 :END:
+- https://github.com/google/deepvariant 
 - variant calling
   - fusion
     - - https://www.biorxiv.org/content/biorxiv/early/2019/01/16/521039.full.pdf
@@ -4096,40 +4163,77 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 :PROPERTIES:
 :ID:       b7c65054-f648-4579-9c5f-7bedbe272b5c
 :END:
-- https://snakemake.readthedocs.io/en/stable/index.html
-  
-**** workflow languages and platforms
-:PROPERTIES:
-:CREATED:  [2019-06-25 Tue 09:11]
-:ID:       4af29c05-fd72-42b2-8fff-2619d24ca36c
-:END:
-http://www.blopig.com/blog/2018/03/running-jupyter-notebook-on-a-remote-server-via-ssh/
-https://www.ncbi.nlm.nih.gov/pubmed/?term=nextflow
-- workflow languages
-  - nextflow
-    - https://www.youtube.com/watch?v=jsxTC8pNPUc
-      - workflows are fragile
+- http://www.blopig.com/blog/2018/03/running-jupyter-notebook-on-a-remote-server-via-ssh/
+- https://www.reddit.com/r/bioinformatics/comments/7gxsk0/does_anyone_use_cwl_does_it_actually_help_you_get/
+- https://cromwell.readthedocs.io/en/stable/
+- nextflow
+  - https://www.youtube.com/watch?v=jsxTC8pNPUc
+    - workflows are fragile
   - https://www.nextflow.io/example1.html
   - https://github.com/nf-core/rnaseq
-  - https://www.reddit.com/r/bioinformatics/comments/7gxsk0/does_anyone_use_cwl_does_it_actually_help_you_get/
-  - https://cromwell.readthedocs.io/en/stable/
+  - https://www.ncbi.nlm.nih.gov/pubmed/?term=nextflow
 - [[https://software.broadinstitute.org/wdl/userguide/][widdle]]
 - http://rabix.io/
 - http://bioboxes.org/docs/example-biobox-use/
+**** snakemake
+- https://reproducibility.sschmeier.com/index.html
+- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
+- [[https://snakemake.readthedocs.io/en/stable/index.html][documentation]]
+  - [[Snakemake Tutorial][Snakemake Tutorial]]
+  #+name: snakemake_tutorial
+#+begin_src bash :tangle no
+sudo apt-get install singularity-container
+
+cd ~/snakemake-tutorial/
+
+conda activate snakemake-tutorial
+
+
+snakemake -p --cores 2 sorted_reads/{A,B}.bam
+#    --dry-run \
+
+snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
+
+expand("sorted_reads/{sample}.bam", sample=SAMPLES)
+
+snakemake -p --cores 2 plots/quals.svg
+
+snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
+
+snakemake --cores 20 --forceall --summary
+
+snakemake --cores 20 --forceall
+
+conda install pygraphviz
+
+snakemake --report report.html
+
+open report.html
+
+snakemake --cores 20 --forceall
+#+end_src
+  - https://snakemake.readthedocs.io/en/stable/tutorial/basics.html#step-1-mapping-reads
+- docker https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html?highlight=docker#running-jobs-in-containers
+- https://snakemake.readthedocs.io/en/stable/index.html
 ** Tools
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
-- 
-- https://www.ebi.ac.uk/services
-*** BBmap
+- polyester - https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
+
+*** tool collections
+- [[https://www.ebi.ac.uk/services][EMBL-EBI Tools]]
+*** BBmap / BBSplit 
 :PROPERTIES:
 :ID:       52363054-5138-419c-8d45-4ec9b0b02b24
 :END:
+- http://seqanswers.com/forums/archive/index.php/t-87619.html
+- https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbmap-guide/
+- outu = unmapped reads
+- snakemake example https://www.biostars.org/p/424706/
 - http://seqanswers.com/forums/showthread.php?t=41288
 - [ ] BBSplit in BBmap - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwJZJWQrGSPgdPGNfStWbxXkmhP][email]]]]
 - https://www.google.com/search?q=bbmap+docker use bioconda
-- 
 *** table of tools
 :PROPERTIES:
 :ID:       a0923938-4021-44cd-a8f3-94c0eb10cdb5
@@ -4333,14 +4437,15 @@ https://github.com/Illumina/canvas
 :PROPERTIES:
 :ID:       85db5c34-b5fd-4b6c-bdb7-88263e553ba3
 :END:
+- cite:li2011
+- https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
+- documentation
+  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
+  - https://github.com/ENCODE-DCC/long-rna-seq-pipeline/blob/master/DAC/STAR_RSEM.sh
+  - http://deweylab.biostat.wisc.edu/rsem/rsem-calculate-expression.html
+  - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
+  - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
   - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
-  - documentation
-    - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
-    - https://github.com/ENCODE-DCC/long-rna-seq-pipeline/blob/master/DAC/STAR_RSEM.sh
-    - http://deweylab.biostat.wisc.edu/rsem/rsem-calculate-expression.html
-    - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
-    - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
-    - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
 *** STAR
 :PROPERTIES:
 :ID:       d1d5d554-57c4-4b9c-8385-2bb72369375e
@@ -6159,6 +6264,12 @@ consModules[cmod])
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://informatics.fas.harvard.edu/category/tutorials.html
+- https://www.youtube.com/channel/UCv4IbnP9j9RC_aZAs8wqdeQ
+- https://www.broadinstitute.org/genome-sequencing/broadillumina-genome-analyzer-boot-camp
+- https://cloud.genepattern.org/gp/pages/login.jsf
+- https://github.com/genome/analysis-workflows
+- https://github.com/genome/bfx-workshop
 https://github.com/seanken
 http://genomewiki.ucsc.edu/index.php/Main_Page
 https://genome.ucsc.edu/FAQ/index.html
