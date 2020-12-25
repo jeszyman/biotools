@@ -3895,8 +3895,9 @@ CLOSED: [2016-12-05 Mon 14:22]
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
 :END:
-cite:hemmings2019
-cite:stover2019
+- cite:adalsteinsson2017
+- cite:hemmings2019
+- cite:stover2019
 - cite:feng2020 
 - cite:ge2020
 - cite:chen2019
