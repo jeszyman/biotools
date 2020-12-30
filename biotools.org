@@ -10,6 +10,51 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+#+name: docker_interactive 
+#+begin_src bash :tangle ./src/bash_functions.sh
+#########1#########2#########3#########4#########5#########6#########7#########8
+# Interactive docker initialization
+docker_interactive() {
+    repo="USER INPUT"
+    read -p "repo name: " repo
+    case $HOSTNAME in
+        (radonc-cancerbio) docker run -it \
+                                  --env HOME=${HOME} \
+                                  --hostname ${HOSTNAME} \
+                                  --user $(id -u ${USER}) \
+                                  --volume /home/:/home/ \
+                                  --volume /mnt/:/mnt/ \
+                                  --volume /tmp/:/tmp/ \
+                                  jeszyman/$repo \
+                                  /bin/bash;;
+        (jeszyman-*) docker run -it \
+                            --env HOME=/home/jeszyman \
+                            --hostname ${HOSTNAME} \
+                            --user $(id -u ${USER}) \
+                            --volume /home/:/home/ \
+                            --volume /mnt/:/mnt/ \
+                            --volume /tmp/:/tmp/ \
+                            jeszyman/$repo \
+                            /bin/bash;;
+        (acl*) docker run -it \
+                      -v /drive3/:/drive3/ \
+                      -v /duo4/:/duo4/ \
+                      -v /home/:/home/ \
+                      -u $(id -u ${USER}) \
+                      jeszyman/$repo \
+                      /bin/bash;;
+        (ACL*) docker run -it \
+                      -v /home/:/home/ \
+                      -v /duo4/:/duo4/ \
+                      -u $(id -u ${USER}):$(id -g ${USER}) \
+                      -h=${HOSTNAME} \
+                      jeszyman/$repo \
+                      /bin/bash;;
+        (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker(jeszyman/'"$repo"')' /bin/bash;;
+    esac
+}
+#
+#+end_src
 #+name: reference_pull
 #+begin_src bash :tangle no
 #########1#########2#########3#########4#########5#########6#########7#########8
@@ -54,18 +99,12 @@ rsem-prepare-reference --gtf ./rn6.ensGene.gtf \
 #+end_src
 #+name: 
 #+begin_src bash :tangle no
-#!/bin/bash
-### RIS mount ###
-#
-auth=~/.auth
-mntpt=/mnt/bergom
-src="//storage1.ris.wustl.edu/cbergom/Active/RNAseq files from Sharon/Bergom_PRJ01_RNAseq_Rat_xenograft"
-#
+# RIS mount
 chmod 400 ~/.auth
-sudo mkdir -p $mntpt
+mkdir -p $rawDir
+sudo mount -t cifs -o vers=3.0,credentials=/home/jeszyman/.auth,uid=$(id -u),gid=$(id -g) \
+     "//storage1.ris.wustl.edu/cbergom/Active/RNAseq files from Sharon/Bergom_PRJ01_RNAseq_Rat_xenograft"  $rawDir
 #
-sudo mount -t cifs -o vers=3.0,credentials=$auth,uid=$(id -u),gid=$(id -g) "$src" $mntpt
-
 
 #+end_src
 #+name: 
@@ -90,39 +129,23 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :END:  
 - https://pubmed.ncbi.nlm.nih.gov/33237278/
 *** [[id:c0c0ee28-2e41-41a7-9a3b-ae195117a93e][LINK TO common bioinformatics file manipulation]]
-:PROPERTIES:
-:ID:       f217dbf7-164a-43b4-a91d-0c4ecca0839f
-:END:
 *** by organism
 :PROPERTIES:
 :CREATED:  [2020-10-26 Mon 12:18]
-:ID:       f518f1f8-2611-4f4e-985a-78d2b02e2236
 :END:
 **** rat
-:PROPERTIES:
-:ID:       048c647a-0763-48ab-87e6-2ae2dceb985b
-:END:
 - https://useast.ensembl.org/Rattus_norvegicus/Info/Index
 - most recent assembly is Rnor_6.0
   - https://rgd.mcw.edu/rgdweb/report/genomeInformation/genomeInformation.html?species=Rat&mapKey=360&details=true
 - https://rgd.mcw.edu/
 **** human
-:PROPERTIES:
-:ID:       3e53daca-16e0-4651-8d9f-c82c50032482
-:END:
 - http://browser.1000genomes.org/index.html
 **** mouse
-:PROPERTIES:
-:ID:       aa20fb99-5ab8-47cd-8892-5fddac3af640
-:END:
 - https://github.com/czbiohub/tabula-muris
 - [[http://www.informatics.jax.org/vocab/gene_ontology][jax mouse gene ontology browser]]
 - cite:lai2016
 - https://www.biorxiv.org/content/10.1101/082511v1#disqus_thread
 *** by data type
-:PROPERTIES:
-:ID:       92acd3a7-fe28-4765-b89b-e53bda8ab8db
-:END:
 - extracellular RNA
   - https://exrna.org/resources/data/
 - protein - http://www.proteinatlas.org/about
@@ -133,9 +156,6 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 - miRNA
   - http://www.mirbase.org/cgi-bin/sentences.pl?acc=MI0001445
 *** reference data 
-:PROPERTIES:
-:ID:       b784574b-59a1-46bb-8502-c2c296ad3bbe
-:END:
 - homology 
   - http://bioinf.wehi.edu.au/MSigDB/
   - cite:lai2016
@@ -176,9 +196,6 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
     - [[https://useast.ensembl.org/info/data/ftp/index.html][Ensembl reference FTP]]
     - https://useast.ensembl.org/info/genome/variation/
 *** individual subject / sample level data
-:PROPERTIES:
-:ID:       d5bc9791-c43c-4ccc-b030-1e17eba5e0cd
-:END:
 - [[https://www.ebi.ac.uk/ena][European Nucleotide Archive]]
 - https://www.ncbi.nlm.nih.gov/geo/
 - [[http://www.ebi.ac.uk/gwas/][The NHGRI-EBI Catalog of published genome-wide association studies]]
@@ -195,9 +212,6 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 - [[https://www.reddit.com/r/bioinformatics/comments/601fzr/where_can_i_access_free_sequencing_data/][Where can I access free sequencing data]]
 - [[https://www.aacr.org/professionals/research/aacr-project-genie/][GENIE]]
 **** GDC: Genomic Data Commons
-:PROPERTIES:
-:ID:       c558690b-e115-4db4-9847-042ab0682c99
-:END:
 - [[https://gdc.cancer.gov/][NCI Genomic Data Commons]]
   - [[https://docs.gdc.cancer.gov/][GDC documentation]]
   - [[https://gdc.cancer.gov/about-data/data-harmonization-and-generation/genomic-data-harmonization/genomic-data-alignment/rna-seq-pipeline][GDC RNA-seq pipeline]]
@@ -610,23 +624,15 @@ docker build . --file Dockerfile --tag jeszyman/biotools
 *** Adaptive TCR-beta immunosequencing 
 :PROPERTIES:
 :CREATED:  [2020-12-20 Sun 16:45]
-:ID:       ef3591ee-b66b-4df4-913e-0106120c25eb
 :END:
 *** miRNA-seq
-:PROPERTIES:
-:ID:       a194e681-a18a-4301-89ee-3d5c9faca9dc
-:END:
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
 *** computer clusters
 :PROPERTIES:
 :CREATED:  [2020-12-18 Fri 18:50]
-:ID:       a47110e9-af00-4614-845e-5b5bfb2a1447
 :END:
 https://singularity.lbl.gov/install-linux
 *** atac-seq
-:PROPERTIES:
-:ID:       5ab9ba92-8c5d-4396-a840-5e780706c915
-:END:
 - protocols and guidelines
   - https://informatics.fas.harvard.edu/atac-seq-guidelines.html
 - atac-seq and mirna-seq https://www.sciencedirect.com/science/article/pii/S193459091730320X?via%3Dihub
@@ -644,9 +650,6 @@ https://singularity.lbl.gov/install-linux
 - https://www.illumina.com/techniques/popular-applications/epigenetics/atac-seq-chromatin-accessibility.html
 - https://www.activemotif.com/blog-single-cell-atac-seq
 *** transcription factor enrichment
-:PROPERTIES:
-:ID:       cfb8b75e-b260-494a-a493-c43dea43de40
-:END:
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4009616/
 - https://science.sciencemag.org/content/352/6288/aad3018
 - motif-based- high false pos
@@ -759,9 +762,6 @@ CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 https://www.nature.com/scitable/topicpage/copy-number-variation-and-human-disease-741737/
 https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 *** whole-genome sequencing
-:PROPERTIES:
-:ID:       1117ef77-f5fc-4f01-aaf1-ce23fb04b31e
-:END:
 - duplication rate as a measure of lib complexity
 *** DNA-seq
 :PROPERTIES:
@@ -989,13 +989,7 @@ https://software.broadinstitute.org/gatk/documentation/topic?name=methods
       - mehtySig
       - metilene
 *** gene expression and transcriptomics
-:PROPERTIES:
-:ID:       5fa12ebb-a5a0-4687-b7db-bd4477d4089c
-:END:
 http://gepia.cancer-pku.cn/
-- clustering
-  - https://journals.sagepub.com/doi/10.4137/BBI.S38316?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200pubmed
-  - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-018-4546-8#Sec2
 *** RNA-seq                                                          :career:
 :PROPERTIES:
 :ID:       4206be38-8d3c-43c4-a5c7-ca6a8bd8361a
@@ -1772,13 +1766,13 @@ Nobel,09 How does multiple correction testing work?
 
 - commands
   - sequence inspection and quality
-    | function                            | command                             |
-    |-------------------------------------+-------------------------------------|
-    | <35>                                | <35>                                |
-    | see     bam header                  | view -H                             |
+    | function                              | command                                       |
+    |---------------------------------------+-----------------------------------------------|
+    | <35>                                  | <35>                                          |
+    | see     bam header                    | view -H                                       |
     | see bam header and top seq in sam/bam | samtools view -h <FILE.bam> \vert head -n 100 |
-    | see ?                               | idxstats                            |
-    |                                     |                                     |
+    | see ?                                 | idxstats                                      |
+    |                                       |                                               |
   - sequence file manipulations
     |-------------------+---------------------------------------------------|
     | function          | command                                           |
@@ -1857,11 +1851,11 @@ https://www.pnas.org/content/115/4/E743.long
 - processes
   - check if file exists
 - commands
-  |-------------------------------------+-------------------------------------|
-  | function                            | command                             |
-  |-------------------------------------+-------------------------------------|
-  | <35>                                | <35>                                |
-  |                                     |                                     |
+  |----------+---------|
+  | function | command |
+  |----------+---------|
+  | <35>     | <35>    |
+  |          |         |
 - standards and best practice
 - [[https://www.nextflow.io/docs/latest/index.html][documentation]]
 - applications
@@ -3067,9 +3061,6 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
   - [[id:e7a8362d-f4cf-45ec-a3f8-91b0ffbdc500][ffpe rna-seq project]]
   - [[file:~/data/career/pathology/molecular-pathology/ffpe-rna/ffpe-rnaseq.org]]
 ***** published pipelines
-:PROPERTIES:
-:ID:       a15d2bb2-bcc5-41e9-86b2-41b4a30d24cc
-:END:
 - [[https://webshare.bioinf.unc.edu/public/mRNAseq_TCGA/UNC_mRNAseq_summary.pdf][TCGA RSEM]]
   - https://support.bioconductor.org/p/131066/
   - http://zyxue.github.io/2017/06/02/understanding-TCGA-mRNA-Level3-analysis-results-files-from-firebrose.html
@@ -3339,16 +3330,16 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
   - "The generated SAM files from hg19 alignment were converted to BAM format, ensuring the removal of duplicate reads, and the reads were then sorted and indexed using SAMtools21 before subsequent analysis with the R package MEDIPS22. The CpG enrichment score, as a quality control measure for the immunoprecipitation reaction, was calculated as part of the MEDIPS package."
   - Shell scripts were used to process MeDIP sequencing data to produce RPKM estimates for downstream analysis. Custom R scripts with a collection of R/Bioconductor packages were used to analyse the resulting dataset. The code used for analysis is available in the form of R markdowns deposited onto Zenodo as detailed in Supplementary Table 13.
   - 
-| Description               | Zenodo DOI for Data       | Zenodo DOI for Code       |
-| <25>                      | <25>                      | <25>                      |
-| IHEC Figure               | 10.5281/zenodo.1205714    |                           |
-| Simulations               | 10.5281/zenodo.1205730    | 10.5281/zenodo.1205728    |
-| Extended Data Fig. 6 violin plots | 10.5281/zenodo.1205744    | 10.5281/zenodo.1205735    |
-| Bed file of genomic windows that contain CpGs | 10.5281/zenodo.1205752    |                           |
-| TCGA and COSMIC tSNEs     | 10.5281/zenodo.1205754    |                           |
-| Machine learning          |                           | 10.5281/zenodo.1242697    |
-| Markdown with ensemble of non-machine learning scripts including Extended Data Fig. 6 heatmaps |                           | 10.5281/zenodo.1205756    |
-| Stand alone scripts called by non-machine learning markdown |                           | 10.5281/zenodo.1205746    |
+| Description                                                                                    | Zenodo DOI for Data    | Zenodo DOI for Code    |
+| <25>                                                                                           | <25>                   | <25>                   |
+| IHEC Figure                                                                                    | 10.5281/zenodo.1205714 |                        |
+| Simulations                                                                                    | 10.5281/zenodo.1205730 | 10.5281/zenodo.1205728 |
+| Extended Data Fig. 6 violin plots                                                              | 10.5281/zenodo.1205744 | 10.5281/zenodo.1205735 |
+| Bed file of genomic windows that contain CpGs                                                  | 10.5281/zenodo.1205752 |                        |
+| TCGA and COSMIC tSNEs                                                                          | 10.5281/zenodo.1205754 |                        |
+| Machine learning                                                                               |                        | 10.5281/zenodo.1242697 |
+| Markdown with ensemble of non-machine learning scripts including Extended Data Fig. 6 heatmaps |                        | 10.5281/zenodo.1205756 |
+| Stand alone scripts called by non-machine learning markdown                                    |                        | 10.5281/zenodo.1205746 |
 
 - Open source code/packages used for data analysis: R, SAMtools (v. 1.3.1), Bowtie (v. 0.12.9), MEDIPS (v. 1.22.0), BWA (v. 0.7.1220),
 - Genome Analysis ToolKit (GATK) IndelRealigner, MuTect (v.1.1.5) , Trim Galore! (v. 0.4.4), Bismark (v. 0.10.1), Bowtie2 (v. 2.0.5),
@@ -3532,11 +3523,11 @@ CLOCK: [2020-10-13 Tue 13:38]--[2020-10-13 Tue 14:00] =>  0:22
       - https://www.nextflow.io/example1.html
       - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
       - commands
-        |-------------------------------------+-------------------------------------|
-        | function                            | command                             |
-        |-------------------------------------+-------------------------------------|
-        | <35>                                | <35>                                |
-        |                                     |                                     |
+        |----------+---------|
+        | function | command |
+        |----------+---------|
+        | <35>     | <35>    |
+        |          |         |
       - processes
       - documentation
 - ideas
@@ -3626,9 +3617,6 @@ CLOCK: [2019-04-26 Fri 10:43]--[2019-04-26 Fri 10:57] =>  0:14
   - cite:mclaren2016
 
 **** structural variation 
-:PROPERTIES:
-:ID:       1050a4ea-2790-43a8-a7d2-42445d26a6f8
-:END:
 https://www.nature.com/articles/s41598-020-71168-7
 ***** sv
 :PROPERTIES:
@@ -3698,11 +3686,11 @@ CLOCK: [2019-10-07 Mon 17:34]--[2019-10-07 Mon 17:43] =>  0:09
       - https://www.nextflow.io/example1.html
       - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
       - commands
-        |-------------------------------------+-------------------------------------|
-        | function                            | command                             |
-        |-------------------------------------+-------------------------------------|
-        | <35>                                | <35>                                |
-        |                                     |                                     |
+        |----------+---------|
+        | function | command |
+        |----------+---------|
+        | <35>     | <35>    |
+        |          |         |
       - processes
       - documentation
     - compendia
@@ -4109,9 +4097,6 @@ CLOSED: [2016-12-05 Mon 14:22]
 - cite:stuart2019 
 - [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
 *** small RNA sequencing 
-:PROPERTIES:
-:ID:       90726a84-d9b5-43ff-930d-f6624a0b6c6a
-:END:
 - https://www.encodeproject.org/data-standards/rna-seq/small-rnas/
 *** systems biology
 :PROPERTIES:
@@ -4264,13 +4249,8 @@ First, we need a small set of sample read data. A number of tools, including Art
 - http://miso.readthedocs.io/en/fastmiso/sashimi.html
 - https://genome.sph.umich.edu/wiki/LocusZoom_Standalone
 - http://genviz.org/
-- wikipathways and pathvisio
-  - https://en.wikipedia.org/wiki/Systems_Biology_Graphical_Notation
-  - https://bridgedb.github.io/data/gene_database/
-  - https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004085
-  - https://www.wikipathways.org/index.php/Help:Editing_Pathways
-  - https://www.pathvisio.org/documentation/tutorials/tutorial-1/
-  - [[http://svviz.readthedocs.io/en/latest/install.html][documentation]]
+- https://www.pathvisio.org/documentation/tutorials/tutorial-1/
+  [[http://svviz.readthedocs.io/en/latest/install.html][documentation]]
 **** <<<Integrated Genomics Viewer>>> (<<<IGV>>>)
 :PROPERTIES:
 :ID:       917062AC-32E8-41F5-A511-84AA7B1504B0
@@ -4297,9 +4277,6 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 - http://rabix.io/
 - http://bioboxes.org/docs/example-biobox-use/
 **** snakemake
-:PROPERTIES:
-:ID:       76673bf6-951d-4492-b7e7-52c23fbb78ea
-:END:
 - https://reproducibility.sschmeier.com/index.html
 - https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
 - [[https://snakemake.readthedocs.io/en/stable/index.html][documentation]]
@@ -4346,9 +4323,6 @@ snakemake --cores 20 --forceall
 - polyester - https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
 
 *** tool collections
-:PROPERTIES:
-:ID:       8a40b32c-bc30-4b47-bc6c-fba82924e6bf
-:END:
 - [[https://www.ebi.ac.uk/services][EMBL-EBI Tools]]
 *** BBmap / BBSplit 
 :PROPERTIES:
@@ -4415,15 +4389,9 @@ snakemake --cores 20 --forceall
 | WGCNA          |                  |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] | cite:langfelder2008    |
 |                |                  |           |        |          |       |                        |
 *** pathvisio
-:PROPERTIES:
-:ID:       255d361b-80f9-43be-a8ce-f8294e32bdf9
-:END:
 https://pathvisio.github.io/
 - to switch to java 8 https://askubuntu.com/questions/1133216/downgrading-java-11-to-java-8
 *** UCSC table browser
-:PROPERTIES:
-:ID:       087c4886-4d68-459e-bc73-d008ad8aa939
-:END:
 - ucsc
   - table browser
     - https://genomebrowser.wustl.edu/goldenPath/help/hgTextHelp.html#Introduction
@@ -4431,9 +4399,6 @@ https://pathvisio.github.io/
   - http://genome.ucsc.edu/FAQ/FAQreleases.html
   - cite:karolchik2011
 *** Cytoscape
-:PROPERTIES:
-:ID:       1d7f00cb-fe16-46f1-bc38-cb8b0d92b8c0
-:END:
 - [[http://manual.cytoscape.org/en/stable/index.html][documentation]]
 - https://stackoverflow.com/questions/tagged/cytoscape
 *** GSEA
