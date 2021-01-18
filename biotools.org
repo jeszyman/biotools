@@ -10,51 +10,20 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-#+name: docker_interactive 
-#+begin_src bash :tangle ./src/bash_functions.sh
-#########1#########2#########3#########4#########5#########6#########7#########8
-# Interactive docker initialization
-docker_interactive() {
-    repo="USER INPUT"
-    read -p "repo name: " repo
-    case $HOSTNAME in
-        (radonc-cancerbio) docker run -it \
-                                  --env HOME=${HOME} \
-                                  --hostname ${HOSTNAME} \
-                                  --user $(id -u ${USER}) \
-                                  --volume /home/:/home/ \
-                                  --volume /mnt/:/mnt/ \
-                                  --volume /tmp/:/tmp/ \
-                                  jeszyman/$repo \
-                                  /bin/bash;;
-        (jeszyman-*) docker run -it \
-                            --env HOME=/home/jeszyman \
-                            --hostname ${HOSTNAME} \
-                            --user $(id -u ${USER}) \
-                            --volume /home/:/home/ \
-                            --volume /mnt/:/mnt/ \
-                            --volume /tmp/:/tmp/ \
-                            jeszyman/$repo \
-                            /bin/bash;;
-        (acl*) docker run -it \
-                      -v /drive3/:/drive3/ \
-                      -v /duo4/:/duo4/ \
-                      -v /home/:/home/ \
-                      -u $(id -u ${USER}) \
-                      jeszyman/$repo \
-                      /bin/bash;;
-        (ACL*) docker run -it \
-                      -v /home/:/home/ \
-                      -v /duo4/:/duo4/ \
-                      -u $(id -u ${USER}):$(id -g ${USER}) \
-                      -h=${HOSTNAME} \
-                      jeszyman/$repo \
-                      /bin/bash;;
-        (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker(jeszyman/'"$repo"')' /bin/bash;;
-    esac
-}
-#
-#+end_src
+** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
+:PROPERTIES:
+:ID:       105ca7c0-0f10-4f28-bb52-b255d91cfb9e
+:END:
+** references, databases, and data sets
+:PROPERTIES:
+:ID:       FCBA0863-010A-448C-A33C-941D2AA45AD5
+:END:
+:LOGBOOK:
+CLOCK: [2020-11-17 Tue 12:07]--[2020-11-17 Tue 13:23] =>  1:16
+CLOCK: [2019-07-07 Sun 09:58]--[2019-07-07 Sun 10:01] =>  0:03
+CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
+CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
+:END:
 #+name: reference_pull
 #+begin_src bash :tangle no
 #########1#########2#########3#########4#########5#########6#########7#########8
@@ -97,37 +66,7 @@ rsem-prepare-reference --gtf ./rn6.ensGene.gtf \
                        rsem_ref
 
 #+end_src
-#+name: 
-#+begin_src bash :tangle no
-# RIS mount
-chmod 400 ~/.auth
-mkdir -p $rawDir
-sudo mount -t cifs -o vers=3.0,credentials=/home/jeszyman/.auth,uid=$(id -u),gid=$(id -g) \
-     "//storage1.ris.wustl.edu/cbergom/Active/RNAseq files from Sharon/Bergom_PRJ01_RNAseq_Rat_xenograft"  $rawDir
-#
 
-#+end_src
-#+name: 
-#+begin_src bash :tangle no
-
-cd ~/repos/bergom_rna/biotools/
-docker build . --file ./Dockerfile --tag jeszyman/biotools
-
-#+end_src
-** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
-:PROPERTIES:
-:ID:       105ca7c0-0f10-4f28-bb52-b255d91cfb9e
-:END:
-** references, databases, and data sets
-:PROPERTIES:
-:ID:       FCBA0863-010A-448C-A33C-941D2AA45AD5
-:END:
-:LOGBOOK:
-CLOCK: [2020-11-17 Tue 12:07]--[2020-11-17 Tue 13:23] =>  1:16
-CLOCK: [2019-07-07 Sun 09:58]--[2019-07-07 Sun 10:01] =>  0:03
-CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
-CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
-:END:  
 - https://pubmed.ncbi.nlm.nih.gov/33237278/
 *** [[id:c0c0ee28-2e41-41a7-9a3b-ae195117a93e][LINK TO common bioinformatics file manipulation]]
 :PROPERTIES:
@@ -595,9 +534,20 @@ mandatory
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
-- setup common references
+*** protein-DNA interactions
+:PROPERTIES:
+:CREATED:  [2021-01-18 Mon 09:45]
+:END:
+- cut and run - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302505/
+*** Biotools docker setup
+- build biotools docker container
+  #+begin_src bash :tangle no
+cd ~/repos/biotools/
+docker build . --file Dockerfile --tag jeszyman/biotools
+#+end_src
+*** setup common references
   #+name: setup_common_references
-#+begin_src bash :tangle no
+  #+begin_src bash :tangle no
 #
 # Setup
 /bin/bash
@@ -640,13 +590,6 @@ done
 # get readmes
 #########1#########2#########3#########4#########5#########6#########7#########8
 #+end_src
-- build biotools docker container
-  #+begin_src bash :tangle no
-cd ~/repos/biotools/
-docker build . --file Dockerfile --tag jeszyman/biotools
-#+end_src
-- cut and run - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302505/
-- https://ieeexplore.ieee.org/document/7347331
 *** Adaptive TCR-beta immunosequencing 
 :PROPERTIES:
 :CREATED:  [2020-12-20 Sun 16:45]
@@ -3449,19 +3392,19 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
 :END:
-[[id:179b243b-e6c0-484c-81ef-e8bff57e7f46][Circulating biomarkers]]
+- [[id:179b243b-e6c0-484c-81ef-e8bff57e7f46][Circulating biomarkers]]
 - proteome dynamic range is ~10^12, machine limit is usually ~10^3
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096388/
-- https://www.agilent.com/cs/library/eseminars/public/SomaLogic_Agilent_081816.pdf
-- http://mohanlab.bme.uh.edu/wp-content/uploads/2015/09/HOU-SOMAscan-Methods-2016.pdf
-
 **** SOMAscan
 :PROPERTIES:
 :ID:       89b4ec6d-992d-4551-81da-19011597732a
 :END:
-https://somalogic.com/wp-content/uploads/2017/06/SSM-002-Technical-White-Paper_010916_LSM1.pdf
-https://somalogic.com/wp-content/uploads/2017/06/SSM-071-Rev-0-Technical-Note-SOMAscan-Data-Standardization.pdf
-https://link.springer.com/protocol/10.1007%2F978-1-4939-9706-0_13
+- https://www.agilent.com/cs/library/eseminars/public/SomaLogic_Agilent_081816.pdf
+- http://mohanlab.bme.uh.edu/wp-content/uploads/2015/09/HOU-SOMAscan-Methods-2016.pdf
+
+- https://somalogic.com/wp-content/uploads/2017/06/SSM-002-Technical-White-Paper_010916_LSM1.pdf
+- https://somalogic.com/wp-content/uploads/2017/06/SSM-071-Rev-0-Technical-Note-SOMAscan-Data-Standardization.pdf
+- https://link.springer.com/protocol/10.1007%2F978-1-4939-9706-0_13
 - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd][email: GTAC SOMAscan notes]]
 - cite:candia2017 
 - https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd
@@ -4140,8 +4083,8 @@ CLOSED: [2016-12-05 Mon 14:22]
 - cite:papalexi2018
 - https://support.10xgenomics.com/single-cell-gene-expression/datasets
 - https://www.cell.com/cell-reports/pdf/S2211-1247(19)30059-2.pdf
-
 - https://www.nature.com/articles/s41591-020-0844-1
+
 - https://www.workcast.com/AuditoriumAuthenticator.aspx?cpak=8475927829006248&pak=1763506853003757
 - cite:qi2019 
 - applications
@@ -4150,10 +4093,32 @@ CLOSED: [2016-12-05 Mon 14:22]
     - cite:lawson2018 
 - cite:stuart2019 
 - [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
+- inputs and pre-processing
+  - - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02048-6
+  - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1171-9
+  - https://www.nature.com/articles/s41591-020-0844-1
+*** single-nucleus RNA-seq
+:PROPERTIES:
+:ID:       1149b091-eabe-4137-a3e9-222f21bfdd57
+:END:
+- https://www.nature.com/articles/s41591-020-0844-1
 *** small RNA sequencing 
 :PROPERTIES:
 :ID:       fd462ab0-6aaf-4732-953b-141ad5e2ee72
 :END:
+- https://link.springer.com/protocol/10.1007%2F978-1-4939-1062-5_9
+- https://link.springer.com/protocol/10.1007%2F978-1-4939-9042-9_4
+- sRNAbench
+  - https://bioinfo2.ugr.es/ceUGR/srnabench/
+- sRNAtoolbox
+  - https://arn.ugr.es/srnatoolbox/srnabench/
+  - https://arn.ugr.es/srnatoolbox/static/sRNAtoolbox_manual.pdf
+- novel miR ID
+  - miRDeep2
+    - cite:friedlander2012
+- https://academic.oup.com/nar/article/47/W1/W530/5494756
+- https://github.com/mhalushka/miRge
+  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-018-2287-y
 - http://genboree.org/java-bin/workbench.jsp
 - best practices
   - [[https://www.encodeproject.org/pipelines/ENCPL337CSA/][ENCODE]]
@@ -4166,6 +4131,8 @@ CLOSED: [2016-12-05 Mon 14:22]
 - https://www.encodeproject.org/data-standards/rna-seq/small-rnas/
 - cite:srinivasan2019
 - [[id:ac5261a8-ea3c-44d3-bfd9-c3e1f2ac1e09][LINK TO assaying circulating small RNA]]
+- miRNA functional analysis
+  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4489228/
 *** systems biology
 :PROPERTIES:
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
@@ -6445,6 +6412,52 @@ consModules[cmod])
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+#+name: docker_interactive 
+#+begin_src bash :tangle ./src/bash_functions.sh
+#########1#########2#########3#########4#########5#########6#########7#########8
+# Interactive docker initialization
+docker_interactive() {
+    repo="USER INPUT"
+    read -p "repo name: " repo
+    case $HOSTNAME in
+        (radonc-cancerbio) docker run -it \
+                                  --env HOME=${HOME} \
+                                  --hostname ${HOSTNAME} \
+                                  --user $(id -u ${USER}) \
+                                  --volume /home/:/home/ \
+                                  --volume /mnt/:/mnt/ \
+                                  --volume /tmp/:/tmp/ \
+                                  jeszyman/$repo \
+                                  /bin/bash;;
+        (jeszyman-*) docker run -it \
+                            --env HOME=/home/jeszyman \
+                            --hostname ${HOSTNAME} \
+                            --user $(id -u ${USER}) \
+                            --volume /home/:/home/ \
+                            --volume /mnt/:/mnt/ \
+                            --volume /tmp/:/tmp/ \
+                            jeszyman/$repo \
+                            /bin/bash;;
+        (acl*) docker run -it \
+                      -v /drive3/:/drive3/ \
+                      -v /duo4/:/duo4/ \
+                      -v /home/:/home/ \
+                      -u $(id -u ${USER}) \
+                      jeszyman/$repo \
+                      /bin/bash;;
+        (ACL*) docker run -it \
+                      -v /home/:/home/ \
+                      -v /duo4/:/duo4/ \
+                      -u $(id -u ${USER}):$(id -g ${USER}) \
+                      -h=${HOSTNAME} \
+                      jeszyman/$repo \
+                      /bin/bash;;
+        (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker(jeszyman/'"$repo"')' /bin/bash;;
+    esac
+}
+#
+#+end_src
+
 - https://informatics.fas.harvard.edu/category/tutorials.html
 - https://www.youtube.com/channel/UCv4IbnP9j9RC_aZAs8wqdeQ
 - https://www.broadinstitute.org/genome-sequencing/broadillumina-genome-analyzer-boot-camp
