@@ -4368,7 +4368,8 @@ snakemake --cores 20 --forceall
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
-- polyester - https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
+*** polyester
+  - https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
 
 *** tool collections
 :PROPERTIES:
