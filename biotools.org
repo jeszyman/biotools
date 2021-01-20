@@ -537,15 +537,22 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 *** protein-DNA interactions
 :PROPERTIES:
 :CREATED:  [2021-01-18 Mon 09:45]
+:ID:       b612a1b1-2c01-49c3-a20c-5a890fa1a6e5
 :END:
 - cut and run - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302505/
 *** Biotools docker setup
+:PROPERTIES:
+:ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
+:END:
 - build biotools docker container
   #+begin_src bash :tangle no
 cd ~/repos/biotools/
 docker build . --file Dockerfile --tag jeszyman/biotools
 #+end_src
 *** setup common references
+:PROPERTIES:
+:ID:       813ed980-1c55-44d7-84d8-67afdad2e5bc
+:END:
   #+name: setup_common_references
   #+begin_src bash :tangle no
 #
@@ -997,6 +1004,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+- [[https://www.nature.com/subjects/rna-sequencing/nmeth][Nature Methods RNA sequencing]]
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096346/
 - https://www.bioconductor.org/packages/devel/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html
 - https://rnabio.org/module-02-alignment/0002/02/01/Adapter_Trim/
@@ -1607,6 +1615,8 @@ variabilize RNA seq workflow- make into function
 :LOGBOOK:
 CLOCK: [2020-11-23 Mon 10:43]--[2020-11-23 Mon 10:57] =>  0:14
 :END:
+- no t-test
+  - https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0012336
 - sleuth https://www.nature.com/articles/nmeth.4324 cite:pachter2015
 - specialized DE datasets
   - long non-coding- https://europepmc.org/article/PMC/6058388
