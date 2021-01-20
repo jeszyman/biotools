@@ -1,6 +1,6 @@
 # load setup from basecamp submodule: 
-setwd("~/repos/biotools")
-source("./basecamp/src/setup.R")
+#setwd("~/repos/biotools")
+#source("./basecamp/src/setup.R")
 #
 # Check Packages
 ##
