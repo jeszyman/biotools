@@ -984,6 +984,7 @@ https://software.broadinstitute.org/gatk/documentation/topic?name=methods
 :PROPERTIES:
 :ID:       02901312-8e39-43f5-87dc-28e965a0df30
 :END:
+- cite:nguyen2002 
 http://gepia.cancer-pku.cn/
 *** RNA-seq                                                          :career:
 :PROPERTIES:
@@ -1492,6 +1493,7 @@ https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-015-1308-8
 :PROPERTIES:
 :ID:       853dd34c-27be-4be8-9794-19f04a1e22b0
 :END:
+- normalization to control for systemic error / bias
 - shrinkage: pooling information across genes to obtain reliable variance estimates for small sample sizes, cite:pachter2015 
 - feature counting
   - HTSeq
@@ -1608,6 +1610,11 @@ Important options
 counting is computationally intensive- script HTseq and
 summarizeOverlaps on the cluster 
 variabilize RNA seq workflow- make into function 
+**** clustering
+:PROPERTIES:
+:ID:       22a6e4a4-60c2-44cf-8e5a-3ff351a02aa3
+:END:
+- cite:vidman2019
 **** differential expression
 :PROPERTIES:
 :ID:       ee030cef-74d4-435d-8228-b85f0e6203db
@@ -1616,6 +1623,7 @@ variabilize RNA seq workflow- make into function
 CLOCK: [2020-11-23 Mon 10:43]--[2020-11-23 Mon 10:57] =>  0:14
 :END:
 - no t-test
+  - cite:jeanmougin2010 
   - https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0012336
 - sleuth https://www.nature.com/articles/nmeth.4324 cite:pachter2015
 - specialized DE datasets
