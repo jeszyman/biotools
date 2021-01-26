@@ -11,9 +11,6 @@ CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
-:PROPERTIES:
-:ID:       105ca7c0-0f10-4f28-bb52-b255d91cfb9e
-:END:
 ** references, databases, and data sets
 :PROPERTIES:
 :ID:       FCBA0863-010A-448C-A33C-941D2AA45AD5
@@ -534,6 +531,11 @@ mandatory
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
+*** spatial transcriptomics
+:PROPERTIES:
+:ID:       053daf71-9f9f-4b5e-b400-222c4d24afea
+:END:
+- https://support.10xgenomics.com/spatial-gene-expression/sequencing/doc/specifications-sequencing-requirements-for-visium-spatial-gene-expression
 *** protein-DNA interactions
 :PROPERTIES:
 :CREATED:  [2021-01-18 Mon 09:45]
@@ -3970,7 +3972,9 @@ cite:chimera_r
 :PROPERTIES:
 :ID:       E3637686-6560-4088-9784-0A601F39C34D
 :END:
-
+- clonal evolution- https://cancerdiscovery.aacrjournals.org/content/8/11/1390.long
+- HRDtools for homologous recombination index 
+  - https://github.com/eyzhao/hrdtools
 - cite:ainscough2018  
 - - cite:barnell2018  
 - [[https://software.broadinstitute.org/gatk/best-practices/bp_3step.php?case=GermShortWGS][GATK Best Practices Germline SNP and Indel]]
@@ -4343,6 +4347,19 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 :PROPERTIES:
 :ID:       a8b27140-4b9e-40c5-86ab-ee5afeae723f
 :END:
+#+name: 
+#+begin_src bash :tangle no
+#
+mkdir /tmp/snakemake-tutorial
+cd /tmp/snakemake-tutorial
+#
+wget https://github.com/snakemake/snakemake-tutorial-data/archive/v5.24.1.tar.gz
+tar --wildcards -xf v5.24.1.tar.gz --strip 1 "*/data" "*/environment.yaml"
+ls
+source ~/repos/biotools/src/functions.sh
+docker_interactive
+biotools
+#+end_src
 - https://reproducibility.sschmeier.com/index.html
 - https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
 - [[https://snakemake.readthedocs.io/en/stable/index.html][documentation]]
@@ -4386,28 +4403,6 @@ snakemake --cores 20 --forceall
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
-*** polyester
-:PROPERTIES:
-:ID:       065725b4-43d3-48d4-a4e2-3ca5c1e1e6fd
-:END:
-  - https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
-
-*** tool collections
-:PROPERTIES:
-:ID:       7cce7be9-b3ac-4127-9a92-71559617588e
-:END:
-- [[https://www.ebi.ac.uk/services][EMBL-EBI Tools]]
-*** BBmap / BBSplit 
-:PROPERTIES:
-:ID:       52363054-5138-419c-8d45-4ec9b0b02b24
-:END:
-- http://seqanswers.com/forums/archive/index.php/t-87619.html
-- https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbmap-guide/
-- outu = unmapped reads
-- snakemake example https://www.biostars.org/p/424706/
-- http://seqanswers.com/forums/showthread.php?t=41288
-- [ ] BBSplit in BBmap - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwJZJWQrGSPgdPGNfStWbxXkmhP][email]]]]
-- https://www.google.com/search?q=bbmap+docker use bioconda
 *** table of tools
 :PROPERTIES:
 :ID:       a0923938-4021-44cd-a8f3-94c0eb10cdb5
@@ -4461,6 +4456,28 @@ snakemake --cores 20 --forceall
 | tximport       |                  |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
 | WGCNA          |                  |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] | cite:langfelder2008    |
 |                |                  |           |        |          |       |                        |
+*** polyester
+:PROPERTIES:
+:ID:       065725b4-43d3-48d4-a4e2-3ca5c1e1e6fd
+:END:
+  - https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
+
+*** tool collections
+:PROPERTIES:
+:ID:       7cce7be9-b3ac-4127-9a92-71559617588e
+:END:
+- [[https://www.ebi.ac.uk/services][EMBL-EBI Tools]]
+*** BBmap / BBSplit 
+:PROPERTIES:
+:ID:       52363054-5138-419c-8d45-4ec9b0b02b24
+:END:
+- http://seqanswers.com/forums/archive/index.php/t-87619.html
+- https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbmap-guide/
+- outu = unmapped reads
+- snakemake example https://www.biostars.org/p/424706/
+- http://seqanswers.com/forums/showthread.php?t=41288
+- [ ] BBSplit in BBmap - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwJZJWQrGSPgdPGNfStWbxXkmhP][email]]]]
+- https://www.google.com/search?q=bbmap+docker use bioconda
 *** pathvisio
 :PROPERTIES:
 :ID:       17c865dc-765c-496d-b5c7-60d3d3439de3
@@ -4683,6 +4700,7 @@ segmentation file column 6 is log2(x)-1 of the copy number, so
 :PROPERTIES:
 :ID:       b471102b-2e5a-4d67-97e6-b03cf4d923b9
 :END:
+- modify autobin https://github.com/etal/cnvkit/blob/fa86632a5731ebbefb0092069c8031f806c8b611/cnvlib/autobin.py
 oldcode from mpnst
 
 # tumor_bam="/duo4/capp-runs/HiSeqW11/demultiplexed/Sample_PC3-N1_Normal/Sample_PC3-N1_Normal.sorted.samtools-deduped.sorted.bam"
