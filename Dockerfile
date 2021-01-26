@@ -630,5 +630,4 @@ libxmu-dev
 
 RUN conda install -c bioconda rsem 
 RUN conda install -c bioconda bbmap
-
-
+RUN conda install -c bioconda snakemake
