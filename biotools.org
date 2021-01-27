@@ -456,6 +456,10 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 :PROPERTIES:
 :ID:       5e2c4e39-99bc-4cc8-86a6-c39bea5ac2d8
 :END:
+- fastq
+  - https://www.biostars.org/p/198143/
+  - https://github.com/10XGenomics/supernova/blob/master/tenkit/lib/python/tenkit/illumina_instrument.py#L12-L45
+  - https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/FileFormat_FASTQ-files_swBS.htm
 - [[https://genome.ucsc.edu/FAQ/FAQformat.html#format1][Nucleic acid data formats]]
 - https://help.basespace.illumina.com/articles/descriptive/fastq-files/
 - alignment formats 
@@ -1013,6 +1017,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+- https://support.bioconductor.org/p/65890/
 - cite:griffith2015c
 - https://en.wikipedia.org/wiki/List_of_RNA-Seq_bioinformatics_tools  
 - [[http://rnaseq.uoregon.edu/][RNAcyclopedia]]
@@ -2275,6 +2280,7 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
+https://www.biostars.org/p/198143/
 - https://www.broadinstitute.org/genome-sequencing/broadillumina-genome-analyzer-boot-camp
 - https://pages.10xgenomics.com/ugm-2020-10-event-ra_g-user-group-meeting-amr_on-demand.html?src=email&utm_medium=email&lss=internal&utm_source=internal&cnm=ugm-2020-10-event-ra_g-user-group-meeting-amr&utm_campaign=ugm-2020-10-event-ra_g-user-group-meeting-amr&useroffertype=event&userresearcharea=ra_g&userregion=multi&mktouserid=1629122
 
@@ -6221,7 +6227,7 @@ docker_interactive() {
 }
 #
 #+end_src
-
+- https://support.bioconductor.org/#search-anchor
 - https://informatics.fas.harvard.edu/category/tutorials.html
 - https://www.youtube.com/channel/UCv4IbnP9j9RC_aZAs8wqdeQ
 - https://www.broadinstitute.org/genome-sequencing/broadillumina-genome-analyzer-boot-camp
