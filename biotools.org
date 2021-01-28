@@ -616,8 +616,13 @@ done
 :PROPERTIES:
 :ID:       903f32d8-bd13-496c-8d5c-26a63455936a
 :END:
+:LOGBOOK:
+CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
+:END:
 - https://www.biostars.org/local/search/page/?q=miRNA-seq+alignment
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
+- https://www.google.com/search?q=mirna+isoform+discovery+depth
+- https://www.google.com/search?q=mirna+multiqc   
 *** computer clusters
 :PROPERTIES:
 :CREATED:  [2020-12-18 Fri 18:50]
