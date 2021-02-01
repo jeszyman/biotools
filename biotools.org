@@ -11,6 +11,9 @@ CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
+:PROPERTIES:
+:ID:       76100c2b-a077-4c21-a398-16d88722e1c6
+:END:
 ** references, databases, and data sets
 :PROPERTIES:
 :ID:       FCBA0863-010A-448C-A33C-941D2AA45AD5
@@ -22,9 +25,15 @@ CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
 CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :END:
 *** Adapter sequences
+:PROPERTIES:
+:ID:       cf2ea58e-8751-4d90-ab08-a63445925c89
+:END:
 - https://support.illumina.com/downloads/illumina-adapter-sequences-document-1000000002694.html
 - https://support.illumina.com/bulletins/2016/12/what-sequences-do-i-use-for-adapter-trimming.html
 *** code associated with reference data and databases
+:PROPERTIES:
+:ID:       767e5e30-8490-4cda-8018-8b0bd91c4ef3
+:END:
 - pull down common reference sequences
   #+name: reference_pull
   #+begin_src bash :tangle no
@@ -619,6 +628,10 @@ done
 :LOGBOOK:
 CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :END:
+- https://www.nature.com/articles/s41598-017-14301-3.pdf
+- https://arn.ugr.es/mirnaqc/
+- https://www.sciencedirect.com/science/article/pii/S266591312030131X#sec3
+- https://www.biostars.org/t/mirna/
 - https://www.biostars.org/local/search/page/?q=miRNA-seq+alignment
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
 - https://www.google.com/search?q=mirna+isoform+discovery+depth
@@ -1655,20 +1668,32 @@ CLOCK: [2016-03-28 Mon 19:06]--[2016-03-28 Mon 19:29] =>  0:23
 CLOCK: [2016-03-28 Mon 13:01]--[2016-03-28 Mon 13:06] =>  0:05
 :END:
 ***** experimental design
+:PROPERTIES:
+:ID:       4b9eee0d-4dd2-4b31-a5c2-873663443671
+:END:
   - cite:mccarthy2012
   - https://angus.readthedocs.io/en/2016/_static/DifferentialExpressionBasics_NGS2016_ID.pdf
 ***** specialized DE datasets
+:PROPERTIES:
+:ID:       722cd834-2504-4ae0-84ef-58554fa4da32
+:END:
 - long non-coding- https://europepmc.org/article/PMC/6058388
 - transcript / isoform DE
   - https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
   - sleuth https://www.nature.com/articles/nmeth.4324 cite:pachter2015
   - CuffDiff- isoform count-based
 ***** tutorials
+:PROPERTIES:
+:ID:       9bd06c29-45ba-42b8-b048-27b83a0fa47d
+:END:
 - http://master.bioconductor.org/packages/release/workflows/html/rnaseqGene.html
 - https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
 - https://bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#useful-graphical-representations-of-differential-expression-results
 - [[https://github.com/griffithlab/rnaseq_tutorial/wiki/Citation][Griffith RNA-seq tutorial]]
 ***** statistical models
+:PROPERTIES:
+:ID:       8a788e6c-3899-4e6f-bf09-9c96d110aeaa
+:END:
   - cite:huang2015      
   - https://angus.readthedocs.io/en/2016/_static/DifferentialExpressionBasics_NGS2016_ID.pdf
   - https://bioinformatics-core-shared-training.github.io/RNAseq-R/slides/LinearModels.pdf
@@ -1714,6 +1739,9 @@ CLOCK: [2016-03-28 Mon 13:01]--[2016-03-28 Mon 13:06] =>  0:05
 - de novo
   - https://informatics.fas.harvard.edu/best-practices-for-de-novo-transcriptome-assembly-with-trinity.html
 ***** outputs
+:PROPERTIES:
+:ID:       48db2c9c-5d17-4438-aa40-43816245c490
+:END:
   - log fold change
     - https://www.biostars.org/p/101727/
 
@@ -3250,6 +3278,8 @@ CLOSED: [2016-12-05 Mon 14:22]
 :PROPERTIES:
 :ID:       fd462ab0-6aaf-4732-953b-141ad5e2ee72
 :END:
+- https://www.illumina.com/techniques/sequencing/rna-sequencing/small-rna-seq.html
+- https://www.biostars.org/t/smallrna/?sort=votes&limit=all%20time
 - cite:mehta2014
 - https://link.springer.com/protocol/10.1007%2F978-1-4939-1062-5_9
 - https://link.springer.com/protocol/10.1007%2F978-1-4939-9042-9_4
