@@ -978,6 +978,7 @@ https://software.broadinstitute.org/gatk/documentation/topic?name=methods
 :CREATED:  [2019-10-30 Wed 10:52]
 :ID:       079e398f-e3b0-49c4-92da-9b4f6a73684c
 :END:
+https://www.illumina.com/destination/epigenetics-webinar-series.html
 - methylation
   - https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/medip-seq-dip-seq.html
   - cite:shen2018
@@ -2313,6 +2314,7 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
+https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/user-guide-manual/xgen-prism-dna-library-prep-kit-processing-sequencing-data-with-umis.pdf
 https://www.biostars.org/p/198143/
 - https://www.broadinstitute.org/genome-sequencing/broadillumina-genome-analyzer-boot-camp
 - https://pages.10xgenomics.com/ugm-2020-10-event-ra_g-user-group-meeting-amr_on-demand.html?src=email&utm_medium=email&lss=internal&utm_source=internal&cnm=ugm-2020-10-event-ra_g-user-group-meeting-amr&utm_campaign=ugm-2020-10-event-ra_g-user-group-meeting-amr&useroffertype=event&userresearcharea=ra_g&userregion=multi&mktouserid=1629122
@@ -5838,7 +5840,7 @@ Another use of the voom plot-  what you are failing to do completely in the voom
 CLOCK: [2021-01-26 Tue 11:53]--[2021-01-26 Tue 13:00] =>  1:07
 :END:
 - [[file:~/Box%20Sync/library/Love,16%20DESeq2%20manual.pdf][Manual]]
-- [[https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#differential-expression-analysis][package vignette]]
+- [[https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html][package vignette]]
 - handling nested designs https://support.bioconductor.org/p/64480/
 - https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
 - https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf
