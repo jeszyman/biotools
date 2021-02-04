@@ -10,7 +10,8 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 ##
 packages = c(
     "ComplexHeatmap",
-    "fgsea"
+    "fgsea",
+    "DESeq2"
 )
 ##
 ##NOTE requires libcurl4-openssl-dev https://stackoverflow.com/questions/11471690/curl-h-no-such-file-or-directory/11471743
