@@ -5840,7 +5840,9 @@ Another use of the voom plot-  what you are failing to do completely in the voom
 CLOCK: [2021-01-26 Tue 11:53]--[2021-01-26 Tue 13:00] =>  1:07
 :END:
 - [[file:~/Box%20Sync/library/Love,16%20DESeq2%20manual.pdf][Manual]]
-- [[https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html][package vignette]]
+- vignettes
+  - [[https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#exploratory-analysis-and-visualization][gene workflow 19]]
+  - [[http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#using-parallelization][package vignette]]
 - handling nested designs https://support.bioconductor.org/p/64480/
 - https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
 - https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf

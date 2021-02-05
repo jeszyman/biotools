@@ -9,6 +9,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 ##
 packages = c(
+    "BiocParallel"
     "ComplexHeatmap",
     "fgsea",
     "DESeq2"
