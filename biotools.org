@@ -26,6 +26,7 @@ CLOCK: [2019-07-07 Sun 09:58]--[2019-07-07 Sun 10:01] =>  0:03
 CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
 CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :END:
+https://science.sciencemag.org/content/369/6509/1318
 *** Adapter sequences
 :PROPERTIES:
 :ID:       cf2ea58e-8751-4d90-ab08-a63445925c89
@@ -1145,6 +1146,8 @@ also demultiplexes
 - cite:Lee_2016
 - cite:Goodwin_2016
 
+
+
 *** metabolomics
 :PROPERTIES:
 :CREATED:  [2020-10-08 Thu 09:15]
@@ -1202,9 +1205,10 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 - Genome Analysis ToolKit (GATK) IndelRealigner, MuTect (v.1.1.5) , Trim Galore! (v. 0.4.4), Bismark (v. 0.10.1), Bowtie2 (v. 2.0.5),
 - MethylKit (v 0.99.2), DESeq2 (v. 1.4.5), caret R package, minfi bioconductor package, Rtsne
 - Commercial software used for data analysis: Microsoft Excel for Mac (v. 16.16.1)
-
-- [[id:333E498B-E0EA-460C-95EC-1931ACE19473][pipeline development]]
-
+=======
+:PROPERTIES:
+:ID:       413414a5-651d-4d43-82c8-a6bb13de8ca3
+:END:
 *** miRNA-seq
 :PROPERTIES:
 :ID:       903f32d8-bd13-496c-8d5c-26a63455936a
@@ -1224,6 +1228,7 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
 - https://www.google.com/search?q=mirna+isoform+discovery+depth
 - https://www.google.com/search?q=mirna+multiqc   
+
 *** omics integration
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
@@ -1235,6 +1240,7 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 - cite:subramanian2020
 - cite:wu2019
 - https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
+
 *** pathway analysis
 :PROPERTIES:
 :CREATED:  [2020-07-20 Mon 10:05]
@@ -1279,6 +1285,7 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :ID:       b612a1b1-2c01-49c3-a20c-5a890fa1a6e5
 :END:
 - cut and run - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302505/
+
 *** proteomics
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
@@ -1290,23 +1297,18 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :PROPERTIES:
 :ID:       89b4ec6d-992d-4551-81da-19011597732a
 :END:
-- assay concept 
-  - cite:wilcox2016 
-- assay sample handling and processing
-  - http://mohanlab.bme.uh.edu/wp-content/uploads/2015/09/HOU-SOMAscan-Methods-2016.pdf
-- readat package
-  - cite:cotton2016 
-- SOMAscan recent methods examples
-  - cite:wang2017soma
-  - cite:billing2017
-  - cite:marion2016
-  - cite:kollar2018 
-  - cite:simats2019
-  - cite:candia2017 
-- downstream analysis
-  - cite:williams2019
-  - SOMAscan as input to network analysis cite:parolo2018
+- https://www.somalogic.com/wp-content/uploads/2017/01/SSM-046-Rev-2-Verification-and-Validation-of-the-SOMAscan-Assay-1.3k.pdf
+- https://www.agilent.com/cs/library/eseminars/public/SomaLogic_Agilent_081816.pdf
+- http://mohanlab.bme.uh.edu/wp-content/uploads/2015/09/HOU-SOMAscan-Methods-2016.pdf
+
+- https://somalogic.com/wp-content/uploads/2017/06/SSM-002-Technical-White-Paper_010916_LSM1.pdf
+- https://somalogic.com/wp-content/uploads/2017/06/SSM-071-Rev-0-Technical-Note-SOMAscan-Data-Standardization.pdf
+- https://link.springer.com/protocol/10.1007%2F978-1-4939-9706-0_13
 - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd][email: GTAC SOMAscan notes]]
+- cite:candia2017 
+- https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd
+- https://www.sciencedirect.com/science/article/pii/S1874391916304006
+- For protein, SOMAscan has a higher dynamic range and lower limit of detection than comparable Luminex antibody-based assays (cite doi.org/10.1038/s41591-019-0665-2). Moreover, SOMAscan includes targets such as Jagged-1 and -2 not available for multiplexed antibody assays.
 
 *** raw sequence QC and processing
 :PROPERTIES:
@@ -1431,11 +1433,13 @@ CLOCK: [2020-10-13 Tue 13:38]--[2020-10-13 Tue 14:00] =>  0:22
     - link to documentation- maybe an org and/or markdown file?
     - script comment design
   - https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
+
 *** Transcriptomics
 :PROPERTIES:
 :ID:       b9db0398-4481-4502-abb0-bd9edcd353f2
 :END:
 https://science.sciencemag.org/content/360/6389/660
+
 *** RNA-seq                                                          :career:
 :PROPERTIES:
 :ID:       4206be38-8d3c-43c4-a5c7-ca6a8bd8361a
@@ -1844,6 +1848,7 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
 **** RNA-seq quality control
 :PROPERTIES:
 :ID:       2d2f32cf-ef4a-4efe-90d1-ae85ad470e49
+>>>>>>> e60be068dcbc8c18477fc28e00ee3b742dcf0110
 :END:
 - https://www.reddit.com/r/bioinformatics/comments/flqb8e/how_do_i_differentiate_outliers_from_ingroup/
 - https://www.rna-seqblog.com/an-rna-seq-qc-overview/
@@ -1851,72 +1856,590 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
 - https://bioinformatics.stackexchange.com/questions/3572/strange-per-sequence-gc-content-results
 - cite:wang2012
 
-- bias
-  - cite:li2014  
-- https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/evaluating-rna-quality-from-ffpe-samples-technical-note-470-2014-001.pdf
-- https://github.com/griffithlab/rnaseq_tutorial/wiki/PostAlignment-QC
-- rna sequence qc
-  - https://www.google.com/search?q=multiqc
-  - https://pmbio.org/module-02-inputs/0002/06/01/PreAlignment_QC/
-  - https://blog.omictools.com/your-top-3-rna-seq-quality-control-tools/
-- post-alignment
-  - cool read/library size comparison in limma user guide 18.1 
-  - Post-alignment metrics
-    - Mappability
-      - % of reads mapped to transcriptome
-      - % of reads with a mate pair
-      - 5' /3' coverage bias
-      - chromosomal distribution 
-    - rRNA/tRNA contamination- count rRNA-aligned
-    - saturation test of sequencing depth- RPKM vs. resampling percentage (don’t understand this one yet)
-      - RPKM vs. resampling percentage for saturation
-    - reproducibility between replicates
-      - technical replicates evaluate background, chemistry, instruments,
-      - biological replicates
-        - pearson correlation for biological replicates
-      - read number vs. percentile of gene body for per-gene coverage uniformity 
-  - strand specificity- not present unless specific 3’/5’ adaptors- usually can’t tell where read is from for overlapping RNAs from opposite strands
-  - coverage
-    - for DE, 30 million pair-end w/ >30 bp
-    - per ENCODE, 100-200 million 2x76 bp for alt splice, gene fusion, novel transcript ID
-  - check out SeqMonk
-  - MAPQ score:  −10 log10 Pr{mapping position is wrong}, rounded to the nearest integer. A value 255 indicates that the mapping quality is not available
-  - References
-    - [[https://github.com/griffithlab/rnaseq_tutorial/wiki/PostAlignment-QC][Griffith Lab RNA-Seq tutorial, PostAlignment QC]]
-- [[http://davetang.org/wiki/tiki-index.php?page=SAMStat][SAMStat]]
-- [[Samtools]]
-- RSeQC
-  - bam_stat.py  -i file.bam
-  - clipping_profile.py -i Pairend_nonStrandSpecific_36mer_Human_hg19.bam -s "PE" -o out
-  - see more http://rseqc.sourceforge.net/ 
-  - can also divide bam into n randomly sampled parts
-  - some useful functions
-  - determine strandedness w/ infer_experiment.py 
-  - Splice Junction Saturation using [[http://rseqc.sourceforge.net/][RSeQC]]
-    - checks if sequence depth is sufficient to find all features 
-    - see https://github.com/griffithlab/rnaseq_tutorial/wiki/PostAlignment-QC 
-      - inputs
-        - BED
-        - SAM/BAM
-        - Chromosome size file
-        - Fasta
 
-        use bedops to convert GTF to BED
+- samtools sort (to postion) 
 
-        keeps throwing error of ValueError: invalid literal for int() with
-        base 10: 'transcript_id'
-
-        High coverage at one end and low coverage at the opposite end indicates end bias during sample and library preparation. Inconsistent spikes in coverage across the gene body with low coverage in between spikes indicates sample degradation or library preparation artifacts that are typical with non-strand displacing random priming library preparation such as the Sigma kit for low input or degraded FFPE samples. (5K PDF format)”
-
-
-
-
-***** Count Table QC
+****** [[http://www-huber.embl.de/HTSeq/doc/count.html#count][website]]
 :PROPERTIES:
-:ID:       C4236326-0D06-4D76-BC3A-9E51E67E553C
+:ID:       6B7F3881-DA7D-4700-BC30-9EF83150D916
 :END:
 
-- For differential expression, if coverage across transcript is poor, consider using only uniquely mappable reads
+htseq-count [options] <alignment_file> <gff_file>
+
+simple code: htseq-count -m union -r pos -i gene_name -a 10 --stranded=no agcgccg.bam Mus_musculus.GRCm38.84.gtf > output.counts
+
+Important options
+--stranded=no (defualt is yes)
+--format bam (defualt is sam)
+  - for paired end, order is important
+    - do samtools sort (default) to put in position order
+    - in HTSeq-counts, specify -r pos
+    -a 10 (minimum quality, 10 is default) 
+    -m default is union, alternate intersection-strict and intersection-nonempty 
+
+    Why union is default: consider two genes, which share a stretch of common sequence such that for a read mapping to this stretch, the aligner cannot decide which of the two genes the read originated from and hence reports a multiple alignment. If we discard all such reads, we undercount the total output of the genes, but the ratio of expression strength (the “fold change”) between samples or experimental condition will still be correct, because we discard the same fratcion of reads in all samples. On the other hand, if we counted these reads for both genes, a subsequent diffential-expression analysis might find false positives:
+
+
+  followed by the special counters, which count reads that were not counted for any feature for various reasons
+
+  [[http://www-huber.embl.de/HTSeq/doc/counting.html][algorithm details]]
+
+***** Basic counting script
+:PROPERTIES:
+:ID:       AE616985-EA77-4CF0-8FEA-60FF56A04AC3
+:END:
+
+counting is computationally intensive- script HTseq and
+summarizeOverlaps on the cluster 
+variabilize RNA seq workflow- make into function 
+**** clustering
+:PROPERTIES:
+:ID:       22a6e4a4-60c2-44cf-8e5a-3ff351a02aa3
+:END:
+- cite:vidman2019
+**** differential expression
+:PROPERTIES:
+:ID:       ee030cef-74d4-435d-8228-b85f0e6203db
+:END:
+:LOGBOOK:
+CLOCK: [2021-01-26 Tue 11:07]--[2021-01-26 Tue 11:53] =>  0:46
+CLOCK: [2020-11-23 Mon 10:43]--[2020-11-23 Mon 10:57] =>  0:14
+CLOCK: [2016-03-28 Mon 19:06]--[2016-03-28 Mon 19:29] =>  0:23
+CLOCK: [2016-03-28 Mon 13:01]--[2016-03-28 Mon 13:06] =>  0:05
+:END:
+***** experimental design
+:PROPERTIES:
+:ID:       4b9eee0d-4dd2-4b31-a5c2-873663443671
+:END:
+  - cite:mccarthy2012
+  - https://angus.readthedocs.io/en/2016/_static/DifferentialExpressionBasics_NGS2016_ID.pdf
+***** specialized DE datasets
+:PROPERTIES:
+:ID:       722cd834-2504-4ae0-84ef-58554fa4da32
+:END:
+- long non-coding- https://europepmc.org/article/PMC/6058388
+- transcript / isoform DE
+  - https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
+  - sleuth https://www.nature.com/articles/nmeth.4324 cite:pachter2015
+  - CuffDiff- isoform count-based
+***** tutorials
+:PROPERTIES:
+:ID:       9bd06c29-45ba-42b8-b048-27b83a0fa47d
+:END:
+- http://master.bioconductor.org/packages/release/workflows/html/rnaseqGene.html
+- https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
+- https://bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#useful-graphical-representations-of-differential-expression-results
+- [[https://github.com/griffithlab/rnaseq_tutorial/wiki/Citation][Griffith RNA-seq tutorial]]
+***** statistical models
+:PROPERTIES:
+:ID:       8a788e6c-3899-4e6f-bf09-9c96d110aeaa
+:END:
+  - cite:huang2015      
+  - https://angus.readthedocs.io/en/2016/_static/DifferentialExpressionBasics_NGS2016_ID.pdf
+  - https://bioinformatics-core-shared-training.github.io/RNAseq-R/slides/LinearModels.pdf
+  - dispersion
+    - https://support.bioconductor.org/p/75260/
+  - no t-test
+    - cite:jeanmougin2010 
+    - https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0012336
+  - RNA expression varies about 10^5
+  - RNA counts follow “overdispersed” poisson ( (large number of events, each event is rare) / negative binomial distribution (additional factor is dispersion)
+    expression levels of same gene across tissues follow log-normal distribution 
+    - base distribution is Poisson (b/c large number of events, each event is rare), variance = mean
+    - shot noise- noise from sampling
+    - zero inflation- many zero counts 
+    - negative binomial (overdispersed Poisson), variance = mean + (1/r)*u^2, used by
+      - DESeq2 (can also do continuous values like limma)
+      - EdgeR
+***** Methods and tools
+:PROPERTIES:
+:ID:       68BB9D3D-5879-4F2E-904B-54F70EAD2B5A
+:END:
+- [[id:2F642F69-A9C8-46DA-BE31-783AC8D4F4B6][DESeq2]]
+- count-based
+  - negative binomial
+    - [[id:32BB77F2-0283-4A52-86AC-CDF2CB6A7315][edgeR]]
+    - [[id:2F642F69-A9C8-46DA-BE31-783AC8D4F4B6][DESeq2]]
+- [[id:F9684168-A438-4F5E-81D6-D645B52B4074][limma voom]]
+- Bayesian
+  - BaySeq
+  - BitSeq
+  - ebSeq
+- Non-parametrics- require 5-10 replicates per group
+  - SAMSeq
+  - NOISeq
+- methods comparisons
+  - cite:huang2015    
+  - cite:seyednasrollah2015    
+  - cite:tang2015 
+  - cite:rapaport2013
+  - https://www.nature.com/articles/s41598-020-59516-z#data-availability
+  - comparison
+    - https://academic.oup.com/bib/article/16/1/59/240754#26957696
+- de novo
+  - https://informatics.fas.harvard.edu/best-practices-for-de-novo-transcriptome-assembly-with-trinity.html
+***** outputs
+:PROPERTIES:
+:ID:       48db2c9c-5d17-4438-aa40-43816245c490
+:END:
+  - log fold change
+    - https://www.biostars.org/p/101727/
+
+
+***** Notes
+:PROPERTIES:
+:ID:       558011C7-FB50-435E-B130-E3485CC25B90
+:END:
+- cite:anders2010
+- https://pubmed.ncbi.nlm.nih.gov/22931062/
+- bench methods
+  - cite:parekh2016
+**** Expression Level Abundance, Normalization Units
+:PROPERTIES:
+:ID:       D4BFCCCA-8BBC-4D23-B71B-F8C2ED6287E3
+:END:
+https://ro-che.info/articles/2016-11-28-rna-seq-normalization
+R/FPKM and C/TPM are "local" to the sample while TMM must be recalculated with different sample set
+
+***** Raw- required input for DE analyses
+:PROPERTIES:
+:ID:       82A81565-9333-4E40-806E-474399BD73C4
+:END:
+
+***** R/FPKM
+:PROPERTIES:
+:ID:       9D6324B7-D9A2-44ED-A54F-B0C0C8DCECE2
+:END:
+
+- normalization for library size (i.e. sequencing depth) and transcript length
+- use to
+  - compare a gene across samples or
+  - compare different genes within a sample
+- see Mortazavi A., Williams B.A., McCue K., Schaeffer L., and Wold B. Mapping and quantifying mammalian transcriptomes by RNA-seq. Nat Methods 5(7):621–628, 2008.
+- RPKM (reads per thousand nucleotides in transcript per million reads)
+  - “For example, if a 2 kb transcript has 1000 reads and the total number of reads is 25 million, then RPKM = (1000/2)/25 = 20”
+- FPKM (fragments per thousand nucleotides per million mapped reads)- equivalent of RPKM for paired-end (two reads per fragment)
+
+***** CPM (counts per million) / TPM
+:PROPERTIES:
+:ID:       8C3481E5-B350-4D9D-A44C-DAB17FAEE1C6
+:END:
+
+  -   - see Wagner G.P., Kin K., and Lynch V.J. Measurement of mRNA abundance using RNA-seq data: RPKM measure is inconsistent among samples. Theory Biosci 131(4):281–285, 2012.=
+  - limma voom uses a logCPM 
+  - corrects for transcript length distribution of different sample pools  
+  - TPM (transcripts per million)- divides by sum of transcript-length-normalized reads
+    i.e. normalizes to transcripts as opposed to reads
+    useful if average transcript length differs b/w samples 
+
+***** TMM (trimmed mean of M values)
+:PROPERTIES:
+:ID:       544B0EAB-4594-404B-9C83-B951E2244CFE
+:END:
+
+-attempts to normalize this problem:
+[[file:work.org_imgs/20160419_132550_469_bk.png]]
+- corrects for less "sequencing real estate" due to high expression per tissue 
+
+
+**** Gene Set Enrichment
+:PROPERTIES:
+:ID:       87734999-3139-4343-A323-925416811B12
+:END:
+
+- https://www.reddit.com/r/bioinformatics/comments/66374x/gsea_vs_go_enrichment/
+
+***** [[http://www.bioconductor.org/packages/release/bioc/html/gage.html][GAGE]] (generally applicable gene-set enrichment for pathway analysis)
+:PROPERTIES:
+:ID:       441F7686-9969-4F8D-8092-C4429377214C
+:END:
+
+[[file:~/Box%20Sync/comp_bio/gsea_template/][Folder]]
+[[file:~/Box%20Sync/comp_bio/gsea_template/gage.pdf][Manual]]
+[[file:~/Box%20Sync/comp_bio/gsea_template/gsea_template.R][Rscript]]
+
+****** RNA-Seq Workflow Example
+:PROPERTIES:
+:ID:       B687F931-3A5E-4CD0-B2B7-30DF026E0AB9
+:END:
+
+[[file:~/Box%20Sync/comp_bio/gsea_template/][Folder]]
+[[file:~/Box%20Sync/comp_bio/gsea_template/RNA-seqWorkflow.pdf][pdf]]
+
+***** Commercial
+:PROPERTIES:
+:ID:       417416B5-0169-41CA-8FCE-4D6E440C7E3A
+:END:
+
+http://www.ingenuity.com/
+[[http://genome.ucsc.edu/cgi-bin/hgTables?command=start][create your own GTF]]
+[[http://bedops.readthedocs.io/en/latest/index.html][BEDOPS]]
+https://www.datacamp.com/
+
+**** Genotype-Phenotype Associations
+:PROPERTIES:
+:ID:       69F82D91-6DE6-4332-AD0A-7ADF25263858
+:END:
+
+- cite:Denny_2011
+- cite:Kho_2011
+
+
+**** Effector Data Mining
+:PROPERTIES:
+:ID:       2CA85A6B-7B1E-4A38-96AA-717847A59168
+:END:
+
+***** Chemical- NextBio, see Webster,15ref Kupershmidt,10
+:PROPERTIES:
+:ID:       DD97187A-47FF-49D2-87D3-9DDFC9E1D351
+:END:
+
+http://101.datascience.community/tag/octave/
+http://www.cbioportal.org/cgds_r.jsp
+https://precision.fda.gov/
+http://www.russpoldrack.org/?m=1
+https://www.biostars.org/u/3737/
+https://bioinformatics.ca/workshops/2014/informatics-rna-sequence-analysis-bc-2014
+[[https://www.bioconductor.org/help/course-materials/][Bioconductor courses and conferences]]
+[[https://www.ebi.ac.uk/training/online/course/embo-practical-course-analysis-high-throughput-seq/introduction-r-and-bioconductor][EMBO introduction to R and Biocinductor]]
+[[https://www.edx.org/course/introduction-bioconductor-annotation-harvardx-ph525-5x][edX Intro to bioconductor]]
+[[https://www.edx.org/course/high-dimensional-data-analysis-harvardx-ph525-4x][edX high-dimensional data analysis]]
+[[https://www.coursera.org/learn/bioconductor][coursera bioconductor for genomic data science]]
+http://bcb.dfci.harvard.edu/~aedin/courses/Bioconductor/
+
+https://www.bioconductor.org/packages/devel/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html
+
+**** Broad Calling variants in RNAseq
+:PROPERTIES:
+:ID:       DA64BC88-8BD6-40DF-9D80-5596BFA4D643
+:END:
+
+https://software.broadinstitute.org/gatk/documentation/article?id=3891
+**** variants
+:PROPERTIES:
+:CREATED:  [2020-06-22 Mon 12:27]
+:ID:       a5b408eb-77e2-4634-a5bb-950cefaafe18
+:END:
+***** fusions
+:PROPERTIES:
+:ID:       0ea6c74e-bcf8-44c2-b4c3-e725d930d4a3
+:END:
+  - cite:melsted2017  
+****** Gene Fusion Detection
+:PROPERTIES:
+:ID:       778C7C81-34E7-4BAE-94F9-5C33318BFDA5
+:END:
+
+- cite:latysheva2016
+- [[https://bioconductor.org/packages/release/bioc/vignettes/chimeraviz/inst/doc/chimeraviz-vignette.html#introduction][chimeraviz]]
+  - [[https://github.com/stianlagstad/chimeraviz][githu]]b
+  - [[https://github.com/stianlagstad/chimeraviz/issues/47][Request for support for importing other fusion calls #47]]
+  - [[https://github.com/stianlagstad/chimeraviz/blob/master/R/import_ericscript.R][import_ericscript.R]]
+  - [[https://github.com/stianlagstad/chimeraviz/blob/master/R/import_defuse.R][import defuse.R]]
+- Visualization tools for fusions
+  - [[https://www.biostars.org/p/63626/][biostars post discussing]]
+  - INSTALLED! [[file:~/Box%20Sync/org/org.org::svviz][svviz]] recommended by Griffith
+  - [[http://pairoscope.sourceforge.net/#Installation][pairoscope]]- hard to install outside of linux
+    - http://pairoscope.sourceforge.net/
+
+***** RNA-seq Variant Pipeline
+:PROPERTIES:
+:ID:       152655AC-9785-42FB-B3EE-58F55BF316E5
+:END:
+
+**** RNA-seq visualization
+:PROPERTIES:
+:ID:       b1351d51-3ac1-4193-b944-850c44a903fd
+:END:
+- [[id:DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF][visualization tools]]
+- examples
+  - [[https://www.cell.com/cell-reports/pdf/S2211-1247(20)30669-0.pdf][good seq analysis and visual example]]
+- volcano
+  - https://www.biostars.org/p/203876/
+- heatmaps
+  - http://compbio.ucsd.edu/making-heat-maps-r/
+  - https://www.rdocumentation.org/packages/gplots/versions/3.0.3/topics/heatmap.2 
+- mapped reads were visualized by SeqMonk[[file:org.org_imgs/20161220_180037_4849srR.png]]
+
+**** specialized applications
+:PROPERTIES:
+:ID:       cedbc52b-b1aa-4211-8c9a-0bd11a8286fe
+:END:
+  - extracellular
+    - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5426982/
+  - stranded
+    - https://www.ecseq.com/support/ngs/how-do-strand-specific-sequencing-protocols-work
+  - ffpe
+    - cite:kashofer2013 
+    - FFPE Pre-analytic variability
+      - cite:ahlfen2007rnaqual
+        - storage conditions
+        - cold ischemia time
+        - fixation
+          - type
+          - time
+        - sample thickness
+      - biospecimens.cancer.gov/researchnetwork 
+      - cite:unlockingQiagen
+      - https://www.ncbi.nlm.nih.gov/pubmed/25357115
+      - By effect
+        - Yield
+          - - prolonged fix reduces yield- Bresters D, Schipper ME, Reesink HW, Boeser-Nunnink BD, Cuypers HT. The duration of fixation influences the yield of HCV cDNA-PCR products from formalin-fixed, paraffin- embedded liver tissue. J Virol Methods 1994;48:267–72.
+          - cite:webster2015mining longer fixation times decrease RNA yields from paraffin-embedded tissues (herein 3 weeks in formalin resulted in half the RNA yield/sec- tion compared with 18 h) and increase RNA input needed during library preparation (see methods). This latter effect is likely due to ‘non-functional’ RNA (eg, adducts or damaged bases) that could be potentially mitigated by treatments like PreCR or other enzymatic and chemical methods. 
+        - At microarray expression
+          - cite:kashofer2013quality
+      - "Formalin fixation introduced major changes into microarray gene expression data and led to marked gene-to-gene variations in delta-ct values of qRT-PCR. We found that qRT-PCR efficiency and gene-to- gene variations were mainly attributed to differences in the efficiency of cDNA synthesis as the most sensitive step. These differences could not be reliably detected by quality assessment of total RNA isolated from formalin-fixed tissues by electrophoresis or spectrophotometry. "
+      - At sequencing
+    - cite:graw2015 
+    - Past expression tech
+      - goals were biomarker discovery and patient stratification
+      - cite:Zhao_2014 manifests its superiority in terms of the dynamic range, sampling depth, and has independence from pre-existing sequence information [1,2].
+      - cite:webster2015mining When compared with conventional DNA microarrays, RNA-seq enriches for many additional fragments as it is not restricted to predefined probes and has (in principle) no limitations to dynamic range (Li et al., 2014b; SEQC/MAQC-III Consortium, 2014). 
+      - - https://www.ncbi.nlm.nih.gov/pubmed/14695316
+      - - [[https://www.ncbi.nlm.nih.gov/pubmed/15509548][DASL]]
+      - https://www.ncbi.nlm.nih.gov/pubmed/21347257
+    - FFPE microarray and RT-PCR was useful
+      - AlloMap is a non-invasive gene expression-based blood test that is used to manage the clinical care of heart transplant recipients, providing a quantified score for the risk of rejection based on the measurement of expression of 20 genes, a subset of which are related to immune system activation and signalling15,16.
+      - - cite:penland2007rna
+      - - - https://www.ncbi.nlm.nih.gov/pubmed/11568892/
+      - Mittempergher, L., de Ronde, J.J., Nieuwland, M., Kerkhoven, R.M., Simon, I., Th Rutgers, E.J., Wessels, L.F., Van't Veer, L.J., 2011. Gene expression profiles from formalin fixed paraffin embedded breast cancer tissue are largely comparable to fresh fro- zen matched tissue. PLoS One 6, e17163.
+    - But this expression tech is inferior
+      - In other work14, systematic evalu- ation of RNA-seq-based and microarray-based classifiers found that RNA-seq outperformed arrays in characteriz- ing the transcriptome of cancer and performed similarly to arrays in clinical endpoint prediction.
+      - does not depend on genome annotation, or on predesigned species-specific or tran- script-specific probes, for transcript measurement.
+      - microarray limited application to clinic- lthough powerful, microarray-based assays can have limitations in some environments, such as those related to laboratory-to-laboratory variation in sample preparation that can affect reproducibility. Moreover, for some applications, microarray signal-to-noise ratios can affect the limit of detection. Interestingly, a number of additional cancer multi-gene profile tests are clinically available, such as OncoTypeDX (Genome Health)135 for breast cancer recurrence risk and Prolaris (Myriad)136 for prostate cancer aggressiveness. These tests are based on qRT-PCR technologies, rather than microarrays, largely owing to the belief that qRT-PCR is more reliable, reproducible, sensitive and accurate.
+      - " qRT-PCR is generally deemed the ‘gold standard’ method for measuring transcript levels, particularly in the clinical space; however, there are a number of limitations, including the fact that although it is a high sample throughput technology, relatively few markers or measurements can be made in a single assay. "
+      - rnaseq superior for
+        - snvs
+        - indels
+        - isoforms
+        - splice vars
+        - chimerics
+          - fusions
+      - semiquan
+      - no SNV discovery
+      - no fusion
+      - "RNA-seq provides much more detailed information on specific transcript expression patterns in clinico-genetic neuroblastoma subgroups than microarrays. " cite:zhang2015comparison
+  - small RNA sequencing
+    - sample processing
+      - circulating miRNA stability
+        - serum cite:gautam2016
+        - plasma  cite:glinge2017
+    - library preparation
+      - with low input, use same kit for reproducibility cite:yeri2018 
+      - cite:dard-dascot2018
+    - https://rnajournal.cshlp.org/content/18/6/1279.long
+    - qc
+      - https://www.agilent.com/en/product/automated-electrophoresis/bioanalyzer-systems/bioanalyzer-rna-kits-reagents/bioanalyzer-small-rna-analysis-228257#howitworks
+  - single cell
+    - https://www.biorxiv.org/content/biorxiv/early/2019/02/05/541433.full.pdf
+    - examples
+      - - see fig 3 & methods https://genome.cshlp.org/content/27/2/208.full.pdf
+    - https://www.nature.com/articles/s41587-020-0553-9
+    - 10x
+      - applications - https://pages.10xgenomics.com/nur-gen-research-area-literature.html?src=email&utm_medium=email&lss=nurture&utm_source=nurture&cnm=es-nurture-ra_g-general&utm_campaign=es-nurture-ra_g-general&utm_content=&utm_term=&useroffertype=marketing-literature&userresearcharea=ra_g&userregion=&userrecipient=customer&mktouserid=1265915&cid=&usercampaignid=
+    - https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0212031
+    - http://www.nature.com/nbt/journal/v34/n2/full/nbt.3445.html
+  - Clinical applications of RNA-seq
+    - cite:byron2016translating
+    - cite:Kalari_2014
+    - cite:Van_Keuren_Jensen_2014
+  - deconvolution
+    - tools
+      - ISOpure
+        - https://link.springer.com/article/10.1186/s12859-015-0597-x#Sec1
+    - cite:newman2015 
+  - time course
+    - cite:spies2017
+    - https://support.bioconductor.org/p/65676/#66860
+    - https://www.biostars.org/p/138988/
+    - https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#group-specific-condition-effects-individuals-nested-within-groups
+    - https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
+    - http://seqanswers.com/forums/showthread.php?t=64039
+    - https://www.sciencedirect.com/science/article/pii/S2001037015000392
+- [[*cell enumeration through bulk RNA-seq][cell enumeration through bulk RNA-seq]]
+- https://www.rna-seqblog.com/optimization-of-mirna-seq-data-preprocessing/
+- [[id:e4351ef3-6d41-4121-a2cc-c63d89f997ac][pathway analysis]]
+- [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
+- [[id:57E81A44-3233-479B-8264-2CD5F1904A60][Sequence variation and variant calling]]
+
+- [[*omics integration][omics integration]]
+***** Allele-specific Expression
+:PROPERTIES:
+:ID:       96C367A3-FEEB-4F6F-975A-A08A172FD277
+:END:
+
+
+***** RNA-fusion                                                    :biopipe:
+:PROPERTIES:
+:CREATED:  [2019-06-25 Tue 09:05]
+:ID:       96634f32-b19a-4390-8e50-e942abd35f90
+:END:
+:LOGBOOK:
+CLOCK: [2019-07-09 Tue 09:19]--[2019-07-09 Tue 09:25] =>  0:06
+CLOCK: [2019-07-02 Tue 08:20]--[2019-07-02 Tue 09:45] =>  1:25
+CLOCK: [2019-06-27 Thu 08:50]--[2019-06-27 Thu 09:31] =>  0:41
+CLOCK: [2019-06-27 Thu 08:17]--[2019-06-27 Thu 08:31] =>  0:14
+CLOCK: [2019-06-26 Wed 13:35]--[2019-06-26 Wed 13:59] =>  0:24
+:END:
+- [[https://github.com/jeszyman/rna-fusion][repository]]
+- [ ] index script
+- [ ] align script
+- reference
+  - https://www.nextflow.io/example4.html
+  - gsnap example- - http://www.cureffi.org/2013/11/18/an-mrna-seq-pipeline-using-gsnap-samtools-cufflinks-and-bedtools/
+  - https://github.com/genepattern/docker-tophat/blob/master/Dockerfile
+  - https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/Dockerfile
+
+********* NEXT INTEGRATE RNA aligners
+:PROPERTIES:
+:CREATED:  [2019-02-25 Mon 13:16]
+:ID:       951F10BC-E844-45C5-8CB4-4FA8756D9F85
+:END:
+
+- are combined rna-seq alignment methods just sum of runs? 
+- cite:zhang2016a
+- [-] install
+  - [ ] cite:wu2016 in cite:mathe2016
+  - [X] hisat2
+  - [X] star
+  - [X] tophat - but prefer don't use- "TopHat has entered a low maintenance, low support stage as it is now largely superseded by HISAT2" https://ccb.jhu.edu/software/tophat/index.shtml
+- [-] create indexes
+  - [-] star
+  - [ ] hisat2 https://ccb.jhu.edu/software/hisat2/manual.shtml see hista2-build
+  - 
+
+******** NEXT HCC1395 straight align and integrate and compare to published
+:PROPERTIES:
+:CREATED:  [2019-03-13 Wed 10:11]
+:ID:       58F7BED2-DED1-4911-9E8C-104E12126A73
+:END:
+:LOGBOOK:
+CLOCK: [2019-03-14 Thu 07:49]--[2019-03-14 Thu 08:45] =>  0:56
+CLOCK: [2019-03-13 Wed 18:18]--[2019-03-13 Wed 19:54] =>  1:36
+CLOCK: [2019-03-13 Wed 11:30]--[2019-03-13 Wed 12:00] =>  0:30
+CLOCK: [2019-03-13 Wed 11:00]--[2019-03-13 Wed 11:01] =>  0:01
+CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
+:END:
+- log
+  - from bam to fastq
+    - by sample
+      - tumor 
+        - ./sambamba-0.6.8-linux-static sort -n -o /gscmnt/gc2555/spencer/jeff/data/HCC1395-anmesort.bam /gscmnt/gc2555/spencer/jeff/data/gerald_C1TD1ACXX_8_ACAGTG.bam
+        - samtools fastq -1 /gscmnt/gc2555/spencer/jeff/data/HCC1395_1.fastq -2 /gscmnt/gc2555/spencer/jeff/data/HCC1395_2.fastq /gscmnt/gc2555/spencer/jeff/data/HCC1395-anmesort.bam
+      - moved all this to ~data/HCC1395/
+      - normal
+        - (integrate image, 64gb) sambamba sort -n -o /gscmnt/gc2555/spencer/jeff/data/HCC1395/normal-namesort.bam /gscmnt/gc2555/spencer/jeff/data/HCC1395/gerald_C2DBEACXX_3.bam
+        - samtools fastq -1 /gscmnt/gc2555/spencer/jeff/data/HCC1395/HCC1395-bl_1.fastq -2 /gscmnt/gc2555/spencer/jeff/data/HCC1395/HCC1395-bl_2.fastq /gscmnt/gc2555/spencer/jeff/data/HCC1395/normal.namesort.bam
+        - 
+  - alignment
+    - bsub -Is -q docker-interactive -R "select[ncpus >=4 && mem>64000] span[hosts=1] rusage[mem=64000]" -a 'docker(jeszyman/startest)' /bin/bash
+      - STAR --runThreadN 4 --genomeDir /gscmnt/gc2555/spencer/jeff/data/reference/star-index/ --readFilesIn /gscmnt/gc2555/spencer/jeff/data/HCC1395_1.fastq /gscmnt/gc2555/spencer/jeff/data/HCC1395_2.fastq --outSAMunmapped Within
+      - STAR --runThreadN 4 --genomeDir /gscmnt/gc2555/spencer/jeff/data/reference/star-index/ --readFilesIn /gscmnt/gc2555/spencer/jeff/data/HCC1395/HCC1395-bl_1.fastq /gscmnt/gc2555/spencer/jeff/data/HCC1395/HCC1395-bl_2.fastq --outSAMunmapped Within
+      - STAR --runThreadN 4 --genomeDir /gscmnt/gc2555/spencer/jeff/data/reference/star-index/ --readFilesIn /gscmnt/gc2555/spencer/jeff/data/HCC1395/HCC1395-all_1.fastq /gscmnt/gc2555/spencer/jeff/data/HCC1395/HCC1395-all_2.fastq --outSAMunmapped Within
+  - integrate
+    - bsub -q research-hpc -R "select[ncpus >=4 && mem>64000] span[hosts=1] rusage[mem=64000]" -a 'docker(jeszyman/integrate)' /bin/bash
+    - prep each star output:
+      - 
+      - sambamba view -S -o Aligned.out.bam Aligned.out.sam 
+      - sambamba sort Aligned.out.bam
+      - sambamba index Aligned.out.sorted.bam
+    - Integrate fusion /gscmnt/gc2555/spencer/jeff/data/reference/Homo_sapiens.GRCh38.dna.primary_assembly.fa /gscmnt/gc2555/spencer/jeff/data/reference/annot-hg38-refeseq.txt /gscmnt/gc2555/spencer/jeff/data/reference/Integrate/bwts /gscmnt/gc2555/spencer/jeff/dev/starhcc/Aligned.out.sorted.bam /gscmnt/gc2555/spencer/jeff/dev/starhcc/Aligned.out.sorted.bam
+      - 
+
+***** co-expression 
+:PROPERTIES:
+:ID:       91d46e60-eec3-48c7-97f1-b53eb1559b3f
+:END:
+- cite:rahmatallah2016
+- [[id:9b222d1c-ab61-450c-8b77-a98ec3213867][gage]]
+- https://bioconductor.org/packages/release/bioc/vignettes/pathview/inst/doc/pathview.pdf
+- gscna
+  - cite:rahmatallah2014
+- gene set enrichment
+  - https://david.ncifcrf.gov/gene2gene.jsp
+  - https://genviz.org/module-04-expression/0004/03/01/pathwayAnalysis/
+  - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
+  - http://software.broadinstitute.org/gsea/msigdb/collections.jsp
+  - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
+  - pathway enrichment
+    - - https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
+    - - https://www.nature.com/articles/s41596-018-0103-9.pdf?proof=true19
+    - https://bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
+- [[id:948289d8-3a77-471a-b068-0507285e0bac][wgcna]]
+  - wgcna
+    - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-02-networkConstr-man.pdf
+    - cite:vanDam2018 
+      #+begin_src bash 
+    mkdir -p /tmp/wgnca-example
+    cd /tmp/wgnca-example/
+    wget https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-Data.zip
+    unzip FemaleLiver-Data.zip
+    #+end_src
+      #+begin_src R 
+  setwd("/tmp/wgnca-example")
+  source("~/repos/basecamp/bin/setup.R")
+  #
+  # ez install of wgcna and dependencies for R 3.6
+  if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+  BiocManager::install("fastLiquidAssociation")
+  #
+  library(WGCNA)
+  options(stringsAsFactors=F)
+  femData=read.csv("./LiverFemale3600.csv")
+  datExpr0=as.data.frame(t(femData[,-c(1:8)]))
+  head(datExpr0)
+  gsg=goodSamplesGenes(datExpr0, verbose=3)
+  gsg$allOK
+  if (!gsg$allOK)
+  {
+  # Optionally, print the gene and sample names that were removed:
+  if (sum(!gsg$goodGenes)>0)
+  printFlush(paste("Removing genes:", paste(names(datExpr0)[!gsg$goodGenes], collapse = ", ")));
+  if (sum(!gsg$goodSamples)>0)
+  printFlush(paste("Removing samples:", paste(rownames(datExpr0)[!gsg$goodSamples], collapse = ", ")));
+  # Remove the offending genes and samples from the data:
+  datExpr0 = datExpr0[gsg$goodSamples, gsg$goodGenes]
+  }
+  #
+  sampleTree=hclust(dist(datExpr0),method="average")
+  plot(sampleTree)
+  #
+  # Plot a line to show the cut
+  abline(h = 15, col = "red");
+  # Determine cluster under the line
+  clust = cutreeStatic(sampleTree, cutHeight = 15, minSize = 10)
+  table(clust)
+  # clust 1 contains the samples we want to keep.
+  keepSamples = (clust==1)
+  datExpr = datExpr0[keepSamples, ]
+  nGenes = ncol(datExpr)
+  nSamples = nrow(datExpr)
+  #
+  traitData = read.csv("ClinicalTraits.csv")
+  dim(traitData)
+  names(traitData)
+  # remove columns that hold information we do not need.
+  allTraits = traitData[, -c(31, 16)]
+  allTraits = allTraits[, c(2, 11:36) ]
+  dim(allTraits)
+  names(allTraits)
+  # Form a data frame analogous to expression data that will hold the clinical traits.
+  femaleSamples = rownames(datExpr)
+  traitRows = match(femaleSamples, allTraits$Mice)
+  datTraits = allTraits[traitRows, -1]
+  rownames(datTraits) = allTraits[traitRows, 1]
+  collectGarbage()
+  #
+  save(datExpr, datTraits, file = "FemaleLiver-01-dataInput.RData")
+  #
+  enableWGCNAThreads()
+  lnames=load(file="FemaleLiver-01-dataInput.RData")
+  #
+  lnames
+    #+end_src
+- [[id:D68E1182-1F7B-4160-A6DD-BD2635F8085F][GSEA]]
 **** alignment
 :PROPERTIES:
 :ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
@@ -2274,77 +2797,7 @@ https://www.datacamp.com/
 ***** Chemical- NextBio, see Webster,15ref Kupershmidt,10
 :PROPERTIES:
 :ID:       DD97187A-47FF-49D2-87D3-9DDFC9E1D351
-:END:
-
-http://101.datascience.community/tag/octave/
-http://www.cbioportal.org/cgds_r.jsp
-https://precision.fda.gov/
-http://www.russpoldrack.org/?m=1
-https://www.biostars.org/u/3737/
-https://bioinformatics.ca/workshops/2014/informatics-rna-sequence-analysis-bc-2014
-[[https://www.bioconductor.org/help/course-materials/][Bioconductor courses and conferences]]
-[[https://www.ebi.ac.uk/training/online/course/embo-practical-course-analysis-high-throughput-seq/introduction-r-and-bioconductor][EMBO introduction to R and Biocinductor]]
-[[https://www.edx.org/course/introduction-bioconductor-annotation-harvardx-ph525-5x][edX Intro to bioconductor]]
-[[https://www.edx.org/course/high-dimensional-data-analysis-harvardx-ph525-4x][edX high-dimensional data analysis]]
-[[https://www.coursera.org/learn/bioconductor][coursera bioconductor for genomic data science]]
-http://bcb.dfci.harvard.edu/~aedin/courses/Bioconductor/
-
-https://www.bioconductor.org/packages/devel/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html
-
-**** Broad Calling variants in RNAseq
-:PROPERTIES:
-:ID:       DA64BC88-8BD6-40DF-9D80-5596BFA4D643
-:END:
-
-https://software.broadinstitute.org/gatk/documentation/article?id=3891
-**** variants
-:PROPERTIES:
-:CREATED:  [2020-06-22 Mon 12:27]
-:ID:       a5b408eb-77e2-4634-a5bb-950cefaafe18
-:END:
-***** fusions
-:PROPERTIES:
-:ID:       0ea6c74e-bcf8-44c2-b4c3-e725d930d4a3
-:END:
-  - cite:melsted2017  
-****** Gene Fusion Detection
-:PROPERTIES:
-:ID:       778C7C81-34E7-4BAE-94F9-5C33318BFDA5
-:END:
-
-- cite:latysheva2016
-- [[https://bioconductor.org/packages/release/bioc/vignettes/chimeraviz/inst/doc/chimeraviz-vignette.html#introduction][chimeraviz]]
-  - [[https://github.com/stianlagstad/chimeraviz][githu]]b
-  - [[https://github.com/stianlagstad/chimeraviz/issues/47][Request for support for importing other fusion calls #47]]
-  - [[https://github.com/stianlagstad/chimeraviz/blob/master/R/import_ericscript.R][import_ericscript.R]]
-  - [[https://github.com/stianlagstad/chimeraviz/blob/master/R/import_defuse.R][import defuse.R]]
-- Visualization tools for fusions
-  - [[https://www.biostars.org/p/63626/][biostars post discussing]]
-  - INSTALLED! [[file:~/Box%20Sync/org/org.org::svviz][svviz]] recommended by Griffith
-  - [[http://pairoscope.sourceforge.net/#Installation][pairoscope]]- hard to install outside of linux
-    - http://pairoscope.sourceforge.net/
-
-***** RNA-seq Variant Pipeline
-:PROPERTIES:
-:ID:       152655AC-9785-42FB-B3EE-58F55BF316E5
-:END:
-
-**** RNA-seq visualization
-:PROPERTIES:
-:ID:       b1351d51-3ac1-4193-b944-850c44a903fd
-:END:
-- [[id:DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF][visualization tools]]
-- examples
-  - [[https://www.cell.com/cell-reports/pdf/S2211-1247(20)30669-0.pdf][good seq analysis and visual example]]
-- volcano
-  - https://www.biostars.org/p/203876/
-- heatmaps
-  - http://compbio.ucsd.edu/making-heat-maps-r/
-  - https://www.rdocumentation.org/packages/gplots/versions/3.0.3/topics/heatmap.2 
-- mapped reads were visualized by SeqMonk[[file:org.org_imgs/20161220_180037_4849srR.png]]
-**** specialized applications
-:PROPERTIES:
-:ID:       cedbc52b-b1aa-4211-8c9a-0bd11a8286fe
+>>>>>>> e60be068dcbc8c18477fc28e00ee3b742dcf0110
 :END:
   - extracellular
     - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5426982/
@@ -2443,6 +2896,7 @@ https://software.broadinstitute.org/gatk/documentation/article?id=3891
 - [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
 - [[id:57E81A44-3233-479B-8264-2CD5F1904A60][Sequence variation and variant calling]]
 
+
 - [[*omics integration][omics integration]]
 ***** Allele-specific Expression
 :PROPERTIES:
@@ -2461,6 +2915,42 @@ CLOCK: [2019-07-02 Tue 08:20]--[2019-07-02 Tue 09:45] =>  1:25
 CLOCK: [2019-06-27 Thu 08:50]--[2019-06-27 Thu 09:31] =>  0:41
 CLOCK: [2019-06-27 Thu 08:17]--[2019-06-27 Thu 08:31] =>  0:14
 CLOCK: [2019-06-26 Wed 13:35]--[2019-06-26 Wed 13:59] =>  0:24
+
+http://101.datascience.community/tag/octave/
+http://www.cbioportal.org/cgds_r.jsp
+https://precision.fda.gov/
+http://www.russpoldrack.org/?m=1
+https://www.biostars.org/u/3737/
+https://bioinformatics.ca/workshops/2014/informatics-rna-sequence-analysis-bc-2014
+[[https://www.bioconductor.org/help/course-materials/][Bioconductor courses and conferences]]
+[[https://www.ebi.ac.uk/training/online/course/embo-practical-course-analysis-high-throughput-seq/introduction-r-and-bioconductor][EMBO introduction to R and Biocinductor]]
+[[https://www.edx.org/course/introduction-bioconductor-annotation-harvardx-ph525-5x][edX Intro to bioconductor]]
+[[https://www.edx.org/course/high-dimensional-data-analysis-harvardx-ph525-4x][edX high-dimensional data analysis]]
+[[https://www.coursera.org/learn/bioconductor][coursera bioconductor for genomic data science]]
+http://bcb.dfci.harvard.edu/~aedin/courses/Bioconductor/
+
+https://www.bioconductor.org/packages/devel/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html
+
+**** Broad Calling variants in RNAseq
+:PROPERTIES:
+:ID:       DA64BC88-8BD6-40DF-9D80-5596BFA4D643
+:END:
+
+https://software.broadinstitute.org/gatk/documentation/article?id=3891
+**** variants
+:PROPERTIES:
+:CREATED:  [2020-06-22 Mon 12:27]
+:ID:       a5b408eb-77e2-4634-a5bb-950cefaafe18
+:END:
+***** fusions
+:PROPERTIES:
+:ID:       0ea6c74e-bcf8-44c2-b4c3-e725d930d4a3
+:END:
+  - cite:melsted2017  
+****** Gene Fusion Detection
+:PROPERTIES:
+:ID:       778C7C81-34E7-4BAE-94F9-5C33318BFDA5
+>>>>>>> e60be068dcbc8c18477fc28e00ee3b742dcf0110
 :END:
 - [[https://github.com/jeszyman/rna-fusion][repository]]
 - [ ] index script
@@ -2470,6 +2960,7 @@ CLOCK: [2019-06-26 Wed 13:35]--[2019-06-26 Wed 13:59] =>  0:24
   - gsnap example- - http://www.cureffi.org/2013/11/18/an-mrna-seq-pipeline-using-gsnap-samtools-cufflinks-and-bedtools/
   - https://github.com/genepattern/docker-tophat/blob/master/Dockerfile
   - https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/Dockerfile
+
 
 ********* NEXT INTEGRATE RNA aligners
 :PROPERTIES:
@@ -2662,6 +3153,67 @@ see Love,16 section "Rich visualization and reporting of results"
 :PROPERTIES:
 :ID:       7B9AD35F-1511-4CB2-BB5A-0989EFEAADF3
 :END:
+=======
+- cite:latysheva2016
+- [[https://bioconductor.org/packages/release/bioc/vignettes/chimeraviz/inst/doc/chimeraviz-vignette.html#introduction][chimeraviz]]
+  - [[https://github.com/stianlagstad/chimeraviz][githu]]b
+  - [[https://github.com/stianlagstad/chimeraviz/issues/47][Request for support for importing other fusion calls #47]]
+  - [[https://github.com/stianlagstad/chimeraviz/blob/master/R/import_ericscript.R][import_ericscript.R]]
+  - [[https://github.com/stianlagstad/chimeraviz/blob/master/R/import_defuse.R][import defuse.R]]
+- Visualization tools for fusions
+  - [[https://www.biostars.org/p/63626/][biostars post discussing]]
+  - INSTALLED! [[file:~/Box%20Sync/org/org.org::svviz][svviz]] recommended by Griffith
+  - [[http://pairoscope.sourceforge.net/#Installation][pairoscope]]- hard to install outside of linux
+    - http://pairoscope.sourceforge.net/
+
+***** RNA-seq Variant Pipeline
+:PROPERTIES:
+:ID:       152655AC-9785-42FB-B3EE-58F55BF316E5
+:END:
+
+**** examples and applications
+:PROPERTIES:
+:ID:       f1995b23-f555-49bd-bea5-8af06a6b8f17
+:END:
+- [[https://www.nature.com/subjects/rna-sequencing/nmeth][Nature Methods RNA sequencing]]
+- my RNA-seq work
+  - [[file:~/org/career.org::*high-grade head and neck characterization][high-grade head and neck characterization]]
+  - [[id:e7a8362d-f4cf-45ec-a3f8-91b0ffbdc500][ffpe rna-seq project]]
+  - [[file:~/data/career/pathology/molecular-pathology/ffpe-rna/ffpe-rnaseq.org]]
+***** published pipelines
+:PROPERTIES:
+:ID:       48478dc6-b15c-42aa-86b8-c5cd78c9731f
+:END:
+- [[https://webshare.bioinf.unc.edu/public/mRNAseq_TCGA/UNC_mRNAseq_summary.pdf][TCGA RSEM]]
+  - https://support.bioconductor.org/p/131066/
+  - http://zyxue.github.io/2017/06/02/understanding-TCGA-mRNA-Level3-analysis-results-files-from-firebrose.html
+  - https://bsbludwig.com/post/94066296740/what-do-tcgas-rnaseq-files-actually-show
+  - http://seqanswers.com/forums/showthread.php?t=42911
+**** tool comparisons
+:PROPERTIES:
+:ID:       a4e7fa3b-2c17-46ad-b528-0172eee45e23
+:END:
+- cite:sahraeian2017
+**** reference
+:PROPERTIES:
+:ID:       70491293-d832-4947-b1bd-a0f4ae066c17
+:END:
+[[id:386d899a-9208-4d5c-93d8-3750b22d9748][RNA methods]]
+**** Ideas
+:PROPERTIES:
+:ID:       B5E9166C-CB80-4578-BD90-1E694B46F192
+:END:
+
+[[http://bioinf.wehi.edu.au/marray/jsm2005/lab4/lab4.html][A limma workflow to try]]
+[[http://combine-australia.github.io/RNAseq-R/06-rnaseq-day1.html][another workflow example]]
+
+see Love,16 section "Rich visualization and reporting of results"
+
+***** Pipeline Comparisons
+:PROPERTIES:
+:ID:       7B9AD35F-1511-4CB2-BB5A-0989EFEAADF3
+:END:
+>>>>>>> e60be068dcbc8c18477fc28e00ee3b742dcf0110
 
 [[file:~/Box%20Sync/library/Fonseca,14%20RNA%20seq%20gene%20profiling%20a%20systematic%20empirical%20comparison.PDF][Fonseca,14 RNA seq gene profiling a systematic empirical comparison]]
 [[file:~/Box%20Sync/library/Sigurgeirsson,14%20Analysis%20of%20stranded%20information%20using%20an%20automated%20procedure%20for%20strand%20specific%20RNA%20sequencing.pdf][Sigurgeirsson,14 Analysis of stranded information using an automated procedure for strand specific RNA sequencing]]
