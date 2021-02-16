@@ -5790,6 +5790,8 @@ https://www.pnas.org/content/115/4/E743.long
 :PROPERTIES:
 :ID:       846943FC-BA4B-4658-9B1E-85FBA536D9EE
 :END:
+*** limma
+https://www.coursera.org/lecture/bioconductor/limma-aoNwW
 *** limma voom
 :PROPERTIES:
 :ID:       F9684168-A438-4F5E-81D6-D645B52B4074
