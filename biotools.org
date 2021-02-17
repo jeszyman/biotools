@@ -554,10 +554,12 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
 :END:
+- [[file:~/repos/biotools/Dockerfile]]
 - build biotools docker container
   #+begin_src bash :tangle no
 cd ~/repos/biotools/
 docker build . --file Dockerfile --tag jeszyman/biotools
+docker push jeszyman/biotools
 #+end_src
 *** setup common references
 :PROPERTIES:
@@ -771,7 +773,70 @@ also demultiplexes
 
 
 
-**** Raw sequence QC and processing
+**** whole-genome sequencing
+:PROPERTIES:
+:ID:       ccab4617-0399-4ba3-828e-b5fbbb972ba1
+:END:
+- duplication rate as a measure of lib complexity
+**** testing, modeling, and read simulation
+:PROPERTIES:
+:ID:       f44b9dce-d7fa-4b6a-9949-49ff3c02547c
+:END:
+- [[https://www.reddit.com/r/bioinformatics/comments/c313uk/what_are_some_common_tasks_that_i_should_brush_up/][reddit: What are some common tasks that I should brush up on, that pertain to NGS?]]
+
+- read simulation 
+  - RNA-seq reads https://rdrr.io/bioc/polyester/
+  - http://bioinform.github.io/varsim/
+  - https://omictools.com/data-simulation3-category?sortby=recency
+  - simulate reads
+    - https://github.com/lh3/wgsim
+- downsample
+  - fastq
+    - https://www.biostars.org/p/6544/
+  - bam
+    - subsample function for reads instead of fraction
+# #https://www.biostars.org/p/76791/
+# function SubSample {
+# FACTOR=$(samtools idxstats $1 | cut -f3 | awk -v COUNT=$2 'BEGIN {total=0} {total += $1} END {print COUNT/total}')
+# }
+# SubSample $localdata/bams/lib080.dedup.bam
+# if [[ $FACTOR > 1 ]]
+#   then 
+#   echo '[ERROR]: Requested number of reads exceeds total read count in' $1 '-- exiting' && exit 1
+# fi
+
+# sambamba view -s $FACTOR -t 2 -f bam -l 5 $1
+
+# }
+
+# export -f SubSample
+
+# ls *.bam | parallel "SubSample {} 50000000 > {.}_subsampled.bam"
+
+    - https://bioinformatics.stackexchange.com/questions/402/how-can-i-downsample-a-bam-file-while-keeping-both-reads-in-pairs
+    - (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
+    - w/ sambamba # bam_sample(){
+#     base=`basename -s .bam $1`
+#     sambamba view -f sam -t 30 $1 | shuf -n $2 > $3/${base}_${2}_sample
+# }
+
+***** modeling
+:PROPERTIES:
+:ID:       00983e26-ec16-4f68-be0d-2f59eb31def4
+:END:
+- http://www.nytimes.com/2012/07/21/science/in-a-first-an-entire-organism-is-simulated-by-software.html?_r=2
+- https://www.ebi.ac.uk/biomodels-main/
+- https://precision.fda.gov/challenges/
+- Synthetic biology- cite:caschera2014
+***** Generating Simulated Reads
+:PROPERTIES:
+:ID:       8877C684-C217-4E7C-8E19-3D972A4015B2
+:END:
+
+Generating Simulated Reads
+First, we need a small set of sample read data. A number of tools, including ArtificialFastqGenerator, and SimSeq, will generate artificial or simulated sequence data for you. For this tutorial, I chose to use the wgsim tool (created by Heng Li, also the creator of SAMtools).
+
+*** Raw sequence QC and processing
 :PROPERTIES:
 :ID:       1EE731A3-83DD-46AF-B988-2311307C335F
 :CREATED:  [2020-10-14 Wed 08:47]
@@ -792,6 +857,21 @@ CLOCK: [2019-06-03 Mon 18:40]--[2019-06-03 Mon 20:30] =>  1:22
 CLOCK: [2019-06-04 Tue 12:39]--[2019-06-04 Tue 13:12] =>  0:33
 CLOCK: [2020-10-13 Tue 13:38]--[2020-10-13 Tue 14:00] =>  0:22
 :END:
+161. Lo,C.-C. and Chain,P.S.G. (2014) Rapid evaluation and quality
+control of next generation sequencing data with FaQCs. BMC
+Bioinformatics, 15, doi:10.1186/s12859-014-0366-2.
+
+
+. Chen,C., Khaleel,S.S., Huang,H. and Wu,C.H. (2014) Software for
+pre-processing Illumina next-generation sequencing short read
+sequences. Source Code Biol. Med., 9, doi:10.1186/1751-0473-9-8.
+
+
+165. Del Fabbro,C., Scalabrin,S., Morgante,M. and Giorgi,F.M. (2013)
+An extensive evaluation of read trimming effects on Illumina NGS
+data analysis. PLoS One, 8, e85024.
+
+
 - raw read trimming and filtering
   - https://www.biostars.org/p/368420/
   - adapter
@@ -895,69 +975,43 @@ CLOCK: [2020-10-13 Tue 13:38]--[2020-10-13 Tue 14:00] =>  0:22
     - script comment design
   - https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
 
-**** whole-genome sequencing
+*** Nucleic acid sequence alignment
 :PROPERTIES:
-:ID:       ccab4617-0399-4ba3-828e-b5fbbb972ba1
-:END:
-- duplication rate as a measure of lib complexity
-**** testing, modeling, and read simulation
-:PROPERTIES:
-:ID:       f44b9dce-d7fa-4b6a-9949-49ff3c02547c
-:END:
-- [[https://www.reddit.com/r/bioinformatics/comments/c313uk/what_are_some_common_tasks_that_i_should_brush_up/][reddit: What are some common tasks that I should brush up on, that pertain to NGS?]]
-
-- read simulation 
-  - RNA-seq reads https://rdrr.io/bioc/polyester/
-  - http://bioinform.github.io/varsim/
-  - https://omictools.com/data-simulation3-category?sortby=recency
-  - simulate reads
-    - https://github.com/lh3/wgsim
-- downsample
-  - fastq
-    - https://www.biostars.org/p/6544/
-  - bam
-    - subsample function for reads instead of fraction
-# #https://www.biostars.org/p/76791/
-# function SubSample {
-# FACTOR=$(samtools idxstats $1 | cut -f3 | awk -v COUNT=$2 'BEGIN {total=0} {total += $1} END {print COUNT/total}')
-# }
-# SubSample $localdata/bams/lib080.dedup.bam
-# if [[ $FACTOR > 1 ]]
-#   then 
-#   echo '[ERROR]: Requested number of reads exceeds total read count in' $1 '-- exiting' && exit 1
-# fi
-
-# sambamba view -s $FACTOR -t 2 -f bam -l 5 $1
-
-# }
-
-# export -f SubSample
-
-# ls *.bam | parallel "SubSample {} 50000000 > {.}_subsampled.bam"
-
-    - https://bioinformatics.stackexchange.com/questions/402/how-can-i-downsample-a-bam-file-while-keeping-both-reads-in-pairs
-    - (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
-    - w/ sambamba # bam_sample(){
-#     base=`basename -s .bam $1`
-#     sambamba view -f sam -t 30 $1 | shuf -n $2 > $3/${base}_${2}_sample
-# }
-
-***** modeling
-:PROPERTIES:
-:ID:       00983e26-ec16-4f68-be0d-2f59eb31def4
-:END:
-- http://www.nytimes.com/2012/07/21/science/in-a-first-an-entire-organism-is-simulated-by-software.html?_r=2
-- https://www.ebi.ac.uk/biomodels-main/
-- https://precision.fda.gov/challenges/
-- Synthetic biology- cite:caschera2014
-***** Generating Simulated Reads
-:PROPERTIES:
-:ID:       8877C684-C217-4E7C-8E19-3D972A4015B2
+:ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
 :END:
 
-Generating Simulated Reads
-First, we need a small set of sample read data. A number of tools, including ArtificialFastqGenerator, and SimSeq, will generate artificial or simulated sequence data for you. For this tutorial, I chose to use the wgsim tool (created by Heng Li, also the creator of SAMtools).
+73. Li,H. and Homer,N. (2010) A survey of sequence alignment
+algorithms for next-generation sequencing. Brief. Bioinform., 11,
+473–483.
+174. Bao,S., Jiang,R., Kwan,W., Wang,B., Ma,X. and Song,Y.-Q. (2011)
+Evaluation of next-generation sequencing software in mapping and
+assembly. J. Hum. Genet., 56, 406–414.
 
+- hash table like BLAST or suffic/prefix like Burrows-Wheeler Transform
+- https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
+- prerequisites
+  - adaptor identification and trimming
+- pseudoaligner
+  - kallisto
+  - Salmon
+- Aligners
+  - TopHat2
+  - Specialized aligners
+    - Fusions
+      - TopHat Fusion
+        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html 
+      - STAR for chimeric reads / STAR-Fusion
+        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
+        - From cite:star_2.5_dobin Chapter 5
+        - From cite:dobin2015mapping Alternate Protocol 6
+          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
+        - additional outputs are
+          - Chimeric.out.sam
+          - Chimeric.out.junction- a STAR-specific format
+    - To transcriptome
+      - 
+  - [[*STAR][STAR]]
+- HISAT2
 *** Sequence variation and variant calling
 :PROPERTIES:
 :ID:       57E81A44-3233-479B-8264-2CD5F1904A60
@@ -2186,38 +2240,46 @@ Important options
 counting is computationally intensive- script HTseq and
 summarizeOverlaps on the cluster 
 variabilize RNA seq workflow- make into function 
-***** Alignment
+***** [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][LINK TO Nucleic acid sequence alignment]]
+***** Read annotation
 :PROPERTIES:
-:ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
+:ID:       8e435b88-6895-4e75-a728-cfdaa272bddb
 :END:
-- https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
-- prerequisites
-  - adaptor identification and trimming
-- pseudoaligner
-  - kallisto
-  - Salmon
-- Aligners
-  - TopHat2
-  - Specialized aligners
-    - Fusions
-      - TopHat Fusion
-        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html 
-      - STAR for chimeric reads / STAR-Fusion
-        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
-        - From cite:star_2.5_dobin Chapter 5
-        - From cite:dobin2015mapping Alternate Protocol 6
-          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
-        - additional outputs are
-          - Chimeric.out.sam
-          - Chimeric.out.junction- a STAR-specific format
-    - To transcriptome
-      - 
-  - [[*STAR][STAR]]
-- HISAT2
+https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-015-1308-8
+- https://github.com/griffithlab/rnaseq_tutorial/wiki/Annotation
 ***** Quantification and normalization
 :PROPERTIES:
 :ID:       853dd34c-27be-4be8-9794-19f04a1e22b0
 :END:
+
+by spike-in  Jiang,L., Schlesinger,F., Davis,C.A., Zhang,Y., Li,R., Salit,M., Gingeras,T.R. and Oliver,B. (2011) Synthetic spike-in standards for RNA-seq experiments. Genome Res., 21, 1543–1551.
+
+- choosing a strategy- Zyprych-Walczak,J., Szabelska,A., Handschuh,L., Górczak,K., Klamecka,K., Figlerowicz,M. and Siatkowski,I. (2015) The impactof normalization methods on RNA-Seq data analysis. Biomed Res. Int., 2015, doi:10.1155/2015/621690.
+- what differences are controlled?
+  - library size
+  - batch effect
+  - gene length
+  - GC content
+- methods
+  - upper quartile- remove zero counts, scale based on 75th quartile of remaining reads Bullard,J.H., Purdom,E., Hansen,K.D. and Dudoit,S. (2010) Evaluation of statistical methods for normalization and differential expression in mRNA-Seq experiments. BMC Bioinformatics, 11, doi:10.1186/1471-2105-11-94.
+  - quantile- read distribution assumed identical, counts adjusted by median of each quantile across all samples
+  - TMM
+  - pseudoalignment
+    - kallisto, used with sleuth for DE
+      - https://www.nature.com/articles/nbt.3519
+      - https://pachterlab.github.io/sleuth/about
+  - by spike-in  Jiang,L., Schlesinger,F., Davis,C.A., Zhang,Y., Li,R., Salit,M., Gingeras,T.R. and Oliver,B. (2011) Synthetic spike-in standards for RNA-seq experiments. Genome Res., 21, 1543–1551.
+  - count-based
+    - analysis only at the gene level
+      - cite:pachter2015
+    - edgeR 
+  - TPM
+  - FPKM
+  - https://europepmc.org/article/PMC/6058388
+  - abundance 
+    - http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#introduction
+  - cite:pachter2015 
+- Bullard,J.H., Purdom,E., Hansen,K.D. and Dudoit,S. (2010) Evaluation of statistical methods for normalization and differential expression in mRNA-Seq experiments. BMC Bioinformatics, 11, doi:10.1186/1471-2105-11-94.
 - cite:peixoto2015
 - https://www.the-scientist.com/news-opinion/technical-bias-widespread-in-rna-seq-datasets-66766?utm_campaign=TS_DAILY%20NEWSLETTER_2019&utm_source=hs_email&utm_medium=email&utm_content=79783848&_hsenc=p2ANqtz-_TvsXNNQSHgNWR9yE8Q6vZP04TRSx3T-W0rLk0NLucSkrSI0wQ0GDQ2L1Vs_Jf1x1_21ou8yVG1ur9nXtXbBYl91OsUg&_hsmi=79783848
 - normalization to control for systemic error / bias
@@ -2225,23 +2287,6 @@ variabilize RNA seq workflow- make into function
 - feature counting
   - HTSeq
   - featureCounts 
-- methods
-  - pseudoalignment
-    - kallisto, used with sleuth for DE
-      - https://www.nature.com/articles/nbt.3519
-      - https://pachterlab.github.io/sleuth/about
-    - 
-  - count-based
-    - analysis only at the gene level
-      - cite:pachter2015
-    - edgeR 
-  - TMM
-  - TPM
-  - FPKM
-  - https://europepmc.org/article/PMC/6058388
-  - abundance 
-    - http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#introduction
-  - cite:pachter2015 
 - https://www.slideshare.net/mobile/jakonix/part-1-of-rnaseq-for-de-defining-the-goal
 - https://www.biostars.org/p/404211/#:~:text=What%20is%20the%20difference%20between,as%20fragment%20length%20distribution%20etc.
 - https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html
@@ -2383,13 +2428,28 @@ R/FPKM and C/TPM are "local" to the sample while TMM must be recalculated with d
 [[file:work.org_imgs/20160419_132550_469_bk.png]]
 - corrects for less "sequencing real estate" due to high expression per tissue 
 
-***** Read annotation
-:PROPERTIES:
-:ID:       8e435b88-6895-4e75-a728-cfdaa272bddb
-:END:
-https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-015-1308-8
-- https://github.com/griffithlab/rnaseq_tutorial/wiki/Annotation
-***** Clustering
+***** Exploratory data analysis
+Bergkvist,A., Rusnakova,V., Sindelka,R., Garda,J.M., Sjogreen,B.,
+Lindh,D., Forootan,A. and Kubista,M. (2010) Gene expression
+profiling–clusters of possibilities. Methods, 50, 323–335.
+228. Beyene,J., Tritchler,D., Bull,S.B., Cartier,K.C., Jonasdottir,G.,
+Kraja,A.T., Li,N., Nock,N.L., Parkhomenko,E., Rao,J.S. et al.
+(2007) Multivariate analysis of complex gene expression and clinical
+phenotypes with genetic marker data. Genet. Epidemiol., 31(Suppl.
+1), S103–S109.
+
+- cite:buschmann2016 pg 6011
+- hierarchical clustering
+  - eucledian
+  - pearson 
+- partitioning
+  - k-means
+  - self-organizing maps
+- latent variable
+  - PCA
+    - add scores and loadings for initial variable
+- [[id:588f6536-9db9-4279-9e67-800890c2de23][LINK TO High dimension data transformation]]
+****** Clustering
 :PROPERTIES:
 :ID:       22a6e4a4-60c2-44cf-8e5a-3ff351a02aa3
 :END:
@@ -2431,6 +2491,17 @@ CLOCK: [2016-03-28 Mon 13:01]--[2016-03-28 Mon 13:06] =>  0:05
 :PROPERTIES:
 :ID:       8a788e6c-3899-4e6f-bf09-9c96d110aeaa
 :END:
+
+- overdispersion makes working under Poisson assumption prone to high false positives b/c sampling error underestimated
+
+
+Di,Y., Schafer,D.W., Cumbie,J.S. and Chang,J.H. (2011) The NBP
+negative binomial model for assessing differential gene expression
+from RNA-Seq. Stat. Appl. Genet. Mol. Biol., 10,
+doi:10.2202/1544-6115.1637.
+
+
+
   - cite:huang2015      
   - https://angus.readthedocs.io/en/2016/_static/DifferentialExpressionBasics_NGS2016_ID.pdf
   - https://bioinformatics-core-shared-training.github.io/RNAseq-R/slides/LinearModels.pdf
@@ -2452,12 +2523,11 @@ CLOCK: [2016-03-28 Mon 13:01]--[2016-03-28 Mon 13:06] =>  0:05
 :PROPERTIES:
 :ID:       68BB9D3D-5879-4F2E-904B-54F70EAD2B5A
 :END:
-- [[id:2F642F69-A9C8-46DA-BE31-783AC8D4F4B6][DESeq2]]
 - count-based
   - negative binomial
-    - [[id:32BB77F2-0283-4A52-86AC-CDF2CB6A7315][edgeR]]
-    - [[id:2F642F69-A9C8-46DA-BE31-783AC8D4F4B6][DESeq2]]
-- [[id:F9684168-A438-4F5E-81D6-D645B52B4074][limma voom]]
+    - [[id:32BB77F2-0283-4A52-86AC-CDF2CB6A7315][edgeR]], dispersion by weighted likelihood
+    - [[id:2F642F69-A9C8-46DA-BE31-783AC8D4F4B6][DESeq2]], dispersion by modeling all genes via regression
+- [[id:F9684168-A438-4F5E-81D6-D645B52B4074][limma voom]], voom transforms read count 
 - Bayesian
   - BaySeq
   - BitSeq
@@ -2510,9 +2580,66 @@ CLOCK: [2016-03-28 Mon 13:01]--[2016-03-28 Mon 13:06] =>  0:05
   - https://www.rdocumentation.org/packages/gplots/versions/3.0.3/topics/heatmap.2 
 - mapped reads were visualized by SeqMonk[[file:org.org_imgs/20161220_180037_4849srR.png]]
 
-***** Applications for bulk RNA-seq
+***** Methods by source or isolation 
+- ffpe
+  - cite:kashofer2013 
+  - FFPE Pre-analytic variability
+    - cite:ahlfen2007rnaqual
+      - storage conditions
+      - cold ischemia time
+      - fixation
+        - type
+        - time
+      - sample thickness
+    - biospecimens.cancer.gov/researchnetwork 
+    - cite:unlockingQiagen
+    - https://www.ncbi.nlm.nih.gov/pubmed/25357115
+    - By effect
+      - Yield
+        - - prolonged fix reduces yield- Bresters D, Schipper ME, Reesink HW, Boeser-Nunnink BD, Cuypers HT. The duration of fixation influences the yield of HCV cDNA-PCR products from formalin-fixed, paraffin- embedded liver tissue. J Virol Methods 1994;48:267–72.
+        - cite:webster2015mining longer fixation times decrease RNA yields from paraffin-embedded tissues (herein 3 weeks in formalin resulted in half the RNA yield/sec- tion compared with 18 h) and increase RNA input needed during library preparation (see methods). This latter effect is likely due to ‘non-functional’ RNA (eg, adducts or damaged bases) that could be potentially mitigated by treatments like PreCR or other enzymatic and chemical methods. 
+      - At microarray expression
+        - cite:kashofer2013quality
+    - "Formalin fixation introduced major changes into microarray gene expression data and led to marked gene-to-gene variations in delta-ct values of qRT-PCR. We found that qRT-PCR efficiency and gene-to- gene variations were mainly attributed to differences in the efficiency of cDNA synthesis as the most sensitive step. These differences could not be reliably detected by quality assessment of total RNA isolated from formalin-fixed tissues by electrophoresis or spectrophotometry. "
+    - At sequencing
+  - cite:graw2015 
+  - Past expression tech
+    - goals were biomarker discovery and patient stratification
+    - cite:Zhao_2014 manifests its superiority in terms of the dynamic range, sampling depth, and has independence from pre-existing sequence information [1,2].
+    - cite:webster2015mining When compared with conventional DNA microarrays, RNA-seq enriches for many additional fragments as it is not restricted to predefined probes and has (in principle) no limitations to dynamic range (Li et al., 2014b; SEQC/MAQC-III Consortium, 2014). 
+    - - https://www.ncbi.nlm.nih.gov/pubmed/14695316
+    - - [[https://www.ncbi.nlm.nih.gov/pubmed/15509548][DASL]]
+    - https://www.ncbi.nlm.nih.gov/pubmed/21347257
+  - FFPE microarray and RT-PCR was useful
+    - AlloMap is a non-invasive gene expression-based blood test that is used to manage the clinical care of heart transplant recipients, providing a quantified score for the risk of rejection based on the measurement of expression of 20 genes, a subset of which are related to immune system activation and signalling15,16.
+    - - cite:penland2007rna
+    - - - https://www.ncbi.nlm.nih.gov/pubmed/11568892/
+    - Mittempergher, L., de Ronde, J.J., Nieuwland, M., Kerkhoven, R.M., Simon, I., Th Rutgers, E.J., Wessels, L.F., Van't Veer, L.J., 2011. Gene expression profiles from formalin fixed paraffin embedded breast cancer tissue are largely comparable to fresh fro- zen matched tissue. PLoS One 6, e17163.
+  - But this expression tech is inferior
+    - In other work14, systematic evalu- ation of RNA-seq-based and microarray-based classifiers found that RNA-seq outperformed arrays in characteriz- ing the transcriptome of cancer and performed similarly to arrays in clinical endpoint prediction.
+    - does not depend on genome annotation, or on predesigned species-specific or tran- script-specific probes, for transcript measurement.
+    - microarray limited application to clinic- lthough powerful, microarray-based assays can have limitations in some environments, such as those related to laboratory-to-laboratory variation in sample preparation that can affect reproducibility. Moreover, for some applications, microarray signal-to-noise ratios can affect the limit of detection. Interestingly, a number of additional cancer multi-gene profile tests are clinically available, such as OncoTypeDX (Genome Health)135 for breast cancer recurrence risk and Prolaris (Myriad)136 for prostate cancer aggressiveness. These tests are based on qRT-PCR technologies, rather than microarrays, largely owing to the belief that qRT-PCR is more reliable, reproducible, sensitive and accurate.
+    - " qRT-PCR is generally deemed the ‘gold standard’ method for measuring transcript levels, particularly in the clinical space; however, there are a number of limitations, including the fact that although it is a high sample throughput technology, relatively few markers or measurements can be made in a single assay. "
+    - rnaseq superior for
+      - snvs
+      - indels
+      - isoforms
+      - splice vars
+      - chimerics
+        - fusions
+    - semiquan
+    - no SNV discovery
+    - no fusion
+    - "RNA-seq provides much more detailed information on specific transcript expression patterns in clinico-genetic neuroblastoma subgroups than microarrays. " cite:zhang2015comparison
+- extracellular
+  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5426982/
+  - [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO circulating rna]]
+***** Methods by RNA population
+****** Bulk RNA
+******* Applications for bulk RNA-seq
 - [[*cell enumeration through bulk RNA-seq][cell enumeration through bulk RNA-seq]]
 - deconvolution
+  - http://labs.pathology.jhu.edu/halushka/science/
   - tools
     - ISOpure
       - https://link.springer.com/article/10.1186/s12859-015-0597-x#Sec1
@@ -2521,12 +2648,12 @@ CLOCK: [2016-03-28 Mon 13:01]--[2016-03-28 Mon 13:06] =>  0:05
   - cite:byron2016translating
   - cite:Kalari_2014
   - cite:Van_Keuren_Jensen_2014
-****** QTL mapping
+******** QTL mapping
 :PROPERTIES:
 :ID:       2CA85A6B-7B1E-4A38-96AA-717847A59168
 :END:
 
-******* Chemical- NextBio, see Webster,15ref Kupershmidt,10
+********* Chemical- NextBio, see Webster,15ref Kupershmidt,10
 :PROPERTIES:
 :ID:       f9f486c9-cd9b-401a-a3c0-523a5d09d92b
 :END:
@@ -2633,13 +2760,13 @@ CLOCK: [2016-03-28 Mon 13:01]--[2016-03-28 Mon 13:06] =>  0:05
 
 
 - [[*omics integration][omics integration]]
-******* Allele-specific Expression
+********* Allele-specific Expression
 :PROPERTIES:
 :ID:       96C367A3-FEEB-4F6F-975A-A08A172FD277
 :END:
 
 
-******* RNA-fusion                                                  :biopipe:
+********* RNA-fusion                                                :biopipe:
 :PROPERTIES:
 :CREATED:  [2019-06-25 Tue 09:05]
 :ID:       96634f32-b19a-4390-8e50-e942abd35f90
@@ -2666,14 +2793,14 @@ http://bcb.dfci.harvard.edu/~aedin/courses/Bioconductor/
 
 https://www.bioconductor.org/packages/devel/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html
 
-****** Gene Set Enrichment
+******** Gene Set Enrichment
 :PROPERTIES:
 :ID:       87734999-3139-4343-A323-925416811B12
 :END:
 
 - https://www.reddit.com/r/bioinformatics/comments/66374x/gsea_vs_go_enrichment/
 
-******* [[http://www.bioconductor.org/packages/release/bioc/html/gage.html][GAGE]] (generally applicable gene-set enrichment for pathway analysis)
+********* [[http://www.bioconductor.org/packages/release/bioc/html/gage.html][GAGE]] (generally applicable gene-set enrichment for pathway analysis)
 :PROPERTIES:
 :ID:       441F7686-9969-4F8D-8092-C4429377214C
 :END:
@@ -2682,7 +2809,7 @@ https://www.bioconductor.org/packages/devel/bioc/vignettes/SummarizedExperiment/
 [[file:~/Box%20Sync/comp_bio/gsea_template/gage.pdf][Manual]]
 [[file:~/Box%20Sync/comp_bio/gsea_template/gsea_template.R][Rscript]]
 
-******** RNA-Seq Workflow Example
+********** RNA-Seq Workflow Example
 :PROPERTIES:
 :ID:       B687F931-3A5E-4CD0-B2B7-30DF026E0AB9
 :END:
@@ -2690,7 +2817,7 @@ https://www.bioconductor.org/packages/devel/bioc/vignettes/SummarizedExperiment/
 [[file:~/Box%20Sync/comp_bio/gsea_template/][Folder]]
 [[file:~/Box%20Sync/comp_bio/gsea_template/RNA-seqWorkflow.pdf][pdf]]
 
-******* Commercial
+********* Commercial
 :PROPERTIES:
 :ID:       417416B5-0169-41CA-8FCE-4D6E440C7E3A
 :END:
@@ -2700,7 +2827,7 @@ http://www.ingenuity.com/
 [[http://bedops.readthedocs.io/en/latest/index.html][BEDOPS]]
 https://www.datacamp.com/
 
-****** Genotype-Phenotype Associations
+******** Genotype-Phenotype Associations
 :PROPERTIES:
 :ID:       69F82D91-6DE6-4332-AD0A-7ADF25263858
 :END:
@@ -2709,18 +2836,18 @@ https://www.datacamp.com/
 - cite:Kho_2011
 
 
-****** variant calling
+******** variant calling
 :PROPERTIES:
 :CREATED:  [2020-06-22 Mon 12:27]
 :ID:       a5b408eb-77e2-4634-a5bb-950cefaafe18
 :END:
 - [[id:57E81A44-3233-479B-8264-2CD5F1904A60][Sequence variation and variant calling]]
-******* fusions
+********* fusions
 :PROPERTIES:
 :ID:       0ea6c74e-bcf8-44c2-b4c3-e725d930d4a3
 :END:
   - cite:melsted2017  
-******** Gene Fusion Detection
+********** Gene Fusion Detection
 :PROPERTIES:
 :ID:       492e0fad-ced4-407b-8913-80f3a0ac1202
 :END:
@@ -2738,7 +2865,7 @@ https://www.datacamp.com/
   - https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/Dockerfile
 
 
-*********** NEXT INTEGRATE RNA aligners
+************* NEXT INTEGRATE RNA aligners
 :PROPERTIES:
 :CREATED:  [2019-02-25 Mon 13:16]
 :ID:       951F10BC-E844-45C5-8CB4-4FA8756D9F85
@@ -2756,7 +2883,7 @@ https://www.datacamp.com/
   - [ ] hisat2 https://ccb.jhu.edu/software/hisat2/manual.shtml see hista2-build
   - 
 
-********** NEXT HCC1395 straight align and integrate and compare to published
+************ NEXT HCC1395 straight align and integrate and compare to published
 :PROPERTIES:
 :CREATED:  [2019-03-13 Wed 10:11]
 :ID:       58F7BED2-DED1-4911-9E8C-104E12126A73
@@ -2794,7 +2921,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
     - Integrate fusion /gscmnt/gc2555/spencer/jeff/data/reference/Homo_sapiens.GRCh38.dna.primary_assembly.fa /gscmnt/gc2555/spencer/jeff/data/reference/annot-hg38-refeseq.txt /gscmnt/gc2555/spencer/jeff/data/reference/Integrate/bwts /gscmnt/gc2555/spencer/jeff/dev/starhcc/Aligned.out.sorted.bam /gscmnt/gc2555/spencer/jeff/dev/starhcc/Aligned.out.sorted.bam
       - 
 
-******* co-expression 
+********* co-expression 
 :PROPERTIES:
 :ID:       91d46e60-eec3-48c7-97f1-b53eb1559b3f
 :END:
@@ -2887,13 +3014,13 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
   lnames
     #+end_src
 - [[id:D68E1182-1F7B-4160-A6DD-BD2635F8085F][GSEA]]
-******* Broad Calling variants in RNAseq
+********* Broad Calling variants in RNAseq
 :PROPERTIES:
 :ID:       DA64BC88-8BD6-40DF-9D80-5596BFA4D643
 :END:
 
 https://software.broadinstitute.org/gatk/documentation/article?id=3891
-******* RNA-fusion                                                  :biopipe:
+********* RNA-fusion                                                :biopipe:
 :PROPERTIES:
 :CREATED:  [2019-06-25 Tue 09:05]
 :ID:       96634f32-b19a-4390-8e50-e942abd35f90
@@ -2914,7 +3041,7 @@ CLOCK: [2019-06-26 Wed 13:35]--[2019-06-26 Wed 13:59] =>  0:24
   - https://github.com/genepattern/docker-tophat/blob/master/Dockerfile
   - https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/Dockerfile
 
-*********** NEXT INTEGRATE RNA aligners
+************* NEXT INTEGRATE RNA aligners
 :PROPERTIES:
 :CREATED:  [2019-02-25 Mon 13:16]
 :ID:       951F10BC-E844-45C5-8CB4-4FA8756D9F85
@@ -2932,7 +3059,7 @@ CLOCK: [2019-06-26 Wed 13:35]--[2019-06-26 Wed 13:59] =>  0:24
   - [ ] hisat2 https://ccb.jhu.edu/software/hisat2/manual.shtml see hista2-build
   - 
 
-********** NEXT HCC1395 straight align and integrate and compare to published
+************ NEXT HCC1395 straight align and integrate and compare to published
 :PROPERTIES:
 :CREATED:  [2019-03-13 Wed 10:11]
 :ID:       58F7BED2-DED1-4911-9E8C-104E12126A73
@@ -2970,7 +3097,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
     - Integrate fusion /gscmnt/gc2555/spencer/jeff/data/reference/Homo_sapiens.GRCh38.dna.primary_assembly.fa /gscmnt/gc2555/spencer/jeff/data/reference/annot-hg38-refeseq.txt /gscmnt/gc2555/spencer/jeff/data/reference/Integrate/bwts /gscmnt/gc2555/spencer/jeff/dev/starhcc/Aligned.out.sorted.bam /gscmnt/gc2555/spencer/jeff/dev/starhcc/Aligned.out.sorted.bam
       - 
 
-****** time course
+******** time course
   - cite:spies2017
   - https://support.bioconductor.org/p/65676/#66860
   - https://www.biostars.org/p/138988/
@@ -2978,7 +3105,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
   - https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
   - http://seqanswers.com/forums/showthread.php?t=64039
   - https://www.sciencedirect.com/science/article/pii/S2001037015000392
-****** co-expression 
+******** co-expression 
 :PROPERTIES:
 :ID:       91d46e60-eec3-48c7-97f1-b53eb1559b3f
 :END:
@@ -3072,62 +3199,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
   lnames
     #+end_src
 - [[id:D68E1182-1F7B-4160-A6DD-BD2635F8085F][GSEA]]
-****** [[*omics integration][omics integration]]
-***** Methods by source or isolation 
-- ffpe
-  - cite:kashofer2013 
-  - FFPE Pre-analytic variability
-    - cite:ahlfen2007rnaqual
-      - storage conditions
-      - cold ischemia time
-      - fixation
-        - type
-        - time
-      - sample thickness
-    - biospecimens.cancer.gov/researchnetwork 
-    - cite:unlockingQiagen
-    - https://www.ncbi.nlm.nih.gov/pubmed/25357115
-    - By effect
-      - Yield
-        - - prolonged fix reduces yield- Bresters D, Schipper ME, Reesink HW, Boeser-Nunnink BD, Cuypers HT. The duration of fixation influences the yield of HCV cDNA-PCR products from formalin-fixed, paraffin- embedded liver tissue. J Virol Methods 1994;48:267–72.
-        - cite:webster2015mining longer fixation times decrease RNA yields from paraffin-embedded tissues (herein 3 weeks in formalin resulted in half the RNA yield/sec- tion compared with 18 h) and increase RNA input needed during library preparation (see methods). This latter effect is likely due to ‘non-functional’ RNA (eg, adducts or damaged bases) that could be potentially mitigated by treatments like PreCR or other enzymatic and chemical methods. 
-      - At microarray expression
-        - cite:kashofer2013quality
-    - "Formalin fixation introduced major changes into microarray gene expression data and led to marked gene-to-gene variations in delta-ct values of qRT-PCR. We found that qRT-PCR efficiency and gene-to- gene variations were mainly attributed to differences in the efficiency of cDNA synthesis as the most sensitive step. These differences could not be reliably detected by quality assessment of total RNA isolated from formalin-fixed tissues by electrophoresis or spectrophotometry. "
-    - At sequencing
-  - cite:graw2015 
-  - Past expression tech
-    - goals were biomarker discovery and patient stratification
-    - cite:Zhao_2014 manifests its superiority in terms of the dynamic range, sampling depth, and has independence from pre-existing sequence information [1,2].
-    - cite:webster2015mining When compared with conventional DNA microarrays, RNA-seq enriches for many additional fragments as it is not restricted to predefined probes and has (in principle) no limitations to dynamic range (Li et al., 2014b; SEQC/MAQC-III Consortium, 2014). 
-    - - https://www.ncbi.nlm.nih.gov/pubmed/14695316
-    - - [[https://www.ncbi.nlm.nih.gov/pubmed/15509548][DASL]]
-    - https://www.ncbi.nlm.nih.gov/pubmed/21347257
-  - FFPE microarray and RT-PCR was useful
-    - AlloMap is a non-invasive gene expression-based blood test that is used to manage the clinical care of heart transplant recipients, providing a quantified score for the risk of rejection based on the measurement of expression of 20 genes, a subset of which are related to immune system activation and signalling15,16.
-    - - cite:penland2007rna
-    - - - https://www.ncbi.nlm.nih.gov/pubmed/11568892/
-    - Mittempergher, L., de Ronde, J.J., Nieuwland, M., Kerkhoven, R.M., Simon, I., Th Rutgers, E.J., Wessels, L.F., Van't Veer, L.J., 2011. Gene expression profiles from formalin fixed paraffin embedded breast cancer tissue are largely comparable to fresh fro- zen matched tissue. PLoS One 6, e17163.
-  - But this expression tech is inferior
-    - In other work14, systematic evalu- ation of RNA-seq-based and microarray-based classifiers found that RNA-seq outperformed arrays in characteriz- ing the transcriptome of cancer and performed similarly to arrays in clinical endpoint prediction.
-    - does not depend on genome annotation, or on predesigned species-specific or tran- script-specific probes, for transcript measurement.
-    - microarray limited application to clinic- lthough powerful, microarray-based assays can have limitations in some environments, such as those related to laboratory-to-laboratory variation in sample preparation that can affect reproducibility. Moreover, for some applications, microarray signal-to-noise ratios can affect the limit of detection. Interestingly, a number of additional cancer multi-gene profile tests are clinically available, such as OncoTypeDX (Genome Health)135 for breast cancer recurrence risk and Prolaris (Myriad)136 for prostate cancer aggressiveness. These tests are based on qRT-PCR technologies, rather than microarrays, largely owing to the belief that qRT-PCR is more reliable, reproducible, sensitive and accurate.
-    - " qRT-PCR is generally deemed the ‘gold standard’ method for measuring transcript levels, particularly in the clinical space; however, there are a number of limitations, including the fact that although it is a high sample throughput technology, relatively few markers or measurements can be made in a single assay. "
-    - rnaseq superior for
-      - snvs
-      - indels
-      - isoforms
-      - splice vars
-      - chimerics
-        - fusions
-    - semiquan
-    - no SNV discovery
-    - no fusion
-    - "RNA-seq provides much more detailed information on specific transcript expression patterns in clinico-genetic neuroblastoma subgroups than microarrays. " cite:zhang2015comparison
-- extracellular
-  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5426982/
-  - [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO circulating rna]]
-***** Methods by RNA population
+******** [[*omics integration][omics integration]]
 ****** single-cell RNA sequencing (scRNA-seq)
 :PROPERTIES:
 :ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
@@ -3215,44 +3287,81 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :ID:       fd462ab0-6aaf-4732-953b-141ad5e2ee72
 :END:
 :LOGBOOK:
+CLOCK: [2021-02-17 Wed 11:08]--[2021-02-17 Wed 12:33] =>  1:25
+CLOCK: [2021-02-17 Wed 09:46]--[2021-02-17 Wed 10:50] =>  1:04
+CLOCK: [2021-02-17 Wed 09:23]--[2021-02-17 Wed 09:35] =>  0:12
 CLOCK: [2021-02-17 Wed 09:08]--[2021-02-17 Wed 09:18] =>  0:10
 CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 :END:
-- general reference
-  - [[https://www.biostars.org/t/smallrna/?sort=votes&limit=all%20time][biostars small RNA]]
-  - cite:korpelainen2015 chapter 12
-- library preparation
-  - with low input, use same kit for reproducibility cite:yeri2018 
-  - cite:dard-dascot2018
-- qc
-  - https://www.agilent.com/en/product/automated-electrophoresis/bioanalyzer-systems/bioanalyzer-rna-kits-reagents/bioanalyzer-small-rna-analysis-228257#howitworks
-- cite:mehta2014
-- https://link.springer.com/protocol/10.1007%2F978-1-4939-1062-5_9
-- https://link.springer.com/protocol/10.1007%2F978-1-4939-9042-9_4
-- sRNAbench
-  - https://bioinfo2.ugr.es/ceUGR/srnabench/
-- sRNAtoolbox
-  - https://arn.ugr.es/srnatoolbox/srnabench/
-  - https://arn.ugr.es/srnatoolbox/static/sRNAtoolbox_manual.pdf
-- novel miR ID
-  - miRDeep2
-    - cite:friedlander2012
-- https://academic.oup.com/nar/article/47/W1/W530/5494756
-- https://github.com/mhalushka/miRge
-  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-018-2287-y
-- http://genboree.org/java-bin/workbench.jsp
-- best practices
-  - [[https://www.encodeproject.org/pipelines/ENCPL337CSA/][ENCODE]]
-- cite:buschmann2016
-- pipelines from high-impact papers
-  - using - http://github.gersteinlab.org/exceRpt/
+******* [[id:b2873d1a-837b-4927-b8cf-8a27e42d7bea][LINK TO small RNA extraction]]
+******* [[id:4E23127E-4ED6-4802-A03C-4103AA8CAF29][LINK TO RNA Quality and Quantification]]
+******* [[id:71289eeb-a929-44bd-a46e-a0c3dcd7a8f4][small RNA library preparation]]
+******* Bioinformatics
+******** Pre-processing
+- read filtering
+  - adapter trimming
+  - quality filtering
+  - read length trimming
+    - remove at less than 16 nt (see cite:buschmann2016 ref 157,158)
+    - these are adapter dimers and degraded RNA   
+- QC
+  - filtered reads should have miRNA 21-23 nt peak and piRNA 30-32 nt peak 
+  - overrepresented sequence- k-mer distribution- see cite:buschmann2016 pg 6007
+- [[id:1EE731A3-83DD-46AF-B988-2311307C335F][LINK TO Raw sequence QC and processing]]    
+******** Alignment
+- alignment to miRbase needs to be more conservative to avoid mismatches
+******** [[id:853dd34c-27be-4be8-9794-19f04a1e22b0][LINK TO Quantification and normalization]]
+******** [[id:ee030cef-74d4-435d-8228-b85f0e6203db][LINK TO Differential expression]]
+cite:buschmann2016
+"y. Even though comparisons of software
+performances on small RNA-Seq data are scarce, a num-
+ber of independent and extensive evaluations for mRNAs
+based on either synthetic data with clearly defined prop-
+erties (216), or on biological datasets with validated gene
+expressions (217,218) have been made recently. While it
+was shown that statistical power of almost all methods is
+heavily dependent on the number of samples per condition
+and less on sequencing depth, the variability of expression
+changes in biological datasets affects each analysis tool dif-
+ferently. Outliers, ‘ON/OFF’ expression changes, where a
+gene is detected in only one condition, and lopsided ex-
+pression patterns, where upregulations drastically outweigh
+downregulations or vice versa, influence specificity (false
+positive rate) and sensitivity (false negative rate) of each
+method unequally. Nonetheless, some methods appear to
+capture the true expression status of small RNAs better
+than others. Most independent evaluations seem to agree
+that calling differential expression with SAMSeq works well
+for datasets with sufficient sample sizes of 10 or more. For
+smaller datasets, edgeR and especially the more conserva-
+tive DESeq (or DESeq2) are found to be the methods of
+choice. On"
+******** Functional analysis
+cite:buschmann2016 pg6011
+******** Integrated tools
+- genboree / exceRpt
+  - http://github.gersteinlab.org/exceRpt/
+  - using 
     - cite:godoy2018
     - cite:freedman2016 
+  - http://genboree.org/java-bin/workbench.jsp
+- miRge / miRge2 WOS 29 times cited
+  - https://mirge3.readthedocs.io/en/latest/quick_start.html
+  - https://github.com/mhalushka/miRge3.0
+  - cite:lu2018mirge  
+  - https://github.com/mhalushka/miRge
+    - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-018-2287-y
+- miRDeep2
+  - cite:friedlander2012
+- sRNAbench
+  - https://academic.oup.com/nar/article/47/W1/W530/5494756
+  - https://bioinfo2.ugr.es/ceUGR/srnabench/
+  - sRNAtoolbox
+    - https://arn.ugr.es/srnatoolbox/srnabench/
+    - https://arn.ugr.es/srnatoolbox/static/sRNAtoolbox_manual.pdf
+******* Applications
+- exRNA and exosomal RNA
   - cite:juzenas2017
-- https://www.encodeproject.org/data-standards/rna-seq/small-rnas/
-- cite:srinivasan2019
-- [[id:ac5261a8-ea3c-44d3-bfd9-c3e1f2ac1e09][LINK TO assaying circulating small RNA]]
-
 ******* miRNA-seq
 :PROPERTIES:
 :ID:       903f32d8-bd13-496c-8d5c-26a63455936a
@@ -3260,6 +3369,13 @@ CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 :LOGBOOK:
 CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :END:
+http://apps.pathology.jhu.edu/mirnaprogram/links/http://apps.pathology.jhu.edu/mirnaprogram/links/
+- cite:pritchard2012
+  - citing, times cited WOS:        
+    - cite:braunwald2013
+    - cite:dong2013
+    - cite:schwarzenbach2014
+    - " Whereas high-speed centrifugation (14,000–16,000 g) can remove living cells and cell debris, separating exosomes and small shedding vesicles requires ultracentrifugation (>110,000 g).30 Blood cell count has a significant effect on miRNA expression levels in plasma;31 therefore, samples from patients with an inflammatory process, who should have high white blood cell count, should be excluded from analysis. Haemolysis is also known to markedly influence miRNA expression patterns, because of a contamination of abundant intracellular miRNAs.31"
 - miRNA functional analysis
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4489228/
 - https://rnajournal.cshlp.org/content/18/6/1279.long
@@ -3276,6 +3392,20 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
 - https://www.google.com/search?q=mirna+isoform+discovery+depth
 - https://www.google.com/search?q=mirna+multiqc   
+******* Reference
+- cite:chen2019mirna
+- cite:mestdagh2014
+- [[id:219c5d52-6eac-43b3-b934-d0eff91a9b6c][LINK TO small RNA]]
+- cite:buschmann2016
+- https://link.springer.com/protocol/10.1007%2F978-1-4939-9042-9_4
+- cite:mehta2014
+- best practices
+  - https://www.encodeproject.org/data-standards/rna-seq/small-rnas/
+- general reference
+  - [[https://www.biostars.org/t/smallrna/?sort=votes&limit=all%20time][biostars small RNA]]
+  - cite:korpelainen2015 chapter 12
+- see mirbase in [[id:FCBA0863-010A-448C-A33C-941D2AA45AD5][databases, data sets, and database browsers]]
+
 ***** reference
 :PROPERTIES:
 :ID:       70491293-d832-4947-b1bd-a0f4ae066c17
@@ -3339,6 +3469,7 @@ https://www.biostars.org/p/428905/
 :PROPERTIES:
 :ID:       053daf71-9f9f-4b5e-b400-222c4d24afea
 :END:
+http://labs.pathology.jhu.edu/halushka/science/
 https://science.sciencemag.org/content/360/6389/660
 - https://support.10xgenomics.com/spatial-gene-expression/sequencing/doc/specifications-sequencing-requirements-for-visium-spatial-gene-expression
 **** Reference
@@ -3543,6 +3674,23 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
 :END:
+ Mass Spectrometry 
+
+ MASCOT peptide mass fingerprint
+ SILAC (stable isotope labeling by amino acids in cell culture) 
+
+ LC/MS- 1995- 166. Appella, E., Padlan, E. A. & Hunt, D. F. Analysis of the
+ structure of naturally processed peptides bound by
+ class I and class II major histocompatibility complex
+ molecules. Exs 73, 105–119 (1995).
+
+ iTraq
+ By Technique
+ MALDI-TOF
+ MS/MS
+ By Experimental Design	
+
+
 - [[id:179b243b-e6c0-484c-81ef-e8bff57e7f46][Circulating biomarkers]]
 - proteome dynamic range is ~10^12, machine limit is usually ~10^3
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096388/
@@ -3600,26 +3748,6 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - Pathway analysis
   - https://www.pathvisio.org/documentation/tutorials/tutorial-1/
   - cite:Khatri_2012
-- proteomics 
- Mass Spectrometry 
-
- MASCOT peptide mass fingerprint
- SILAC (stable isotope labeling by amino acids in cell culture) 
-
- LC/MS- 1995- 166. Appella, E., Padlan, E. A. & Hunt, D. F. Analysis of the
- structure of naturally processed peptides bound by
- class I and class II major histocompatibility complex
- molecules. Exs 73, 105–119 (1995).
-
- iTraq
- By Technique
- MALDI-TOF
- MS/MS
- By Experimental Design	
-**** Systems Biology
-:PROPERTIES:
-:ID:       37DB8990-81A8-4474-A407-326CAFF43B6A
-:END:
 - GEDI (Gene Expression Dynamics Inspector)
  Website
  Software v.2.1 Manual
@@ -3630,7 +3758,7 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - Kitano H (2002) Systems biology: A brief overview. Science 295: 1662–1664.
 - Ehrenberg M, Elf J, Aurell E, Sandberg R, Tegner J (2003) Systems biology is taking off. Genome Res 13: 2377–2380.
 - http://www.springer.com/us/book/9780387989921
-
+**** [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
 **** pathways
 :PROPERTIES:
 :CREATED:  [2019-09-28 Sat 10:37]
@@ -3692,6 +3820,7 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
 :END:
+http://mixomics.org/webinar-pls-methods/
 - http://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC3618897&blobtype=pdf
 - https://danielhomola.com/assets/DanielHomola_PhD.pdf
 - cite:bersanelli2016

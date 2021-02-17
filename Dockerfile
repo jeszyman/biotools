@@ -75,8 +75,8 @@ RUN pip install -U multiqc
 #
 # cnvkit
 RUN pip install -U cython
-RUN pip install -U future futures pandas pomegranate pyfaidx
-RUN pip install cnvkit==0.9.6
+#FAILS [2021-02-17] RUN pip install -U future futures pandas pomegranate pyfaidx
+#FAILS [2021-02-17] RUN pip install cnvkit==0.9.6
 #
 # RSeQC
 RUN pip install RSeQC 
@@ -631,3 +631,5 @@ libxmu-dev
 RUN conda install -c bioconda rsem 
 RUN conda install -c bioconda bbmap
 RUN conda install -c bioconda snakemake
+#
+RUN conda install -c bioconda mirge3
