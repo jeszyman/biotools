@@ -1847,6 +1847,9 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
 :END:
 **** RNA-seq quality control
 :PROPERTIES:
+:ID:       e6cbde1b-22c3-4a23-b99e-d9d4fe0a6b95
+:END:
+:PROPERTIES:
 :ID:       2d2f32cf-ef4a-4efe-90d1-ae85ad470e49
 >>>>>>> e60be068dcbc8c18477fc28e00ee3b742dcf0110
 :END:
@@ -2796,6 +2799,9 @@ https://www.datacamp.com/
 
 ***** Chemical- NextBio, see Webster,15ref Kupershmidt,10
 :PROPERTIES:
+:ID:       f9f486c9-cd9b-401a-a3c0-523a5d09d92b
+:END:
+:PROPERTIES:
 :ID:       DD97187A-47FF-49D2-87D3-9DDFC9E1D351
 >>>>>>> e60be068dcbc8c18477fc28e00ee3b742dcf0110
 :END:
@@ -2948,6 +2954,9 @@ https://software.broadinstitute.org/gatk/documentation/article?id=3891
 :END:
   - cite:melsted2017  
 ****** Gene Fusion Detection
+:PROPERTIES:
+:ID:       492e0fad-ced4-407b-8913-80f3a0ac1202
+:END:
 :PROPERTIES:
 :ID:       778C7C81-34E7-4BAE-94F9-5C33318BFDA5
 >>>>>>> e60be068dcbc8c18477fc28e00ee3b742dcf0110
@@ -6343,6 +6352,9 @@ https://www.pnas.org/content/115/4/E743.long
 :ID:       846943FC-BA4B-4658-9B1E-85FBA536D9EE
 :END:
 *** limma
+:PROPERTIES:
+:ID:       3283b8b2-fc42-4a71-a8e9-7dbdd7ab62ce
+:END:
 https://www.coursera.org/lecture/bioconductor/limma-aoNwW
 *** limma voom
 :PROPERTIES:
