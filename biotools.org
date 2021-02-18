@@ -1791,6 +1791,9 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
 :ID:       b9db0398-4481-4502-abb0-bd9edcd353f2
 :END:
 **** Microarray
+:PROPERTIES:
+:ID:       294edcbb-f306-4f94-9eba-e8a1c7c512f1
+:END:
 - cite:nguyen2002 
 **** RNA-seq                                                         :career:
 :PROPERTIES:
@@ -2241,6 +2244,9 @@ counting is computationally intensive- script HTseq and
 summarizeOverlaps on the cluster 
 variabilize RNA seq workflow- make into function 
 ***** [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][LINK TO Nucleic acid sequence alignment]]
+:PROPERTIES:
+:ID:       542988fa-307f-454e-927e-ee6a17187265
+:END:
 ***** Read annotation
 :PROPERTIES:
 :ID:       8e435b88-6895-4e75-a728-cfdaa272bddb
@@ -2429,6 +2435,9 @@ R/FPKM and C/TPM are "local" to the sample while TMM must be recalculated with d
 - corrects for less "sequencing real estate" due to high expression per tissue 
 
 ***** Exploratory data analysis
+:PROPERTIES:
+:ID:       77d2a559-9858-453a-83c5-a646bbf473a3
+:END:
 Bergkvist,A., Rusnakova,V., Sindelka,R., Garda,J.M., Sjogreen,B.,
 Lindh,D., Forootan,A. and Kubista,M. (2010) Gene expression
 profiling–clusters of possibilities. Methods, 50, 323–335.
@@ -2581,6 +2590,9 @@ doi:10.2202/1544-6115.1637.
 - mapped reads were visualized by SeqMonk[[file:org.org_imgs/20161220_180037_4849srR.png]]
 
 ***** Methods by source or isolation 
+:PROPERTIES:
+:ID:       4d4a89d1-e039-4a89-b968-81c80f38d884
+:END:
 - ffpe
   - cite:kashofer2013 
   - FFPE Pre-analytic variability
@@ -2635,8 +2647,17 @@ doi:10.2202/1544-6115.1637.
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5426982/
   - [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO circulating rna]]
 ***** Methods by RNA population
+:PROPERTIES:
+:ID:       33823415-f2e4-4cdf-b3aa-a01000b35249
+:END:
 ****** Bulk RNA
+:PROPERTIES:
+:ID:       933724d3-ef49-46f9-9b60-63372c236a98
+:END:
 ******* Applications for bulk RNA-seq
+:PROPERTIES:
+:ID:       a9e9bbf7-8012-456a-9b45-0c86aacd84c7
+:END:
 - [[*cell enumeration through bulk RNA-seq][cell enumeration through bulk RNA-seq]]
 - deconvolution
   - http://labs.pathology.jhu.edu/halushka/science/
@@ -3098,6 +3119,9 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
       - 
 
 ******** time course
+:PROPERTIES:
+:ID:       43f1772e-f8ce-4f6b-a4bd-d35d381b89c9
+:END:
   - cite:spies2017
   - https://support.bioconductor.org/p/65676/#66860
   - https://www.biostars.org/p/138988/
@@ -3200,6 +3224,9 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
     #+end_src
 - [[id:D68E1182-1F7B-4160-A6DD-BD2635F8085F][GSEA]]
 ******** [[*omics integration][omics integration]]
+:PROPERTIES:
+:ID:       db8191ed-937d-456b-90d6-63c39fa90758
+:END:
 ****** single-cell RNA sequencing (scRNA-seq)
 :PROPERTIES:
 :ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
@@ -3294,10 +3321,25 @@ CLOCK: [2021-02-17 Wed 09:08]--[2021-02-17 Wed 09:18] =>  0:10
 CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 :END:
 ******* [[id:b2873d1a-837b-4927-b8cf-8a27e42d7bea][LINK TO small RNA extraction]]
+:PROPERTIES:
+:ID:       dfc3a8a2-e4c4-4043-af71-2db93128c18e
+:END:
 ******* [[id:4E23127E-4ED6-4802-A03C-4103AA8CAF29][LINK TO RNA Quality and Quantification]]
+:PROPERTIES:
+:ID:       4df90313-39e4-44ed-83cd-b98453e18358
+:END:
 ******* [[id:71289eeb-a929-44bd-a46e-a0c3dcd7a8f4][small RNA library preparation]]
+:PROPERTIES:
+:ID:       a65f74ea-8211-4a51-97a3-a03f5bebb31b
+:END:
 ******* Bioinformatics
+:PROPERTIES:
+:ID:       f46e278c-dd38-4603-9fa2-a973823e1333
+:END:
 ******** Pre-processing
+:PROPERTIES:
+:ID:       0c7d62b9-6ef4-43d1-8e21-c3aa536125bd
+:END:
 - read filtering
   - adapter trimming
   - quality filtering
@@ -3309,9 +3351,18 @@ CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
   - overrepresented sequence- k-mer distribution- see cite:buschmann2016 pg 6007
 - [[id:1EE731A3-83DD-46AF-B988-2311307C335F][LINK TO Raw sequence QC and processing]]    
 ******** Alignment
+:PROPERTIES:
+:ID:       d657a691-e338-44ad-96e4-47b4b18a03d2
+:END:
 - alignment to miRbase needs to be more conservative to avoid mismatches
 ******** [[id:853dd34c-27be-4be8-9794-19f04a1e22b0][LINK TO Quantification and normalization]]
+:PROPERTIES:
+:ID:       9a349ccd-3d29-46b7-b4fa-71693d32c674
+:END:
 ******** [[id:ee030cef-74d4-435d-8228-b85f0e6203db][LINK TO Differential expression]]
+:PROPERTIES:
+:ID:       56d53b46-2a62-4777-b5c7-eedbc306d4b4
+:END:
 cite:buschmann2016
 "y. Even though comparisons of software
 performances on small RNA-Seq data are scarce, a num-
@@ -3337,8 +3388,14 @@ smaller datasets, edgeR and especially the more conserva-
 tive DESeq (or DESeq2) are found to be the methods of
 choice. On"
 ******** Functional analysis
+:PROPERTIES:
+:ID:       e597d527-5538-4f69-bd28-a24a70969317
+:END:
 cite:buschmann2016 pg6011
 ******** Integrated tools
+:PROPERTIES:
+:ID:       07055c47-6e24-4f59-bce4-0ab91a7f5377
+:END:
 - genboree / exceRpt
   - http://github.gersteinlab.org/exceRpt/
   - using 
@@ -3360,6 +3417,9 @@ cite:buschmann2016 pg6011
     - https://arn.ugr.es/srnatoolbox/srnabench/
     - https://arn.ugr.es/srnatoolbox/static/sRNAtoolbox_manual.pdf
 ******* Applications
+:PROPERTIES:
+:ID:       55212621-170f-41aa-b9b5-b1c00385ffe6
+:END:
 - exRNA and exosomal RNA
   - cite:juzenas2017
 ******* miRNA-seq
@@ -3393,6 +3453,9 @@ http://apps.pathology.jhu.edu/mirnaprogram/links/http://apps.pathology.jhu.edu/m
 - https://www.google.com/search?q=mirna+isoform+discovery+depth
 - https://www.google.com/search?q=mirna+multiqc   
 ******* Reference
+:PROPERTIES:
+:ID:       65a85f59-afd5-4c6b-a785-9b6269cc7a51
+:END:
 - cite:chen2019mirna
 - cite:mestdagh2014
 - [[id:219c5d52-6eac-43b3-b934-d0eff91a9b6c][LINK TO small RNA]]
@@ -3473,6 +3536,9 @@ http://labs.pathology.jhu.edu/halushka/science/
 https://science.sciencemag.org/content/360/6389/660
 - https://support.10xgenomics.com/spatial-gene-expression/sequencing/doc/specifications-sequencing-requirements-for-visium-spatial-gene-expression
 **** Reference
+:PROPERTIES:
+:ID:       45a1d8fe-cdfb-4dce-8cf7-c7325c83e2d3
+:END:
 - http://gepia.cancer-pku.cn/
 *** Epigenetics
 :PROPERTIES:
@@ -3602,6 +3668,9 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 - motif-based- high false pos
 - benchtop with ChIP-seq 
 *** Cytometry
+:PROPERTIES:
+:ID:       b7b36cba-0d4d-41b0-ae5d-79b0f0f67d2e
+:END:
 **** CyTOF
 :PROPERTIES:
 :ID:       881d23a0-c943-47ac-9bf5-ef965f8a80e3
@@ -3759,6 +3828,9 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - Ehrenberg M, Elf J, Aurell E, Sandberg R, Tegner J (2003) Systems biology is taking off. Genome Res 13: 2377–2380.
 - http://www.springer.com/us/book/9780387989921
 **** [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
+:PROPERTIES:
+:ID:       34a99004-090f-44c6-a721-f5f1054e5b1f
+:END:
 **** pathways
 :PROPERTIES:
 :CREATED:  [2019-09-28 Sat 10:37]
