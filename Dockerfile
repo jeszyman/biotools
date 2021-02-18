@@ -633,3 +633,4 @@ RUN conda install -c bioconda bbmap
 RUN conda install -c bioconda snakemake
 #
 RUN conda install -c bioconda mirge3
+RUN conda install -c bioconda mirge
