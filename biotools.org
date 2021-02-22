@@ -25,7 +25,17 @@ CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
 CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :END:
 https://science.sciencemag.org/content/369/6509/1318
-*** Adapter sequences
+*** By substrate
+**** miRNA data
+:PROPERTIES:
+:ID:       95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88
+:END:
+- https://exrna-atlas.org/
+- [[id:fd462ab0-6aaf-4732-953b-141ad5e2ee72][LINK TO small RNA sequencing]]
+- see mirbase in [[id:FCBA0863-010A-448C-A33C-941D2AA45AD5][databases, data sets, and database browsers]]
+- Human miRNA tissue atlas
+  - cite:fehlmann2016
+  - https://ccb-web.cs.uni-saarland.de/tissueatlas/*** Adapter sequences
 :PROPERTIES:
 :ID:       cf2ea58e-8751-4d90-ab08-a63445925c89
 :END:
@@ -634,6 +644,15 @@ https://singularity.lbl.gov/install-linux
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
+- illumina sequencing platforms
+    | series  | platform |
+    |---------+----------|
+    | NovaSeq |     6000 |
+    | HiSeq   |     3000 |
+    | HiSeq   |     2500 |
+    | MiSeq   |          |
+    | Nexseq  |          |
+    - https://www.illumina.com/systems/sequencing-platforms/comparison-tool.html
 https://support.illumina.com/training.html
 https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/user-guide-manual/xgen-prism-dna-library-prep-kit-processing-sequencing-data-with-umis.pdf
 https://www.biostars.org/p/198143/
@@ -1794,6 +1813,7 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
 :PROPERTIES:
 :ID:       294edcbb-f306-4f94-9eba-e8a1c7c512f1
 :END:
+- cite:lee2004
 - cite:nguyen2002 
 **** RNA-seq                                                         :career:
 :PROPERTIES:
@@ -3320,6 +3340,11 @@ CLOCK: [2021-02-17 Wed 09:23]--[2021-02-17 Wed 09:35] =>  0:12
 CLOCK: [2021-02-17 Wed 09:08]--[2021-02-17 Wed 09:18] =>  0:10
 CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 :END:
+******* [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO Extracellular RNA biology]]
+******* Design
+- what depth? https://www.researchgate.net/post/how_many_million_reads_for_miRNA_discovery
+- reads per sample
+    - https://www.qiagen.com/us/resources/faq?id=a119d5f0-0a2a-4612-828e-d8fa3cc37891&lang=en
 ******* [[id:b2873d1a-837b-4927-b8cf-8a27e42d7bea][LINK TO small RNA extraction]]
 :PROPERTIES:
 :ID:       dfc3a8a2-e4c4-4043-af71-2db93128c18e
@@ -3328,14 +3353,17 @@ CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 :PROPERTIES:
 :ID:       4df90313-39e4-44ed-83cd-b98453e18358
 :END:
-******* [[id:71289eeb-a929-44bd-a46e-a0c3dcd7a8f4][small RNA library preparation]]
+******* [[id:71289eeb-a929-44bd-a46e-a0c3dcd7a8f4][LINK TO small RNA library preparation]]
 :PROPERTIES:
 :ID:       a65f74ea-8211-4a51-97a3-a03f5bebb31b
 :END:
+******* [[id:95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88][LINK TO miRNA data]]
 ******* Bioinformatics
 :PROPERTIES:
 :ID:       f46e278c-dd38-4603-9fa2-a973823e1333
 :END:
+- cite:buschmann2016
+- https://link.springer.com/protocol/10.1007%2F978-1-4939-9042-9_4
 ******** Pre-processing
 :PROPERTIES:
 :ID:       0c7d62b9-6ef4-43d1-8e21-c3aa536125bd
@@ -3355,6 +3383,8 @@ CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 :ID:       d657a691-e338-44ad-96e4-47b4b18a03d2
 :END:
 - alignment to miRbase needs to be more conservative to avoid mismatches
+******** QC
+https://exrna.org/resources/data/data-quality-control-standards/
 ******** [[id:853dd34c-27be-4be8-9794-19f04a1e22b0][LINK TO Quantification and normalization]]
 :PROPERTIES:
 :ID:       9a349ccd-3d29-46b7-b4fa-71693d32c674
@@ -3396,7 +3426,9 @@ cite:buschmann2016 pg6011
 :PROPERTIES:
 :ID:       07055c47-6e24-4f59-bce4-0ab91a7f5377
 :END:
-- genboree / exceRpt
+- miRDeep2 / miRDeep 
+  - cite:friedlander2012
+- exceRpt / genboree 
   - http://github.gersteinlab.org/exceRpt/
   - using 
     - cite:godoy2018
@@ -3408,8 +3440,6 @@ cite:buschmann2016 pg6011
   - cite:lu2018mirge  
   - https://github.com/mhalushka/miRge
     - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-018-2287-y
-- miRDeep2
-  - cite:friedlander2012
 - sRNAbench
   - https://academic.oup.com/nar/article/47/W1/W530/5494756
   - https://bioinfo2.ugr.es/ceUGR/srnabench/
@@ -3420,9 +3450,25 @@ cite:buschmann2016 pg6011
 :PROPERTIES:
 :ID:       55212621-170f-41aa-b9b5-b1c00385ffe6
 :END:
+******** Extracellular RNA bioinformatics
+:PROPERTIES:
+:ID:       cbf67ef7-39ec-45ec-b599-cdc0e8590cf7
+:END:
+- spike ins use
+  - cite:godoy2019 
+  - cite:giraldez2018 
+- pipelines
+  - exceRpt 
+    - used in
+      - cite:godoy2019 
+      - cite:giraldez2018 
+    - cite:rozowsky2019 
+    - http://github.gersteinlab.org/exceRpt/ 
+- cite:max2018 
 - exRNA and exosomal RNA
   - cite:juzenas2017
-******* miRNA-seq
+- cite:yeri2017
+******** miRNA-seq
 :PROPERTIES:
 :ID:       903f32d8-bd13-496c-8d5c-26a63455936a
 :END:
@@ -3430,6 +3476,7 @@ cite:buschmann2016 pg6011
 CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :END:
 http://apps.pathology.jhu.edu/mirnaprogram/links/http://apps.pathology.jhu.edu/mirnaprogram/links/
+- cite:chen2019mirna
 - cite:pritchard2012
   - citing, times cited WOS:        
     - cite:braunwald2013
@@ -3452,22 +3499,17 @@ http://apps.pathology.jhu.edu/mirnaprogram/links/http://apps.pathology.jhu.edu/m
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
 - https://www.google.com/search?q=mirna+isoform+discovery+depth
 - https://www.google.com/search?q=mirna+multiqc   
-******* Reference
+******* General reference
 :PROPERTIES:
 :ID:       65a85f59-afd5-4c6b-a785-9b6269cc7a51
 :END:
-- cite:chen2019mirna
-- cite:mestdagh2014
-- [[id:219c5d52-6eac-43b3-b934-d0eff91a9b6c][LINK TO small RNA]]
-- cite:buschmann2016
-- https://link.springer.com/protocol/10.1007%2F978-1-4939-9042-9_4
+- miRQC cite:mestdagh2014
 - cite:mehta2014
+- [[https://www.biostars.org/t/smallrna/?sort=votes&limit=all%20time][biostars small RNA]]
+- cite:korpelainen2015 chapter 12
 - best practices
   - https://www.encodeproject.org/data-standards/rna-seq/small-rnas/
-- general reference
-  - [[https://www.biostars.org/t/smallrna/?sort=votes&limit=all%20time][biostars small RNA]]
-  - cite:korpelainen2015 chapter 12
-- see mirbase in [[id:FCBA0863-010A-448C-A33C-941D2AA45AD5][databases, data sets, and database browsers]]
+
 
 ***** reference
 :PROPERTIES:
