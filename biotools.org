@@ -3496,6 +3496,7 @@ cite:buschmann2016 pg6011
 :LOGBOOK:
 CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :END:
+- see for read collapse https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0143066
 - [[id:5d9593fd-f083-450f-a510-449aa15ae670][LINK TO miRNA biology]]
 - normalization
   - https://academic.oup.com/bib/article/16/6/950/226343
@@ -4009,140 +4010,8 @@ https://www.reddit.com/r/bioinformatics/comments/ahbzg5/how_do_people_turn_their
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
-- tophat2 notes- https://www.biostars.org/p/251018/
-- picard
-  - [[https://broadinstitute.github.io/picard/command-line-overview.html][Broad Picard Command Line Overview]]
-  - [[https://www.broadinstitute.org/videos/broade-mapping-processing-and-duplicate-marking-picard-tools][Broad Processing and Duplicate mapping with Picard]]
-  - [[https://broadinstitute.github.io/picard/explain-flags.html][picard explain sam flags]]
-- BLAT
-  - https://www.youtube.com/watch?v=E6DDNGDXH8A
-*** snakemake
-:PROPERTIES:
-:ID:       a8b27140-4b9e-40c5-86ab-ee5afeae723f
-:END:
-#+name: 
-#+begin_src bash :tangle no
-source ~/repos/biotools/src/functions.sh
-docker_interactive
-biotools
-
-#
-mkdir -p /tmp/snakemake-tutorial
-cd /tmp/snakemake-tutorial
-#
-wget https://github.com/snakemake/snakemake-tutorial-data/archive/v5.24.1.tar.gz
-#
-tar --wildcards -xf v5.24.1.tar.gz --strip 1 "*/data" "*/environment.yaml"
-ls
-
-#
-snakemake --help
-
-snakemake -np mapped_reads/A.bam
-#+end_src
-- https://reproducibility.sschmeier.com/index.html
-- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
-- [[https://snakemake.readthedocs.io/en/stable/index.html][documentation]]
-  - [[Snakemake Tutorial][Snakemake Tutorial]]
-  #+name: snakemake_tutorial
-#+begin_src bash :tangle no
-sudo apt-get install singularity-container
-
-cd ~/snakemake-tutorial/
-
-conda activate snakemake-tutorial
-
-
-snakemake -p --cores 2 sorted_reads/{A,B}.bam
-#    --dry-run \
-
-snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
-
-expand("sorted_reads/{sample}.bam", sample=SAMPLES)
-
-snakemake -p --cores 2 plots/quals.svg
-
-snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
-
-snakemake --cores 20 --forceall --summary
-
-snakemake --cores 20 --forceall
-
-conda install pygraphviz
-
-snakemake --report report.html
-
-open report.html
-
-snakemake --cores 20 --forceall
-#+end_src
-  - https://snakemake.readthedocs.io/en/stable/tutorial/basics.html#step-1-mapping-reads
-- docker https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html?highlight=docker#running-jobs-in-containers
-- https://snakemake.readthedocs.io/en/stable/index.html
-*** table of tools
-:PROPERTIES:
-:ID:       a0923938-4021-44cd-a8f3-94c0eb10cdb5
-:END:
-| tool           | function         | input     | repo   | doc      | paper | paper(local)           |
-|----------------+------------------+-----------+--------+----------+-------+------------------------|
-| - [[https://github.com/vsbuffalo/scythe][Scythe]]       |                  |           |        |          |       |                        |
-| [[http://hannonlab.cshl.edu/fastx_toolkit/commandline.html][FASTX-Toolkit]]  |                  |           |        |          |       |                        |
-| annovar        |                  |           |        | [[http://annovar.openbioinformatics.org/en/latest/][doc]]      |       |                        |
-| annotationDb   |                  |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf][doc]]      |       |                        |
-| Ballgown       |                  |           |        |          | [[https://www.nature.com/articles/nprot.2016.095][paper]] |                        |
-| BEDtools       |                  |           |        | [[http://bedtools.readthedocs.io/en/latest/][doc]]      |       | cite:quinlan2010       |
-| BLAT           |                  |           |        |          |       |                        |
-| BLAT           |                  |           |        |          |       |                        |
-| bowtie2        |                  |           | [[https://sourceforge.net/projects/bowtie-bio/files/][src]]    | [[http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer][doc]]      |       |                        |
-| CNVkit         | copy#            | bam       | [[https://github.com/etal/cnvkit/tree/fd3555256d2a5aa3978c475d19c88065be68c6c4][repo]]   | [[https://cnvkit.readthedocs.io/en/stable/index.html][doc]]      | [[https://doi.org/10.1371/journal.pcbi.1004873][paper]] |                        |
-| complexheatmap |                  |           |        |          |       |                        |
-| data-slicer    |                  |           |        | [[http://www.1000genomes.org/data-slicer][site]]     |       |                        |
-| deepTools      |                  |           |        | [[https://deeptools.readthedocs.io/en/latest/content/example_usage.html][site]]     |       |                        |
-| DESeq2         | diff express     |           |        |          |       | cite:love2014          |
-| edgeR          | diff express     |           |        | [[https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf][vignette]] |       | cite:robinson2010      |
-| fastp          | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]]           | fastq     | [[https://github.com/OpenGene/fastp][repo]]   |          | [[https://watermark.silverchair.com/bty560.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAAuEwggLdBgkqhkiG9w0BBwagggLOMIICygIBADCCAsMGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMUQnq5IYxgkrFnt0WAgEQgIIClChzxtpO28QYuBn1woUVAMnQOwkPRZWSY20cwnzbVuF3DlOcpwjeNjNrO_ixNp6csW5pOdBZ81CHjV65BMcqsZmP9KOT-yVGy4r_7mWKLuzm7Siid24pM9-xF3k7y1RoBK4-PrnZgzp-J1svrUvOZAphbBPmsezuOowSuj9o9EZyTciDJbUQ2klUbYSRDO_InWNOVu23eOzGpJQwer81BL2iS8TsCfeWF-eZtzNBRuZZr1UZ2PhX_mVQGu4bHvKn1Bmoe64CFYkEJGLoka87zVVfo--J_hAledjiW1_-wEj8kZSyb2diZoP9ABDGOJA6aQ7fzx8qNGgNAb_oK-uAmEdfAfepI_0LECDdlk9EIxIJITC-Z59gk_vNVophJOydBimGZHFK0iACl-N-nZNALjIqRXeRmqOxcEdRFmNy6onzLalfCV0wyqFae42JIVzEYFSLW1oQVC0ugMfKTTmOfysRZ8-4bboBo1UbskpGVlKvrSBTFuDyvuBlPoUTECbOrO6bsdeNk8yfTMTeMQzNzOzZYZ1mQVCULZtuE_YDCuKmwukT3EeUy8iOJbp7pD2Ew5kphJ9q0sV-_io3h0jBZEdJmUr6dTPSRcv56pLP6gtqso6ZdB9bWk3sFNt--tBwIGhQvnLXgyV7xGqRYNPrDeMbs2tPLlK-v4D8XKj-BHGi1sOVuzL1rCvFve0knpL4btsqw_BDp8P2XuFDyp0OOXtmE3dKJktLR0QyQZ3u4-aKksDMfkqrglbPoBjEhInpdpfiDQbEDTFO9qiaL9iajdsV8T636x_KHXpdGkFqO3GpcFyJv1QJyPW2qhAXuneiqWx6t60pJ8f0IyAzRV9BIUoQ4B3soV9TXIuSP171Tf0JYmcY5Q][paper]] | cite:chen2018b         |
-| seqTools       | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]]           |           |        | [[https://www.bioconductor.org/packages/release/bioc/vignettes/seqTools/inst/doc/seqTools.pdf][seqTools]] |       |                        |
-| [[id:0a319950-3215-4846-a020-a08b78f3323d][FastQC]]         | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]]           |           |        | [[https://www.bioinformatics.babraham.ac.uk/projects/fastqc/INSTALL.txt][site]]     |       |                        |
-| featureCounts  |                  |           |        |          | [[https://watermark.silverchair.com/btt656.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAApgwggKUBgkqhkiG9w0BBwagggKFMIICgQIBADCCAnoGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMofurkoV2NWsQqlelAgEQgIICS7iktDnfv1X3fe1vdQQcXCS09zT549UGvBjDCLHoNebBGfiQi_Eo7ZjUHVH_Yay_p1DlFd4eDeXU4WEX6HTQ-MzPqmtZ6RMGegyEptsqxaLnvr3QfpGO6WRT01dViqp6xya9-CqCRGV3E7F37VruIYzZEFjr-2svIgoRydPyF4pkSzA2hkvwV_g-JT2YSnqboZ5DOGtwZXeMaLKf48_aEpuYemRUx8VqOfM8xnOm4_jumLGd_BBqCCv6brLX8z3WVJpWfJ4YfpJXhemFRt8mSvIsAe9pYXV52W7-psxHlM2ocXzdD_7vLSD7iy1NocDXWLFT5HRH_Cq8NyiRq1s4Mq-QYuvQJFlTxWArVC6vdpE40bDr9slGD6KTJ0DpUQeC52q-aoKJXr9Y7Pi2SDo881eFuJxTWuSuMjxcXStn9MkPKZfcKa10Vu4CdJSSnvJAKAvd4GsshsfCVGCvkgy4ZfEabo5nOZaB82UYC-8AZEpdbD3RtJg1FUQJHDz0tlY-2gZYf2VB3KU1JK4wZcHzn8T8R5BSChB6MjFrRdTZeo3M8-ZIK3eWQGH2vLj8_bPsYlBF-wfj2JzSG3zJGgUUa_rSBzoK8Vvw8k_BPxCq63h6u-k49l-X0o-MO6f8mOdm_YliTT0dWu_ujvlbXMw9AIBrKjwBJncq27EwMOX0shm8nnzPMoPTfOzoekZR2nYTDPayGjHhqkAs6haFAQrI8XAAd0PfbMtW4l54ArULWEH6hCVxzDX8_h8F8oWgOc_3h2ktpbTLNsiX6Bxj][paper]] |                        |
-| G2P            |                  |           |        |          | [[https://www.nature.com/articles/s41467-019-10016-3][paper]] |                        |
-| GAGE           | enrichment       | express   |        |          | [[https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-10-161][paper]] |                        |
-| GATK           |                  |           |        | [[https://software.broadinstitute.org/gatk/documentation/][doc]]      |       |                        |
-| GISTIC2        | copy# diff       |           |        | [[http://portals.broadinstitute.org/cgi-bin/cancer/publications/pub_paper.cgi?mode=view&paper_id=216&p=t][site]]     |       |                        |
-| GSEA           |                  |           |        |          | [[https://www.pnas.org/content/102/43/15545.full][paper]] |                        |
-| GSNAP          |                  | fastq     |        | [[http://research-pub.gene.com/gmap/src/README][doc]]      |       | cite:mathe2016         |
-| histat2        |                  | fastq     |        | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]]      |       |                        |
-| ichorCNA       | copy#            | wig       | [[https://github.com/broadinstitute/ichorCNA][repo]]   | [[https://github.com/broadinstitute/ichorCNA/wiki][doc]]      | [[https://www.nature.com/articles/s41467-017-00965-y][paper]] | cite:adalsteinsson2017 |
-| Integrate      | rna fusion       | bam       |        |          |       | cite:zhang2014a        |
-| limma          | diff express     | count     |        |          | [[https://dx.doi.org/10.1093%2Fnar%2Fgkv007][paper]] |                        |
-| MultiQC        | seq QC agg       |           | [[https://github.com/ewels/MultiQC][github]] | [[https://multiqc.info/docs/][doc]]      |       |                        |
-| oligocalc      |                  |           |        | [[http://www.basic.northwestern.edu/biotools/oligocalc.html][site]]     |       |                        |
-| picard         |                  |           |        | [[https://broadinstitute.github.io/picard/index.html][doc]]      |       |                        |
-| polyester      | RNA simulation   | fasta,gtf |        | [[http://bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html][vignette]] |       |                        |
-| rnaseqc        | rnaseq qc        | bam       | [[https://github.com/broadinstitute/rnaseqc][repo]]   | [[https://github.com/broadinstitute/rnaseqc][repo]]     |       |                        |
-| rsem           | transcript quant | bam       | [[https://github.com/deweylab/RSEM][repo]]   |          | [[https://doi.org/10.1186/1471-2105-12-323][paper]] | cite:li2011            |
-| RSeQC          | rnaseq qc        | bam       |        | [[http://rseqc.sourceforge.net/][repo]]     | [[https://doi.org/10.1093/bioinformatics/bts356][paper]] | cite:wang2012          |
-| salmon         | transcript quat  |           |        |          |       |                        |
-| sambamba       |                  | bam       |        | [[http://lomereiter.github.io/sambamba/docs/sambamba-view.html][online]]   |       |                        |
-| samtools       |                  | bam       |        | [[http://www.htslib.org/doc/samtools.html][online]]   |       |                        |
-| scVelo         | RNA velocity     |           |        | [[https://scvelo.readthedocs.io/][site]]     |       |                        |
-| seqtk          |                  |           | [[https://github.com/lh3/seqtk][github]] | [[https://github.com/lh3/seqtk/blob/master/README.md][README]]   | NA    | NA                     |
-| simNGS         | sim reads        | none      |        | [[https://www.ebi.ac.uk/goldman-srv/simNGS/][website]]  |       |                        |
-| STAR           |                  |           |        | [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]      |       | cite:dobin2019         |
-| tophat2        |                  |           |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                        |
-| tximport       |                  |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
-| WGCNA          |                  |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] | cite:langfelder2008    |
-|                |                  |           |        |          |       |                        |
-*** polyester
-:PROPERTIES:
-:ID:       065725b4-43d3-48d4-a4e2-3ca5c1e1e6fd
-:END:
-  - https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
-
-*** tool collections
-:PROPERTIES:
-:ID:       7cce7be9-b3ac-4127-9a92-71559617588e
-:END:
-- [[https://www.ebi.ac.uk/services][EMBL-EBI Tools]]
+*** bowtie
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3010897/
 *** BBmap / BBSplit 
 :PROPERTIES:
 :ID:       52363054-5138-419c-8d45-4ec9b0b02b24
@@ -4154,187 +4023,8 @@ snakemake --cores 20 --forceall
 - http://seqanswers.com/forums/showthread.php?t=41288
 - [ ] BBSplit in BBmap - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwJZJWQrGSPgdPGNfStWbxXkmhP][email]]]]
 - https://www.google.com/search?q=bbmap+docker use bioconda
-*** pathvisio
-:PROPERTIES:
-:ID:       17c865dc-765c-496d-b5c7-60d3d3439de3
-:END:
-https://pathvisio.github.io/
-- to switch to java 8 https://askubuntu.com/questions/1133216/downgrading-java-11-to-java-8
-*** UCSC table browser
-:PROPERTIES:
-:ID:       be612cfb-2a75-4935-92fd-85620dcabf92
-:END:
-- ucsc
-  - table browser
-    - https://genomebrowser.wustl.edu/goldenPath/help/hgTextHelp.html#Introduction
-  - https://www.biostars.org/p/19029/
-  - http://genome.ucsc.edu/FAQ/FAQreleases.html
-  - cite:karolchik2011
-*** Cytoscape
-:PROPERTIES:
-:ID:       46cf789e-d185-46da-bb32-8cf6113f3425
-:END:
-- [[http://manual.cytoscape.org/en/stable/index.html][documentation]]
-- https://stackoverflow.com/questions/tagged/cytoscape
-*** GSEA
-:PROPERTIES:
-:ID:       D68E1182-1F7B-4160-A6DD-BD2635F8085F
-:END:
-:LOGBOOK:
-CLOCK: [2020-11-17 Tue 09:56]--[2020-11-17 Tue 12:07] =>  2:11
-CLOCK: [2020-10-26 Mon 13:01]--[2020-10-26 Mon 13:55] =>  0:54
-CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
-:END:
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6607905/
-- leading edge https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5066188/
-- [[https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideTEXT.htm#_Consistent_Feature_Identifiers_Acro][documentation]]
-  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/FAQ#Why_does_GSEA_use_a_false_discovery_rate_.28FDR.29_of_0.25_rather_than_the_more_classic_0.05.3F][FDR discussion]]
-  - FAQ
-    - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/FAQ#What_array_platforms_and_organism_species_does_GSEA_support.3F][using for mouse data]]
-  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Using_RNA-seq_Datasets_with_GSEA][RNA-seq data]]
-    - with RNA-seq, use TMM
-  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats][file formats]]
-    - GMT: gene matrix transposed file (*.gmt)
-    - chip files ftp://ftp.broadinstitute.org/pub/gsea/annotations (use ENSEMBL)
-  - [[https://www.gsea-msigdb.org/gsea/msigdb/search.jsp][gene sets]]
-- gene sets for mouse GSEA
-  - https://cran.r-project.org/web/packages/msigdbr/vignettes/msigdbr-intro.html
-  - recent, high impact papers citing MSigDB and aligning to mm10
-    - https://science.sciencemag.org/content/352/6288/aad3018
-    - http://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC5924693&blobtype=pdf
-    - https://www.cell.com/cell/pdf/S0092-8674(17)31385-5.pdf
-    - https://stm.sciencemag.org/content/scitransmed/suppl/2018/01/12/10.424.eaan5488.DC1/aan5488_SM.pdf
-- used in 
-  - [[id:e4351ef3-6d41-4121-a2cc-c63d89f997ac][pathway analysis]]
-  - [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][RNA-seq coexpression]]
-- processes
-  - download data
-  - file creation and formatting
-    - see to create .rnk file https://github.com/BaderLab/EM-tutorials-docker/blob/master/R_scripts/supplemental_protocol2_rnaseq.R
-- [[https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp][MSigDB]] [[https://data.broadinstitute.org/gsea-msigdb/msigdb/][data]]
-- [[https://enrichmentmap.readthedocs.io/en/docs-2.2/QuickStartGuide.html][enrichement map]]
-  - https://enrichmentmap.readthedocs.io/en/latest/Parameters.html
-- platforms
-  - online http://www.webgestalt.org/
-  - R implimentation: [[https://bioconductor.org/packages/release/bioc/html/fgsea.html][fast GSEA]] 
-    #+name:
-    #+begin_src R :tangle no
-  setwd("~/repos/biotools")
-  source("./src/setup.R")
-  #+end_src
-- [[http://software.broadinstitute.org/cancer/software/genepattern/modules/docs/ssGSEAProjection/4][ssGSEA]] calculates enrichment for each sample-gene set pair
-- cite:mootha2003 
-*** Trim Galore 
-:PROPERTIES:
-:ID:       3e4ca528-a604-4bfe-b235-2052e6d2d4a9
-:END:
-- 
-  - wrapper for Cutadapt and FastQC
-  - [[https://github.com/FelixKrueger/TrimGalore][github]]
-    - [[https://github.com/FelixKrueger/TrimGalore/blob/master/Docs/Trim_Galore_User_Guide.md][user guide]]
-  - on CHPC cluster - http://mgt2.chpc.wustl.edu/wiki119/index.php/Software
-- https://github.com/FelixKrueger/TrimGalore
-
-*** fastqc
-:PROPERTIES:
-:ID:       0a319950-3215-4846-a020-a08b78f3323d
-:END:
-- FastQC
-  - [[https://www.youtube.com/watch?v=bz93ReOv87Y][Intro video]]
-  - interpretation
-    - Per sequence GC content- spikes mean contaminants
-    - will only track first 200000
-    - base quality
-      - Phred vs. read position (goal is >20 or 1 error in 100 bases)
-      - Phred histogram- look for single population or filter second population
-      - Base position vs. frequency of nucleotide
-    - per nucleotide    
-      - [[http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/5%20Per%20Sequence%20GC%20Content.html][Per sequence GC content]]
-      - Secondary peak = contamination- see overrepresent sequences 
-    - [[http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/8%20Duplicate%20Sequences.html][Duplicate sequences]]
-      - Broad oversequencing -> high flat line
-      - Specific enrichments - spikes
-        - Possible reasons
-          - Technical (PCR) duplication
-          - Biological duplication- common in RNA-seq where you are re-sequencing the common sequences 
-      - Warning at 20%, failure @ 50%
-    - [[http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/11%20Kmer%20Content.html][Kmer content]]
-      - for partial sequences in a variety of longer sequences 
-- https://sequencing.qcfail.com/software/fastqc/
-- https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=The%20output%20from%20FastQC%2C%20after,or%20%E2%80%9CFail%E2%80%9D%20is%20assigned.
-- cite:williams2014 for a FastQC aggregator Perl script 
-- [[https://www.biostars.org/p/56088/#56102][Fastq Quality Read And Score Length Check]]
-***** fastq (base call + quality)
-:PROPERTIES:
-:ID:       4361C444-1EFD-492C-B108-69066D87C37F
-:END:
-
-[[file:work.org_imgs/20160405_091950_53267u_I.png]]
-illumina fastq
-read in galaxy or textwrangler 
-each block has 4 elements so 4 lines
-sequence identifier @EAS4_6_R1
-actual sequence CTGGTGGGAGRRGG
-sequence name again (optional) or +
-base quality ;;;;3;;;;;;;;;;;;;;7;;;;;;;;898
-via ASCII 33
-Phred scaled Q
-Phred value = -10*log(10)(error rate)
-90% confident is Q10
-99% is Q20
-99.9 is Q30
-
-****** Adding sequences to a fasta- just cat
-:PROPERTIES:
-:ID:       8D135E1A-815D-4551-B636-94A4DB44D0BB
-:END:
-
-****** Ideas
-:PROPERTIES:
-:ID:       4FC3F4EA-880B-4585-8882-9EC88197B456
-:END:
-
-******* Can I remove sequences from paired end fastq to shorten file for testing?
-:PROPERTIES:
-:ID:       45E50579-D180-4549-A60F-A4C559F25641
-:END:
-
-I didn't find anything googling this, but it appears if the fastas have the same order, then I can just trim them 
-
-*** samtools
-:PROPERTIES:
-:ID:       0a3acec7-f4d1-4cd1-b3c8-7ec769715cc1
-:END:
-- [[http://biobits.org/samtools_primer.html][another Samtools tutorial]]
-**** commands
-:PROPERTIES:
-:CREATED:  [2019-04-26 Fri 10:32]
-:ID:       31C15E78-2EAE-4D54-94FF-91A5AF05190A
-:END:
-
-- commands
-  - sequence inspection and quality
-    | function                              | command                                       |
-    |---------------------------------------+-----------------------------------------------|
-    | <35>                                  | <35>                                          |
-    | see     bam header                    | view -H                                       |
-    | see bam header and top seq in sam/bam | samtools view -h <FILE.bam> \vert head -n 100 |
-    | see ?                                 | idxstats                                      |
-    |                                       |                                               |
-  - sequence file manipulations
-    |-------------------+---------------------------------------------------|
-    | function          | command                                           |
-    |-------------------+---------------------------------------------------|
-    | check bam EOF     | samtools quickcheck <.bam>                        |
-    | merge bams        | samtools merge all.bam *.bam                      |
-    | random sample bam | samtools view -s 0.5 -b file.bam >random_half.bam |
-    | split by chrom    | samtools view -b <FULL.bam> chr1 > chr1.bam       |
-    | merge             | samtools merge <OUT.bam> <IN1.bam> <IN2.bam>      |
-    | trim by quality   | -q INT                                            |
-    | bam to sam        | samtools view -h -o out.sam in.bam                |
-    | sam to bam        | samtools view -bS test.sam > test.bam             |
-    | remove unmapped   | samtools view -h -F 4 file.bam                    |
-
+*** BLAT
+  - https://www.youtube.com/watch?v=E6DDNGDXH8A
 *** canvas
 :PROPERTIES:
 :ID:       74ef57cd-c44a-4f28-b4a1-5a54a82ce5a3
@@ -4351,77 +4041,6 @@ https://github.com/Illumina/canvas
 :ID:       6fdb7ece-efbb-4523-a7a5-7dd594d199dd
 :END:
 - https://cytotrace.stanford.edu/
-*** multiqc
-:PROPERTIES:
-:ID:       3e585de3-3b67-4fe3-9f15-ed4e07778d09
-:END:
-  - - see for better multiqc handling- https://github.com/nextflow-io/rnaseq-nf/blob/3b5b49f/main.nf#L41-L48
-*** rsem
-:PROPERTIES:
-:ID:       85db5c34-b5fd-4b6c-bdb7-88263e553ba3
-:END:
-- cite:li2011
-- https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
-- documentation
-  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
-  - https://github.com/ENCODE-DCC/long-rna-seq-pipeline/blob/master/DAC/STAR_RSEM.sh
-  - http://deweylab.biostat.wisc.edu/rsem/rsem-calculate-expression.html
-  - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
-  - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
-  - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
-*** STAR
-:PROPERTIES:
-:ID:       d1d5d554-57c4-4b9c-8385-2bb72369375e
-:END:
-- used in [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][alignment]]
-- star-rsem pipeline
-  - cite:djebali2017
-*** INTEGRATE
-:PROPERTIES:
-:ID:       7519d47f-18e8-4a28-be11-9d081b68b52d
-:END:
-  - cite:zhang2016
-    - [[http://apps.webofknowledge.com/summary.do?product=WOS&parentProduct=WOS&search_mode=CitingArticles&qid=2&SID=6ERcSCYD7iSBCZMtAM7&&page=1&action=changePageSize&pageSize=50][WOS citing]]- no cfRNA yet 
-  - integrate
-    - cite:zhang2017c
-    - cite:zhang2016
-    - cite:zhang2016a
-    - cite:zhang2016a
-    - - cite:zhang2014a
-    - https://github.com/ChrisMaherLab/INTEGRATE-Vis/blob/master/README.md
-    for integrate, see - cite:li2020
-  
-*** gage
-:PROPERTIES:
-:ID:       9b222d1c-ab61-450c-8b77-a98ec3213867
-:END:
-- https://www.bioconductor.org/packages/devel/data/experiment/manuals/gageData/man/gageData.pdf
-- https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
-- http://amp.pharm.mssm.edu/Enrichr/help#basics
-*** gistic2 
-:PROPERTIES:
-:ID:       4f0b84ab-1dec-45c9-a7d4-bdce41e13150
-:END:
-https://www.genepattern.org/file-formats-guide
-
-segmentation file column 6 is log2(x)-1 of the copy number, so
-| interp  | copy number |   log2(x)-1 |
-|---------+-------------+-------------|
-| neutral |           2 |           0 |
-| gain    |           3 |        0.58 |
-| amp     |           4 |           1 |
-| loss    |           1 |          -1 |
-| del     |           0 | - inf -> NA |
-|         |             |             |
-
-- https://docs.cbioportal.org/5.1-data-loading/data-loading/file-formats#gistic-2-0-data
-- https://blindwith.science/2018/10/442.html/
-- http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
-*** complexheatmap
-:PROPERTIES:
-:ID:       af78e4e0-a184-480f-95ac-ce9a0db35246
-:END:
-- https://www.biostars.org/p/286187/#286507
 *** cnvkit
 :PROPERTIES:
 :ID:       b471102b-2e5a-4d67-97e6-b03cf4d923b9
@@ -4804,6 +4423,558 @@ do
 done
 
 
+*** complexheatmap
+:PROPERTIES:
+:ID:       af78e4e0-a184-480f-95ac-ce9a0db35246
+:END:
+- https://www.biostars.org/p/286187/#286507
+*** Cytoscape
+:PROPERTIES:
+:ID:       46cf789e-d185-46da-bb32-8cf6113f3425
+:END:
+- [[http://manual.cytoscape.org/en/stable/index.html][documentation]]
+- https://stackoverflow.com/questions/tagged/cytoscape
+*** DESeq2
+:PROPERTIES:
+:ID:       2F642F69-A9C8-46DA-BE31-783AC8D4F4B6
+:CREATED:  [2021-01-27 Wed 07:00]
+:END:
+:LOGBOOK:
+CLOCK: [2021-01-26 Tue 11:53]--[2021-01-26 Tue 13:00] =>  1:07
+:END:
+- [[file:~/Box%20Sync/library/Love,16%20DESeq2%20manual.pdf][Manual]]
+- vignettes
+  - [[https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#exploratory-analysis-and-visualization][gene workflow 19]]
+  - [[http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#using-parallelization][package vignette]]
+- handling nested designs https://support.bioconductor.org/p/64480/
+- https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
+- https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf
+- [[file:~/Box%20Sync/library/Love,14%20Moderated%20estimation%20of%20fold%20change%20and%20dispersion%20for%20RNA%20seq%20data%20with%20DESeq2.pdf][Love,14 Moderated estimation of fold change and dispersion for RNA seq data with DESeq2]]
+- a negative binomial GLM 
+- http://www.nathalievilla.org/doc/html/solution-DESeq2-rnaseq.html
+- import functions
+  | function          | package           | framework | output               | DESeq2 input function    |
+  | summarizeOverlaps | GenomicAlignments | R         | SummarizedExperiment | DESeqDataSet             |
+  | featureCounts     | Rsubread          | R         | matrix               | DESeqDataSetFromMatrix   |
+  | tximport          | tximport          | R         | list of matrices     | DESeqDataSetFromTximport |
+  | htseq-count       | HTSeq             | Python    | files                | DESeqDataSetFromHTSeq    |
+**** Examples- see [[file:~/Box%20Sync/comp_bio/deseq2_template/][deseq2_template]]
+:PROPERTIES:
+:ID:       5C8E2A3B-2C16-4FB3-9F86-5A1D8AD4802F
+:END:
+
+***** DONE Example 1: [[file:~/Box%20Sync/comp_bio/deseq2_template/Love,15%20RNA%20seq%20workflow%20gene%20level%20exploratory%20analysis%20and%20differential%20expression.pdf][Love,15 Airway]]
+CLOSED: [2016-06-27 Mon 14:45]
+:PROPERTIES:
+:ID:       791A1ABC-4138-4CD2-82AE-63905C053571
+:END:
+:LOGBOOK:  
+CLOCK: [2016-06-27 Mon 10:22]--[2016-06-27 Mon 10:37] =>  0:15
+CLOCK: [2016-06-23 Thu 09:22]--[2016-06-23 Thu 10:19] =>  0:57
+CLOCK: [2016-06-22 Wed 17:56]--[2016-06-22 Wed 18:30] =>  0:34
+CLOCK: [2016-06-22 Wed 14:50]--[2016-06-22 Wed 16:02] =>  1:12
+CLOCK: [2016-06-22 Wed 12:09]--[2016-06-22 Wed 12:57] =>  0:48
+CLOCK: [2016-06-22 Wed 11:40]--[2016-06-22 Wed 11:46] =>  0:06
+:END:      
+
+***** DONE Example 2: [[file:~/Box%20Sync/comp_bio/deseq2_template/https___software.rc.fas.harvard.edu_ngsdata_workshops_2015_March_DESeq2_fruitfly.pdf][Drosophila]]
+CLOSED: [2016-06-27 Mon 14:45]
+:PROPERTIES:
+:ID:       CC047BA0-35A3-420B-BB60-CA1AA7AE275B
+:END:
+
+https://software.rc.fas.harvard.edu/ngsdata/workshops/2015_March/DESeq2_fruitfly.html
+
+***** DONE Example 3: Hox
+CLOSED: [2016-06-28 Tue 13:48]
+:PROPERTIES:
+:ID:       97126EA4-E1CD-4CD5-9746-A7C9393DF712
+:END:
+
+http://www.gettinggeneticsdone.com/2015/12/tutorial-rna-seq-differential.html
+
+***** Example 4 [[file:~/Box%20Sync/comp_bio/Love,16%20Differential%20analysis%20of%20RNA%20seq%20data%20using%20the%20DESeq2%20package.pdf][Love,16 Differential analysis of RNA seq data the DESeq2 package]]
+:PROPERTIES:
+:ID:       61BDAC0E-3F02-482A-868E-93AC26B33361
+:END:
+:LOGBOOK:  
+CLOCK: [2016-06-22 Wed 11:15]--[2016-06-22 Wed 11:40] =>  0:25
+CLOCK: [2016-06-21 Tue 16:41]--[2016-06-21 Tue 16:59] =>  0:18
+CLOCK: [2016-06-21 Tue 15:33]--[2016-06-21 Tue 16:31] =>  0:58
+CLOCK: [2016-06-20 Mon 13:48]--[2016-06-20 Mon 14:21] =>  0:33
+CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
+:END:      
+
+****** Standard workflow
+:PROPERTIES:
+:ID:       ABBDC255-8B16-4598-AA75-6D0ADAD3E48E
+:END:
+
+******* Input data
+:PROPERTIES:
+:ID:       71704A3E-FEE2-4363-BA67-4CA68D516375
+:END:
+
+******** SummarizedExperiment input
+:PROPERTIES:
+:ID:       F4CCA76E-3FBE-4E20-B6DE-69FB848D7123
+:END:
+
+- DESeqDataSet
+  - is an extension of the RangedSummarizedExperiment class
+  - requires design formula
+    - ~ followed by variables w/ plus sign between
+    - put variable of interest at end of formula
+- Preferred count algorithm is summarizedOverlaps w/ mode="Union"
+
+******** Pre-filtering
+:PROPERTIES:
+:ID:       1D88E488-4AFA-4A0F-A994-3C1664B5D156
+:END:
+
+- by DESeq2
+  - on mean of normalized counts per gene- maximized genes w/ adjusted p value below a FDR of alpha 
+- (by user)
+  - increases processing speed and reduces memory
+  - b/ not necessary for DESeq2 function
+
+******* Exploring and exporting results
+:PROPERTIES:
+:ID:       B87063F9-4578-440B-BF94-9DF134AF438A
+:END:
+
+******** MA-plot
+:PROPERTIES:
+:ID:       BBEB1ADB-F328-4B7B-807D-F8C158D60083
+:END:
+
+- useful to look at how the DESeq2 function shrinkage performed
+- after calling plotMA, the identify function can interactively select dots
+- for unshrunken results, add addMLE=T to get a column called lfcMLE 
+
+******** Plot counts
+:PROPERTIES:
+:ID:       CB3647FE-90B2-47AD-8E89-AA206A6C207F
+:END:
+
+- plotCounts will give counts normalized by sequencing depth for a specific gene 
+
+******** p values set to NA
+:PROPERTIES:
+:ID:       F28D686F-0E61-42C9-81DB-6BD581223377
+:END:
+
+- all samples w/ zero counts
+- rows w/ extreme count outlier by Cook's distance
+- low mean normalized count (here only the p value will be NA) 
+
+******** Rich visualization and reporting of results- checkout Bioconductor packages [[http://bioconductor.org/packages/release/bioc/html/ReportingTools.html][ReportingTools]], regionReport, [[http://bioconductor.org/packages/release/bioc/html/Glimma.html][Glimma]], and pcaExplorer
+:PROPERTIES:
+:ID:       8CE69F91-1AFB-477A-996A-95212336AD6D
+:END:
+
+****** Data transformations and visualization
+:PROPERTIES:
+:ID:       99C0CCAA-43A0-4E37-8C72-98617C51D928
+:END:
+
+******* Count data transformations
+:PROPERTIES:
+:ID:       3E7192A1-175C-4D3A-A5E7-08D6CC64DCEC
+:END:
+
+- transformations for EDA
+  - pseudocounts: y=log2(N+No)
+  - log2-based alternatives
+    - find experiment-wide trend in variabnce/mean and remove dependnece of variance on mean 
+    - rlog
+    - VST (variance stabilizing transformations) 
+
+******** Blind dispersion estimation
+:PROPERTIES:
+:ID:       BFA60D58-A2E6-49F4-9912-2CF15D0BD356
+:END:
+
+- blind to sample information is default
+- change if many/most genes will have large differences- can be checked with MA over-shrinking 
+
+****** Variations to the standard workflow
+:PROPERTIES:
+:ID:       7A2DB9FE-8DE5-481A-9C1A-4F26DC867582
+:END:
+
+******* Contrasts
+:PROPERTIES:
+:ID:       A6AC8C5D-8828-4B96-BDB4-760B1F0DE0BA
+:END:
+
+- Contrast
+  - i.e. w/ levels A,B,C, test all possible differences of A vs B, A vs C, B vs C, ... 
+  - linear combination of estimated log2 fold changes
+
+******* Interactions- tests whether log2 fold change attributable to one condition is different based on another condition
+:PROPERTIES:
+:ID:       E2EE7973-FFB1-4842-83E8-665DCCA8F2C9
+:END:
+
+******* Likelihood ratio test
+:PROPERTIES:
+:ID:       F15FCEE5-B88F-4712-B3B1-03C576F8E44F
+:END:
+
+- Wald test asks if log2 fold change b/w groups is zero based on mean and SE
+- LR
+  - asks whether full model (w/ groups) and reduced model (w/ some terms removed) are different
+  - like a ANOVA except this is analysis of deviance
+
+******* Approach to count outliers
+:PROPERTIES:
+:ID:       682697F8-D316-4A04-9B6D-8BCB0261DE15
+:END:
+
+- Cook's distance- for how much single sample is influencing fitting coefficients
+  - automatic in results function
+  - requires at least 3 replicates
+  - @ >6 samples, instead of eliminating gene, the outlier is replaced w/ the trimmed mean over all samples
+  - not run when continuous variables are in the design 
+
+******* Independent filtering of results
+:PROPERTIES:
+:ID:       0778E394-2A3A-4952-9126-668AC8162D3A
+:END:
+
+results function maximizes p values less than * over quantiles of mean normalized counts
+
+******* Tests of log2 fold change above or below a threshold
+:PROPERTIES:
+:ID:       70E0F04B-9D6B-4C11-A34E-6EE2FB008185
+:END:
+
+******* Access to all calculated values
+:PROPERTIES:
+:ID:       60580A3B-7A73-45A0-984F-0E83E5B6F2EC
+:END:
+
+******* Sample-/gene-dependent normalization factors
+:PROPERTIES:
+:ID:       BB95C4F2-763B-447D-A840-372588D43C79
+:END:
+
+******* “Model matrix not full rank”
+:PROPERTIES:
+:ID:       7F14D356-858D-46DD-9044-C1A6CD2F8A08
+:END:
+
+******** Linear combinations
+:PROPERTIES:
+:ID:       D9625DD4-D506-4E43-836D-9E0CDDCB9A79
+:END:
+
+******** Levels without samples
+:PROPERTIES:
+:ID:       E65BA44B-FBA9-4A05-93B0-1246608C3754
+:END:
+
+****** Theory behind DESeq2
+:PROPERTIES:
+:ID:       C0765E52-718B-4771-9ECC-3689EE7CAA21
+:END:
+
+******* The DESeq2 model
+:PROPERTIES:
+:ID:       08949A97-2A7C-4D21-A9EB-811440E003A8
+:END:
+
+******* Changes compared to the DESeq package
+:PROPERTIES:
+:ID:       41E50955-4ADF-4560-ACD0-86F58F544033
+:END:
+
+******* Methods changes since the 2014 DESeq2 paper
+:PROPERTIES:
+:ID:       1D28C489-FF28-4112-B9B9-70C09D382608
+:END:
+
+******* Count outlier detection
+:PROPERTIES:
+:ID:       14989EE3-4903-4FCB-A270-E3BAFFCD6EFA
+:END:
+
+******* Contrasts
+:PROPERTIES:
+:ID:       45C7C99A-DC18-4293-9381-878DE892D84A
+:END:
+
+******* Expanded model matrices
+:PROPERTIES:
+:ID:       FBAAB9AE-7D25-43A5-9363-766F84F32198
+:END:
+
+******* Independent filtering and multiple testing
+:PROPERTIES:
+:ID:       EB54BD27-FD99-45DD-B671-8BBEB06857FE
+:END:
+
+******** Filtering criteria
+:PROPERTIES:
+:ID:       4705CA0F-C007-4503-A898-74E946304812
+:END:
+
+******** Why does it work?
+:PROPERTIES:
+:ID:       BA1FC087-AAF6-4116-9B86-0B0B4BBC5FDB
+:END:
+
+****** Frequently asked questions
+:PROPERTIES:
+:ID:       7A2CF9E1-0C06-45FF-9637-C085CC6F15A0
+:END:
+
+******* How can I get support for DESeq2?
+:PROPERTIES:
+:ID:       B5ADEA5D-15C6-4449-B15F-908E63118B76
+:END:
+
+******* Why are some pvalues set to NA?
+:PROPERTIES:
+:ID:       3D889B88-07E4-4D2C-91F1-58CCF54C9C2C
+:END:
+
+******* How can I get unfiltered DESeq results?
+:PROPERTIES:
+:ID:       A4107221-A74A-4E79-AC6E-057F5CAB86DF
+:END:
+
+******* How do I use the variance stabilized or rlog transformed data for differential testing?
+:PROPERTIES:
+:ID:       F6C4F4CE-03E9-46FC-8F9A-EF915DF7FEF2
+:END:
+
+******* Can I use DESeq2 to analyze paired samples?
+:PROPERTIES:
+:ID:       DA9671DE-23CE-4603-9077-0F8576CEECBF
+:END:
+
+******* If I have multiple groups, should I run all together or split into pairs of groups?
+:PROPERTIES:
+:ID:       5384671F-9FF2-4589-80E4-7B6E7AA681FF
+:END:
+
+******* Can I run DESeq2 to contrast the levels of 100 groups?
+:PROPERTIES:
+:ID:       355A5DC0-1A35-4315-8DEB-4C2275EA9A7C
+:END:
+
+******* Can I use DESeq2 to analyze a dataset without replicates?
+:PROPERTIES:
+:ID:       4AF6174D-0E98-4139-89B6-2E2AB1B13BA4
+:END:
+
+******* How can I include a continuous covariate in the design formula?
+:PROPERTIES:
+:ID:       BBFFFE10-B8CF-4E66-9BA9-B78B0DA2FAF9
+:END:
+
+******* Will the log fold change shrinkage “overshrink” large differences?
+:PROPERTIES:
+:ID:       01210C6E-221E-403D-AE9C-63946B83F9A4
+:END:
+
+******* I ran a likelihood ratio test, but results() only gives me one comparison
+:PROPERTIES:
+:ID:       76AC2A68-59B8-4E92-B384-822B8CE0DD7B
+:END:
+
+******* What are the exact steps performed by DESeq()?
+:PROPERTIES:
+:ID:       74C55B19-7DAA-4357-8F15-179AF2645CFF
+:END:
+
+******* Is there an official Galaxy tool for DESeq2
+:PROPERTIES:
+:ID:       5A4CB62B-A91F-467F-AA52-B8D1C66D9D28
+:END:
+
+******* I want to benchmark DESeq2 comparing to other DE tools.
+:PROPERTIES:
+:ID:       9B564504-8E91-4921-87D8-3AE89F5F6E2F
+:END:
+
+****** SessionInfo
+:PROPERTIES:
+:ID:       626CE66C-E3D7-4D09-BEDC-27812DB3689B
+:END:
+
+[[file:~/Box%20Sync/comp_bio/Love,14%20Beginners%20guide%20to%20using%20the%20DESeq2%20package.pdf][Love,14 Beginners guide to using the DESeq2 package]]
+[[file:~/Box%20Sync/comp_bio/Love,15%20DESeq2%20User%20Guide.pdf][User Guide]]
+[[https://support.bioconductor.org/local/search/page/?q=deseq2][Bioconductor Support]]
+[[file:~/Box%20Sync/library/Love,16%20DESeq2%20manual.pdf][Manual]] 
+A negative binomial GLM 
+[[https://www.youtube.com/results?search_query=deseq2&page=&utm_source=opensearch][Youtube]]
+[[file:~/Box%20Sync/library/Love,14%20Moderated%20estimation%20of%20fold%20change%20and%20dispersion%20for%20RNA%20seq%20data%20with%20DESeq2.pdf][Love,14 Moderated estimation of fold change and dispersion for RNA seq data with DESeq2]] 
+[[ftp://ftp.jax.org/dgatti/ShortCourse2015/tutorials/Differential-Expression.html][Workflow example]]
+[[http://www.sthda.com/english/wiki/rna-seq-differential-expression-work-flow-using-deseq2][Another workflow example]]
+[[https://dwheelerau.com/2014/02/17/how-to-use-deseq2-to-analyse-rnaseq-data/][And another workflow example]]
+
+
+*** edgeR
+:PROPERTIES:
+:ID:       32BB77F2-0283-4A52-86AC-CDF2CB6A7315
+:END:
+- EdgeR
+  - GLM asking whether exons are used proportionally across experiment conditions
+  - DEXSeq is an extension to exons
+[[file:~/Box%20Sync/comp_bio/RNA-seq/Rueda,15%20Differential%20expression%20analysis%20using%20edgeR.pdf][Rueda,15 Differential expression analysis using edgeR]]
+[[file:~/Box%20Sync/comp_bio/RNA-seq/edgeRUsersGuide.pdf][User Guide]]
+[[file:~/Box%20Sync/comp_bio/RNA-seq/edgeR_manual.pdf][Manual]]
+
+- cite:robinson2010
+[[file:~/Box%20Sync/library/Robinson,09%20edgeR%20a%20Bioconductor%20package%20for%20differential%20expression%20analysis%20of%20digitial%20gene%20expression%20data.pdf][Robinson,09 edgeR a Bioconductor package for differential expression analysis of digitial gene expression data]]
+
+**** edgeR full example
+:PROPERTIES:
+:ID:       846943FC-BA4B-4658-9B1E-85FBA536D9EE
+:END:
+*** fastqc
+:PROPERTIES:
+:ID:       0a319950-3215-4846-a020-a08b78f3323d
+:END:
+- FastQC
+  - [[https://www.youtube.com/watch?v=bz93ReOv87Y][Intro video]]
+  - interpretation
+    - Per sequence GC content- spikes mean contaminants
+    - will only track first 200000
+    - base quality
+      - Phred vs. read position (goal is >20 or 1 error in 100 bases)
+      - Phred histogram- look for single population or filter second population
+      - Base position vs. frequency of nucleotide
+    - per nucleotide    
+      - [[http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/5%20Per%20Sequence%20GC%20Content.html][Per sequence GC content]]
+      - Secondary peak = contamination- see overrepresent sequences 
+    - [[http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/8%20Duplicate%20Sequences.html][Duplicate sequences]]
+      - Broad oversequencing -> high flat line
+      - Specific enrichments - spikes
+        - Possible reasons
+          - Technical (PCR) duplication
+          - Biological duplication- common in RNA-seq where you are re-sequencing the common sequences 
+      - Warning at 20%, failure @ 50%
+    - [[http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/11%20Kmer%20Content.html][Kmer content]]
+      - for partial sequences in a variety of longer sequences 
+- https://sequencing.qcfail.com/software/fastqc/
+- https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=The%20output%20from%20FastQC%2C%20after,or%20%E2%80%9CFail%E2%80%9D%20is%20assigned.
+- cite:williams2014 for a FastQC aggregator Perl script 
+- [[https://www.biostars.org/p/56088/#56102][Fastq Quality Read And Score Length Check]]
+***** fastq (base call + quality)
+:PROPERTIES:
+:ID:       4361C444-1EFD-492C-B108-69066D87C37F
+:END:
+
+[[file:work.org_imgs/20160405_091950_53267u_I.png]]
+illumina fastq
+read in galaxy or textwrangler 
+each block has 4 elements so 4 lines
+sequence identifier @EAS4_6_R1
+actual sequence CTGGTGGGAGRRGG
+sequence name again (optional) or +
+base quality ;;;;3;;;;;;;;;;;;;;7;;;;;;;;898
+via ASCII 33
+Phred scaled Q
+Phred value = -10*log(10)(error rate)
+90% confident is Q10
+99% is Q20
+99.9 is Q30
+
+****** Adding sequences to a fasta- just cat
+:PROPERTIES:
+:ID:       8D135E1A-815D-4551-B636-94A4DB44D0BB
+:END:
+
+****** Ideas
+:PROPERTIES:
+:ID:       4FC3F4EA-880B-4585-8882-9EC88197B456
+:END:
+
+******* Can I remove sequences from paired end fastq to shorten file for testing?
+:PROPERTIES:
+:ID:       45E50579-D180-4549-A60F-A4C559F25641
+:END:
+
+I didn't find anything googling this, but it appears if the fastas have the same order, then I can just trim them 
+
+*** gage
+:PROPERTIES:
+:ID:       9b222d1c-ab61-450c-8b77-a98ec3213867
+:END:
+- https://www.bioconductor.org/packages/devel/data/experiment/manuals/gageData/man/gageData.pdf
+- https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
+- http://amp.pharm.mssm.edu/Enrichr/help#basics
+*** gistic2 
+:PROPERTIES:
+:ID:       4f0b84ab-1dec-45c9-a7d4-bdce41e13150
+:END:
+https://www.genepattern.org/file-formats-guide
+
+segmentation file column 6 is log2(x)-1 of the copy number, so
+| interp  | copy number |   log2(x)-1 |
+|---------+-------------+-------------|
+| neutral |           2 |           0 |
+| gain    |           3 |        0.58 |
+| amp     |           4 |           1 |
+| loss    |           1 |          -1 |
+| del     |           0 | - inf -> NA |
+|         |             |             |
+
+- https://docs.cbioportal.org/5.1-data-loading/data-loading/file-formats#gistic-2-0-data
+- https://blindwith.science/2018/10/442.html/
+- http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
+*** GSEA
+:PROPERTIES:
+:ID:       D68E1182-1F7B-4160-A6DD-BD2635F8085F
+:END:
+:LOGBOOK:
+CLOCK: [2020-11-17 Tue 09:56]--[2020-11-17 Tue 12:07] =>  2:11
+CLOCK: [2020-10-26 Mon 13:01]--[2020-10-26 Mon 13:55] =>  0:54
+CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
+:END:
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6607905/
+- leading edge https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5066188/
+- [[https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideTEXT.htm#_Consistent_Feature_Identifiers_Acro][documentation]]
+  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/FAQ#Why_does_GSEA_use_a_false_discovery_rate_.28FDR.29_of_0.25_rather_than_the_more_classic_0.05.3F][FDR discussion]]
+  - FAQ
+    - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/FAQ#What_array_platforms_and_organism_species_does_GSEA_support.3F][using for mouse data]]
+  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Using_RNA-seq_Datasets_with_GSEA][RNA-seq data]]
+    - with RNA-seq, use TMM
+  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats][file formats]]
+    - GMT: gene matrix transposed file (*.gmt)
+    - chip files ftp://ftp.broadinstitute.org/pub/gsea/annotations (use ENSEMBL)
+  - [[https://www.gsea-msigdb.org/gsea/msigdb/search.jsp][gene sets]]
+- gene sets for mouse GSEA
+  - https://cran.r-project.org/web/packages/msigdbr/vignettes/msigdbr-intro.html
+  - recent, high impact papers citing MSigDB and aligning to mm10
+    - https://science.sciencemag.org/content/352/6288/aad3018
+    - http://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC5924693&blobtype=pdf
+    - https://www.cell.com/cell/pdf/S0092-8674(17)31385-5.pdf
+    - https://stm.sciencemag.org/content/scitransmed/suppl/2018/01/12/10.424.eaan5488.DC1/aan5488_SM.pdf
+- used in 
+  - [[id:e4351ef3-6d41-4121-a2cc-c63d89f997ac][pathway analysis]]
+  - [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][RNA-seq coexpression]]
+- processes
+  - download data
+  - file creation and formatting
+    - see to create .rnk file https://github.com/BaderLab/EM-tutorials-docker/blob/master/R_scripts/supplemental_protocol2_rnaseq.R
+- [[https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp][MSigDB]] [[https://data.broadinstitute.org/gsea-msigdb/msigdb/][data]]
+- [[https://enrichmentmap.readthedocs.io/en/docs-2.2/QuickStartGuide.html][enrichement map]]
+  - https://enrichmentmap.readthedocs.io/en/latest/Parameters.html
+- platforms
+  - online http://www.webgestalt.org/
+  - R implimentation: [[https://bioconductor.org/packages/release/bioc/html/fgsea.html][fast GSEA]] 
+    #+name:
+    #+begin_src R :tangle no
+  setwd("~/repos/biotools")
+  source("./src/setup.R")
+  #+end_src
+- [[http://software.broadinstitute.org/cancer/software/genepattern/modules/docs/ssGSEAProjection/4][ssGSEA]] calculates enrichment for each sample-gene set pair
+- cite:mootha2003 
 *** ichorcna
 :PROPERTIES:
 :ID:       8c535c38-9310-4fd0-a8fe-c300639493da
@@ -4817,6 +4988,391 @@ done
   - https://github.com/broadinstitute/ichorCNA/wiki/Parameter-tuning-and-settings
 - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDDjrSfkvnNDnxMlVJNFgfnfk][email from:Sundby re:ichor method]]
 - https://www.biostars.org/local/search/page/?q=ichorcna 
+*** INTEGRATE
+:PROPERTIES:
+:ID:       7519d47f-18e8-4a28-be11-9d081b68b52d
+:END:
+  - cite:zhang2016
+    - [[http://apps.webofknowledge.com/summary.do?product=WOS&parentProduct=WOS&search_mode=CitingArticles&qid=2&SID=6ERcSCYD7iSBCZMtAM7&&page=1&action=changePageSize&pageSize=50][WOS citing]]- no cfRNA yet 
+  - integrate
+    - cite:zhang2017c
+    - cite:zhang2016
+    - cite:zhang2016a
+    - cite:zhang2016a
+    - - cite:zhang2014a
+    - https://github.com/ChrisMaherLab/INTEGRATE-Vis/blob/master/README.md
+    for integrate, see - cite:li2020
+  
+*** limma
+:PROPERTIES:
+:ID:       3283b8b2-fc42-4a71-a8e9-7dbdd7ab62ce
+:END:
+https://www.coursera.org/lecture/bioconductor/limma-aoNwW
+*** limma voom
+:PROPERTIES:
+:ID:       F9684168-A438-4F5E-81D6-D645B52B4074
+:END:
+  - https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/decideTests
+  - https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/ebayes
+  - https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/toptable
+
+[[file:~/Box%20Sync/comp_bio/RNA-seq/Ritchie,15%20limma%20powers%20differential%20expression%20analysis%20for%20RNA%20sequencing%20and%20microarray%20results.pdf][Ritchie,15 limma powers differential expression analysis for RNA sequencing and microarray results]]
+:LOGBOOK:  
+CLOCK: [2016-05-09 Mon 12:24]--[2016-05-09 Mon 12:25] =>  0:01
+:END:      
+- raw counts transformed to continuous values w/ confidence weight
+- [[file:~/Box%20Sync/comp_bio/RNA-seq/limma%20Manual.pdf][manual]]
+
+- Math, concept- [[file:~/Box%20Sync/comp_bio/RNA-seq/Law,14%20voom%20precision%20weights%20unlock%20linear%20model%20analysis%20tools%20for%20RNA%20seq.pdf][Law,14 voom precision weights unlock linear model analysis tools for RNA seq]]
+- voom transformation- from counts to log-counts per million w/ associated weight (just think of it as if microarray data)
+
+**** [[file:~/Box%20Sync/comp_bio/RNA-seq/limma%20User%20Guide.pdf][User Guide]]
+:PROPERTIES:
+:ID:       15C1AE68-19D2-4FBD-B51E-DA37C605F0D7
+:END:
+
+- concepts
+  - borrows information across genes for emperical Bayes
+  - read counts -> continuous expression data like microarray
+  - required matrices for linear models approach
+    - design- which RNA to which sample (i.e. specify groups)
+    - contrast- which group comparions to make
+
+**** [[file:~/Box%20Sync/comp_bio/limma_voom_template/][Examples and Template]]
+:PROPERTIES:
+:ID:       D1B28C0A-9AAD-4245-BE85-61300CE4A02B
+:END:
+
+***** WEHI example ([[file:~/Box%20Sync/comp_bio/RNA-seq/wehi_limma_example/wehi_limma_example.Rproj][Rproject]], [[file:~/Box%20Sync/comp_bio/RNA-seq/wehi_limma_example/wehi_limma_example.R][Rscript]]), [[http://bioinf.wehi.edu.au/RNAseqCaseStudy/][link]]
+:PROPERTIES:
+:ID:       1E96E985-8BD2-4D8F-AC88-FB509B99F513
+:END:
+:LOGBOOK:  
+CLOCK: [2016-05-10 Tue 15:46]--[2016-05-10 Tue 16:05] =>  0:19
+CLOCK: [2016-05-10 Tue 15:07]--[2016-05-10 Tue 15:20] =>  0:13
+CLOCK: [2016-05-09 Mon 12:25]--[2016-05-09 Mon 13:13] =>  0:48
+:END:      
+
+***** User Guide Chapter 18
+:PROPERTIES:
+:ID:       817998EF-31AD-4A22-BF91-ACF72A1C29E5
+:END:
+
+****** 18.1 [[file:~/Box%20Sync/comp_bio/limma_voom_template/yoruba_hapmap/][Profiles of Yoruba HapMap]]
+:PROPERTIES:
+:ID:       1E8CAB25-19C2-4745-B157-FA46D84549CD
+:END:
+
+******* DONE Read
+CLOSED: [2016-06-30 Thu 11:22]
+:PROPERTIES:
+:ID:       91CBDFB8-17EB-4F2D-B2A4-58F656C64332
+:END:
+
+******* Work through code
+:PROPERTIES:
+:ID:       05EC5C9D-CE60-4DD5-9F5D-6EED8C229478
+:END:
+
+Venn diagrams with limma]]
+
+Another use of the voom plot-  what you are failing to do completely in the voom analysis is to remove the rows of your count matrix that are lowly expressed, because these hose the mean/variance estimation, which you can see/diagnose on the plot generated with you call to voom(..., plot=TRUE). In brief, you want to ensure that the red fit line doesn't "slope/hook back down" (I'm talking as if you are "reading" the graph from right to left here) due to the drop/discretization in the observed variance from the black dots on the left side of the plot.
+
+[[https://www.biostars.org/p/131488/][subsetting from topTable]]
+*** multiqc
+:PROPERTIES:
+:ID:       3e585de3-3b67-4fe3-9f15-ed4e07778d09
+:END:
+  - - see for better multiqc handling- https://github.com/nextflow-io/rnaseq-nf/blob/3b5b49f/main.nf#L41-L48
+*** nextflow
+:PROPERTIES:
+:CREATED:  [2019-12-27 Fri 14:48]
+:ID:       6116d262-9ca8-430b-b385-65e1a7fc0a70
+:END:
+:LOGBOOK:
+CLOCK: [2020-01-30 Thu 13:00]--[2020-01-30 Thu 14:04] =>  1:04
+CLOCK: [2020-01-30 Thu 09:35]--[2020-01-30 Thu 12:45] =>  3:10
+CLOCK: [2020-01-21 Tue 12:45]--[2020-01-21 Tue 14:30] =>  1:45
+CLOCK: [2020-01-15 Wed 14:47]--[2020-01-15 Wed 15:39] =>  0:52
+CLOCK: [2020-01-14 Tue 18:38]--[2020-01-14 Tue 19:04] =>  0:26
+CLOCK: [2020-01-14 Tue 16:24]--[2020-01-14 Tue 16:44] =>  0:20
+CLOCK: [2020-01-14 Tue 13:49]--[2020-01-14 Tue 15:52] =>  2:03
+CLOCK: [2020-01-14 Tue 11:11]--[2020-01-14 Tue 12:42] =>  1:31
+CLOCK: [2020-01-13 Mon 21:10]--[2020-01-13 Mon 22:00] =>  0:50
+CLOCK: [2020-01-10 Fri 17:51]--[2020-01-10 Fri 18:51] =>  1:00
+CLOCK: [2020-01-08 Wed 13:06]--[2020-01-08 Wed 14:12] =>  1:06
+CLOCK: [2020-01-08 Wed 11:19]--[2020-01-08 Wed 12:31] =>  1:12
+CLOCK: [2020-01-07 Tue 17:27]--[2020-01-07 Tue 18:27] =>  1:00
+CLOCK: [2020-01-02 Thu 13:32]--[2020-01-02 Thu 14:32] =>  1:00
+CLOCK: [2019-12-27 Fri 19:15]--[2019-12-27 Fri 21:20] =>  2:05
+CLOCK: [2019-12-27 Fri 14:50]--[2019-12-27 Fri 15:12] =>  0:22
+:END:
+https://github.com/NYU-Molecular-Pathology
+https://www.pnas.org/content/115/4/E743.long
+- github searhing e.g. https://github.com/search?utf8=%E2%9C%93&q=followLinks++extension%3A.nf&type=Code&ref=advsearch&l=&l=
+- see for inputs from csv- https://github.com/nf-core/atacseq/blob/master/main.nf
+- raw data should reside in protected dirs
+- https://www.reddit.com/search?q=nextflow
+- cite federico2019
+- useful tutorials
+  - https://nextflow-io.github.io/hack17-varcall/#_input_parameters associated github at radonc-cancerbio:~/data/tmp
+- https://sciwiki.fredhutch.org/compdemos/nextflow/
+- https://learn.gencore.bio.nyu.edu/nextflow/
+- https://www.ebi.ac.uk/goldman-srv/simNGS/runfiles5/HiSeq/
+- https://github.com/genome/gms/wiki/HCC1395-WGS-Exome-RNA-Seq-Data
+- http://nextflow-io.github.io/patterns/index.html#_process_per_file_pairs
+- [[https://stackoverflow.com/questions/tagged/nextflow][nextflow stack questions]]
+- https://github.com/nextflow-io/patterns
+- [[https://github.com/nextflow-io/nf-hack18][2018 workshop github]]
+- [[https://nextflow-io.github.io/nf-hack18/training.html][2018 workshop course]]
+- [[https://github.com/search?utf8=%25E2%259C%2593&q=language%253Anextflow+&type=][github repos using nextflow]]
+- https://github.com/cbcrg/piper-nf/blob/master/piper.nf
+- [[https://github.com/search?utf8=%25E2%259C%2593&q=language%253Anextflow+&type=][github nextflow repositories]]
+- https://groups.google.com/forum/m/#!forum/nextflow
+- https://www.nextflow.io/presentations.html
+- http://groovy-lang.org/single-page-documentation.html
+- https://dzone.com/refcardz/groovy?chapter=10
+- https://www.manning.com/books/groovy-in-action-second-edition
+- https://github.com/MaxUlysse/compile-latex
+- https://nextflow-io.github.io/nf-hack18/training.html
+- https://github.com/nextflow-io/patterns
+- https://nextflow-io.github.io/hack17-varcall/
+- [[https://medium.com/@alaincoletta/how-to-create-a-nextflow-pipeline-with-all-necessary-tools-for-a-series-of-repetitive-35cf5b3b19a8][Coletta tutorial]]
+- processes
+  - check if file exists
+- commands
+  |----------+---------|
+  | function | command |
+  |----------+---------|
+  | <35>     | <35>    |
+  |          |         |
+- standards and best practice
+- [[https://www.nextflow.io/docs/latest/index.html][documentation]]
+- applications
+- reference
+  - [[file:~/.emacs.d/snippets/org-mode/software]]
+
+*** pathvisio
+:PROPERTIES:
+:ID:       17c865dc-765c-496d-b5c7-60d3d3439de3
+:END:
+https://pathvisio.github.io/
+- to switch to java 8 https://askubuntu.com/questions/1133216/downgrading-java-11-to-java-8
+*** picard
+  - [[https://broadinstitute.github.io/picard/command-line-overview.html][Broad Picard Command Line Overview]]
+  - [[https://www.broadinstitute.org/videos/broade-mapping-processing-and-duplicate-marking-picard-tools][Broad Processing and Duplicate mapping with Picard]]
+  - [[https://broadinstitute.github.io/picard/explain-flags.html][picard explain sam flags]]
+*** polyester
+:PROPERTIES:
+:ID:       065725b4-43d3-48d4-a4e2-3ca5c1e1e6fd
+:END:
+  - https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
+
+*** rsem
+:PROPERTIES:
+:ID:       85db5c34-b5fd-4b6c-bdb7-88263e553ba3
+:END:
+- cite:li2011
+- https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
+- documentation
+  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
+  - https://github.com/ENCODE-DCC/long-rna-seq-pipeline/blob/master/DAC/STAR_RSEM.sh
+  - http://deweylab.biostat.wisc.edu/rsem/rsem-calculate-expression.html
+  - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
+  - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
+  - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
+*** samtools
+:PROPERTIES:
+:ID:       0a3acec7-f4d1-4cd1-b3c8-7ec769715cc1
+:END:
+- [[http://biobits.org/samtools_primer.html][another Samtools tutorial]]
+**** commands
+:PROPERTIES:
+:CREATED:  [2019-04-26 Fri 10:32]
+:ID:       31C15E78-2EAE-4D54-94FF-91A5AF05190A
+:END:
+
+- commands
+  - sequence inspection and quality
+    | function                              | command                                       |
+    |---------------------------------------+-----------------------------------------------|
+    | <35>                                  | <35>                                          |
+    | see     bam header                    | view -H                                       |
+    | see bam header and top seq in sam/bam | samtools view -h <FILE.bam> \vert head -n 100 |
+    | see ?                                 | idxstats                                      |
+    |                                       |                                               |
+  - sequence file manipulations
+    |-------------------+---------------------------------------------------|
+    | function          | command                                           |
+    |-------------------+---------------------------------------------------|
+    | check bam EOF     | samtools quickcheck <.bam>                        |
+    | merge bams        | samtools merge all.bam *.bam                      |
+    | random sample bam | samtools view -s 0.5 -b file.bam >random_half.bam |
+    | split by chrom    | samtools view -b <FULL.bam> chr1 > chr1.bam       |
+    | merge             | samtools merge <OUT.bam> <IN1.bam> <IN2.bam>      |
+    | trim by quality   | -q INT                                            |
+    | bam to sam        | samtools view -h -o out.sam in.bam                |
+    | sam to bam        | samtools view -bS test.sam > test.bam             |
+    | remove unmapped   | samtools view -h -F 4 file.bam                    |
+
+*** samtools 
+:PROPERTIES:
+:ID:       e998389a-84e1-4d27-bb8e-a711350daa08
+:END:
+  - [[http://www.htslib.org/workflow/#mapping_to_cram][using cram]]
+  - [[https://www.samformat.info/sam-format-header][header tool]]
+
+*** snakemake
+:PROPERTIES:
+:ID:       a8b27140-4b9e-40c5-86ab-ee5afeae723f
+:END:
+#+name: 
+#+begin_src bash :tangle no
+source ~/repos/biotools/src/functions.sh
+docker_interactive
+biotools
+
+#
+mkdir -p /tmp/snakemake-tutorial
+cd /tmp/snakemake-tutorial
+#
+wget https://github.com/snakemake/snakemake-tutorial-data/archive/v5.24.1.tar.gz
+#
+tar --wildcards -xf v5.24.1.tar.gz --strip 1 "*/data" "*/environment.yaml"
+ls
+
+#
+snakemake --help
+
+snakemake -np mapped_reads/A.bam
+#+end_src
+- https://reproducibility.sschmeier.com/index.html
+- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
+- [[https://snakemake.readthedocs.io/en/stable/index.html][documentation]]
+  - [[Snakemake Tutorial][Snakemake Tutorial]]
+  #+name: snakemake_tutorial
+#+begin_src bash :tangle no
+sudo apt-get install singularity-container
+
+cd ~/snakemake-tutorial/
+
+conda activate snakemake-tutorial
+
+
+snakemake -p --cores 2 sorted_reads/{A,B}.bam
+#    --dry-run \
+
+snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
+
+expand("sorted_reads/{sample}.bam", sample=SAMPLES)
+
+snakemake -p --cores 2 plots/quals.svg
+
+snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
+
+snakemake --cores 20 --forceall --summary
+
+snakemake --cores 20 --forceall
+
+conda install pygraphviz
+
+snakemake --report report.html
+
+open report.html
+
+snakemake --cores 20 --forceall
+#+end_src
+  - https://snakemake.readthedocs.io/en/stable/tutorial/basics.html#step-1-mapping-reads
+- docker https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html?highlight=docker#running-jobs-in-containers
+- https://snakemake.readthedocs.io/en/stable/index.html
+*** STAR
+:PROPERTIES:
+:ID:       d1d5d554-57c4-4b9c-8385-2bb72369375e
+:END:
+- used in [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][alignment]]
+- star-rsem pipeline
+  - cite:djebali2017
+*** table of tools
+:PROPERTIES:
+:ID:       a0923938-4021-44cd-a8f3-94c0eb10cdb5
+:END:
+| tool           | function         | input     | repo   | doc      | paper | paper(local)           |
+|----------------+------------------+-----------+--------+----------+-------+------------------------|
+| - [[https://github.com/vsbuffalo/scythe][Scythe]]       |                  |           |        |          |       |                        |
+| [[http://hannonlab.cshl.edu/fastx_toolkit/commandline.html][FASTX-Toolkit]]  |                  |           |        |          |       |                        |
+| annovar        |                  |           |        | [[http://annovar.openbioinformatics.org/en/latest/][doc]]      |       |                        |
+| annotationDb   |                  |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf][doc]]      |       |                        |
+| Ballgown       |                  |           |        |          | [[https://www.nature.com/articles/nprot.2016.095][paper]] |                        |
+| BEDtools       |                  |           |        | [[http://bedtools.readthedocs.io/en/latest/][doc]]      |       | cite:quinlan2010       |
+| BLAT           |                  |           |        |          |       |                        |
+| BLAT           |                  |           |        |          |       |                        |
+| bowtie2        |                  |           | [[https://sourceforge.net/projects/bowtie-bio/files/][src]]    | [[http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer][doc]]      |       |                        |
+| CNVkit         | copy#            | bam       | [[https://github.com/etal/cnvkit/tree/fd3555256d2a5aa3978c475d19c88065be68c6c4][repo]]   | [[https://cnvkit.readthedocs.io/en/stable/index.html][doc]]      | [[https://doi.org/10.1371/journal.pcbi.1004873][paper]] |                        |
+| complexheatmap |                  |           |        |          |       |                        |
+| data-slicer    |                  |           |        | [[http://www.1000genomes.org/data-slicer][site]]     |       |                        |
+| deepTools      |                  |           |        | [[https://deeptools.readthedocs.io/en/latest/content/example_usage.html][site]]     |       |                        |
+| DESeq2         | diff express     |           |        |          |       | cite:love2014          |
+| edgeR          | diff express     |           |        | [[https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf][vignette]] |       | cite:robinson2010      |
+| fastp          | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]]           | fastq     | [[https://github.com/OpenGene/fastp][repo]]   |          | [[https://watermark.silverchair.com/bty560.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAAuEwggLdBgkqhkiG9w0BBwagggLOMIICygIBADCCAsMGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMUQnq5IYxgkrFnt0WAgEQgIIClChzxtpO28QYuBn1woUVAMnQOwkPRZWSY20cwnzbVuF3DlOcpwjeNjNrO_ixNp6csW5pOdBZ81CHjV65BMcqsZmP9KOT-yVGy4r_7mWKLuzm7Siid24pM9-xF3k7y1RoBK4-PrnZgzp-J1svrUvOZAphbBPmsezuOowSuj9o9EZyTciDJbUQ2klUbYSRDO_InWNOVu23eOzGpJQwer81BL2iS8TsCfeWF-eZtzNBRuZZr1UZ2PhX_mVQGu4bHvKn1Bmoe64CFYkEJGLoka87zVVfo--J_hAledjiW1_-wEj8kZSyb2diZoP9ABDGOJA6aQ7fzx8qNGgNAb_oK-uAmEdfAfepI_0LECDdlk9EIxIJITC-Z59gk_vNVophJOydBimGZHFK0iACl-N-nZNALjIqRXeRmqOxcEdRFmNy6onzLalfCV0wyqFae42JIVzEYFSLW1oQVC0ugMfKTTmOfysRZ8-4bboBo1UbskpGVlKvrSBTFuDyvuBlPoUTECbOrO6bsdeNk8yfTMTeMQzNzOzZYZ1mQVCULZtuE_YDCuKmwukT3EeUy8iOJbp7pD2Ew5kphJ9q0sV-_io3h0jBZEdJmUr6dTPSRcv56pLP6gtqso6ZdB9bWk3sFNt--tBwIGhQvnLXgyV7xGqRYNPrDeMbs2tPLlK-v4D8XKj-BHGi1sOVuzL1rCvFve0knpL4btsqw_BDp8P2XuFDyp0OOXtmE3dKJktLR0QyQZ3u4-aKksDMfkqrglbPoBjEhInpdpfiDQbEDTFO9qiaL9iajdsV8T636x_KHXpdGkFqO3GpcFyJv1QJyPW2qhAXuneiqWx6t60pJ8f0IyAzRV9BIUoQ4B3soV9TXIuSP171Tf0JYmcY5Q][paper]] | cite:chen2018b         |
+| seqTools       | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]]           |           |        | [[https://www.bioconductor.org/packages/release/bioc/vignettes/seqTools/inst/doc/seqTools.pdf][seqTools]] |       |                        |
+| [[id:0a319950-3215-4846-a020-a08b78f3323d][FastQC]]         | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]]           |           |        | [[https://www.bioinformatics.babraham.ac.uk/projects/fastqc/INSTALL.txt][site]]     |       |                        |
+| featureCounts  |                  |           |        |          | [[https://watermark.silverchair.com/btt656.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAApgwggKUBgkqhkiG9w0BBwagggKFMIICgQIBADCCAnoGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMofurkoV2NWsQqlelAgEQgIICS7iktDnfv1X3fe1vdQQcXCS09zT549UGvBjDCLHoNebBGfiQi_Eo7ZjUHVH_Yay_p1DlFd4eDeXU4WEX6HTQ-MzPqmtZ6RMGegyEptsqxaLnvr3QfpGO6WRT01dViqp6xya9-CqCRGV3E7F37VruIYzZEFjr-2svIgoRydPyF4pkSzA2hkvwV_g-JT2YSnqboZ5DOGtwZXeMaLKf48_aEpuYemRUx8VqOfM8xnOm4_jumLGd_BBqCCv6brLX8z3WVJpWfJ4YfpJXhemFRt8mSvIsAe9pYXV52W7-psxHlM2ocXzdD_7vLSD7iy1NocDXWLFT5HRH_Cq8NyiRq1s4Mq-QYuvQJFlTxWArVC6vdpE40bDr9slGD6KTJ0DpUQeC52q-aoKJXr9Y7Pi2SDo881eFuJxTWuSuMjxcXStn9MkPKZfcKa10Vu4CdJSSnvJAKAvd4GsshsfCVGCvkgy4ZfEabo5nOZaB82UYC-8AZEpdbD3RtJg1FUQJHDz0tlY-2gZYf2VB3KU1JK4wZcHzn8T8R5BSChB6MjFrRdTZeo3M8-ZIK3eWQGH2vLj8_bPsYlBF-wfj2JzSG3zJGgUUa_rSBzoK8Vvw8k_BPxCq63h6u-k49l-X0o-MO6f8mOdm_YliTT0dWu_ujvlbXMw9AIBrKjwBJncq27EwMOX0shm8nnzPMoPTfOzoekZR2nYTDPayGjHhqkAs6haFAQrI8XAAd0PfbMtW4l54ArULWEH6hCVxzDX8_h8F8oWgOc_3h2ktpbTLNsiX6Bxj][paper]] |                        |
+| G2P            |                  |           |        |          | [[https://www.nature.com/articles/s41467-019-10016-3][paper]] |                        |
+| GAGE           | enrichment       | express   |        |          | [[https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-10-161][paper]] |                        |
+| GATK           |                  |           |        | [[https://software.broadinstitute.org/gatk/documentation/][doc]]      |       |                        |
+| GISTIC2        | copy# diff       |           |        | [[http://portals.broadinstitute.org/cgi-bin/cancer/publications/pub_paper.cgi?mode=view&paper_id=216&p=t][site]]     |       |                        |
+| GSEA           |                  |           |        |          | [[https://www.pnas.org/content/102/43/15545.full][paper]] |                        |
+| GSNAP          |                  | fastq     |        | [[http://research-pub.gene.com/gmap/src/README][doc]]      |       | cite:mathe2016         |
+| histat2        |                  | fastq     |        | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]]      |       |                        |
+| ichorCNA       | copy#            | wig       | [[https://github.com/broadinstitute/ichorCNA][repo]]   | [[https://github.com/broadinstitute/ichorCNA/wiki][doc]]      | [[https://www.nature.com/articles/s41467-017-00965-y][paper]] | cite:adalsteinsson2017 |
+| Integrate      | rna fusion       | bam       |        |          |       | cite:zhang2014a        |
+| limma          | diff express     | count     |        |          | [[https://dx.doi.org/10.1093%2Fnar%2Fgkv007][paper]] |                        |
+| MultiQC        | seq QC agg       |           | [[https://github.com/ewels/MultiQC][github]] | [[https://multiqc.info/docs/][doc]]      |       |                        |
+| oligocalc      |                  |           |        | [[http://www.basic.northwestern.edu/biotools/oligocalc.html][site]]     |       |                        |
+| picard         |                  |           |        | [[https://broadinstitute.github.io/picard/index.html][doc]]      |       |                        |
+| polyester      | RNA simulation   | fasta,gtf |        | [[http://bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html][vignette]] |       |                        |
+| rnaseqc        | rnaseq qc        | bam       | [[https://github.com/broadinstitute/rnaseqc][repo]]   | [[https://github.com/broadinstitute/rnaseqc][repo]]     |       |                        |
+| rsem           | transcript quant | bam       | [[https://github.com/deweylab/RSEM][repo]]   |          | [[https://doi.org/10.1186/1471-2105-12-323][paper]] | cite:li2011            |
+| RSeQC          | rnaseq qc        | bam       |        | [[http://rseqc.sourceforge.net/][repo]]     | [[https://doi.org/10.1093/bioinformatics/bts356][paper]] | cite:wang2012          |
+| salmon         | transcript quat  |           |        |          |       |                        |
+| sambamba       |                  | bam       |        | [[http://lomereiter.github.io/sambamba/docs/sambamba-view.html][online]]   |       |                        |
+| samtools       |                  | bam       |        | [[http://www.htslib.org/doc/samtools.html][online]]   |       |                        |
+| scVelo         | RNA velocity     |           |        | [[https://scvelo.readthedocs.io/][site]]     |       |                        |
+| seqtk          |                  |           | [[https://github.com/lh3/seqtk][github]] | [[https://github.com/lh3/seqtk/blob/master/README.md][README]]   | NA    | NA                     |
+| simNGS         | sim reads        | none      |        | [[https://www.ebi.ac.uk/goldman-srv/simNGS/][website]]  |       |                        |
+| STAR           |                  |           |        | [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]      |       | cite:dobin2019         |
+| tophat2        |                  |           |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                        |
+| tximport       |                  |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
+| WGCNA          |                  |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] | cite:langfelder2008    |
+|                |                  |           |        |          |       |                        |
+*** tool collections
+:PROPERTIES:
+:ID:       7cce7be9-b3ac-4127-9a92-71559617588e
+:END:
+- [[https://www.ebi.ac.uk/services][EMBL-EBI Tools]]
+*** tophat2
+notes- https://www.biostars.org/p/251018/
+*** Trim Galore 
+:PROPERTIES:
+:ID:       3e4ca528-a604-4bfe-b235-2052e6d2d4a9
+:END:
+- 
+  - wrapper for Cutadapt and FastQC
+  - [[https://github.com/FelixKrueger/TrimGalore][github]]
+    - [[https://github.com/FelixKrueger/TrimGalore/blob/master/Docs/Trim_Galore_User_Guide.md][user guide]]
+  - on CHPC cluster - http://mgt2.chpc.wustl.edu/wiki119/index.php/Software
+- https://github.com/FelixKrueger/TrimGalore
+
+*** UCSC table browser
+:PROPERTIES:
+:ID:       be612cfb-2a75-4935-92fd-85620dcabf92
+:END:
+- ucsc
+  - table browser
+    - https://genomebrowser.wustl.edu/goldenPath/help/hgTextHelp.html#Introduction
+  - https://www.biostars.org/p/19029/
+  - http://genome.ucsc.edu/FAQ/FAQreleases.html
+  - cite:karolchik2011
 *** wgcna
 :PROPERTIES:
 :ID:       948289d8-3a77-471a-b068-0507285e0bac
@@ -6180,558 +6736,6 @@ CountTbl[fmod, cmod] = sum(femaleColors == femModules[fmod] & moduleColors ==
 consModules[cmod])
 }
 #+end_src
-
-
-*** samtools 
-:PROPERTIES:
-:ID:       e998389a-84e1-4d27-bb8e-a711350daa08
-:END:
-  - [[http://www.htslib.org/workflow/#mapping_to_cram][using cram]]
-  - [[https://www.samformat.info/sam-format-header][header tool]]
-
-*** nextflow
-:PROPERTIES:
-:CREATED:  [2019-12-27 Fri 14:48]
-:ID:       6116d262-9ca8-430b-b385-65e1a7fc0a70
-:END:
-:LOGBOOK:
-CLOCK: [2020-01-30 Thu 13:00]--[2020-01-30 Thu 14:04] =>  1:04
-CLOCK: [2020-01-30 Thu 09:35]--[2020-01-30 Thu 12:45] =>  3:10
-CLOCK: [2020-01-21 Tue 12:45]--[2020-01-21 Tue 14:30] =>  1:45
-CLOCK: [2020-01-15 Wed 14:47]--[2020-01-15 Wed 15:39] =>  0:52
-CLOCK: [2020-01-14 Tue 18:38]--[2020-01-14 Tue 19:04] =>  0:26
-CLOCK: [2020-01-14 Tue 16:24]--[2020-01-14 Tue 16:44] =>  0:20
-CLOCK: [2020-01-14 Tue 13:49]--[2020-01-14 Tue 15:52] =>  2:03
-CLOCK: [2020-01-14 Tue 11:11]--[2020-01-14 Tue 12:42] =>  1:31
-CLOCK: [2020-01-13 Mon 21:10]--[2020-01-13 Mon 22:00] =>  0:50
-CLOCK: [2020-01-10 Fri 17:51]--[2020-01-10 Fri 18:51] =>  1:00
-CLOCK: [2020-01-08 Wed 13:06]--[2020-01-08 Wed 14:12] =>  1:06
-CLOCK: [2020-01-08 Wed 11:19]--[2020-01-08 Wed 12:31] =>  1:12
-CLOCK: [2020-01-07 Tue 17:27]--[2020-01-07 Tue 18:27] =>  1:00
-CLOCK: [2020-01-02 Thu 13:32]--[2020-01-02 Thu 14:32] =>  1:00
-CLOCK: [2019-12-27 Fri 19:15]--[2019-12-27 Fri 21:20] =>  2:05
-CLOCK: [2019-12-27 Fri 14:50]--[2019-12-27 Fri 15:12] =>  0:22
-:END:
-https://github.com/NYU-Molecular-Pathology
-https://www.pnas.org/content/115/4/E743.long
-- github searhing e.g. https://github.com/search?utf8=%E2%9C%93&q=followLinks++extension%3A.nf&type=Code&ref=advsearch&l=&l=
-- see for inputs from csv- https://github.com/nf-core/atacseq/blob/master/main.nf
-- raw data should reside in protected dirs
-- https://www.reddit.com/search?q=nextflow
-- cite federico2019
-- useful tutorials
-  - https://nextflow-io.github.io/hack17-varcall/#_input_parameters associated github at radonc-cancerbio:~/data/tmp
-- https://sciwiki.fredhutch.org/compdemos/nextflow/
-- https://learn.gencore.bio.nyu.edu/nextflow/
-- https://www.ebi.ac.uk/goldman-srv/simNGS/runfiles5/HiSeq/
-- https://github.com/genome/gms/wiki/HCC1395-WGS-Exome-RNA-Seq-Data
-- http://nextflow-io.github.io/patterns/index.html#_process_per_file_pairs
-- [[https://stackoverflow.com/questions/tagged/nextflow][nextflow stack questions]]
-- https://github.com/nextflow-io/patterns
-- [[https://github.com/nextflow-io/nf-hack18][2018 workshop github]]
-- [[https://nextflow-io.github.io/nf-hack18/training.html][2018 workshop course]]
-- [[https://github.com/search?utf8=%25E2%259C%2593&q=language%253Anextflow+&type=][github repos using nextflow]]
-- https://github.com/cbcrg/piper-nf/blob/master/piper.nf
-- [[https://github.com/search?utf8=%25E2%259C%2593&q=language%253Anextflow+&type=][github nextflow repositories]]
-- https://groups.google.com/forum/m/#!forum/nextflow
-- https://www.nextflow.io/presentations.html
-- http://groovy-lang.org/single-page-documentation.html
-- https://dzone.com/refcardz/groovy?chapter=10
-- https://www.manning.com/books/groovy-in-action-second-edition
-- https://github.com/MaxUlysse/compile-latex
-- https://nextflow-io.github.io/nf-hack18/training.html
-- https://github.com/nextflow-io/patterns
-- https://nextflow-io.github.io/hack17-varcall/
-- [[https://medium.com/@alaincoletta/how-to-create-a-nextflow-pipeline-with-all-necessary-tools-for-a-series-of-repetitive-35cf5b3b19a8][Coletta tutorial]]
-- processes
-  - check if file exists
-- commands
-  |----------+---------|
-  | function | command |
-  |----------+---------|
-  | <35>     | <35>    |
-  |          |         |
-- standards and best practice
-- [[https://www.nextflow.io/docs/latest/index.html][documentation]]
-- applications
-- reference
-  - [[file:~/.emacs.d/snippets/org-mode/software]]
-
-*** edgeR
-:PROPERTIES:
-:ID:       32BB77F2-0283-4A52-86AC-CDF2CB6A7315
-:END:
-- EdgeR
-  - GLM asking whether exons are used proportionally across experiment conditions
-  - DEXSeq is an extension to exons
-[[file:~/Box%20Sync/comp_bio/RNA-seq/Rueda,15%20Differential%20expression%20analysis%20using%20edgeR.pdf][Rueda,15 Differential expression analysis using edgeR]]
-[[file:~/Box%20Sync/comp_bio/RNA-seq/edgeRUsersGuide.pdf][User Guide]]
-[[file:~/Box%20Sync/comp_bio/RNA-seq/edgeR_manual.pdf][Manual]]
-
-- cite:robinson2010
-[[file:~/Box%20Sync/library/Robinson,09%20edgeR%20a%20Bioconductor%20package%20for%20differential%20expression%20analysis%20of%20digitial%20gene%20expression%20data.pdf][Robinson,09 edgeR a Bioconductor package for differential expression analysis of digitial gene expression data]]
-
-**** edgeR full example
-:PROPERTIES:
-:ID:       846943FC-BA4B-4658-9B1E-85FBA536D9EE
-:END:
-*** limma
-:PROPERTIES:
-:ID:       3283b8b2-fc42-4a71-a8e9-7dbdd7ab62ce
-:END:
-https://www.coursera.org/lecture/bioconductor/limma-aoNwW
-*** limma voom
-:PROPERTIES:
-:ID:       F9684168-A438-4F5E-81D6-D645B52B4074
-:END:
-  - https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/decideTests
-  - https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/ebayes
-  - https://www.rdocumentation.org/packages/limma/versions/3.28.14/topics/toptable
-
-[[file:~/Box%20Sync/comp_bio/RNA-seq/Ritchie,15%20limma%20powers%20differential%20expression%20analysis%20for%20RNA%20sequencing%20and%20microarray%20results.pdf][Ritchie,15 limma powers differential expression analysis for RNA sequencing and microarray results]]
-:LOGBOOK:  
-CLOCK: [2016-05-09 Mon 12:24]--[2016-05-09 Mon 12:25] =>  0:01
-:END:      
-- raw counts transformed to continuous values w/ confidence weight
-- [[file:~/Box%20Sync/comp_bio/RNA-seq/limma%20Manual.pdf][manual]]
-
-- Math, concept- [[file:~/Box%20Sync/comp_bio/RNA-seq/Law,14%20voom%20precision%20weights%20unlock%20linear%20model%20analysis%20tools%20for%20RNA%20seq.pdf][Law,14 voom precision weights unlock linear model analysis tools for RNA seq]]
-- voom transformation- from counts to log-counts per million w/ associated weight (just think of it as if microarray data)
-
-**** [[file:~/Box%20Sync/comp_bio/RNA-seq/limma%20User%20Guide.pdf][User Guide]]
-:PROPERTIES:
-:ID:       15C1AE68-19D2-4FBD-B51E-DA37C605F0D7
-:END:
-
-- concepts
-  - borrows information across genes for emperical Bayes
-  - read counts -> continuous expression data like microarray
-  - required matrices for linear models approach
-    - design- which RNA to which sample (i.e. specify groups)
-    - contrast- which group comparions to make
-
-**** [[file:~/Box%20Sync/comp_bio/limma_voom_template/][Examples and Template]]
-:PROPERTIES:
-:ID:       D1B28C0A-9AAD-4245-BE85-61300CE4A02B
-:END:
-
-***** WEHI example ([[file:~/Box%20Sync/comp_bio/RNA-seq/wehi_limma_example/wehi_limma_example.Rproj][Rproject]], [[file:~/Box%20Sync/comp_bio/RNA-seq/wehi_limma_example/wehi_limma_example.R][Rscript]]), [[http://bioinf.wehi.edu.au/RNAseqCaseStudy/][link]]
-:PROPERTIES:
-:ID:       1E96E985-8BD2-4D8F-AC88-FB509B99F513
-:END:
-:LOGBOOK:  
-CLOCK: [2016-05-10 Tue 15:46]--[2016-05-10 Tue 16:05] =>  0:19
-CLOCK: [2016-05-10 Tue 15:07]--[2016-05-10 Tue 15:20] =>  0:13
-CLOCK: [2016-05-09 Mon 12:25]--[2016-05-09 Mon 13:13] =>  0:48
-:END:      
-
-***** User Guide Chapter 18
-:PROPERTIES:
-:ID:       817998EF-31AD-4A22-BF91-ACF72A1C29E5
-:END:
-
-****** 18.1 [[file:~/Box%20Sync/comp_bio/limma_voom_template/yoruba_hapmap/][Profiles of Yoruba HapMap]]
-:PROPERTIES:
-:ID:       1E8CAB25-19C2-4745-B157-FA46D84549CD
-:END:
-
-******* DONE Read
-CLOSED: [2016-06-30 Thu 11:22]
-:PROPERTIES:
-:ID:       91CBDFB8-17EB-4F2D-B2A4-58F656C64332
-:END:
-
-******* Work through code
-:PROPERTIES:
-:ID:       05EC5C9D-CE60-4DD5-9F5D-6EED8C229478
-:END:
-
-Venn diagrams with limma]]
-
-Another use of the voom plot-  what you are failing to do completely in the voom analysis is to remove the rows of your count matrix that are lowly expressed, because these hose the mean/variance estimation, which you can see/diagnose on the plot generated with you call to voom(..., plot=TRUE). In brief, you want to ensure that the red fit line doesn't "slope/hook back down" (I'm talking as if you are "reading" the graph from right to left here) due to the drop/discretization in the observed variance from the black dots on the left side of the plot.
-
-[[https://www.biostars.org/p/131488/][subsetting from topTable]]
-*** DESeq2
-:PROPERTIES:
-:ID:       2F642F69-A9C8-46DA-BE31-783AC8D4F4B6
-:CREATED:  [2021-01-27 Wed 07:00]
-:END:
-:LOGBOOK:
-CLOCK: [2021-01-26 Tue 11:53]--[2021-01-26 Tue 13:00] =>  1:07
-:END:
-- [[file:~/Box%20Sync/library/Love,16%20DESeq2%20manual.pdf][Manual]]
-- vignettes
-  - [[https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#exploratory-analysis-and-visualization][gene workflow 19]]
-  - [[http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#using-parallelization][package vignette]]
-- handling nested designs https://support.bioconductor.org/p/64480/
-- https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
-- https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf
-- [[file:~/Box%20Sync/library/Love,14%20Moderated%20estimation%20of%20fold%20change%20and%20dispersion%20for%20RNA%20seq%20data%20with%20DESeq2.pdf][Love,14 Moderated estimation of fold change and dispersion for RNA seq data with DESeq2]]
-- a negative binomial GLM 
-- http://www.nathalievilla.org/doc/html/solution-DESeq2-rnaseq.html
-- import functions
-  | function          | package           | framework | output               | DESeq2 input function    |
-  | summarizeOverlaps | GenomicAlignments | R         | SummarizedExperiment | DESeqDataSet             |
-  | featureCounts     | Rsubread          | R         | matrix               | DESeqDataSetFromMatrix   |
-  | tximport          | tximport          | R         | list of matrices     | DESeqDataSetFromTximport |
-  | htseq-count       | HTSeq             | Python    | files                | DESeqDataSetFromHTSeq    |
-**** Examples- see [[file:~/Box%20Sync/comp_bio/deseq2_template/][deseq2_template]]
-:PROPERTIES:
-:ID:       5C8E2A3B-2C16-4FB3-9F86-5A1D8AD4802F
-:END:
-
-***** DONE Example 1: [[file:~/Box%20Sync/comp_bio/deseq2_template/Love,15%20RNA%20seq%20workflow%20gene%20level%20exploratory%20analysis%20and%20differential%20expression.pdf][Love,15 Airway]]
-CLOSED: [2016-06-27 Mon 14:45]
-:PROPERTIES:
-:ID:       791A1ABC-4138-4CD2-82AE-63905C053571
-:END:
-:LOGBOOK:  
-CLOCK: [2016-06-27 Mon 10:22]--[2016-06-27 Mon 10:37] =>  0:15
-CLOCK: [2016-06-23 Thu 09:22]--[2016-06-23 Thu 10:19] =>  0:57
-CLOCK: [2016-06-22 Wed 17:56]--[2016-06-22 Wed 18:30] =>  0:34
-CLOCK: [2016-06-22 Wed 14:50]--[2016-06-22 Wed 16:02] =>  1:12
-CLOCK: [2016-06-22 Wed 12:09]--[2016-06-22 Wed 12:57] =>  0:48
-CLOCK: [2016-06-22 Wed 11:40]--[2016-06-22 Wed 11:46] =>  0:06
-:END:      
-
-***** DONE Example 2: [[file:~/Box%20Sync/comp_bio/deseq2_template/https___software.rc.fas.harvard.edu_ngsdata_workshops_2015_March_DESeq2_fruitfly.pdf][Drosophila]]
-CLOSED: [2016-06-27 Mon 14:45]
-:PROPERTIES:
-:ID:       CC047BA0-35A3-420B-BB60-CA1AA7AE275B
-:END:
-
-https://software.rc.fas.harvard.edu/ngsdata/workshops/2015_March/DESeq2_fruitfly.html
-
-***** DONE Example 3: Hox
-CLOSED: [2016-06-28 Tue 13:48]
-:PROPERTIES:
-:ID:       97126EA4-E1CD-4CD5-9746-A7C9393DF712
-:END:
-
-http://www.gettinggeneticsdone.com/2015/12/tutorial-rna-seq-differential.html
-
-***** Example 4 [[file:~/Box%20Sync/comp_bio/Love,16%20Differential%20analysis%20of%20RNA%20seq%20data%20using%20the%20DESeq2%20package.pdf][Love,16 Differential analysis of RNA seq data the DESeq2 package]]
-:PROPERTIES:
-:ID:       61BDAC0E-3F02-482A-868E-93AC26B33361
-:END:
-:LOGBOOK:  
-CLOCK: [2016-06-22 Wed 11:15]--[2016-06-22 Wed 11:40] =>  0:25
-CLOCK: [2016-06-21 Tue 16:41]--[2016-06-21 Tue 16:59] =>  0:18
-CLOCK: [2016-06-21 Tue 15:33]--[2016-06-21 Tue 16:31] =>  0:58
-CLOCK: [2016-06-20 Mon 13:48]--[2016-06-20 Mon 14:21] =>  0:33
-CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
-:END:      
-
-****** Standard workflow
-:PROPERTIES:
-:ID:       ABBDC255-8B16-4598-AA75-6D0ADAD3E48E
-:END:
-
-******* Input data
-:PROPERTIES:
-:ID:       71704A3E-FEE2-4363-BA67-4CA68D516375
-:END:
-
-******** SummarizedExperiment input
-:PROPERTIES:
-:ID:       F4CCA76E-3FBE-4E20-B6DE-69FB848D7123
-:END:
-
-- DESeqDataSet
-  - is an extension of the RangedSummarizedExperiment class
-  - requires design formula
-    - ~ followed by variables w/ plus sign between
-    - put variable of interest at end of formula
-- Preferred count algorithm is summarizedOverlaps w/ mode="Union"
-
-******** Pre-filtering
-:PROPERTIES:
-:ID:       1D88E488-4AFA-4A0F-A994-3C1664B5D156
-:END:
-
-- by DESeq2
-  - on mean of normalized counts per gene- maximized genes w/ adjusted p value below a FDR of alpha 
-- (by user)
-  - increases processing speed and reduces memory
-  - b/ not necessary for DESeq2 function
-
-******* Exploring and exporting results
-:PROPERTIES:
-:ID:       B87063F9-4578-440B-BF94-9DF134AF438A
-:END:
-
-******** MA-plot
-:PROPERTIES:
-:ID:       BBEB1ADB-F328-4B7B-807D-F8C158D60083
-:END:
-
-- useful to look at how the DESeq2 function shrinkage performed
-- after calling plotMA, the identify function can interactively select dots
-- for unshrunken results, add addMLE=T to get a column called lfcMLE 
-
-******** Plot counts
-:PROPERTIES:
-:ID:       CB3647FE-90B2-47AD-8E89-AA206A6C207F
-:END:
-
-- plotCounts will give counts normalized by sequencing depth for a specific gene 
-
-******** p values set to NA
-:PROPERTIES:
-:ID:       F28D686F-0E61-42C9-81DB-6BD581223377
-:END:
-
-- all samples w/ zero counts
-- rows w/ extreme count outlier by Cook's distance
-- low mean normalized count (here only the p value will be NA) 
-
-******** Rich visualization and reporting of results- checkout Bioconductor packages [[http://bioconductor.org/packages/release/bioc/html/ReportingTools.html][ReportingTools]], regionReport, [[http://bioconductor.org/packages/release/bioc/html/Glimma.html][Glimma]], and pcaExplorer
-:PROPERTIES:
-:ID:       8CE69F91-1AFB-477A-996A-95212336AD6D
-:END:
-
-****** Data transformations and visualization
-:PROPERTIES:
-:ID:       99C0CCAA-43A0-4E37-8C72-98617C51D928
-:END:
-
-******* Count data transformations
-:PROPERTIES:
-:ID:       3E7192A1-175C-4D3A-A5E7-08D6CC64DCEC
-:END:
-
-- transformations for EDA
-  - pseudocounts: y=log2(N+No)
-  - log2-based alternatives
-    - find experiment-wide trend in variabnce/mean and remove dependnece of variance on mean 
-    - rlog
-    - VST (variance stabilizing transformations) 
-
-******** Blind dispersion estimation
-:PROPERTIES:
-:ID:       BFA60D58-A2E6-49F4-9912-2CF15D0BD356
-:END:
-
-- blind to sample information is default
-- change if many/most genes will have large differences- can be checked with MA over-shrinking 
-
-****** Variations to the standard workflow
-:PROPERTIES:
-:ID:       7A2DB9FE-8DE5-481A-9C1A-4F26DC867582
-:END:
-
-******* Contrasts
-:PROPERTIES:
-:ID:       A6AC8C5D-8828-4B96-BDB4-760B1F0DE0BA
-:END:
-
-- Contrast
-  - i.e. w/ levels A,B,C, test all possible differences of A vs B, A vs C, B vs C, ... 
-  - linear combination of estimated log2 fold changes
-
-******* Interactions- tests whether log2 fold change attributable to one condition is different based on another condition
-:PROPERTIES:
-:ID:       E2EE7973-FFB1-4842-83E8-665DCCA8F2C9
-:END:
-
-******* Likelihood ratio test
-:PROPERTIES:
-:ID:       F15FCEE5-B88F-4712-B3B1-03C576F8E44F
-:END:
-
-- Wald test asks if log2 fold change b/w groups is zero based on mean and SE
-- LR
-  - asks whether full model (w/ groups) and reduced model (w/ some terms removed) are different
-  - like a ANOVA except this is analysis of deviance
-
-******* Approach to count outliers
-:PROPERTIES:
-:ID:       682697F8-D316-4A04-9B6D-8BCB0261DE15
-:END:
-
-- Cook's distance- for how much single sample is influencing fitting coefficients
-  - automatic in results function
-  - requires at least 3 replicates
-  - @ >6 samples, instead of eliminating gene, the outlier is replaced w/ the trimmed mean over all samples
-  - not run when continuous variables are in the design 
-
-******* Independent filtering of results
-:PROPERTIES:
-:ID:       0778E394-2A3A-4952-9126-668AC8162D3A
-:END:
-
-results function maximizes p values less than * over quantiles of mean normalized counts
-
-******* Tests of log2 fold change above or below a threshold
-:PROPERTIES:
-:ID:       70E0F04B-9D6B-4C11-A34E-6EE2FB008185
-:END:
-
-******* Access to all calculated values
-:PROPERTIES:
-:ID:       60580A3B-7A73-45A0-984F-0E83E5B6F2EC
-:END:
-
-******* Sample-/gene-dependent normalization factors
-:PROPERTIES:
-:ID:       BB95C4F2-763B-447D-A840-372588D43C79
-:END:
-
-******* “Model matrix not full rank”
-:PROPERTIES:
-:ID:       7F14D356-858D-46DD-9044-C1A6CD2F8A08
-:END:
-
-******** Linear combinations
-:PROPERTIES:
-:ID:       D9625DD4-D506-4E43-836D-9E0CDDCB9A79
-:END:
-
-******** Levels without samples
-:PROPERTIES:
-:ID:       E65BA44B-FBA9-4A05-93B0-1246608C3754
-:END:
-
-****** Theory behind DESeq2
-:PROPERTIES:
-:ID:       C0765E52-718B-4771-9ECC-3689EE7CAA21
-:END:
-
-******* The DESeq2 model
-:PROPERTIES:
-:ID:       08949A97-2A7C-4D21-A9EB-811440E003A8
-:END:
-
-******* Changes compared to the DESeq package
-:PROPERTIES:
-:ID:       41E50955-4ADF-4560-ACD0-86F58F544033
-:END:
-
-******* Methods changes since the 2014 DESeq2 paper
-:PROPERTIES:
-:ID:       1D28C489-FF28-4112-B9B9-70C09D382608
-:END:
-
-******* Count outlier detection
-:PROPERTIES:
-:ID:       14989EE3-4903-4FCB-A270-E3BAFFCD6EFA
-:END:
-
-******* Contrasts
-:PROPERTIES:
-:ID:       45C7C99A-DC18-4293-9381-878DE892D84A
-:END:
-
-******* Expanded model matrices
-:PROPERTIES:
-:ID:       FBAAB9AE-7D25-43A5-9363-766F84F32198
-:END:
-
-******* Independent filtering and multiple testing
-:PROPERTIES:
-:ID:       EB54BD27-FD99-45DD-B671-8BBEB06857FE
-:END:
-
-******** Filtering criteria
-:PROPERTIES:
-:ID:       4705CA0F-C007-4503-A898-74E946304812
-:END:
-
-******** Why does it work?
-:PROPERTIES:
-:ID:       BA1FC087-AAF6-4116-9B86-0B0B4BBC5FDB
-:END:
-
-****** Frequently asked questions
-:PROPERTIES:
-:ID:       7A2CF9E1-0C06-45FF-9637-C085CC6F15A0
-:END:
-
-******* How can I get support for DESeq2?
-:PROPERTIES:
-:ID:       B5ADEA5D-15C6-4449-B15F-908E63118B76
-:END:
-
-******* Why are some pvalues set to NA?
-:PROPERTIES:
-:ID:       3D889B88-07E4-4D2C-91F1-58CCF54C9C2C
-:END:
-
-******* How can I get unfiltered DESeq results?
-:PROPERTIES:
-:ID:       A4107221-A74A-4E79-AC6E-057F5CAB86DF
-:END:
-
-******* How do I use the variance stabilized or rlog transformed data for differential testing?
-:PROPERTIES:
-:ID:       F6C4F4CE-03E9-46FC-8F9A-EF915DF7FEF2
-:END:
-
-******* Can I use DESeq2 to analyze paired samples?
-:PROPERTIES:
-:ID:       DA9671DE-23CE-4603-9077-0F8576CEECBF
-:END:
-
-******* If I have multiple groups, should I run all together or split into pairs of groups?
-:PROPERTIES:
-:ID:       5384671F-9FF2-4589-80E4-7B6E7AA681FF
-:END:
-
-******* Can I run DESeq2 to contrast the levels of 100 groups?
-:PROPERTIES:
-:ID:       355A5DC0-1A35-4315-8DEB-4C2275EA9A7C
-:END:
-
-******* Can I use DESeq2 to analyze a dataset without replicates?
-:PROPERTIES:
-:ID:       4AF6174D-0E98-4139-89B6-2E2AB1B13BA4
-:END:
-
-******* How can I include a continuous covariate in the design formula?
-:PROPERTIES:
-:ID:       BBFFFE10-B8CF-4E66-9BA9-B78B0DA2FAF9
-:END:
-
-******* Will the log fold change shrinkage “overshrink” large differences?
-:PROPERTIES:
-:ID:       01210C6E-221E-403D-AE9C-63946B83F9A4
-:END:
-
-******* I ran a likelihood ratio test, but results() only gives me one comparison
-:PROPERTIES:
-:ID:       76AC2A68-59B8-4E92-B384-822B8CE0DD7B
-:END:
-
-******* What are the exact steps performed by DESeq()?
-:PROPERTIES:
-:ID:       74C55B19-7DAA-4357-8F15-179AF2645CFF
-:END:
-
-******* Is there an official Galaxy tool for DESeq2
-:PROPERTIES:
-:ID:       5A4CB62B-A91F-467F-AA52-B8D1C66D9D28
-:END:
-
-******* I want to benchmark DESeq2 comparing to other DE tools.
-:PROPERTIES:
-:ID:       9B564504-8E91-4921-87D8-3AE89F5F6E2F
-:END:
-
-****** SessionInfo
-:PROPERTIES:
-:ID:       626CE66C-E3D7-4D09-BEDC-27812DB3689B
-:END:
-
-[[file:~/Box%20Sync/comp_bio/Love,14%20Beginners%20guide%20to%20using%20the%20DESeq2%20package.pdf][Love,14 Beginners guide to using the DESeq2 package]]
-[[file:~/Box%20Sync/comp_bio/Love,15%20DESeq2%20User%20Guide.pdf][User Guide]]
-[[https://support.bioconductor.org/local/search/page/?q=deseq2][Bioconductor Support]]
-[[file:~/Box%20Sync/library/Love,16%20DESeq2%20manual.pdf][Manual]] 
-A negative binomial GLM 
-[[https://www.youtube.com/results?search_query=deseq2&page=&utm_source=opensearch][Youtube]]
-[[file:~/Box%20Sync/library/Love,14%20Moderated%20estimation%20of%20fold%20change%20and%20dispersion%20for%20RNA%20seq%20data%20with%20DESeq2.pdf][Love,14 Moderated estimation of fold change and dispersion for RNA seq data with DESeq2]] 
-[[ftp://ftp.jax.org/dgatti/ShortCourse2015/tutorials/Differential-Expression.html][Workflow example]]
-[[http://www.sthda.com/english/wiki/rna-seq-differential-expression-work-flow-using-deseq2][Another workflow example]]
-[[https://dwheelerau.com/2014/02/17/how-to-use-deseq2-to-analyse-rnaseq-data/][And another workflow example]]
 
 
 ** Reference 
