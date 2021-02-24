@@ -26,10 +26,14 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :END:
 https://science.sciencemag.org/content/369/6509/1318
 *** By substrate
+:PROPERTIES:
+:ID:       ffe7a0f8-5e6d-45ff-adec-efbba7c44783
+:END:
 **** miRNA data
 :PROPERTIES:
 :ID:       95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88
 :END:
+- cite:kozomara2019
 - https://exrna-atlas.org/
 - [[id:fd462ab0-6aaf-4732-953b-141ad5e2ee72][LINK TO small RNA sequencing]]
 - see mirbase in [[id:FCBA0863-010A-448C-A33C-941D2AA45AD5][databases, data sets, and database browsers]]
@@ -644,15 +648,7 @@ https://singularity.lbl.gov/install-linux
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
-- illumina sequencing platforms
-    | series  | platform |
-    |---------+----------|
-    | NovaSeq |     6000 |
-    | HiSeq   |     3000 |
-    | HiSeq   |     2500 |
-    | MiSeq   |          |
-    | Nexseq  |          |
-    - https://www.illumina.com/systems/sequencing-platforms/comparison-tool.html
+
 https://support.illumina.com/training.html
 https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/user-guide-manual/xgen-prism-dna-library-prep-kit-processing-sequencing-data-with-umis.pdf
 https://www.biostars.org/p/198143/
@@ -690,19 +686,6 @@ Read length
 Companies
 ....
 
-**** illumina platform
-:PROPERTIES:
-:ID:       BD6D148D-BF63-4A9A-A14E-1AB6954BFA40
-:END:
-https://www.illumina.com/systems/sequencing-platforms/novaseq/specifications.html
-output- *.bcl files- base call and quality score per cycle
-convert *.bcl to .fastq.gz w/ CASAVA
-also demultiplexes 
-- [[https://www.illumina.com/systems.html][system specs]]
-- PhiX phasing and cluster ctrl https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/hiseq-phix-control-v3-technical-note.pdf
-- library preparation kits
-  - [[https://www.illumina.com/library-prep-array-kit-selector.html][selector]]
-  - https://support.illumina.com/sequencing/sequencing_kits/truseq-small-rna-kit.html
 **** [[Overview of Sequencing Methods]] Molecular Micro
 :PROPERTIES:
 :ID:       6F399263-D04E-441A-B990-BB669F61F25E
@@ -741,7 +724,10 @@ also demultiplexes
 :PROPERTIES:
 :ID:       D1A3EF94-7933-4854-99ED-C63DE8F7741D
 :END:
-
+- adapters
+  - only 3' adapters need trim https://support.illumina.com/bulletins/2016/04/adapter-trimming-why-are-adapter-sequences-trimmed-from-only-the--ends-of-reads.html
+  - indexing goes on outside of adapter seq- so routine trim will find and clip
+  - https://support.illumina.com/bulletins/2016/12/what-sequences-do-i-use-for-adapter-trimming.html
 ****** Illumina TruSeq
 :PROPERTIES:
 :ID:       3CE663C4-BF37-4E2E-9A0D-0E822241D05E
@@ -762,6 +748,29 @@ also demultiplexes
 :ID:       D509473A-536B-46D2-8639-22DC19DF41E2
 :END:
 
+****** illumina platform
+:PROPERTIES:
+:ID:       BD6D148D-BF63-4A9A-A14E-1AB6954BFA40
+:END:
+- cite:illumina2015nextseq 
+- illumina sequencing platforms
+    | series  | platform |
+    |---------+----------|
+    | NovaSeq |     6000 |
+    | HiSeq   |     3000 |
+    | HiSeq   |     2500 |
+    | MiSeq   |          |
+    | Nexseq  |          |
+    - https://www.illumina.com/systems/sequencing-platforms/comparison-tool.html
+https://www.illumina.com/systems/sequencing-platforms/novaseq/specifications.html
+output- *.bcl files- base call and quality score per cycle
+convert *.bcl to .fastq.gz w/ CASAVA
+also demultiplexes 
+- [[https://www.illumina.com/systems.html][system specs]]
+- PhiX phasing and cluster ctrl https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/hiseq-phix-control-v3-technical-note.pdf
+- library preparation kits
+  - [[https://www.illumina.com/library-prep-array-kit-selector.html][selector]]
+  - https://support.illumina.com/sequencing/sequencing_kits/truseq-small-rna-kit.html
 **** NGS vs. Sanger
 :PROPERTIES:
 :ID:       4AAD4446-DE69-45CD-A1FE-F8C3A5768C17
@@ -3341,7 +3350,13 @@ CLOCK: [2021-02-17 Wed 09:08]--[2021-02-17 Wed 09:18] =>  0:10
 CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 :END:
 ******* [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO Extracellular RNA biology]]
+:PROPERTIES:
+:ID:       49a0e52b-0bda-4237-8bab-ff2db54cf26d
+:END:
 ******* Design
+:PROPERTIES:
+:ID:       4e8a8446-e84d-4c4f-8bd8-45ee611337b5
+:END:
 - what depth? https://www.researchgate.net/post/how_many_million_reads_for_miRNA_discovery
 - reads per sample
     - https://www.qiagen.com/us/resources/faq?id=a119d5f0-0a2a-4612-828e-d8fa3cc37891&lang=en
@@ -3357,7 +3372,10 @@ CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 :PROPERTIES:
 :ID:       a65f74ea-8211-4a51-97a3-a03f5bebb31b
 :END:
-******* [[id:95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88][LINK TO miRNA data]]
+******* [[id:3BC41E6A-00D3-4498-A48C-463F68CFD76B][LINK TO Massively parallel sequencing]]
+:PROPERTIES:
+:ID:       6584c294-78b9-42e5-a25b-28a069e112d8
+:END:
 ******* Bioinformatics
 :PROPERTIES:
 :ID:       f46e278c-dd38-4603-9fa2-a973823e1333
@@ -3384,6 +3402,9 @@ CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 :END:
 - alignment to miRbase needs to be more conservative to avoid mismatches
 ******** QC
+:PROPERTIES:
+:ID:       fc7aeeb1-d387-4379-be37-46ebf1244cd7
+:END:
 https://exrna.org/resources/data/data-quality-control-standards/
 ******** [[id:853dd34c-27be-4be8-9794-19f04a1e22b0][LINK TO Quantification and normalization]]
 :PROPERTIES:
@@ -3475,21 +3496,22 @@ cite:buschmann2016 pg6011
 :LOGBOOK:
 CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :END:
-http://apps.pathology.jhu.edu/mirnaprogram/links/http://apps.pathology.jhu.edu/mirnaprogram/links/
-- cite:chen2019mirna
-- cite:pritchard2012
-  - citing, times cited WOS:        
-    - cite:braunwald2013
-    - cite:dong2013
-    - cite:schwarzenbach2014
-    - " Whereas high-speed centrifugation (14,000–16,000 g) can remove living cells and cell debris, separating exosomes and small shedding vesicles requires ultracentrifugation (>110,000 g).30 Blood cell count has a significant effect on miRNA expression levels in plasma;31 therefore, samples from patients with an inflammatory process, who should have high white blood cell count, should be excluded from analysis. Haemolysis is also known to markedly influence miRNA expression patterns, because of a contamination of abundant intracellular miRNAs.31"
-- miRNA functional analysis
+- [[id:5d9593fd-f083-450f-a510-449aa15ae670][LINK TO miRNA biology]]
+- normalization
+  - https://academic.oup.com/bib/article/16/6/950/226343
+  - https://rnajournal.cshlp.org/content/18/6/1279.long
+- functional analysis
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4489228/
-- https://rnajournal.cshlp.org/content/18/6/1279.long
-- https://www.rna-seqblog.com/optimization-of-mirna-seq-data-preprocessing/
-- [[file:~/data/img/mirna.png]]
-- https://academic.oup.com/nar/article/47/D1/D155/5179337?login=true
-- cite:kozomara2019
+- tool comparisons
+  - cite:chen2019mirna
+- general reference
+  - cite:pritchard2012
+    - citing, times cited WOS:        
+      - cite:braunwald2013
+      - cite:dong2013
+      - cite:schwarzenbach2014
+      - " Whereas high-speed centrifugation (14,000–16,000 g) can remove living cells and cell debris, separating exosomes and small shedding vesicles requires ultracentrifugation (>110,000 g).30 Blood cell count has a significant effect on miRNA expression levels in plasma;31 therefore, samples from patients with an inflammatory process, who should have high white blood cell count, should be excluded from analysis. Haemolysis is also known to markedly influence miRNA expression patterns, because of a contamination of abundant intracellular miRNAs.31"
+  - [[http://apps.pathology.jhu.edu/mirnaprogram/links/http://apps.pathology.jhu.edu/mirnaprogram/links/][Johns Hopkins microRNA Bio lab]]
 - cite:fu2018mirna 
 - https://www.nature.com/articles/s41598-017-14301-3.pdf
 - https://arn.ugr.es/mirnaqc/
@@ -3499,6 +3521,7 @@ http://apps.pathology.jhu.edu/mirnaprogram/links/http://apps.pathology.jhu.edu/m
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
 - https://www.google.com/search?q=mirna+isoform+discovery+depth
 - https://www.google.com/search?q=mirna+multiqc   
+- [[id:95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88][LINK TO miRNA data]]
 ******* General reference
 :PROPERTIES:
 :ID:       65a85f59-afd5-4c6b-a785-9b6269cc7a51
