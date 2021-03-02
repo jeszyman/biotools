@@ -4014,7 +4014,8 @@ https://www.reddit.com/r/bioinformatics/comments/ahbzg5/how_do_people_turn_their
 :PROPERTIES:
 :ID:       8883a37b-867c-4c19-8e9c-2b46004125a1
 :END:
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3010897/
+- [[https://currentprotocols.onlinelibrary.wiley.com/doi/10.1002/0471250953.bi1107s32][protocol paper]]
+- [[http://bowtie-bio.sourceforge.net/index.shtml][doc]]
 *** BBmap / BBSplit 
 :PROPERTIES:
 :ID:       52363054-5138-419c-8d45-4ec9b0b02b24
