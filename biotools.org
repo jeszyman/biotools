@@ -4011,6 +4011,9 @@ https://www.reddit.com/r/bioinformatics/comments/ahbzg5/how_do_people_turn_their
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
 *** bowtie
+:PROPERTIES:
+:ID:       8883a37b-867c-4c19-8e9c-2b46004125a1
+:END:
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3010897/
 *** BBmap / BBSplit 
 :PROPERTIES:
@@ -4024,6 +4027,9 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3010897/
 - [ ] BBSplit in BBmap - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwJZJWQrGSPgdPGNfStWbxXkmhP][email]]]]
 - https://www.google.com/search?q=bbmap+docker use bioconda
 *** BLAT
+:PROPERTIES:
+:ID:       6e44c130-0eaa-4e44-8c12-c7c8125ab9ec
+:END:
   - https://www.youtube.com/watch?v=E6DDNGDXH8A
 *** canvas
 :PROPERTIES:
@@ -5159,6 +5165,9 @@ https://www.pnas.org/content/115/4/E743.long
 https://pathvisio.github.io/
 - to switch to java 8 https://askubuntu.com/questions/1133216/downgrading-java-11-to-java-8
 *** picard
+:PROPERTIES:
+:ID:       6992d240-4089-49b0-8587-7b84202932eb
+:END:
   - [[https://broadinstitute.github.io/picard/command-line-overview.html][Broad Picard Command Line Overview]]
   - [[https://www.broadinstitute.org/videos/broade-mapping-processing-and-duplicate-marking-picard-tools][Broad Processing and Duplicate mapping with Picard]]
   - [[https://broadinstitute.github.io/picard/explain-flags.html][picard explain sam flags]]
@@ -5351,6 +5360,9 @@ snakemake --cores 20 --forceall
 :END:
 - [[https://www.ebi.ac.uk/services][EMBL-EBI Tools]]
 *** tophat2
+:PROPERTIES:
+:ID:       db678422-a644-4298-b962-33657a5dee7e
+:END:
 notes- https://www.biostars.org/p/251018/
 *** Trim Galore 
 :PROPERTIES:
