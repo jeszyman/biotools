@@ -642,10 +642,10 @@ RUN cd /opt \
     && R CMD INSTALL . \
     && cd /opt 
 ##
-## ideas
-###
-### devtools install
-# RUN R -e "library(devtools); install_github('broadinstitute/ichorCNA', force = T)"
-###
-### conda install
-# RUN conda install -c bioconda r-ichorcna
+#RUN echo "source activate py2" > ~/.bashrc
+#ENV PATH /opt/conda/envs/py2/bin:$PATH
+#
+RUN conda install -c bioconda bowtie
+#
+RUN conda install -c bioconda mirdeep2
+
