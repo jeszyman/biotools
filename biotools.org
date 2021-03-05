@@ -568,6 +568,9 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
 :END:
+:LOGBOOK:
+CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
+:END:
 - [[file:~/repos/biotools/Dockerfile]]
 - build biotools docker container
   #+begin_src bash :tangle no
@@ -5048,7 +5051,8 @@ CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
 - [[https://github.com/broadinstitute/ichorCNA/wiki][documentation]]
   - https://github.com/broadinstitute/ichorCNA/wiki/Parameter-tuning-and-settings
 - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDDjrSfkvnNDnxMlVJNFgfnfk][email from:Sundby re:ichor method]]
-- https://www.biostars.org/local/search/page/?q=ichorcna 
+- https://www.biostars.org/local/search/page/?q=ichorcna
+- for install see [[file:/ssh:chaudhuri-roche:/home/jszymanski/repos/biotools/Dockerfile][biotools Dockerfile]]  
 *** INTEGRATE
 :PROPERTIES:
 :ID:       7519d47f-18e8-4a28-be11-9d081b68b52d

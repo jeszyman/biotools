@@ -81,26 +81,6 @@ RUN pip install -U cython
 # RSeQC
 RUN pip install RSeQC 
 #
-# Ichor
-## R devtools
-### curl, libcurl4-openssl-dev 
-#RUN apt-get update \
-#    && apt-get install -y \
-#    libcurl4-gnutls-dev \
-#    libssl-dev \
-#    libxml2-dev
-#
-RUN R -e "install.packages('devtools')"
-#RUN R -e "library(devtools); install_github("broadinstitute/ichorCNA", force = T)"
-# from 	git clone https://github.com/broadinstitute/ichorCNA.git && \ 
-#
-RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("HMMcopy"); BiocManager::install("SNPchip");' 
-#
-RUN cd /opt \
-    && git clone https://github.com/broadinstitute/ichorCNA.git \
-    && cd ichorCNA \
-    && R CMD INSTALL . \
-    && cd /opt 
 #
 RUN cd /opt && \
     git clone https://github.com/shahcompbio/hmmcopy_utils.git && \
@@ -637,3 +617,35 @@ RUN conda install -c bioconda snakemake
 RUN conda create -n py2 python=2.7
 RUN echo "source activate py2" > ~/.bashrc
 ENV PATH /opt/conda/envs/py2/bin:$PATH
+#
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+RUN R -e "install.packages('devtools')"
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+# ichorCNA
+##
+## linux dependencies
+RUN apt-get update \
+   && apt-get install -y \
+   libcurl4-gnutls-dev \
+   libssl-dev \
+   libxml2-dev
+## 
+## R dependencies
+RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("HMMcopy"); BiocManager::install("GenomeInfoDb"); BiocManager::install("GenomicRanges");' 
+##
+## git clone install
+RUN cd /opt \
+    && git clone https://github.com/broadinstitute/ichorCNA.git \
+    && cd ichorCNA \
+    && R CMD INSTALL . \
+    && cd /opt 
+##
+## ideas
+###
+### devtools install
+# RUN R -e "library(devtools); install_github('broadinstitute/ichorCNA', force = T)"
+###
+### conda install
+# RUN conda install -c bioconda r-ichorcna
