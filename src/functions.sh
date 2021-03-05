@@ -20,6 +20,8 @@ docker_interactive() {
                                       $account/$container \
                                       /bin/bash;;
             (acl*) docker run -it \
+                          --env HOME=${HOME} \
+                          --hostname ${HOSTNAME} \                          
                           -v /drive3/:/drive3/ \
                           -v /duo4/:/duo4/ \
                           -v /home/:/home/ \
@@ -27,10 +29,11 @@ docker_interactive() {
                           $account/$container \
                           /bin/bash;;
             (ACL*) docker run -it \
+                          --env HOME=${HOME} \
+                          --hostname ${HOSTNAME} \
                           -v /home/:/home/ \
                           -v /duo4/:/duo4/ \
                           -u $(id -u ${USER}):$(id -g ${USER}) \
-                          -h=${HOSTNAME} \
                           $account/$container \
                           /bin/bash;;
             (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker($account/'"$container"')' /bin/bash;;
