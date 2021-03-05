@@ -635,5 +635,11 @@ RUN conda install -c bioconda snakemake
 #RUN conda install -c bioconda mirge3
 #
 RUN conda create -n py2 python=2.7
-RUN echo "source activate py2" > ~/.bashrc
-ENV PATH /opt/conda/envs/py2/bin:$PATH
+#RUN echo "source activate py2" > ~/.bashrc
+#ENV PATH /opt/conda/envs/py2/bin:$PATH
+
+#
+RUN conda install -c bioconda bowtie
+
+#
+RUN conda install -c bioconda mirdeep2
