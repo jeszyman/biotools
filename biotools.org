@@ -599,39 +599,30 @@ docker_interactive() {
                                       --volume /tmp/:/tmp/ \
                                       $account/$container \
                                       /bin/bash;;
-            (jeszyman-*) docker run -it \
-                                --env HOME=/home/jeszyman \
-                                --hostname ${HOSTNAME} \
-                                --user $(id -u ${USER}) \
-                                --volume /home/:/home/ \
-                                --volume /mnt/:/mnt/ \
-                                --volume /tmp/:/tmp/ \
-                                $account/$container \
-                                /bin/bash;;
-        (jeff-mac*) docker run -it \
-                            --env HOME=/home/jeszyman \
-                            --hostname ${HOSTNAME} \
-                            --user $(id -u ${USER}) \
-                            --volume /home/:/home/ \
-                            --volume /mnt/:/mnt/ \
-                            --volume /tmp/:/tmp/ \
-                            jeszyman/$container \
-                            /bin/bash;;        
-        (acl*) docker run -it \
-                      -v /drive3/:/drive3/ \
-                      -v /duo4/:/duo4/ \
-                      -v /home/:/home/ \
-                      -u $(id -u ${USER}) \
-                      jeszyman/$container \
-                      /bin/bash;;
-        (ACL*) docker run -it \
-                      -v /home/:/home/ \
-                      -v /duo4/:/duo4/ \
-                      -u $(id -u ${USER}):$(id -g ${USER}) \
-                      -h=${HOSTNAME} \
-                      jeszyman/$container \
-                      /bin/bash;;
-        (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker(jeszyman/'"$container"')' /bin/bash;;
+            (acl*) docker run -it \
+                          -v /drive3/:/drive3/ \
+                          -v /duo4/:/duo4/ \
+                          -v /home/:/home/ \
+                          -u $(id -u ${USER}) \
+                          $account/$container \
+                          /bin/bash;;
+            (ACL*) docker run -it \
+                          -v /home/:/home/ \
+                          -v /duo4/:/duo4/ \
+                          -u $(id -u ${USER}):$(id -g ${USER}) \
+                          -h=${HOSTNAME} \
+                          $account/$container \
+                          /bin/bash;;
+            (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker($account/'"$container"')' /bin/bash;;
+            (*) docker run -it \
+                       --env HOME=/home/${USER} \
+                       --hostname ${HOSTNAME} \
+                       --user $(id -u ${USER}) \
+                       --volume /home/:/home/ \
+                       --volume /mnt/:/mnt/ \
+                       --volume /tmp/:/tmp/ \
+                       $account/$container \
+                       /bin/bash;;
         esac
     fi
 }
@@ -709,7 +700,7 @@ https://singularity.lbl.gov/install-linux
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
-
+https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
 https://support.illumina.com/training.html
 https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/user-guide-manual/xgen-prism-dna-library-prep-kit-processing-sequencing-data-with-umis.pdf
 https://www.biostars.org/p/198143/
@@ -3410,6 +3401,9 @@ CLOCK: [2021-02-17 Wed 09:23]--[2021-02-17 Wed 09:35] =>  0:12
 CLOCK: [2021-02-17 Wed 09:08]--[2021-02-17 Wed 09:18] =>  0:10
 CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 :END:
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4538800/
+https://www.eacr.org/user_uploads/files/2020-Event-Websites/vLibi20/1_Guidelines_for_Profiling_Biofluid_miRNAs.pdf
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4652620/
 ******* [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO Extracellular RNA biology]]
 :PROPERTIES:
 :ID:       49a0e52b-0bda-4237-8bab-ff2db54cf26d
@@ -3539,13 +3533,7 @@ cite:buschmann2016 pg6011
 - spike ins use
   - cite:godoy2019 
   - cite:giraldez2018 
-- pipelines
-  - exceRpt 
-    - used in
-      - cite:godoy2019 
-      - cite:giraldez2018 
-    - cite:rozowsky2019 
-    - http://github.gersteinlab.org/exceRpt/ 
+- pipelines- [[id:1db0ffb6-25b7-4c97-9aa0-263b8c96373b][exceRpt]]
 - cite:max2018 
 - exRNA and exosomal RNA
   - cite:juzenas2017
@@ -3557,15 +3545,25 @@ cite:buschmann2016 pg6011
 :LOGBOOK:
 CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :END:
-- see for read collapse https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0143066
 - [[id:5d9593fd-f083-450f-a510-449aa15ae670][LINK TO miRNA biology]]
-- normalization
-  - https://academic.oup.com/bib/article/16/6/950/226343
-  - https://rnajournal.cshlp.org/content/18/6/1279.long
-- functional analysis
-  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4489228/
-- tool comparisons
-  - cite:chen2019mirna
+- [[id:95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88][LINK TO miRNA data]]
+- processes
+  - preprocessing
+    - read collapse just speads up downstream
+      - see for read collapse https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0143066
+  - QC
+    - library complexity
+    - https://arn.ugr.es/mirnaqc/
+  - normalization
+    - https://academic.oup.com/bib/article/16/6/950/226343
+    - https://rnajournal.cshlp.org/content/18/6/1279.long
+  - functional analysis
+    - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4489228/
+- tools
+  - manatee cite:handzlik2020
+  - tool comparisons
+    - https://www.frontiersin.org/articles/10.3389/fgene.2018.00022/full
+    - cite:chen2019mirna
 - general reference
   - cite:pritchard2012
     - citing, times cited WOS:        
@@ -3574,16 +3572,10 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
       - cite:schwarzenbach2014
       - " Whereas high-speed centrifugation (14,000–16,000 g) can remove living cells and cell debris, separating exosomes and small shedding vesicles requires ultracentrifugation (>110,000 g).30 Blood cell count has a significant effect on miRNA expression levels in plasma;31 therefore, samples from patients with an inflammatory process, who should have high white blood cell count, should be excluded from analysis. Haemolysis is also known to markedly influence miRNA expression patterns, because of a contamination of abundant intracellular miRNAs.31"
   - [[http://apps.pathology.jhu.edu/mirnaprogram/links/http://apps.pathology.jhu.edu/mirnaprogram/links/][Johns Hopkins microRNA Bio lab]]
-- cite:fu2018mirna 
-- https://www.nature.com/articles/s41598-017-14301-3.pdf
-- https://arn.ugr.es/mirnaqc/
-- https://www.sciencedirect.com/science/article/pii/S266591312030131X#sec3
-- https://www.biostars.org/t/mirna/
-- https://www.biostars.org/local/search/page/?q=miRNA-seq+alignment
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
-- https://www.google.com/search?q=mirna+isoform+discovery+depth
-- https://www.google.com/search?q=mirna+multiqc   
-- [[id:95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88][LINK TO miRNA data]]
+  - https://www.biostars.org/t/mirna/
+- protocols
+  - cite:fu2018mirna 
+  - https://www.sciencedirect.com/science/article/pii/S266591312030131X#sec3
 ******* General reference
 :PROPERTIES:
 :ID:       65a85f59-afd5-4c6b-a785-9b6269cc7a51
@@ -4903,6 +4895,15 @@ A negative binomial GLM
 :PROPERTIES:
 :ID:       846943FC-BA4B-4658-9B1E-85FBA536D9EE
 :END:
+*** exceRpt
+:PROPERTIES:
+:ID:       1db0ffb6-25b7-4c97-9aa0-263b8c96373b
+:END:
+- cite:rozowsky2019 
+- http://github.gersteinlab.org/exceRpt/
+- used in
+  - cite:godoy2019 
+  - cite:giraldez2018 
 *** fastqc
 :PROPERTIES:
 :ID:       0a319950-3215-4846-a020-a08b78f3323d
