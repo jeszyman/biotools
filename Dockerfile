@@ -648,4 +648,7 @@ RUN cd /opt \
 RUN conda install -c bioconda bowtie
 #
 RUN conda install -c bioconda mirdeep2
+#
+RUN R -e 'install.packages("optparse")'
+#
 
