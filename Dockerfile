@@ -614,9 +614,9 @@ RUN conda install -c bioconda snakemake
 #
 #RUN conda install -c bioconda mirge3
 #
-RUN conda create -n py2 python=2.7
-RUN echo "source activate py2" > ~/.bashrc
-ENV PATH /opt/conda/envs/py2/bin:$PATH
+#RUN conda create -n py2 python=2.7
+#RUN echo "source activate py2" > ~/.bashrc
+#ENV PATH /opt/conda/envs/py2/bin:$PATH
 #
 #########1#########2#########3#########4#########5#########6#########7#########8
 #
@@ -628,9 +628,11 @@ RUN R -e "install.packages('devtools')"
 ## linux dependencies
 RUN apt-get update \
    && apt-get install -y \
-   libcurl4-gnutls-dev \
+   libcurl4-openssl-dev \
    libssl-dev \
    libxml2-dev
+#RUN rm /usr/lib/x86_64-linux-gnu/libcurl.so.4
+#RUN ln -s /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0 /usr/lib/x86_64-linux-gnu/libcurl.so.4
 ## 
 ## R dependencies
 RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("HMMcopy"); BiocManager::install("GenomeInfoDb"); BiocManager::install("GenomicRanges");' 
@@ -648,4 +650,5 @@ RUN cd /opt \
 RUN conda install -c bioconda bowtie
 #
 RUN conda install -c bioconda mirdeep2
+#
 
