@@ -10,6 +10,9 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+https://sequencing.qcfail.com/software/fastqc/
+https://www.10xgenomics.com/videos
+https://www.reddit.com/r/bioinformatics/comments/m2o63g/best_courses_or_material_to_learn_bioinformatics/
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
 :PROPERTIES:
 :ID:       76100c2b-a077-4c21-a398-16d88722e1c6
@@ -24,7 +27,8 @@ CLOCK: [2019-07-07 Sun 09:58]--[2019-07-07 Sun 10:01] =>  0:03
 CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
 CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :END:
-https://science.sciencemag.org/content/369/6509/1318
+- https://www.ncbi.nlm.nih.gov/tools/vecscreen/univec/
+- https://science.sciencemag.org/content/369/6509/1318
 *** By substrate
 :PROPERTIES:
 :ID:       ffe7a0f8-5e6d-45ff-adec-efbba7c44783
@@ -706,6 +710,7 @@ https://singularity.lbl.gov/install-linux
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
+cite:goodwin2016
 https://www.future-science.com/doi/10.2144/000114133
 https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
 https://support.illumina.com/training.html
@@ -3409,9 +3414,13 @@ CLOCK: [2021-02-17 Wed 09:23]--[2021-02-17 Wed 09:35] =>  0:12
 CLOCK: [2021-02-17 Wed 09:08]--[2021-02-17 Wed 09:18] =>  0:10
 CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 :END:
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4538800/
-https://www.eacr.org/user_uploads/files/2020-Event-Websites/vLibi20/1_Guidelines_for_Profiling_Biofluid_miRNAs.pdf
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4652620/
+- validation technologies
+  - cannot distinguish isomiRs
+  - qPCR expected to correlate >.9 w/ seq expression > 2^8 cite:yeri2018
+  - qPCR more concordant than EdgeSeq or FirePlex cite:yeri2018 
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4538800/
+- https://www.eacr.org/user_uploads/files/2020-Event-Websites/vLibi20/1_Guidelines_for_Profiling_Biofluid_miRNAs.pdf
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4652620/
 ******* [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO Extracellular RNA biology]]
 :PROPERTIES:
 :ID:       49a0e52b-0bda-4237-8bab-ff2db54cf26d
@@ -3553,7 +3562,10 @@ cite:buschmann2016 pg6011
 :LOGBOOK:
 CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :END:
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
+- spike-ins
+  - cite:locati2015
+  - https://genome.cshlp.org/content/21/9/1543.long
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
 - [[id:5d9593fd-f083-450f-a510-449aa15ae670][LINK TO miRNA biology]]
 - [[id:95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88][LINK TO miRNA data]]
 - processes
@@ -3709,6 +3721,15 @@ https://www.illumina.com/destination/epigenetics-webinar-series.html
 :PROPERTIES:
 :ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
 :END:
+- https://www.biostars.org/p/418363/
+- QC
+  - https://www.cell.com/cell-systems/pdfExtended/S2405-4712(20)30079-X
+  - https://bioconductor.org/packages/release/bioc/vignettes/ATACseqQC/inst/doc/ATACseqQC.html
+- cite:yan2020 
+- cite:corces2017 
+- https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&nlo=&nlr=&nls=&sid=e3c13d36864e217e2edcf12df7a64b0a&sot=b&sdt=b&sl=59&s=%28TITLE-ABS-KEY%28atac-seq%29+AND+TITLE-ABS-KEY%28bioinformatics%29%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist
+- https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&nlo=&nlr=&nls=&sid=a96885cfb809353a6782e085df08be7b&sot=b&sdt=b&sl=79&s=%28TITLE-ABS-KEY%28atac-seq%29+AND+TITLE-ABS-KEY%28method%29+AND+TITLE-ABS-KEY%28protocol%29%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist
+- cite:buenrostro2015
 - protocols and guidelines
   - https://informatics.fas.harvard.edu/atac-seq-guidelines.html
 - atac-seq and mirna-seq https://www.sciencedirect.com/science/article/pii/S193459091730320X?via%3Dihub
@@ -3871,7 +3892,8 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
 :END:
- Mass Spectrometry 
+https://www.olink.com/data-you-can-trust/technology/
+Mass Spectrometry 
 
  MASCOT peptide mass fingerprint
  SILAC (stable isotope labeling by amino acids in cell culture) 
@@ -5428,7 +5450,7 @@ snakemake --cores 20 --forceall
 | STAR           |                  |           |        | [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]      |       | cite:dobin2019         |
 | tophat2        |                  |           |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                        |
 | tximport       |                  |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
-| WGCNA          |                  |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] | cite:langfelder2008    |
+| WGCNA          |                  |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] |                        |
 |                |                  |           |        |          |       |                        |
 *** tool collections
 :PROPERTIES:
@@ -7047,7 +7069,7 @@ because computation removes redundancy, you will more frequently be at a new, tr
 - https://software.broadinstitute.org/gatk/documentation/topic?name=dictionary&v=3
 - [[http://useast.ensembl.org/info/genome/genebuild/biotypes.html][ensembl biotypes]]
 - [[https://useast.ensembl.org/Help/Glossary][Ensembl glossary]]
-- [[http://seqanswers.com/forums/showthread.php?t=13098][insert size]]: insert size + length of both adapters 
+- [[http://seqanswers.com/forums/showthread.php?t=13098][insert size]]: fragment size + length of both adapters 
 - [[http://seqanswers.com/forums/showthread.php?t=13098][fragment size]]: sequence between the paired-end adapters
 
 ** Local Variables                                                 :noexport:
