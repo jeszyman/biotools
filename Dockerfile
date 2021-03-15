@@ -651,4 +651,3 @@ RUN conda install -c bioconda bowtie
 #
 RUN conda install -c bioconda mirdeep2
 #
-
