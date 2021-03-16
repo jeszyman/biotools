@@ -651,3 +651,6 @@ RUN conda install -c bioconda bowtie
 #
 RUN conda install -c bioconda mirdeep2
 #
+RUN R -e 'install.packages("optparse")'
+#
+RUN conda uninstall r-base 
