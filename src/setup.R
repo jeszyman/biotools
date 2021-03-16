@@ -1,6 +1,3 @@
-# load setup from basecamp submodule: 
-#setwd("~/repos/biotools")
-#source("./basecamp/src/setup.R")
 #
 # Check Packages
 ##
@@ -10,9 +7,9 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 ##
 packages = c(
     "ComplexHeatmap",
-    "fgsea"
-)
-##
+    "fgsea","limma"
+
+)##
 ##NOTE requires libcurl4-openssl-dev https://stackoverflow.com/questions/11471690/curl-h-no-such-file-or-directory/11471743
 package.check = lapply(
   packages,
@@ -24,6 +21,3 @@ package.check = lapply(
   }
 )
 #
-
-
-
