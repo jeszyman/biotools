@@ -21,7 +21,7 @@ docker_interactive() {
                                       /bin/bash;;
             (acl*) docker run -it \
                           --env HOME=${HOME} \
-                          --hostname ${HOSTNAME} \                          
+                          --hostname ${HOSTNAME} \
                           -v /drive3/:/drive3/ \
                           -v /duo4/:/duo4/ \
                           -v /home/:/home/ \
