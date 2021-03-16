@@ -75,32 +75,12 @@ RUN pip install -U multiqc
 #
 # cnvkit
 RUN pip install -U cython
-RUN pip install -U future futures pandas pomegranate pyfaidx
-RUN pip install cnvkit==0.9.6
+#FAILS [2021-02-17] RUN pip install -U future futures pandas pomegranate pyfaidx
+#FAILS [2021-02-17] RUN pip install cnvkit==0.9.6
 #
 # RSeQC
 RUN pip install RSeQC 
 #
-# Ichor
-## R devtools
-### curl, libcurl4-openssl-dev 
-#RUN apt-get update \
-#    && apt-get install -y \
-#    libcurl4-gnutls-dev \
-#    libssl-dev \
-#    libxml2-dev
-#
-RUN R -e "install.packages('devtools')"
-#RUN R -e "library(devtools); install_github("broadinstitute/ichorCNA", force = T)"
-# from 	git clone https://github.com/broadinstitute/ichorCNA.git && \ 
-#
-RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("HMMcopy"); BiocManager::install("SNPchip");' 
-#
-RUN cd /opt \
-    && git clone https://github.com/broadinstitute/ichorCNA.git \
-    && cd ichorCNA \
-    && R CMD INSTALL . \
-    && cd /opt 
 #
 RUN cd /opt && \
     git clone https://github.com/shahcompbio/hmmcopy_utils.git && \
@@ -630,5 +610,44 @@ libxmu-dev
 
 RUN conda install -c bioconda rsem 
 RUN conda install -c bioconda bbmap
-
-
+RUN conda install -c bioconda snakemake
+#
+#RUN conda install -c bioconda mirge3
+#
+#RUN conda create -n py2 python=2.7
+#RUN echo "source activate py2" > ~/.bashrc
+#ENV PATH /opt/conda/envs/py2/bin:$PATH
+#
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+RUN R -e "install.packages('devtools')"
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+# ichorCNA
+##
+## linux dependencies
+RUN apt-get update \
+   && apt-get install -y \
+   libcurl4-openssl-dev \
+   libssl-dev \
+   libxml2-dev
+#RUN rm /usr/lib/x86_64-linux-gnu/libcurl.so.4
+#RUN ln -s /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0 /usr/lib/x86_64-linux-gnu/libcurl.so.4
+## 
+## R dependencies
+RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("HMMcopy"); BiocManager::install("GenomeInfoDb"); BiocManager::install("GenomicRanges");' 
+##
+## git clone install
+RUN cd /opt \
+    && git clone https://github.com/broadinstitute/ichorCNA.git \
+    && cd ichorCNA \
+    && R CMD INSTALL . \
+    && cd /opt 
+##
+#RUN echo "source activate py2" > ~/.bashrc
+#ENV PATH /opt/conda/envs/py2/bin:$PATH
+#
+RUN conda install -c bioconda bowtie
+#
+RUN conda install -c bioconda mirdeep2
+#
