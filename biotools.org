@@ -10,6 +10,10 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+  - Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
+
+https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
+https://bioinfogp.cnb.csic.es/tools/venny/
 https://sequencing.qcfail.com/software/fastqc/
 https://www.10xgenomics.com/videos
 https://www.reddit.com/r/bioinformatics/comments/m2o63g/best_courses_or_material_to_learn_bioinformatics/
@@ -1558,6 +1562,7 @@ CLOSED: [2016-12-05 Mon 14:22]
 :PROPERTIES:
 :ID:       dbb73cad-ec08-40bb-8f9f-168d13822933
 :END:
+https://www.sciencedirect.com/science/article/pii/S1535610818301119?via%3Dihub
 - allele-specific copy number: the number of copies of each inherited allele, allows for the detection of copy-neutral loss of heterozygosity https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5627665/
 - [[https://www.bioconductor.org/packages/devel/bioc/vignettes/TitanCNA/inst/doc/TitanCNA.pdf][see ploidy purity correction math]]
 - [[https://www.biostars.org/p/383522/][good CN,purity,ploid discussion]]
@@ -3892,6 +3897,16 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
 :END:
+https://www.degruyter.com/document/doi/10.1515/hsz-2017-0104/html
+https://www.annualreviews.org/doi/10.1146/annurev-anchem-071015-041535
+https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/full/10.1002/pmic.201800247
+https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/epdf/10.1002/pmic.200800417
+https://pubs.acs.org/doi/10.1021/pr400132j
+https://www.embopress.org/doi/full/10.15252/msb.20156297
+https://pubs.acs.org/doi/10.1021/acs.jproteome.5b0090
+1https://www.sciencedirect.com/science/article/pii/S2212968513000044?via%3Dihub#fig0005
+https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/full/10.1002/pmic.201300377
+https://www.mdpi.com/2227-7382/1/2/109/htm
 https://www.olink.com/data-you-can-trust/technology/
 Mass Spectrometry 
 
@@ -3913,6 +3928,14 @@ Mass Spectrometry
 - [[id:179b243b-e6c0-484c-81ef-e8bff57e7f46][Circulating biomarkers]]
 - proteome dynamic range is ~10^12, machine limit is usually ~10^3
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096388/
+- https://link.springer.com/article/10.1007%2Fs00216-012-6203-4#Sec14
+- https://www.nature.com/articles/nprot.2017.040  
+- label-free
+  - bioinformatics
+    - MaxQuant https://www.maxquant.org/
+    - Perseus
+      - https://link.springer.com/protocol/10.1007/978-1-4939-7493-1_7
+      - http://coxdocs.org/doku.php?id=perseus:start
 **** SOMAscan
 :PROPERTIES:
 :ID:       89b4ec6d-992d-4551-81da-19011597732a
@@ -4045,7 +4068,8 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
 :END:
-http://mixomics.org/webinar-pls-methods/
+- https://jme.bioscientifica.com/view/journals/jme/62/1/JME-18-0055.xml
+- http://mixomics.org/webinar-pls-methods/
 - http://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC3618897&blobtype=pdf
 - https://danielhomola.com/assets/DanielHomola_PhD.pdf
 - cite:bersanelli2016
