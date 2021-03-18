@@ -52,6 +52,8 @@ https://sequencing.qcfail.com/software/fastqc/
 https://www.10xgenomics.com/videos
 https://www.reddit.com/r/bioinformatics/comments/m2o63g/best_courses_or_material_to_learn_bioinformatics/
 
+- index, adapter, barcode
+
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
 :PROPERTIES:
 :ID:       76100c2b-a077-4c21-a398-16d88722e1c6
@@ -523,10 +525,6 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 :PROPERTIES:
 :ID:       5e2c4e39-99bc-4cc8-86a6-c39bea5ac2d8
 :END:
-- fastq
-  - https://www.biostars.org/p/198143/
-  - https://github.com/10XGenomics/supernova/blob/master/tenkit/lib/python/tenkit/illumina_instrument.py#L12-L45
-  - https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/FileFormat_FASTQ-files_swBS.htm
 - [[https://genome.ucsc.edu/FAQ/FAQformat.html#format1][Nucleic acid data formats]]
 - https://help.basespace.illumina.com/articles/descriptive/fastq-files/
 - alignment formats 
@@ -549,6 +547,10 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
   - [[http://www.internationalgenome.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-40/][VCF page at IGSR]]
 - [[https://www.biostars.org/p/84686/][Obi on 1 vs 0 based coordinates]]
 - cite:li2009 
+*** fastq
+- https://www.biostars.org/p/198143/
+- https://github.com/10XGenomics/supernova/blob/master/tenkit/lib/python/tenkit/illumina_instrument.py#L12-L45
+- https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/FileFormat_FASTQ-files_swBS.htm
 
 *** .bed
 :PROPERTIES:
@@ -5026,42 +5028,6 @@ A negative binomial GLM
 - https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=The%20output%20from%20FastQC%2C%20after,or%20%E2%80%9CFail%E2%80%9D%20is%20assigned.
 - cite:williams2014 for a FastQC aggregator Perl script 
 - [[https://www.biostars.org/p/56088/#56102][Fastq Quality Read And Score Length Check]]
-***** fastq (base call + quality)
-:PROPERTIES:
-:ID:       4361C444-1EFD-492C-B108-69066D87C37F
-:END:
-
-[[file:work.org_imgs/20160405_091950_53267u_I.png]]
-illumina fastq
-read in galaxy or textwrangler 
-each block has 4 elements so 4 lines
-sequence identifier @EAS4_6_R1
-actual sequence CTGGTGGGAGRRGG
-sequence name again (optional) or +
-base quality ;;;;3;;;;;;;;;;;;;;7;;;;;;;;898
-via ASCII 33
-Phred scaled Q
-Phred value = -10*log(10)(error rate)
-90% confident is Q10
-99% is Q20
-99.9 is Q30
-
-****** Adding sequences to a fasta- just cat
-:PROPERTIES:
-:ID:       8D135E1A-815D-4551-B636-94A4DB44D0BB
-:END:
-
-****** Ideas
-:PROPERTIES:
-:ID:       4FC3F4EA-880B-4585-8882-9EC88197B456
-:END:
-
-******* Can I remove sequences from paired end fastq to shorten file for testing?
-:PROPERTIES:
-:ID:       45E50579-D180-4549-A60F-A4C559F25641
-:END:
-
-I didn't find anything googling this, but it appears if the fastas have the same order, then I can just trim them 
 
 *** gage
 :PROPERTIES:
