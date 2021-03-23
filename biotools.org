@@ -10,7 +10,7 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-
+https://www.reddit.com/r/bioinformatics/comments/m78kqb/what_are_the_best_book_i_could_get_for_a/
 - R setup
   #+name:
   #+begin_src R :tangle ./src/setup.R
@@ -548,6 +548,9 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 - [[https://www.biostars.org/p/84686/][Obi on 1 vs 0 based coordinates]]
 - cite:li2009 
 *** fastq
+:PROPERTIES:
+:ID:       59bc8f81-cf57-4e56-a5ff-3b0ff4095a91
+:END:
 - https://www.biostars.org/p/198143/
 - https://github.com/10XGenomics/supernova/blob/master/tenkit/lib/python/tenkit/illumina_instrument.py#L12-L45
 - https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/FileFormat_FASTQ-files_swBS.htm
@@ -1599,14 +1602,19 @@ CLOSED: [2016-12-05 Mon 14:22]
 :PROPERTIES:
 :ID:       dbb73cad-ec08-40bb-8f9f-168d13822933
 :END:
-https://www.sciencedirect.com/science/article/pii/S1535610818301119?via%3Dihub
+- [[id:8c535c38-9310-4fd0-a8fe-c300639493da][ichorcna]]
+- copy number classifiers
+  - https://www.sciencedirect.com/science/article/pii/S0016508521002778?via%3Dihub
+- https://www.sciencedirect.com/science/article/pii/S1535610818301119?via%3Dihub
 - allele-specific copy number: the number of copies of each inherited allele, allows for the detection of copy-neutral loss of heterozygosity https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5627665/
 - [[https://www.bioconductor.org/packages/devel/bioc/vignettes/TitanCNA/inst/doc/TitanCNA.pdf][see ploidy purity correction math]]
 - [[https://www.biostars.org/p/383522/][good CN,purity,ploid discussion]]
-****** cfDNA WGS copy number calling
+****** cfDNA copy number calling
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
 :END:
+- by PCR
+  - https://www.pnas.org/content/117/9/4858
 - cite:adalsteinsson2017
 - cite:hemmings2019
 - cite:stover2019
@@ -5107,6 +5115,7 @@ CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
 :PROPERTIES:
 :ID:       8c535c38-9310-4fd0-a8fe-c300639493da
 :END:
+- cite:guo2018
 - cite:klega2018
 - cite:manier2018 
 - cite:mouliere2018
