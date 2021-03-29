@@ -1960,6 +1960,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+http://www.nathalievialaneix.eu/doc/pdf/tutorial-rnaseq.pdf
 ***** General guides, github repos, training, etc
 :PROPERTIES:
 :ID:       945cb660-b2c2-4416-be64-b24b9fb79a0f
@@ -3613,6 +3614,7 @@ cite:buschmann2016 pg6011
 CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :END:
 - spike-ins
+  - cite:qiagen2018mirnaspike cite:exiqon2016exiseq 
   - cite:locati2015
   - https://genome.cshlp.org/content/21/9/1543.long
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
