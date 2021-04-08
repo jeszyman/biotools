@@ -653,4 +653,6 @@ RUN conda install -c bioconda mirdeep2
 #
 RUN R -e 'install.packages("optparse")'
 #
-RUN conda uninstall r-base 
+RUN conda uninstall r-base
+#
+RUN conda install -c bioconda flexbar
