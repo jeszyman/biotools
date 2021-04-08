@@ -10,6 +10,8 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+https://github.com/raerose01/deconstructSigs
+https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html
 https://docs.nvidia.com/clara/parabricks/v3.0/index.html#
 https://genomics.sschmeier.com/ngs-qc/index.html?highlight=phix#phix-genome
 https://cmdcolin.github.io/awesome-genome-visualization/
@@ -916,6 +918,7 @@ also demultiplexes
 :PROPERTIES:
 :ID:       ccab4617-0399-4ba3-828e-b5fbbb972ba1
 :END:
+- cite:campbell2020
 - https://www.nejm.org/doi/10.1056/NEJMoa2024534?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub++0pubmed
 - duplication rate as a measure of lib complexity
 **** testing, modeling, and read simulation
@@ -2595,6 +2598,8 @@ phenotypes with genetic marker data. Genet. Epidemiol., 31(Suppl.
 :PROPERTIES:
 :ID:       22a6e4a4-60c2-44cf-8e5a-3ff351a02aa3
 :END:
+- https://www.datanovia.com/en/blog/types-of-clustering-methods-overview-and-quick-start-r-code/
+
 - cite:vidman2019
 ***** Differential expression
 :PROPERTIES:
@@ -3887,7 +3892,7 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 - CATALYST
   - https://www.bioconductor.org/packages/release/bioc/html/CATALYST.html
   - https://www.bioconductor.org/packages/release/bioc/vignettes/CATALYST/inst/doc/differential.html
-**** immunoprofiling
+*** immunoprofiling
 :PROPERTIES:
 :ID:       7bb87c84-6b06-44ef-9a1d-1bb9b9e57295
 :END:
@@ -3895,7 +3900,7 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
   - [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
 - cite:saloura2019 
 - https://en.wikipedia.org/wiki/Immunological_Genome_Project#Gene-expression_compendium
-***** immunoprofiling/ immunophenotyping, cell type ennumeriation with rnaseq
+**** immunoprofiling/ immunophenotyping, cell type ennumeriation with rnaseq
 :PROPERTIES:
 :CREATED:  [2019-10-03 Thu 10:22]
 :ID:       e07fee1b-d7fd-42ce-9639-ff803cfc9c8e
@@ -3940,7 +3945,7 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - cell type enumeration with RNA-seq
   - https://www.nature.com/articles/s41586-019-1773-3
 
-****** immunoprofiling / immunophenotyping
+***** immunoprofiling / immunophenotyping
 :PROPERTIES:
 :CREATED:  [2019-10-30 Wed 10:52]
 :ID:       a143e3d0-35b3-4579-8831-9710791e0a6a
