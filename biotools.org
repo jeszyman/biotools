@@ -10,6 +10,10 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+https://www.cancer.gov/about-nci/organization/ccg/research/structural-genomics/tcga/publications
+https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
+https://gatk.broadinstitute.org/hc/en-us/articles/360035890951-Human-genome-reference-builds-GRCh38-or-hg38-b37-hg19
+https://www.bioconductor.org/packages/devel/bioc/vignettes/TCGAbiolinks/inst/doc/index.html
 https://github.com/raerose01/deconstructSigs
 https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html
 https://docs.nvidia.com/clara/parabricks/v3.0/index.html#
@@ -2728,7 +2732,7 @@ doi:10.2202/1544-6115.1637.
   - https://www.rdocumentation.org/packages/gplots/versions/3.0.3/topics/heatmap.2 
 - mapped reads were visualized by SeqMonk[[file:org.org_imgs/20161220_180037_4849srR.png]]
 
-***** Methods by source or isolation 
+***** Methods by tissue source or isolation 
 :PROPERTIES:
 :ID:       4d4a89d1-e039-4a89-b968-81c80f38d884
 :END:
@@ -2785,6 +2789,15 @@ doi:10.2202/1544-6115.1637.
 - extracellular
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5426982/
   - [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO circulating rna]]
+***** Integrated miRNA-mRNA analysis
+:PROPERTIES:
+:ID:       82aafb6f-63a8-4ab7-867a-9add0e0c224a
+:END:
+- [[id:903f32d8-bd13-496c-8d5c-26a63455936a][LINK TO miRNA-seq]]
+- example papers
+  - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-5983-8#Sec2
+  - https://www.oncotarget.com/article/8713/text/
+  - cite:li2017mirna
 ***** Methods by RNA population
 :PROPERTIES:
 :ID:       33823415-f2e4-4cdf-b3aa-a01000b35249
@@ -3622,6 +3635,7 @@ cite:buschmann2016 pg6011
 :LOGBOOK:
 CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :END:
+- http://www.mircode.org/faq.php
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4652620/
 - spike-ins
   - cite:qiagen2018mirnaspike cite:exiqon2016exiseq 
@@ -3642,6 +3656,9 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
     - https://rnajournal.cshlp.org/content/18/6/1279.long
   - functional analysis
     - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4489228/
+  - target identification
+    - http://ophid.utoronto.ca/mirDIP/
+  - [[id:82aafb6f-63a8-4ab7-867a-9add0e0c224a][LINK TO Integrated miRNA-mRNA analysis]]
 - tools
   - manatee cite:handzlik2020
   - tool comparisons
@@ -5184,6 +5201,7 @@ CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
 :PROPERTIES:
 :ID:       8c535c38-9310-4fd0-a8fe-c300639493da
 :END:
+https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzEg:1617895629440&source=lnms&tbm=vid&sa=X&ved=2ahUKEwjZx5ry-u7vAhVJbs0KHXyIAGkQ_AUoAnoECAEQBA&biw=1596&bih=789
 - cite:guo2018
 - cite:klega2018
 - cite:manier2018 
