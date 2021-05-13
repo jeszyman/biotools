@@ -655,4 +655,8 @@ RUN R -e 'install.packages("optparse")'
 #
 RUN conda uninstall r-base
 #
-RUN conda install -c bioconda flexbar
+#RUN conda install -c bioconda flexbar
+#
+RUN apt-get update \
+   && apt-get install -y \
+   screen

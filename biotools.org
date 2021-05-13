@@ -10,6 +10,37 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+- https://www.biorxiv.org/content/10.1101/2021.05.05.441859v1.full
+- https://learn.gencore.bio.nyu.edu/
+- Data dictionary 
+  #+name: biotools_docker_versions
+  | cutadapt_version |    1.18 |
+  | mirdeep2_version | 2.0.1.2 |
+  | bowtie           |     1.2 |
+
+
+  
+#+name: injest_biotools_docker_versions
+#+begin_src python :var biotools_docker_versions=biotools_docker_versions
+import os
+import csv
+
+os.chdir('/home/jeszyman/repos/biotools')
+
+with open('./data/biotools_docker_versions.csv', 'w', newline='') as file:
+    writer = csv.writer(file, delimiter=',')
+    writer.writerows(biotools_docker_versions)
+#+end_src
+
+
+
+#+name: injest_biotools_docker_versions_wrapper
+#+begin_src python :noweb yes
+injest_biotools_docker_versions
+#+end_src
+https://github.com/dslp/dslp-repo-template
+https://drivendata.github.io/cookiecutter-data-science/#directory-structure
+http://rafalab.github.io/pages/harvardx.html
 https://www.cancer.gov/about-nci/organization/ccg/research/structural-genomics/tcga/publications
 https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
 https://gatk.broadinstitute.org/hc/en-us/articles/360035890951-Human-genome-reference-builds-GRCh38-or-hg38-b37-hg19
@@ -25,7 +56,6 @@ https://www.nature.com/articles/s41598-017-02217-x
 https://scilifelab.github.io/courses/
 https://www.reddit.com/r/bioinformatics/comments/m78kqb/what_are_the_best_book_i_could_get_for_a/
 - R setup
-  #+name:
   #+begin_src R :tangle ./src/setup.R
 #
 # Check Packages
@@ -35,10 +65,11 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 ##
 packages = c(
-    "ComplexHeatmap",
-    "fgsea","limma"
-
-)##
+  "ComplexHeatmap",
+  "fgsea",
+  "limma"
+)
+##
 ##NOTE requires libcurl4-openssl-dev https://stackoverflow.com/questions/11471690/curl-h-no-such-file-or-directory/11471743
 package.check = lapply(
   packages,
@@ -50,12 +81,14 @@ package.check = lapply(
   }
 )
 #
-
-
-
-
 #+end_src
 
+#+begin_src R :tangle ./src/setup.R
+# Set variables
+select=dplyr::select
+filter=dplyr::filter
+
+#+end_src
 
   - Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
 
@@ -66,12 +99,20 @@ https://www.10xgenomics.com/videos
 https://www.reddit.com/r/bioinformatics/comments/m2o63g/best_courses_or_material_to_learn_bioinformatics/
 
 - index, adapter, barcode
-
+- Bisulfite sequencing
+  - methylation protects/blocks cytosine conversion to uracil
+  - PCR amp can produce forward/reverse with and without bisulfite block
+  - BSMAP, Bismark, BWA-meth, biscuit
+  - VCF > bedgraph > bigwig > IGV
+  - metilene segments methylation
+  - visualization
+    - heatmap
+    - canyon plot- methylation proportion vs distance from target locus
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
 :PROPERTIES:
 :ID:       76100c2b-a077-4c21-a398-16d88722e1c6
 :END:
-** references, databases, and data sets
+** References, databases, and data sets
 :PROPERTIES:
 :ID:       FCBA0863-010A-448C-A33C-941D2AA45AD5
 :END:
@@ -625,6 +666,19 @@ mandatory
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
+*** Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
+:PROPERTIES:
+:ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
+:END:
+- fragment size
+  - https://www.nature.com/articles/s41586-020-2140-0
+  - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
+**** ctDNA WES
+:PROPERTIES:
+:ID:       e387037a-85c0-4eda-a26f-9b6386e95a34
+:END:
+- https://clincancerres.aacrjournals.org/content/26/11/2556#sec-6
+- cite:parikh2019
 *** Biotools docker setup
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
@@ -1712,6 +1766,17 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
       - https://www.biostars.org/p/247588/
     - http://www.htslib.org/algorithms/duplicate.html
   - https://qcb.ucla.edu/wp-content/uploads/sites/14/2016/03/GATKwr12-2-Marking_duplicates.pdf
+***** Paired tumor-normal sequencing
+- https://github.com/mskcc/facets
+***** Tumor-only whole exome sequencing
+:PROPERTIES:
+:CREATED:  [2021-05-01 Sat 07:26]
+:END:
+- https://ascopubs.org/doi/full/10.1200/CCI.19.00130
+- https://www.cell.com/cell-reports/pdfExtended/S2211-1247(18)31635-8
+- cite:carter2012 ABSOLUTE
+  - https://software.broadinstitute.org/cancer/cga/absolute
+  - https://www.biostars.org/p/175131/
 ***** DNA Bioinformatics
 :PROPERTIES:
 :ID:       1C24E3B6-CE16-47C8-8D7B-95EB530560F1
@@ -1967,7 +2032,10 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
-http://www.nathalievialaneix.eu/doc/pdf/tutorial-rnaseq.pdf
+cite:kukurba2015 
+https://hbctraining.github.io/Training-modules/planning_successful_rnaseq/lessons/data_visualization.html
+https://www.bioconductor.org/packages/release/bioc/vignettes/DEGreport/inst/doc/DEGreport.html
+- http://www.nathalievialaneix.eu/doc/pdf/tutorial-rnaseq.pdf
 ***** General guides, github repos, training, etc
 :PROPERTIES:
 :ID:       945cb660-b2c2-4416-be64-b24b9fb79a0f
@@ -2408,7 +2476,7 @@ https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-015-1308-8
 :PROPERTIES:
 :ID:       853dd34c-27be-4be8-9794-19f04a1e22b0
 :END:
-
+https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html
 by spike-in  Jiang,L., Schlesinger,F., Davis,C.A., Zhang,Y., Li,R., Salit,M., Gingeras,T.R. and Oliver,B. (2011) Synthetic spike-in standards for RNA-seq experiments. Genome Res., 21, 1543–1551.
 
 - choosing a strategy- Zyprych-Walczak,J., Szabelska,A., Handschuh,L., Górczak,K., Klamecka,K., Figlerowicz,M. and Siatkowski,I. (2015) The impactof normalization methods on RNA-Seq data analysis. Biomed Res. Int., 2015, doi:10.1155/2015/621690.
@@ -2602,6 +2670,8 @@ phenotypes with genetic marker data. Genet. Epidemiol., 31(Suppl.
 :PROPERTIES:
 :ID:       22a6e4a4-60c2-44cf-8e5a-3ff351a02aa3
 :END:
+https://uc-r.github.io/hc_clustering
+https://www.biostars.org/p/287512/
 - https://www.datanovia.com/en/blog/types-of-clustering-methods-overview-and-quick-start-r-code/
 
 - cite:vidman2019
@@ -2615,6 +2685,9 @@ CLOCK: [2020-11-23 Mon 10:43]--[2020-11-23 Mon 10:57] =>  0:14
 CLOCK: [2016-03-28 Mon 19:06]--[2016-03-28 Mon 19:29] =>  0:23
 CLOCK: [2016-03-28 Mon 13:01]--[2016-03-28 Mon 13:06] =>  0:05
 :END:
+https://github.com/hbctraining/DGE_workshop_salmon_online
+https://f1000research.com/articles/5-1438/v2
+https://www.nature.com/articles/s41598-020-74567-y#Abs1
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6954399/
 ****** experimental design
 :PROPERTIES:
@@ -3605,7 +3678,7 @@ cite:buschmann2016 pg6011
 :PROPERTIES:
 :ID:       cbf67ef7-39ec-45ec-b599-cdc0e8590cf7
 :END:
-
+- cite:coenen-stass2018
 - https://www.zotero.org/jeszyman3/search/mu%20transcriptional%20analysis/titleCreatorYear
 
 - spike ins use
@@ -3635,6 +3708,7 @@ cite:buschmann2016 pg6011
 :LOGBOOK:
 CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :END:
+- https://www.nature.com/articles/srep05150#Sec11
 - http://www.mircode.org/faq.php
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4652620/
 - spike-ins
@@ -3913,6 +3987,7 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 :PROPERTIES:
 :ID:       7bb87c84-6b06-44ef-9a1d-1bb9b9e57295
 :END:
+- https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0213684
 - methods
   - [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
 - cite:saloura2019 
@@ -3968,7 +4043,7 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :ID:       a143e3d0-35b3-4579-8831-9710791e0a6a
 :END:
 - cite:liu2019a
-  
+- cite:papalexi2018 - immune cell heterogeneity by scRNAseq  
 
 *** Proteomics
 :PROPERTIES:
@@ -4017,6 +4092,8 @@ Mass Spectrometry
 :PROPERTIES:
 :ID:       89b4ec6d-992d-4551-81da-19011597732a
 :END:
+- somascan examples
+    - https://www.ncbi.nlm.nih.gov/pubmed/27327800
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6277005/
 - https://www.somalogic.com/wp-content/uploads/2017/01/SSM-046-Rev-2-Verification-and-Validation-of-the-SOMAscan-Assay-1.3k.pdf
 - https://www.agilent.com/cs/library/eseminars/public/SomaLogic_Agilent_081816.pdf
@@ -4042,6 +4119,7 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 :PROPERTIES:
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
 :END:
+- http://bioportal.bioontology.org/ontologies/GO/?p=classes&conceptid=root
 - pathways
   - pathways
    Pathway Browsers and Visualizers 
@@ -4145,6 +4223,7 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
 :END:
+- cite:higdon2015 
 - https://jme.bioscientifica.com/view/journals/jme/62/1/JME-18-0055.xml
 - http://mixomics.org/webinar-pls-methods/
 - http://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC3618897&blobtype=pdf
@@ -4155,10 +4234,13 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 - cite:wu2019
 - https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
 
-*** visualization tools
+*** Bioinformatics visualization 
 :PROPERTIES:
 :ID:       DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
 :END:
+- heatmaps
+  - https://www.biostars.org/p/287512/
+  - https://support.bioconductor.org/p/93424/
 - https://www.photopea.com/
 - https://observablehq.com/@petulla/statistical-power-explorable
 - https://www.fusioncharts.com/resources/chart-primers/radar-chart
@@ -4691,6 +4773,8 @@ done
 :LOGBOOK:
 CLOCK: [2021-01-26 Tue 11:53]--[2021-01-26 Tue 13:00] =>  1:07
 :END:
+- design
+  - https://support.bioconductor.org/p/110163/
 - [[file:~/Box%20Sync/library/Love,16%20DESeq2%20manual.pdf][Manual]]
 - vignettes
   - [[https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#exploratory-analysis-and-visualization][gene workflow 19]]
@@ -6916,6 +7000,96 @@ consModules[cmod])
 #+end_src
 
 
+** Ideas
+- Ideas
+   - make test data
+    #+name: make_test_data
+    #+begin_src bash :tangle ~/repos/mpnst/bin/make_test_data.sh
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  ### Make small test data files suitable for github push  ###
+  #
+  # Setup 
+  ##
+  ## Local
+  source ~/repos/mpnst/bin/local-setup.sh
+  ##
+  ## Docker
+  docker_interactive
+  biotools
+  ##
+  ## Functions
+  ##
+  fastq_test(){
+      # Check for parameters, return usage 
+      if [[ $# -eq 0 ]] ; then
+          printf "\n fastq_test 
+                \n Generates fastq files and .gzs of desired file size
+                \n \$1 = input (in fastq.gz)
+                \n \$2 = FILESIZE (in byte)
+                \n \$3 = output directory
+                \n \$4 = output filename (END .fastq)
+                \n "
+      else
+          # In-function variable setup
+          infile=$1
+          filesize=$2
+          outdir=$3
+          base=`basename -s .fastq.gz $infile`
+          # Out file name defaults to <in file name>_test
+          outfilename=${4:-${base}_test.fastq}
+          readsize=$(zcat $infile | head -n 4 | wc -c)
+          lines=$(( 4 * ($filesize / $readsize) ))
+          zcat $infile | head -n "$lines" > ${outdir}/$outfilename
+          # Get exact same lines for R2
+          infile_R2=$(echo "$1" | sed 's/_R1/_R2/g') 
+          outfilename_R2=$(echo "$outfilename" | sed 's/_R1/_R2/g') 
+          zcat $infile_R2 | head -n "$lines" > ${outdir}/$outfilename_R2
+          # Get gzipped files
+          gzip -f -k ${outdir}/$outfilename
+          gzip -f -k ${outdir}/$outfilename_R2        
+      fi
+  }
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  #
+  rm -rf $repo/data/test
+  mkdir -p $repo/data/test
+  #
+  # WashU WGS fastqs
+  ##
+  ## cfDNA
+  ###
+  ### mpnst 
+  fastq_test $localdata/.washu-fastq-extract/new_HiSeqW72_Undetermined_R6000482_L001_R1_TCCT_extract.fastq.gz \
+             1000000 \
+             $repo/data/test \
+             washu_mpnst_R1.fastq
+  ### healthy
+  ###
+  fastq_test $localdata/.washu-fastq-extract/new_HiSeqW31_Undetermined_R6000232_L005_R1_001_GAAG_extract.fastq.gz \
+             1000000 \
+             $repo/data/test \
+             washu_healthy_R1.fastq
+  ## NCI
+  ###
+  fastq_test $localdata/fastqs/lib107_R1.fastq.gz \
+             1000000 \
+             $repo/data/test \
+             nci_mpnst_R1.fastq
+  ###
+  fastq_test $localdata/fastqs/lib088_R1.fastq.gz \
+             1000000 \
+             $repo/data/test \
+             nci_healthy_R1.fastq
+  #
+  # cappseq demultiplexed but UN-extracted files: 
+  ###
+  fastq_test $localdata/.washu-demulti-tmp/new_HiSeqW43_Undetermined_R6000292_L004_R1_001_TCCT.fastq.gz \
+             1000000 \
+             $repo/data/test \
+             demulti_TCCT_R1.fastq
+  #+end_src
 ** Reference 
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]

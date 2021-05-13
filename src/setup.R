@@ -5,16 +5,12 @@
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 ##
-
 packages = c(
-    "BiocParallel",
-    "ComplexHeatmap",
-    "fgsea",
-    "limma",
-    "DESeq2",
-    "apeglm"
+  "ComplexHeatmap",
+  "fgsea",
+  "limma"
 )
-
+##
 ##NOTE requires libcurl4-openssl-dev https://stackoverflow.com/questions/11471690/curl-h-no-such-file-or-directory/11471743
 package.check = lapply(
   packages,
@@ -25,5 +21,8 @@ package.check = lapply(
     }
   }
 )
-
 #
+
+# Set variables
+select=dplyr::select
+filter=dplyr::filter
