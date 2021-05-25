@@ -4,110 +4,14 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :END:
 :LOGBOOK:
+CLOCK: [2021-05-20 Thu 13:14]--[2021-05-20 Thu 13:38] =>  0:24
 CLOCK: [2020-12-16 Wed 07:08]--[2020-12-16 Wed 07:25] =>  0:17
 CLOCK: [2020-12-15 Tue 20:02]--[2020-12-15 Tue 21:02] =>  1:00
 CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-- https://www.biorxiv.org/content/10.1101/2021.05.05.441859v1.full
-- https://learn.gencore.bio.nyu.edu/
-- Data dictionary 
-  #+name: biotools_docker_versions
-  | cutadapt_version |    1.18 |
-  | mirdeep2_version | 2.0.1.2 |
-  | bowtie           |     1.2 |
-
-
-  
-#+name: injest_biotools_docker_versions
-#+begin_src python :var biotools_docker_versions=biotools_docker_versions
-import os
-import csv
-
-os.chdir('/home/jeszyman/repos/biotools')
-
-with open('./data/biotools_docker_versions.csv', 'w', newline='') as file:
-    writer = csv.writer(file, delimiter=',')
-    writer.writerows(biotools_docker_versions)
-#+end_src
-
-
-
-#+name: injest_biotools_docker_versions_wrapper
-#+begin_src python :noweb yes
-injest_biotools_docker_versions
-#+end_src
-https://github.com/dslp/dslp-repo-template
-https://drivendata.github.io/cookiecutter-data-science/#directory-structure
-http://rafalab.github.io/pages/harvardx.html
-https://www.cancer.gov/about-nci/organization/ccg/research/structural-genomics/tcga/publications
-https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
-https://gatk.broadinstitute.org/hc/en-us/articles/360035890951-Human-genome-reference-builds-GRCh38-or-hg38-b37-hg19
-https://www.bioconductor.org/packages/devel/bioc/vignettes/TCGAbiolinks/inst/doc/index.html
-https://github.com/raerose01/deconstructSigs
-https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html
-https://docs.nvidia.com/clara/parabricks/v3.0/index.html#
-https://genomics.sschmeier.com/ngs-qc/index.html?highlight=phix#phix-genome
-https://cmdcolin.github.io/awesome-genome-visualization/
-https://sites.google.com/view/williamgilks/computational-analysis-of-whole-genome-sequencing-data/flow-chart-in-latex
-https://github.com/Adrienrougny/sbgntikz/
-https://www.nature.com/articles/s41598-017-02217-x
-https://scilifelab.github.io/courses/
-https://www.reddit.com/r/bioinformatics/comments/m78kqb/what_are_the_best_book_i_could_get_for_a/
-- R setup
-  #+begin_src R :tangle ./src/setup.R
-#
-# Check Packages
-##
-## Bioconductor
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-##
-packages = c(
-  "ComplexHeatmap",
-  "fgsea",
-  "limma"
-)
-##
-##NOTE requires libcurl4-openssl-dev https://stackoverflow.com/questions/11471690/curl-h-no-such-file-or-directory/11471743
-package.check = lapply(
-  packages,
-  FUN = function(x) {
-    if (!require (x, character.only = T)) {      
-      BiocManager::install(x, quietly =T, ask=F)
-      library(x, character.only = T)
-    }
-  }
-)
-#
-#+end_src
-
-#+begin_src R :tangle ./src/setup.R
-# Set variables
-select=dplyr::select
-filter=dplyr::filter
-
-#+end_src
-
-  - Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
-
-https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
-https://bioinfogp.cnb.csic.es/tools/venny/
-https://sequencing.qcfail.com/software/fastqc/
-https://www.10xgenomics.com/videos
-https://www.reddit.com/r/bioinformatics/comments/m2o63g/best_courses_or_material_to_learn_bioinformatics/
-
-- index, adapter, barcode
-- Bisulfite sequencing
-  - methylation protects/blocks cytosine conversion to uracil
-  - PCR amp can produce forward/reverse with and without bisulfite block
-  - BSMAP, Bismark, BWA-meth, biscuit
-  - VCF > bedgraph > bigwig > IGV
-  - metilene segments methylation
-  - visualization
-    - heatmap
-    - canyon plot- methylation proportion vs distance from target locus
+** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][LINK TO Information Science / Data Science]]
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
 :PROPERTIES:
 :ID:       76100c2b-a077-4c21-a398-16d88722e1c6
@@ -122,6 +26,8 @@ CLOCK: [2019-07-07 Sun 09:58]--[2019-07-07 Sun 10:01] =>  0:03
 CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
 CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :END:
+- https://gatk.broadinstitute.org/hc/en-us/articles/360035890951-Human-genome-reference-builds-GRCh38-or-hg38-b37-hg19
+
 - https://www.ncbi.nlm.nih.gov/tools/vecscreen/univec/
 - https://science.sciencemag.org/content/369/6509/1318
 *** By substrate
@@ -666,6 +572,44 @@ mandatory
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
+*** Setup
+- R setup
+  #+begin_src R :tangle ./src/setup.R
+#
+# Check Packages
+##
+## Bioconductor
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+##
+packages = c(
+  "ComplexHeatmap",
+  "fgsea",
+  "limma"
+)
+##
+##NOTE requires libcurl4-openssl-dev https://stackoverflow.com/questions/11471690/curl-h-no-such-file-or-directory/11471743
+package.check = lapply(
+  packages,
+  FUN = function(x) {
+    if (!require (x, character.only = T)) {      
+      BiocManager::install(x, quietly =T, ask=F)
+      library(x, character.only = T)
+    }
+  }
+)
+#
+#+end_src
+*** Probability and statistics related to bioinformatics
+- https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
+- Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
+
+- https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
+*** Transcription factor binding and perturbation 
+https://genome.cshlp.org/content/29/8/1363.full
+https://bmcresnotes.biomedcentral.com/articles/10.1186/s13104-018-3856-x
+https://www.nature.com/articles/ncomms15089#Sec2
+- cite:hu2019 
 *** Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
@@ -748,7 +692,7 @@ docker_interactive() {
     fi
 }
 #+end_src
-*** setup common references
+*** Setup common references
 :PROPERTIES:
 :ID:       813ed980-1c55-44d7-84d8-67afdad2e5bc
 :END:
@@ -811,16 +755,11 @@ done
 - sequence file manipulation
   - https://gist.github.com/davfre/8596159
   - [[https://www.biostars.org/p/6544/][look at all the ways to split a bam file!]]
-*** Computer clusters
-:PROPERTIES:
-:CREATED:  [2020-12-18 Fri 18:50]
-:ID:       10c078fd-a281-4612-a28b-5ceea1fa7af5
-:END:
-https://singularity.lbl.gov/install-linux
 *** Massively parallel sequencing 
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
+- https://docs.nvidia.com/clara/parabricks/v3.0/index.html#
 cite:goodwin2016
 https://www.future-science.com/doi/10.2144/000114133
 https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
@@ -979,23 +918,22 @@ also demultiplexes
 - cite:campbell2020
 - https://www.nejm.org/doi/10.1056/NEJMoa2024534?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub++0pubmed
 - duplication rate as a measure of lib complexity
-**** testing, modeling, and read simulation
+**** Sequencing testing, modeling, and read simulation
 :PROPERTIES:
 :ID:       f44b9dce-d7fa-4b6a-9949-49ff3c02547c
 :END:
-- [[https://www.reddit.com/r/bioinformatics/comments/c313uk/what_are_some_common_tasks_that_i_should_brush_up/][reddit: What are some common tasks that I should brush up on, that pertain to NGS?]]
-
-- read simulation 
+- Read simulation 
+  - https://medium.com/computational-biology/a-simple-introduction-to-read-simulators-bbeff4f0c0c6
   - RNA-seq reads https://rdrr.io/bioc/polyester/
-  - http://bioinform.github.io/varsim/
-  - https://omictools.com/data-simulation3-category?sortby=recency
-  - simulate reads
-    - https://github.com/lh3/wgsim
-- downsample
-  - fastq
+  - https://github.com/lh3/wgsim
+- variant simulator http://bioinform.github.io/varsim/
+- Downsample
+  - at fastq
     - https://www.biostars.org/p/6544/
-  - bam
+  - at bam
     - subsample function for reads instead of fraction
+- Reference
+  - [[https://www.reddit.com/r/bioinformatics/comments/c313uk/what_are_some_common_tasks_that_i_should_brush_up/][reddit: What are some common tasks that I should brush up on, that pertain to NGS?]]
 # #https://www.biostars.org/p/76791/
 # function SubSample {
 # FACTOR=$(samtools idxstats $1 | cut -f3 | awk -v COUNT=$2 'BEGIN {total=0} {total += $1} END {print COUNT/total}')
@@ -1058,6 +996,7 @@ CLOCK: [2019-06-03 Mon 18:40]--[2019-06-03 Mon 20:30] =>  1:22
 CLOCK: [2019-06-04 Tue 12:39]--[2019-06-04 Tue 13:12] =>  0:33
 CLOCK: [2020-10-13 Tue 13:38]--[2020-10-13 Tue 14:00] =>  0:22
 :END:
+- https://genomics.sschmeier.com/ngs-qc/index.html?highlight=phix#phix-genome
 161. Lo,C.-C. and Chain,P.S.G. (2014) Rapid evaluation and quality
 control of next generation sequencing data with FaQCs. BMC
 Bioinformatics, 15, doi:10.1186/s12859-014-0366-2.
@@ -1092,6 +1031,7 @@ data analysis. PLoS One, 8, e85024.
     - short reads
   - https://www.biostars.org/p/212136/
   - https://www.ecseq.com/support/ngs/trimming-adapter-sequences-is-it-necessary
+- https://sequencing.qcfail.com/software/fastqc/
 - RNA
   - Do not
     - quality-trim RNA- cite:williams2016a
@@ -1223,6 +1163,8 @@ CLOCK: [2019-04-26 Fri 11:28]--[2019-04-26 Fri 11:44] =>  0:16
 CLOCK: [2019-04-26 Fri 11:03]--[2019-04-26 Fri 11:13] =>  0:10
 CLOCK: [2019-04-26 Fri 10:43]--[2019-04-26 Fri 10:57] =>  0:14
 :END:
+- https://www.bioconductor.org/packages/devel/bioc/vignettes/TCGAbiolinks/inst/doc/index.html
+- https://github.com/raerose01/deconstructSigs
 - https://github.com/google/deepvariant 
 - variant calling
   - fusion
@@ -1736,6 +1678,7 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 :PROPERTIES:
 :ID:       728e8984-696f-4531-8e76-bf6d78bfa3b7
 :END:
+- index, adapter, barcode
 - https://www.genscript.com/molecular-biology-glossary/11941/genomic-equivalent
 - ATAC-Seq
   - https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/atac-seq.html
@@ -2004,6 +1947,8 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
 :PROPERTIES:
 :ID:       b9db0398-4481-4502-abb0-bd9edcd353f2
 :END:
+- 
+- https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3016-x
 **** Microarray
 :PROPERTIES:
 :ID:       294edcbb-f306-4f94-9eba-e8a1c7c512f1
@@ -2032,6 +1977,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+cell of origin -- https://www.biorxiv.org/content/10.1101/2021.05.05.441859v1.full
 cite:kukurba2015 
 https://hbctraining.github.io/Training-modules/planning_successful_rnaseq/lessons/data_visualization.html
 https://www.bioconductor.org/packages/release/bioc/vignettes/DEGreport/inst/doc/DEGreport.html
@@ -3456,6 +3402,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :PROPERTIES:
 :ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
 :END:
+- https://www.10xgenomics.com/videos
 - https://www.nature.com/articles/s41591-021-01276-y
 - [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
 - single cell
@@ -3910,6 +3857,16 @@ https://www.illumina.com/destination/epigenetics-webinar-series.html
 :LOGBOOK:
 CLOCK: [2019-06-26 Wed 14:06]--[2019-06-26 Wed 14:45] =>  0:39
 :END:
+- Bisulfite sequencing
+  - methylation protects/blocks cytosine conversion to uracil
+  - PCR amp can produce forward/reverse with and without bisulfite block
+  - BSMAP, Bismark, BWA-meth, biscuit
+  - VCF > bedgraph > bigwig > IGV
+  - metilene segments methylation
+  - visualization
+    - heatmap
+    - canyon plot- methylation proportion vs distance from target locus
+- cite:liu2020 
 - https://www.nature.com/articles/s41591-020-0933-1
 - https://www.nature.com/articles/nm.4045
 - [[id:6ad7cfcb-1e8b-4d72-b18a-40f80a00f242][nih liq biopsy]] see [2021-01-26 Tue]
@@ -4119,6 +4076,7 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 :PROPERTIES:
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
 :END:
+
 - http://bioportal.bioontology.org/ontologies/GO/?p=classes&conceptid=root
 - pathways
   - pathways
@@ -4167,6 +4125,7 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 :CREATED:  [2019-09-28 Sat 10:37]
 :ID:       e5089cac-0ade-48ea-9417-58bfb67a6338
 :END:
+- https://github.com/Adrienrougny/sbgntikz/
 - pathways
   - https://github.com/PathwayCommons/chibe
 
@@ -4223,6 +4182,10 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
 :END:
+- https://workflows.omnipathdb.org/
+- example papers
+  - https://academic.oup.com/nar/article/47/19/10010/5573547
+- https://academic.oup.com/bioinformatics/article/36/8/2632/5689817
 - cite:higdon2015 
 - https://jme.bioscientifica.com/view/journals/jme/62/1/JME-18-0055.xml
 - http://mixomics.org/webinar-pls-methods/
@@ -4238,6 +4201,11 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :PROPERTIES:
 :ID:       DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
 :END:
+- https://cmdcolin.github.io/awesome-genome-visualization/
+- https://sites.google.com/view/williamgilks/computational-analysis-of-whole-genome-sequencing-data/flow-chart-in-latex
+
+- https://github.com/Adrienrougny/sbgntikz/
+- https://bioinfogp.cnb.csic.es/tools/venny/
 - heatmaps
   - https://www.biostars.org/p/287512/
   - https://support.bioconductor.org/p/93424/
@@ -4258,10 +4226,12 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Giraud_visualisation-IGV_TP_EBA-2014-10.pdf
 [[http://software.broadinstitute.org/software/igv/UserGuide][User Guide]]
 
-*** workflow 
+*** Platform and Workflows
 :PROPERTIES:
 :ID:       b7c65054-f648-4579-9c5f-7bedbe272b5c
 :END:
+- https://sites.google.com/view/williamgilks/computational-analysis-of-whole-genome-sequencing-data/flow-chart-in-latex
+
 https://www.reddit.com/r/bioinformatics/comments/ahbzg5/how_do_people_turn_their_scripts_into_a_program/
 
 - http://www.blopig.com/blog/2018/03/running-jupyter-notebook-on-a-remote-server-via-ssh/
@@ -4276,6 +4246,12 @@ https://www.reddit.com/r/bioinformatics/comments/ahbzg5/how_do_people_turn_their
 - [[https://software.broadinstitute.org/wdl/userguide/][widdle]]
 - http://rabix.io/
 - http://bioboxes.org/docs/example-biobox-use/
+**** Computer clusters
+:PROPERTIES:
+:CREATED:  [2020-12-18 Fri 18:50]
+:ID:       10c078fd-a281-4612-a28b-5ceea1fa7af5
+:END:
+https://singularity.lbl.gov/install-linux
 ** Tools
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
@@ -7001,6 +6977,26 @@ consModules[cmod])
 
 
 ** Ideas
+- Data dictionary 
+  #+name: biotools_docker_versions
+  | cutadapt_version |    1.18 |
+  | mirdeep2_version | 2.0.1.2 |
+  | bowtie           |     1.2 |
+  #+name: injest_biotools_docker_versions
+  #+begin_src python :var biotools_docker_versions=biotools_docker_versions
+  import os
+  import csv
+
+  os.chdir('/home/jeszyman/repos/biotools')
+
+  with open('./data/biotools_docker_versions.csv', 'w', newline='') as file:
+      writer = csv.writer(file, delimiter=',')
+      writer.writerows(biotools_docker_versions)
+  #+end_src
+  #+name: injest_biotools_docker_versions_wrapper
+  #+begin_src python :noweb yes
+  injest_biotools_docker_versions
+  #+end_src
 - Ideas
    - make test data
     #+name: make_test_data
@@ -7095,6 +7091,15 @@ consModules[cmod])
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- http://rafalab.github.io/pages/harvardx.html
+- https://www.cancer.gov/about-nci/organization/ccg/research/structural-genomics/tcga/publications
+
+- https://scilifelab.github.io/courses/
+- https://www.reddit.com/r/bioinformatics/comments/m78kqb/what_are_the_best_book_i_could_get_for_a/
+
+- https://www.reddit.com/r/bioinformatics/comments/m2o63g/best_courses_or_material_to_learn_bioinformatics/
+
+- https://learn.gencore.bio.nyu.edu/
 - cite:buffalo2015
 - biotools bash functions in ./src
   - docker interactive call
