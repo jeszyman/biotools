@@ -600,30 +600,7 @@ package.check = lapply(
 )
 #
 #+end_src
-*** Probability and statistics related to bioinformatics
-- https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
-- Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
-
-- https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
-*** Transcription factor binding and perturbation 
-https://genome.cshlp.org/content/29/8/1363.full
-https://bmcresnotes.biomedcentral.com/articles/10.1186/s13104-018-3856-x
-https://www.nature.com/articles/ncomms15089#Sec2
-- cite:hu2019 
-*** Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
-:PROPERTIES:
-:ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
-:END:
-- fragment size
-  - https://www.nature.com/articles/s41586-020-2140-0
-  - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
-**** ctDNA WES
-:PROPERTIES:
-:ID:       e387037a-85c0-4eda-a26f-9b6386e95a34
-:END:
-- https://clincancerres.aacrjournals.org/content/26/11/2556#sec-6
-- cite:parikh2019
-*** Biotools docker setup
+**** Biotools docker setup
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
 :END:
@@ -667,6 +644,7 @@ docker_interactive() {
                           -v /drive3/:/drive3/ \
                           -v /duo4/:/duo4/ \
                           -v /home/:/home/ \
+                          -v /tmp/:/tmp/ \
                           -u $(id -u ${USER}) \
                           $account/$container \
                           /bin/bash;;
@@ -692,7 +670,7 @@ docker_interactive() {
     fi
 }
 #+end_src
-*** Setup common references
+**** Setup common references
 :PROPERTIES:
 :ID:       813ed980-1c55-44d7-84d8-67afdad2e5bc
 :END:
@@ -740,6 +718,29 @@ done
 # get readmes
 #########1#########2#########3#########4#########5#########6#########7#########8
 #+end_src
+*** Probability and statistics related to bioinformatics
+- https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
+- Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
+
+- https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
+*** Transcription factor binding and perturbation 
+https://genome.cshlp.org/content/29/8/1363.full
+https://bmcresnotes.biomedcentral.com/articles/10.1186/s13104-018-3856-x
+https://www.nature.com/articles/ncomms15089#Sec2
+- cite:hu2019 
+*** Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
+:PROPERTIES:
+:ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
+:END:
+- fragment size
+  - https://www.nature.com/articles/s41586-020-2140-0
+  - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
+**** ctDNA WES
+:PROPERTIES:
+:ID:       e387037a-85c0-4eda-a26f-9b6386e95a34
+:END:
+- https://clincancerres.aacrjournals.org/content/26/11/2556#sec-6
+- cite:parikh2019
 *** Common bioinformatics file manipulation
 :PROPERTIES:
 :ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
@@ -7091,6 +7092,7 @@ consModules[cmod])
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://slowkow.com/
 - http://rafalab.github.io/pages/harvardx.html
 - https://www.cancer.gov/about-nci/organization/ccg/research/structural-genomics/tcga/publications
 
