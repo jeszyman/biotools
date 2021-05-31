@@ -25,6 +25,7 @@ docker_interactive() {
                           -v /drive3/:/drive3/ \
                           -v /duo4/:/duo4/ \
                           -v /home/:/home/ \
+                          -v /tmp/:/tmp/ \
                           -u $(id -u ${USER}) \
                           $account/$container \
                           /bin/bash;;

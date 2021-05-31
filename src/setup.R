@@ -22,7 +22,3 @@ package.check = lapply(
   }
 )
 #
-
-# Set variables
-select=dplyr::select
-filter=dplyr::filter
