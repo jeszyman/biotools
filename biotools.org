@@ -11,6 +11,7 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+https://slowkow.com/publications/
 ** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][LINK TO Information Science / Data Science]]
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
 :PROPERTIES:
@@ -511,7 +512,9 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 :PROPERTIES:
 :ID:       59bc8f81-cf57-4e56-a5ff-3b0ff4095a91
 :END:
-- https://www.biostars.org/p/198143/
+
+- [[https://www.biostars.org/p/198143/][get sequencer type from fastq header]]
+
 - https://github.com/10XGenomics/supernova/blob/master/tenkit/lib/python/tenkit/illumina_instrument.py#L12-L45
 - https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/FileFormat_FASTQ-files_swBS.htm
 
@@ -600,30 +603,7 @@ package.check = lapply(
 )
 #
 #+end_src
-*** Probability and statistics related to bioinformatics
-- https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
-- Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
-
-- https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
-*** Transcription factor binding and perturbation 
-https://genome.cshlp.org/content/29/8/1363.full
-https://bmcresnotes.biomedcentral.com/articles/10.1186/s13104-018-3856-x
-https://www.nature.com/articles/ncomms15089#Sec2
-- cite:hu2019 
-*** Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
-:PROPERTIES:
-:ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
-:END:
-- fragment size
-  - https://www.nature.com/articles/s41586-020-2140-0
-  - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
-**** ctDNA WES
-:PROPERTIES:
-:ID:       e387037a-85c0-4eda-a26f-9b6386e95a34
-:END:
-- https://clincancerres.aacrjournals.org/content/26/11/2556#sec-6
-- cite:parikh2019
-*** Biotools docker setup
+**** Biotools docker setup
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
 :END:
@@ -692,7 +672,7 @@ docker_interactive() {
     fi
 }
 #+end_src
-*** Setup common references
+**** Setup common references
 :PROPERTIES:
 :ID:       813ed980-1c55-44d7-84d8-67afdad2e5bc
 :END:
@@ -740,6 +720,41 @@ done
 # get readmes
 #########1#########2#########3#########4#########5#########6#########7#########8
 #+end_src
+*** Platform and Workflows
+:PROPERTIES:
+:ID:       b7c65054-f648-4579-9c5f-7bedbe272b5c
+:END:
+- https://sites.google.com/view/williamgilks/computational-analysis-of-whole-genome-sequencing-data/flow-chart-in-latex
+
+https://www.reddit.com/r/bioinformatics/comments/ahbzg5/how_do_people_turn_their_scripts_into_a_program/
+
+- http://www.blopig.com/blog/2018/03/running-jupyter-notebook-on-a-remote-server-via-ssh/
+- https://www.reddit.com/r/bioinformatics/comments/7gxsk0/does_anyone_use_cwl_does_it_actually_help_you_get/
+- https://cromwell.readthedocs.io/en/stable/
+- nextflow
+  - https://www.youtube.com/watch?v=jsxTC8pNPUc
+    - workflows are fragile
+  - https://www.nextflow.io/example1.html
+  - https://github.com/nf-core/rnaseq
+  - https://www.ncbi.nlm.nih.gov/pubmed/?term=nextflow
+- [[https://software.broadinstitute.org/wdl/userguide/][widdle]]
+- http://rabix.io/
+- http://bioboxes.org/docs/example-biobox-use/
+**** Computer clusters
+:PROPERTIES:
+:CREATED:  [2020-12-18 Fri 18:50]
+:ID:       10c078fd-a281-4612-a28b-5ceea1fa7af5
+:END:
+https://singularity.lbl.gov/install-linux
+*** Probability and statistics related to bioinformatics
+- clustering
+  - http://statweb.stanford.edu/~susan/courses/stats305c/examplesClusters.html
+  - https://bookdown.org/rdpeng/exdata/k-means-clustering.html
+  - https://www.datanovia.com/en/lessons/cluster-analysis-example-quick-start-r-code/
+- https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
+- Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
+
+- https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
 *** Common bioinformatics file manipulation
 :PROPERTIES:
 :ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
@@ -759,66 +774,25 @@ done
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
+:LOGBOOK:
+CLOCK: [2021-05-27 Thu 11:25]--[2021-05-27 Thu 11:38] =>  0:13
+:END:
+**** General reference
 - https://docs.nvidia.com/clara/parabricks/v3.0/index.html#
-cite:goodwin2016
-https://www.future-science.com/doi/10.2144/000114133
-https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
-https://support.illumina.com/training.html
-https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/user-guide-manual/xgen-prism-dna-library-prep-kit-processing-sequencing-data-with-umis.pdf
-https://www.biostars.org/p/198143/
+- https://support.illumina.com/training.html
+- cite:goodwin2016
+- cite:lee2016
+**** High Throughput Sequencing Platforms
+:PROPERTIES:
+:ID:       DF6FFA19-8867-49AC-947D-FD57B403761A
+:END:
 - https://www.broadinstitute.org/genome-sequencing/broadillumina-genome-analyzer-boot-camp
-- https://pages.10xgenomics.com/ugm-2020-10-event-ra_g-user-group-meeting-amr_on-demand.html?src=email&utm_medium=email&lss=internal&utm_source=internal&cnm=ugm-2020-10-event-ra_g-user-group-meeting-amr&utm_campaign=ugm-2020-10-event-ra_g-user-group-meeting-amr&useroffertype=event&userresearcharea=ra_g&userregion=multi&mktouserid=1629122
-
-- [[http://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-2-r18][amplification bias]]
-- https://en.m.wikibooks.org/wiki/Next_Generation_Sequencing_(NGS)
 - commercial sequencing entities
   - medgeneome
     - https://research.medgenome.com/qc-reports/
     - https://research.medgenome.com/ngs-services/whole-genome-exome-sequencing/
 - https://www.illumina.com/systems/sequencing-platforms/comparison-tool.html
-- cite:glenn2011 
-- https://www.illumina.com/content/dam/illumina-marketing/documents/techniques/high-throughput-flipbook-web.pdf
-- http://www.opiniomics.org/hiseq-move-over-here-comes-nova-a-first-look-at-illumina-novaseq/
-- Sequencing platform overview and limitations
-  - cite:payton2016
-- https://www.biostars.org/p/198143/
-- https://www.illumina.com/content/dam/illumina-marketing/documents/products/brochures/ngs-buyers-guide.pdf
-- https://www.illumina.com/products/by-type/sequencing-kits/library-prep-kits.html
-- https://dnatech.genomecenter.ucdavis.edu/2015/05/28/hiseq-3000-sequencing/
-- https://www.nature.com/articles/s41598-018-29325-6
-- x10
-- analytical sensitivity of pcr/ ngs methods/ fish/ etc...
-- NGS has shorter sequences, higher base-call error, non-uniform coverage, platform-specific artificats 
-- https://github.com/pughlab/ConsensusCruncher
-
-
-Seq platforms tbl 
-Error rates 
-Speed 
-Cost
-Read length
-Companies
-....
-
-**** [[Overview of Sequencing Methods]] Molecular Micro
-:PROPERTIES:
-:ID:       6F399263-D04E-441A-B990-BB669F61F25E
-:END:
-
-**** Low Throughput Methods
-:PROPERTIES:
-:ID:       E58E9F68-2814-4BC2-9D1E-54D129BD1454
-:END:
-
-- 141013.1000 nextgen payton
-  - sanger is up to 1000 bp
-    - variable read ~200 clinically vs. 800 bp read
-
-**** High Throughput Sequencing Platforms
-:PROPERTIES:
-:ID:       DF6FFA19-8867-49AC-947D-FD57B403761A
-:END:
-
+- https://dnatech.genomecenter.ucdavis.edu/
 - [[https://www.youtube.com/watch?v=v1DbcJD4Ry0][youtube Mardis NGS]]
 - [[http://www.broadinstitute.org/scientific-community/science/platforms/genome-sequencing/broadillumina-genome-analyzer-boot-camp][Broad / Illumina Genome Analyzer Boot Camp]]
 - [[file:~/Box%20Sync/library/Mardis,08%20Next-Generation%20DNA%20%20Sequencing%20Methods.pdf][Mardis,08 Next-Generation DNA  Sequencing Methods]]
@@ -828,7 +802,9 @@ Companies
   - Paired end allows placement of repetitive sequences where one side might be repetitive, the other not
   - Evaluate coverage by comparison to snp array
   - Clinical sequencing false positive if variants have patterns
-
+- Sequencing platform overview and limitations
+  - cite:payton2016
+- cite:glenn2011     
 ***** Ion Torrent
 :PROPERTIES:
 :ID:       EC631BCD-1A9B-4B8B-877E-7861C27D948B
@@ -881,43 +857,6 @@ also demultiplexes
 :ID:       D509473A-536B-46D2-8639-22DC19DF41E2
 :END:
 
-**** NGS vs. Sanger
-:PROPERTIES:
-:ID:       4AAD4446-DE69-45CD-A1FE-F8C3A5768C17
-:END:
-
-**** Massively parallel sequencing / Next Generation Sequencing (NGS)
-:PROPERTIES:
-:ID:       7CC63676-4CA4-46F1-A7E5-9A3D1D0B6ADD
-:END:
-
-- seq artefacts and errors
-  - review of seq errors
-  - types and sources
-- seq error correction
-  - as an information model, propogation of errors, random vs. nonrandom
-  - random start-stop- allows ID of PCR duplicates- by start/stop regardless of internal seq
-  - ligation umi
-    - umi strategies
-    - umi actaully adds back 'false' pcr duplicates which can now be positively IDed as unique molecules
-  - duplexing and asymmetric strand artifacts
-    - distinguishing strands 
-- Low sequence complexity
-  - GC bias
-    - cite:chen2013 
-- 1st exon GC-rich, poorly seq by illumina 
-- cite:Lee_2016
-- cite:Goodwin_2016
-
-
-
-**** whole-genome sequencing
-:PROPERTIES:
-:ID:       ccab4617-0399-4ba3-828e-b5fbbb972ba1
-:END:
-- cite:campbell2020
-- https://www.nejm.org/doi/10.1056/NEJMoa2024534?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub++0pubmed
-- duplication rate as a measure of lib complexity
 **** Sequencing testing, modeling, and read simulation
 :PROPERTIES:
 :ID:       f44b9dce-d7fa-4b6a-9949-49ff3c02547c
@@ -974,8 +913,24 @@ also demultiplexes
 
 Generating Simulated Reads
 First, we need a small set of sample read data. A number of tools, including ArtificialFastqGenerator, and SimSeq, will generate artificial or simulated sequence data for you. For this tutorial, I chose to use the wgsim tool (created by Heng Li, also the creator of SAMtools).
-
-*** Raw sequence QC and processing
+**** Adapter design
+- https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/user-guide-manual/xgen-prism-dna-library-prep-kit-processing-sequencing-data-with-umis.pdf
+- https://github.com/pughlab/ConsensusCruncher
+**** Library preparation
+- https://www.future-science.com/doi/10.2144/000114133
+- [[http://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-2-r18][amplification bias]]
+**** Sequencing errors
+- seq error correction
+  - as an information model, propogation of errors, random vs. nonrandom
+  - random start-stop- allows ID of PCR duplicates- by start/stop regardless of internal seq
+  - ligation umi
+    - umi strategies
+    - umi actaully adds back 'false' pcr duplicates which can now be positively IDed as unique molecules
+  - duplexing and asymmetric strand artifacts
+    - distinguishing strands 
+- 1st exon GC-rich, poorly seq by illumina 
+- https://www.nature.com/articles/s41598-018-29325-6
+**** Raw sequence QC and processing
 :PROPERTIES:
 :ID:       1EE731A3-83DD-46AF-B988-2311307C335F
 :CREATED:  [2020-10-14 Wed 08:47]
@@ -1116,6 +1071,278 @@ data analysis. PLoS One, 8, e85024.
     - script comment design
   - https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
 
+**** DNA-seq
+:PROPERTIES:
+:ID:       728e8984-696f-4531-8e76-bf6d78bfa3b7
+:END:
+- index, adapter, barcode
+- https://www.genscript.com/molecular-biology-glossary/11941/genomic-equivalent
+- ATAC-Seq
+  - https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/atac-seq.html
+- DNA 
+  - for immuno regulatory regions- https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-016-0220-7
+  - for chromatin accessibility
+    - ATAC-seq
+      - cite:buenrostro2015
+      - FAST ATAC- ATAC-Seq optimized for blood
+  - DNA for sequence variation 
+    - variation
+      - visualizations
+        - - https://mail.google.com/mail/u/0/#inbox/FMfcgxwHNCtwvpXGcckxJfDWPTPKHTst
+      - clingen
+        - https://www.youtube.com/channel/UCsn4nEVUTpVQz70rClgMMsQ?view_as=subscriber
+    - https://gatk.broadinstitute.org/hc/en-us/articles/360035535892-Somatic-copy-number-variant-discovery-CNVs-
+    - https://gatk.broadinstitute.org/hc/en-us/articles/360035535912-Data-pre-processing-for-variant-discovery
+    - https://gatk.broadinstitute.org/hc/en-us/sections/360007226651-Best-Practices-Workflows
+    - https://mail.google.com/mail/u/0/#inbox/FMfcgxwHNWHJNLRlZwfGkGJHwJnBxFlh
+  - for sequence homology- cite:stoeger2018 
+  - cfDNA
+    - cite:huang2019
+- marking duplicates :process: 
+  - consider picard markduplicates - https://gatkforums.broadinstitute.org/gatk/discussion/6945/picard-tools-markduplicates-using-cram-format-how-to-pass-a-valid-cram-reference
+  - samtools
+    - https://samtools.github.io/hts-specs/SAMv1.pdf
+    - sort
+      - https://www.biostars.org/p/247588/
+    - http://www.htslib.org/algorithms/duplicate.html
+  - https://qcb.ucla.edu/wp-content/uploads/sites/14/2016/03/GATKwr12-2-Marking_duplicates.pdf
+***** Paired tumor-normal sequencing
+- https://github.com/mskcc/facets
+***** Tumor-only whole exome sequencing
+:PROPERTIES:
+:CREATED:  [2021-05-01 Sat 07:26]
+:END:
+- https://ascopubs.org/doi/full/10.1200/CCI.19.00130
+- https://www.cell.com/cell-reports/pdfExtended/S2211-1247(18)31635-8
+- cite:carter2012 ABSOLUTE
+  - https://software.broadinstitute.org/cancer/cga/absolute
+  - https://www.biostars.org/p/175131/
+***** DNA Bioinformatics
+:PROPERTIES:
+:ID:       1C24E3B6-CE16-47C8-8D7B-95EB530560F1
+:END:
+
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4669575/
+- https://github.com/kevinblighe/ClinicalGradeDNAseq
+- https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software.html
+
+- https://software.broadinstitute.org/gatk/documentation/tooldocs/current/picard_illumina_IlluminaBasecallsToFastq.php
+
+- ffpe
+  - cite:munchel2015
+  - cite:spencer2013
+- Fonseca,12 Tools for mapping high throughput sequencing data(2)
+- [[file:~/Box%20Sync/scientific_technique/Cruchaga%20lab%20eQTLs.pptx][Cruchaga eQTLs]]
+
+****** Post-alignment Samtools
+:PROPERTIES:
+:ID:       2D153E08-9F4A-4564-ACA7-5B4932D1022B
+:END:
+
+- nice header review https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
+- Post-alignment
+  - samtools
+    - [[http://www.htslib.org/][website]]
+      - [[http://www.htslib.org/workflow/][workflows]]
+      - [[http://www.htslib.org/doc/][documentation]]
+        - [[http://www.htslib.org/doc/#publications][publications]]
+    - [[https://github.com/samtools/][github]]
+    - cite:li2009 
+    - samtools view sorted.bam | awk '{sum+=$5} END { print "Mean MAPQ =",sum/NR}'
+    - [[https://www.biostars.org/p/15953/][biostars: calculate MAPQ]]
+    - calc mapq w/ samtools- https://www.biostars.org/p/15953/][Malachi Griffith biostars
+- [[http://www.htslib.org/doc/samtools-1.2.html][Documentation]]
+- Subset a bam
+  - By chromosome
+    - e.g.: ​samtools view -b in.bam chr1 > in_chr1.bam
+- [[http://barcwiki.wi.mit.edu/wiki/SOPs/miningSAMBAM][some common Samtools tasks]]
+- [[http://davetang.org/wiki/tiki-index.php?page=SAMTools][a Samtools tutorial]]
+- [[http://biobits.org/samtools_primer.html][another Samtools tutorial]]
+- [[http://broadinstitute.github.io/picard/explain-flags.html][SAM flags]]
+- [[https://www.biostars.org/p/17361/][Picard is Samtools!]]
+- Find ummapped reads by flags
+- [[http://davetang.org/wiki/tiki-index.php?page=SAMTools#Converting_a_SAM_file_to_a_BAM_file][Sam to Bam, indexing ]]   
+
+****** Ideas
+:PROPERTIES:
+:ID:       F6511EA3-A5B4-455E-99F1-D536EE81F22D
+:END:
+
+- [[http://zvfak.blogspot.com/2012/02/samtools-in-parallel.html][run in parallel]]
+
+- incorporate samtools in R workflow via Rsamtools
+
+****** Exome Sequencing Pipeline
+:PROPERTIES:
+:ID:       57992D53-D767-4E44-9E3F-B4A05E5B4EF1
+:END:
+
+****** Specialized Applications
+:PROPERTIES:
+:ID:       7A9FC47A-2E9E-46D5-8E3E-E7C7C5C5AD9E
+:END:
+
+******* Detecting Internal Tandem Duplications
+:PROPERTIES:
+:ID:       4B340D6D-E38D-42E5-AD1F-3CB0BDF62545
+:END:
+
+[[file:~/Box%20Sync/library/Spencer,12%20Detection%20of%20FLT3%20ITD%20in%20short%20read%20length%20NGS.pdf][Spencer,12 Detection of FLT3 ITD in short read length NGS]]
+
+****** DNA Alignment
+:PROPERTIES:
+:ID:       B2F17B06-C1BA-487A-93EC-D9737584BC0E
+:END:
+
+- https://www.youtube.com/watch?v=4n7NPk5lwbI 
+- - https://www.youtube.com/watch?v=hpb-mH-yjLc&list=PL2mpR0RYFQsBiCWVJSvVAO3OJ2t7DzoHA
+- tutorials
+  - http://seqinformatics.com/?page_id=160
+    - near perfect matches (BLAST not specific)
+  - https://www.youtube.com/watch?v=zMAa9gFd2Gs
+  - http://www.ngscourse.org/Course_Materials/alignment/tutorial/example.html
+  - https://wikis.utexas.edu/display/bioiteam/Mapping+tutorial
+
+******* Novoalign
+:PROPERTIES:
+:ID:       22097A02-1E18-40BD-BA2F-0D3BC645F0D5
+:END:
+
+- cite:Novocraft
+- [[http://www.novocraft.com/support/download/][Novoalign]]
+
+******* BWA
+:PROPERTIES:
+:ID:       83F91393-2108-4785-9696-BDE8EC09FA88
+:END:
+
+-"bwa concatenates all the references sequences together before aligning. So if a read hangs off of one sequence onto the next, it's given the appropriate mapping position, and the unmapped flag is also set, as a sign that something is off about the alignment."
+
+- sequences should be <3% difference from reference
+- A block sorting lossless data compression algorithm
+- Compresses the genome as a BWT index
+- Identical sequences (genome repeats) only occur once in the index, reads that match the genome in multiple locations get a mapping quality of 0
+- output is SAM
+- [[http://bio-bwa.sourceforge.net/][Burrows-Wheeler Aligner]]
+- [[https://www.biostars.org/t/bwa%20mem/][Biostars BWA Posts]]
+- [[http://bio-bwa.sourceforge.net/bwa.shtml][bwa manual]]
+  - algorithms
+    - backtrack illumina to 100 bp
+    - 70 bp to 1 mb
+      - sw 
+      - mem
+    - mem is generally recommended
+    - 
+
+****** Post-Alignment QC
+:PROPERTIES:
+:ID:       F689D6FA-071C-4167-BC21-85A7EC20DA41
+:END:
+
+filtering
+noncoding, known mis-spliced, mitochondrial, x/y in mixed sex, unannotated 
+
+******* Inspection
+:PROPERTIES:
+:ID:       07602EB8-5EFD-4179-9F55-320190ECE670
+:END:
+
+******* Processing
+:PROPERTIES:
+:ID:       2A4B2B42-C088-4479-BC65-670CC8377D39
+:END:
+
+******* FASTX-Toolkit
+:PROPERTIES:
+:ID:       8169C9DC-FDB6-473E-9B54-E154261186EA
+:END:
+
+  - [[http://hannonlab.cshl.edu/fastx_toolkit/commandline.html][documentation]]
+  - brew installed on mac, but says, "cannot execute binary file", will have to run from cluster
+  - [[http://hannonlab.cshl.edu/fastx_toolkit/commandline.html][Command-line Usage]]
+  - the clip can be a .fa file 
+  - [[http://mgt2.chpc.wustl.edu/wiki119/index.php/FASTX_Toolkit][on cluster]]
+  - Clipper 
+    https://github.com/NCBI-Hackathons/RNA_mapping
+
+****** Broad Best Practices for Variant Discovery in DNAseq
+:PROPERTIES:
+:ID:       850AA38C-75E9-42E2-8DEE-61F4950BCFDE
+:END:
+
+https://software.broadinstitute.org/gatk/documentation/topic?name=methods
+
+***** Adaptive TCR-beta immunosequencing 
+:PROPERTIES:
+:CREATED:  [2020-12-20 Sun 16:45]
+:ID:       61aac189-1770-4d80-a367-e7c39b46e0d1
+:END:
+***** aligned sequence qc
+:PROPERTIES:
+:ID:       1165bc2b-9373-4313-94bd-2a1d7be34fb8
+:END:
+- https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
+- coverage
+  - cite:illumina2014
+  - Picard CollectWgsMetrics
+****** coverage and depth
+:PROPERTIES:
+:ID:       a4dcf0d6-1619-4f82-989d-2bd599cdf061
+:END:
+- https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/hiseq-x-30x-coverage-technical-note-770-2014-042.pdf
+- https://www.biostars.org/p/331957/
+- https://www.htslib.org/doc/samtools-depth.1.html#OPTIONS
+- for coverage https://www.biostars.org/p/104063/
+***** capture probes and barcoding
+:PROPERTIES:
+:ID:       675eba72-76e5-4b49-81e9-37bdc02cce9b
+:END:
+https://support.illumina.com/bulletins/2018/08/understanding-unique-dual-indexes--udi--and-associated-library-p.html
+https://www.illumina.com/content/dam/illumina-marketing/documents/products/whitepapers/index-hopping-white-paper-770-2017-004.pdf
+https://www.google.com/search?q=calculation+probability+of+sequence+mismatch&oq=calculation+probability+of+sequence+mismatch&aqs=chrome..69i57j33.12480j0j7&client=ubuntu&sourceid=chrome&ie=UTF-8
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
+- capture probe design
+  - https://ascopubs.org/doi/full/10.1200/CCI.19.00077?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub%3Dpubmed
+   Contigs: group of sequences representing overlapping regions from a genome or transcriptome.
+- [[https://wikis.utexas.edu/display/GSAF/Illumina+-+all+flavors][illumina adaptors explained]]
+- adaptor strategies
+  - https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/case-study/idt_improved-coverage-uniformity-with-xgen-lockdown-panels-case-study.pdf?sfvrsn=c33d1907_6
+  - https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/protocol/idt_xgen-prism-dna-library-prep-kit-quick-reference-guide.pdf?sfvrsn=6fe71207_4
+  - https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/user-guide-manual/xgen-prism-dna-library-prep-kit-processing-sequencing-data-with-umis.pdf?sfvrsn=22991407_10
+  - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-017-4428-5#MOESM1
+- UMI
+  - - [[http://www.genomics.agilent.com/article.jsp?pageId=3081][HaloPlex]]
+  - - https://cgatoxford.wordpress.com/2015/08/14/unique-molecular-identifiers-the-problem-the-solution-and-the-proof/
+- barcoding
+  - 10x
+- https://pdfs.semanticscholar.org/310b/3bac42989485c98406848217418ff22c22e7.pdf
+- barcodes and adaptors for increased sensitivity 
+  - cite:kennedy2014
+  - cite:newman2016 
+  - cite:wang2019
+  - https://www.youtube.com/watch?v=HIVCQ7iaowk
+  - newman2016
+    - adaptor informatics
+      - consensus building
+        - set "family size"
+        - 
+    - error base signature
+      - C>A C>T 
+  - wang2019
+    - IDT xGen
+      - blocks adaptor to limit off-target
+      - Cot-1 blocks repetitve regions
+    - method explanation followed by experiments to validate
+      - present experiments as condition vs. condition 
+
+- see edit distance in [[id:A91BF233-F14E-4E91-A1E9-B39802A9ED2D][Computers, Computer Science, and Information Technology]]
+**** Whole-genome sequencing
+:PROPERTIES:
+:ID:       ccab4617-0399-4ba3-828e-b5fbbb972ba1
+:END:
+- cite:campbell2020
+- https://www.nejm.org/doi/10.1056/NEJMoa2024534?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub++0pubmed
+- duplication rate as a measure of lib complexity
 *** Nucleic acid sequence alignment
 :PROPERTIES:
 :ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
@@ -1163,6 +1390,7 @@ CLOCK: [2019-04-26 Fri 11:28]--[2019-04-26 Fri 11:44] =>  0:16
 CLOCK: [2019-04-26 Fri 11:03]--[2019-04-26 Fri 11:13] =>  0:10
 CLOCK: [2019-04-26 Fri 10:43]--[2019-04-26 Fri 10:57] =>  0:14
 :END:
+- cite:kocakavuk2021 
 - https://www.bioconductor.org/packages/devel/bioc/vignettes/TCGAbiolinks/inst/doc/index.html
 - https://github.com/raerose01/deconstructSigs
 - https://github.com/google/deepvariant 
@@ -1674,271 +1902,6 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
 - instability score
   - cite:li2017a  
-**** DNA-seq
-:PROPERTIES:
-:ID:       728e8984-696f-4531-8e76-bf6d78bfa3b7
-:END:
-- index, adapter, barcode
-- https://www.genscript.com/molecular-biology-glossary/11941/genomic-equivalent
-- ATAC-Seq
-  - https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/atac-seq.html
-- DNA 
-  - for immuno regulatory regions- https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-016-0220-7
-  - for chromatin accessibility
-    - ATAC-seq
-      - cite:buenrostro2015
-      - FAST ATAC- ATAC-Seq optimized for blood
-  - DNA for sequence variation 
-    - variation
-      - visualizations
-        - - https://mail.google.com/mail/u/0/#inbox/FMfcgxwHNCtwvpXGcckxJfDWPTPKHTst
-      - clingen
-        - https://www.youtube.com/channel/UCsn4nEVUTpVQz70rClgMMsQ?view_as=subscriber
-    - https://gatk.broadinstitute.org/hc/en-us/articles/360035535892-Somatic-copy-number-variant-discovery-CNVs-
-    - https://gatk.broadinstitute.org/hc/en-us/articles/360035535912-Data-pre-processing-for-variant-discovery
-    - https://gatk.broadinstitute.org/hc/en-us/sections/360007226651-Best-Practices-Workflows
-    - https://mail.google.com/mail/u/0/#inbox/FMfcgxwHNWHJNLRlZwfGkGJHwJnBxFlh
-  - for sequence homology- cite:stoeger2018 
-  - cfDNA
-    - cite:huang2019
-- marking duplicates :process: 
-  - consider picard markduplicates - https://gatkforums.broadinstitute.org/gatk/discussion/6945/picard-tools-markduplicates-using-cram-format-how-to-pass-a-valid-cram-reference
-  - samtools
-    - https://samtools.github.io/hts-specs/SAMv1.pdf
-    - sort
-      - https://www.biostars.org/p/247588/
-    - http://www.htslib.org/algorithms/duplicate.html
-  - https://qcb.ucla.edu/wp-content/uploads/sites/14/2016/03/GATKwr12-2-Marking_duplicates.pdf
-***** Paired tumor-normal sequencing
-- https://github.com/mskcc/facets
-***** Tumor-only whole exome sequencing
-:PROPERTIES:
-:CREATED:  [2021-05-01 Sat 07:26]
-:END:
-- https://ascopubs.org/doi/full/10.1200/CCI.19.00130
-- https://www.cell.com/cell-reports/pdfExtended/S2211-1247(18)31635-8
-- cite:carter2012 ABSOLUTE
-  - https://software.broadinstitute.org/cancer/cga/absolute
-  - https://www.biostars.org/p/175131/
-***** DNA Bioinformatics
-:PROPERTIES:
-:ID:       1C24E3B6-CE16-47C8-8D7B-95EB530560F1
-:END:
-
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4669575/
-- https://github.com/kevinblighe/ClinicalGradeDNAseq
-- https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software.html
-
-- https://software.broadinstitute.org/gatk/documentation/tooldocs/current/picard_illumina_IlluminaBasecallsToFastq.php
-
-- ffpe
-  - cite:munchel2015
-  - cite:spencer2013
-- Fonseca,12 Tools for mapping high throughput sequencing data(2)
-- [[file:~/Box%20Sync/scientific_technique/Cruchaga%20lab%20eQTLs.pptx][Cruchaga eQTLs]]
-
-****** Post-alignment Samtools
-:PROPERTIES:
-:ID:       2D153E08-9F4A-4564-ACA7-5B4932D1022B
-:END:
-
-- nice header review https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
-- Post-alignment
-  - samtools
-    - [[http://www.htslib.org/][website]]
-      - [[http://www.htslib.org/workflow/][workflows]]
-      - [[http://www.htslib.org/doc/][documentation]]
-        - [[http://www.htslib.org/doc/#publications][publications]]
-    - [[https://github.com/samtools/][github]]
-    - cite:li2009 
-    - samtools view sorted.bam | awk '{sum+=$5} END { print "Mean MAPQ =",sum/NR}'
-    - [[https://www.biostars.org/p/15953/][biostars: calculate MAPQ]]
-    - calc mapq w/ samtools- https://www.biostars.org/p/15953/][Malachi Griffith biostars
-- [[http://www.htslib.org/doc/samtools-1.2.html][Documentation]]
-- Subset a bam
-  - By chromosome
-    - e.g.: ​samtools view -b in.bam chr1 > in_chr1.bam
-- [[http://barcwiki.wi.mit.edu/wiki/SOPs/miningSAMBAM][some common Samtools tasks]]
-- [[http://davetang.org/wiki/tiki-index.php?page=SAMTools][a Samtools tutorial]]
-- [[http://biobits.org/samtools_primer.html][another Samtools tutorial]]
-- [[http://broadinstitute.github.io/picard/explain-flags.html][SAM flags]]
-- [[https://www.biostars.org/p/17361/][Picard is Samtools!]]
-- Find ummapped reads by flags
-- [[http://davetang.org/wiki/tiki-index.php?page=SAMTools#Converting_a_SAM_file_to_a_BAM_file][Sam to Bam, indexing ]]   
-
-****** Ideas
-:PROPERTIES:
-:ID:       F6511EA3-A5B4-455E-99F1-D536EE81F22D
-:END:
-
-- [[http://zvfak.blogspot.com/2012/02/samtools-in-parallel.html][run in parallel]]
-
-- incorporate samtools in R workflow via Rsamtools
-
-****** Exome Sequencing Pipeline
-:PROPERTIES:
-:ID:       57992D53-D767-4E44-9E3F-B4A05E5B4EF1
-:END:
-
-****** Specialized Applications
-:PROPERTIES:
-:ID:       7A9FC47A-2E9E-46D5-8E3E-E7C7C5C5AD9E
-:END:
-
-******* Detecting Internal Tandem Duplications
-:PROPERTIES:
-:ID:       4B340D6D-E38D-42E5-AD1F-3CB0BDF62545
-:END:
-
-[[file:~/Box%20Sync/library/Spencer,12%20Detection%20of%20FLT3%20ITD%20in%20short%20read%20length%20NGS.pdf][Spencer,12 Detection of FLT3 ITD in short read length NGS]]
-
-****** DNA Alignment
-:PROPERTIES:
-:ID:       B2F17B06-C1BA-487A-93EC-D9737584BC0E
-:END:
-
-- https://www.youtube.com/watch?v=4n7NPk5lwbI 
-- - https://www.youtube.com/watch?v=hpb-mH-yjLc&list=PL2mpR0RYFQsBiCWVJSvVAO3OJ2t7DzoHA
-- tutorials
-  - http://seqinformatics.com/?page_id=160
-    - near perfect matches (BLAST not specific)
-  - https://www.youtube.com/watch?v=zMAa9gFd2Gs
-  - http://www.ngscourse.org/Course_Materials/alignment/tutorial/example.html
-  - https://wikis.utexas.edu/display/bioiteam/Mapping+tutorial
-
-******* Novoalign
-:PROPERTIES:
-:ID:       22097A02-1E18-40BD-BA2F-0D3BC645F0D5
-:END:
-
-- cite:Novocraft
-- [[http://www.novocraft.com/support/download/][Novoalign]]
-
-******* BWA
-:PROPERTIES:
-:ID:       83F91393-2108-4785-9696-BDE8EC09FA88
-:END:
-
--"bwa concatenates all the references sequences together before aligning. So if a read hangs off of one sequence onto the next, it's given the appropriate mapping position, and the unmapped flag is also set, as a sign that something is off about the alignment."
-
-- sequences should be <3% difference from reference
-- A block sorting lossless data compression algorithm
-- Compresses the genome as a BWT index
-- Identical sequences (genome repeats) only occur once in the index, reads that match the genome in multiple locations get a mapping quality of 0
-- output is SAM
-- [[http://bio-bwa.sourceforge.net/][Burrows-Wheeler Aligner]]
-- [[https://www.biostars.org/t/bwa%20mem/][Biostars BWA Posts]]
-- [[http://bio-bwa.sourceforge.net/bwa.shtml][bwa manual]]
-  - algorithms
-    - backtrack illumina to 100 bp
-    - 70 bp to 1 mb
-      - sw 
-      - mem
-    - mem is generally recommended
-    - 
-
-****** Post-Alignment QC
-:PROPERTIES:
-:ID:       F689D6FA-071C-4167-BC21-85A7EC20DA41
-:END:
-
-filtering
-noncoding, known mis-spliced, mitochondrial, x/y in mixed sex, unannotated 
-
-******* Inspection
-:PROPERTIES:
-:ID:       07602EB8-5EFD-4179-9F55-320190ECE670
-:END:
-
-******* Processing
-:PROPERTIES:
-:ID:       2A4B2B42-C088-4479-BC65-670CC8377D39
-:END:
-
-******* FASTX-Toolkit
-:PROPERTIES:
-:ID:       8169C9DC-FDB6-473E-9B54-E154261186EA
-:END:
-
-  - [[http://hannonlab.cshl.edu/fastx_toolkit/commandline.html][documentation]]
-  - brew installed on mac, but says, "cannot execute binary file", will have to run from cluster
-  - [[http://hannonlab.cshl.edu/fastx_toolkit/commandline.html][Command-line Usage]]
-  - the clip can be a .fa file 
-  - [[http://mgt2.chpc.wustl.edu/wiki119/index.php/FASTX_Toolkit][on cluster]]
-  - Clipper 
-    https://github.com/NCBI-Hackathons/RNA_mapping
-
-****** Broad Best Practices for Variant Discovery in DNAseq
-:PROPERTIES:
-:ID:       850AA38C-75E9-42E2-8DEE-61F4950BCFDE
-:END:
-
-https://software.broadinstitute.org/gatk/documentation/topic?name=methods
-
-***** Adaptive TCR-beta immunosequencing 
-:PROPERTIES:
-:CREATED:  [2020-12-20 Sun 16:45]
-:ID:       61aac189-1770-4d80-a367-e7c39b46e0d1
-:END:
-***** aligned sequence qc
-:PROPERTIES:
-:ID:       1165bc2b-9373-4313-94bd-2a1d7be34fb8
-:END:
-- https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
-- coverage
-  - cite:illumina2014
-  - Picard CollectWgsMetrics
-****** coverage and depth
-:PROPERTIES:
-:ID:       a4dcf0d6-1619-4f82-989d-2bd599cdf061
-:END:
-- https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/hiseq-x-30x-coverage-technical-note-770-2014-042.pdf
-- https://www.biostars.org/p/331957/
-- https://www.htslib.org/doc/samtools-depth.1.html#OPTIONS
-- for coverage https://www.biostars.org/p/104063/
-***** capture probes and barcoding
-:PROPERTIES:
-:ID:       675eba72-76e5-4b49-81e9-37bdc02cce9b
-:END:
-https://support.illumina.com/bulletins/2018/08/understanding-unique-dual-indexes--udi--and-associated-library-p.html
-https://www.illumina.com/content/dam/illumina-marketing/documents/products/whitepapers/index-hopping-white-paper-770-2017-004.pdf
-https://www.google.com/search?q=calculation+probability+of+sequence+mismatch&oq=calculation+probability+of+sequence+mismatch&aqs=chrome..69i57j33.12480j0j7&client=ubuntu&sourceid=chrome&ie=UTF-8
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
-- capture probe design
-  - https://ascopubs.org/doi/full/10.1200/CCI.19.00077?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub%3Dpubmed
-   Contigs: group of sequences representing overlapping regions from a genome or transcriptome.
-- [[https://wikis.utexas.edu/display/GSAF/Illumina+-+all+flavors][illumina adaptors explained]]
-- adaptor strategies
-  - https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/case-study/idt_improved-coverage-uniformity-with-xgen-lockdown-panels-case-study.pdf?sfvrsn=c33d1907_6
-  - https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/protocol/idt_xgen-prism-dna-library-prep-kit-quick-reference-guide.pdf?sfvrsn=6fe71207_4
-  - https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/user-guide-manual/xgen-prism-dna-library-prep-kit-processing-sequencing-data-with-umis.pdf?sfvrsn=22991407_10
-  - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-017-4428-5#MOESM1
-- UMI
-  - - [[http://www.genomics.agilent.com/article.jsp?pageId=3081][HaloPlex]]
-  - - https://cgatoxford.wordpress.com/2015/08/14/unique-molecular-identifiers-the-problem-the-solution-and-the-proof/
-- barcoding
-  - 10x
-- https://pdfs.semanticscholar.org/310b/3bac42989485c98406848217418ff22c22e7.pdf
-- barcodes and adaptors for increased sensitivity 
-  - cite:kennedy2014
-  - cite:newman2016 
-  - cite:wang2019
-  - https://www.youtube.com/watch?v=HIVCQ7iaowk
-  - newman2016
-    - adaptor informatics
-      - consensus building
-        - set "family size"
-        - 
-    - error base signature
-      - C>A C>T 
-  - wang2019
-    - IDT xGen
-      - blocks adaptor to limit off-target
-      - Cot-1 blocks repetitve regions
-    - method explanation followed by experiments to validate
-      - present experiments as condition vs. condition 
-
-- see edit distance in [[id:A91BF233-F14E-4E91-A1E9-B39802A9ED2D][Computers, Computer Science, and Information Technology]]
 **** [[id:5738AF1F-8621-40C3-AF80-0C396CDC889B][LINK TO Clinical NGS]]
 :PROPERTIES:
 :ID:       413414a5-651d-4d43-82c8-a6bb13de8ca3
@@ -1977,6 +1940,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
 cell of origin -- https://www.biorxiv.org/content/10.1101/2021.05.05.441859v1.full
 cite:kukurba2015 
 https://hbctraining.github.io/Training-modules/planning_successful_rnaseq/lessons/data_visualization.html
@@ -3783,6 +3747,11 @@ https://science.sciencemag.org/content/360/6389/660
 :ID:       45a1d8fe-cdfb-4dce-8cf7-c7325c83e2d3
 :END:
 - http://gepia.cancer-pku.cn/
+**** Transcription factor binding and perturbation 
+https://genome.cshlp.org/content/29/8/1363.full
+https://bmcresnotes.biomedcentral.com/articles/10.1186/s13104-018-3856-x
+https://www.nature.com/articles/ncomms15089#Sec2
+- cite:hu2019 
 *** Epigenetics
 :PROPERTIES:
 :CREATED:  [2019-10-30 Wed 10:52]
@@ -3820,21 +3789,31 @@ https://www.illumina.com/destination/epigenetics-webinar-series.html
       - methylKit
       - mehtySig
       - metilene
-**** atac-seq
+**** ATAC-seq
 :PROPERTIES:
 :ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
 :END:
-- https://www.biostars.org/p/418363/
+:LOGBOOK:
+CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
+:END:
+- Design
+  - Read length
+    - https://www.biostars.org/p/418363/
+- Bench
+  - cite:corces2017 
+  - cite:buenrostro2015
 - QC
   - https://www.cell.com/cell-systems/pdfExtended/S2405-4712(20)30079-X
   - https://bioconductor.org/packages/release/bioc/vignettes/ATACseqQC/inst/doc/ATACseqQC.html
-- cite:yan2020 
-- cite:corces2017 
-- https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&nlo=&nlr=&nls=&sid=e3c13d36864e217e2edcf12df7a64b0a&sot=b&sdt=b&sl=59&s=%28TITLE-ABS-KEY%28atac-seq%29+AND+TITLE-ABS-KEY%28bioinformatics%29%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist
-- https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&nlo=&nlr=&nls=&sid=a96885cfb809353a6782e085df08be7b&sot=b&sdt=b&sl=79&s=%28TITLE-ABS-KEY%28atac-seq%29+AND+TITLE-ABS-KEY%28method%29+AND+TITLE-ABS-KEY%28protocol%29%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist
-- cite:buenrostro2015
-- protocols and guidelines
+- Applications
+  - ATAC-seq and miRNA-seq cite:abernathy2017 
+  - Transcription factor binding sites- cite:li2019atac
+- General method guides
+  - cite:yan2020 
+  - cite:corces2017 
+  - cite:buenrostro2015
   - https://informatics.fas.harvard.edu/atac-seq-guidelines.html
+- [[https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&nlo=&nlr=&nls=&sid=e3c13d36864e217e2edcf12df7a64b0a&sot=b&sdt=b&sl=59&s=%28TITLE-ABS-KEY%28atac-seq%29+AND+TITLE-ABS-KEY%28bioinformatics%29%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist][scopus atac-seq bioinformatics (42)]]
 - atac-seq and mirna-seq https://www.sciencedirect.com/science/article/pii/S193459091730320X?via%3Dihub
 - bioinformatics
   - cite:yan2020
@@ -4201,6 +4180,9 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :PROPERTIES:
 :ID:       DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
 :END:
+- heatmaps
+  - https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
+  - cite:lucas2020 fig3c
 - https://cmdcolin.github.io/awesome-genome-visualization/
 - https://sites.google.com/view/williamgilks/computational-analysis-of-whole-genome-sequencing-data/flow-chart-in-latex
 
@@ -4226,32 +4208,20 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Giraud_visualisation-IGV_TP_EBA-2014-10.pdf
 [[http://software.broadinstitute.org/software/igv/UserGuide][User Guide]]
 
-*** Platform and Workflows
+*** Special contexts
+**** Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
 :PROPERTIES:
-:ID:       b7c65054-f648-4579-9c5f-7bedbe272b5c
+:ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
-- https://sites.google.com/view/williamgilks/computational-analysis-of-whole-genome-sequencing-data/flow-chart-in-latex
-
-https://www.reddit.com/r/bioinformatics/comments/ahbzg5/how_do_people_turn_their_scripts_into_a_program/
-
-- http://www.blopig.com/blog/2018/03/running-jupyter-notebook-on-a-remote-server-via-ssh/
-- https://www.reddit.com/r/bioinformatics/comments/7gxsk0/does_anyone_use_cwl_does_it_actually_help_you_get/
-- https://cromwell.readthedocs.io/en/stable/
-- nextflow
-  - https://www.youtube.com/watch?v=jsxTC8pNPUc
-    - workflows are fragile
-  - https://www.nextflow.io/example1.html
-  - https://github.com/nf-core/rnaseq
-  - https://www.ncbi.nlm.nih.gov/pubmed/?term=nextflow
-- [[https://software.broadinstitute.org/wdl/userguide/][widdle]]
-- http://rabix.io/
-- http://bioboxes.org/docs/example-biobox-use/
-**** Computer clusters
+- fragment size
+  - https://www.nature.com/articles/s41586-020-2140-0
+  - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
+***** ctDNA WES
 :PROPERTIES:
-:CREATED:  [2020-12-18 Fri 18:50]
-:ID:       10c078fd-a281-4612-a28b-5ceea1fa7af5
+:ID:       e387037a-85c0-4eda-a26f-9b6386e95a34
 :END:
-https://singularity.lbl.gov/install-linux
+- https://clincancerres.aacrjournals.org/content/26/11/2556#sec-6
+- cite:parikh2019
 ** Tools
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
@@ -4734,6 +4704,7 @@ done
 :PROPERTIES:
 :ID:       af78e4e0-a184-480f-95ac-ce9a0db35246
 :END:
+
 - https://www.biostars.org/p/286187/#286507
 *** Cytoscape
 :PROPERTIES:
@@ -5514,6 +5485,7 @@ https://pathvisio.github.io/
 :PROPERTIES:
 :ID:       a8b27140-4b9e-40c5-86ab-ee5afeae723f
 :END:
+https://github.com/EnvGen/snakemake-workflows
 #+name: 
 #+begin_src bash :tangle no
 source ~/repos/biotools/src/functions.sh
@@ -7091,6 +7063,9 @@ consModules[cmod])
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://pages.10xgenomics.com/ugm-2020-10-event-ra_g-user-group-meeting-amr_on-demand.html?src=email&utm_medium=email&lss=internal&utm_source=internal&cnm=ugm-2020-10-event-ra_g-user-group-meeting-amr&utm_campaign=ugm-2020-10-event-ra_g-user-group-meeting-amr&useroffertype=event&userresearcharea=ra_g&userregion=multi&mktouserid=1629122
+
+
 - http://rafalab.github.io/pages/harvardx.html
 - https://www.cancer.gov/about-nci/organization/ccg/research/structural-genomics/tcga/publications
 
