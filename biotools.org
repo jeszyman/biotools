@@ -11,8 +11,10 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-https://slowkow.com/publications/
 ** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][LINK TO Information Science / Data Science]]
+:PROPERTIES:
+:ID:       014218e1-bb8b-4282-84ec-84354c29b8f5
+:END:
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
 :PROPERTIES:
 :ID:       76100c2b-a077-4c21-a398-16d88722e1c6
@@ -576,8 +578,12 @@ mandatory
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
 *** Setup
-- R setup
-  #+begin_src R :tangle ./src/setup.R
+:PROPERTIES:
+:ID:       03d2e84c-f016-4e3b-ba9c-9afe7d0656cc
+:END:
+**** R setup
+#+name: biotools_r_setup
+#+begin_src R :noweb yes :tangle ./src/setup.R
 #
 # Check Packages
 ##
@@ -603,6 +609,12 @@ package.check = lapply(
 )
 #
 #+end_src
+
+#+name: biotools_r_setup_wrapper
+#+begin_src org :noweb yes
+<<biotools_r_setup>>
+#+end_src
+
 **** Biotools docker setup
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
@@ -748,12 +760,18 @@ https://www.reddit.com/r/bioinformatics/comments/ahbzg5/how_do_people_turn_their
 :END:
 https://singularity.lbl.gov/install-linux
 *** Probability and statistics related to bioinformatics
+:PROPERTIES:
+:ID:       1768b182-858a-46f8-97a8-4cd9747a2361
+:END:
 - clustering
   - http://statweb.stanford.edu/~susan/courses/stats305c/examplesClusters.html
   - https://bookdown.org/rdpeng/exdata/k-means-clustering.html
   - https://www.datanovia.com/en/lessons/cluster-analysis-example-quick-start-r-code/
 
 *** Probability and statistics related to bioinformatics
+:PROPERTIES:
+:ID:       288fef57-f515-491f-be79-586ae494d7a1
+:END:
 
 - https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
 - Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
@@ -762,6 +780,9 @@ https://singularity.lbl.gov/install-linux
 
 
 *** Transcription factor binding and perturbation 
+:PROPERTIES:
+:ID:       ae488938-90d4-4c91-8f91-e52b5bc6151d
+:END:
 https://genome.cshlp.org/content/29/8/1363.full
 https://bmcresnotes.biomedcentral.com/articles/10.1186/s13104-018-3856-x
 https://www.nature.com/articles/ncomms15089#Sec2
@@ -803,6 +824,9 @@ https://www.nature.com/articles/ncomms15089#Sec2
 CLOCK: [2021-05-27 Thu 11:25]--[2021-05-27 Thu 11:38] =>  0:13
 :END:
 **** General reference
+:PROPERTIES:
+:ID:       8438f135-bfc1-4d5e-8a02-f594a1d0773a
+:END:
 - https://docs.nvidia.com/clara/parabricks/v3.0/index.html#
 - https://support.illumina.com/training.html
 - cite:goodwin2016
@@ -939,12 +963,21 @@ also demultiplexes
 Generating Simulated Reads
 First, we need a small set of sample read data. A number of tools, including ArtificialFastqGenerator, and SimSeq, will generate artificial or simulated sequence data for you. For this tutorial, I chose to use the wgsim tool (created by Heng Li, also the creator of SAMtools).
 **** Adapter design
+:PROPERTIES:
+:ID:       8f0a09c6-2a68-425c-91a9-4d09866c8ae2
+:END:
 - https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/user-guide-manual/xgen-prism-dna-library-prep-kit-processing-sequencing-data-with-umis.pdf
 - https://github.com/pughlab/ConsensusCruncher
 **** Library preparation
+:PROPERTIES:
+:ID:       cae4df04-eb04-4148-88a3-798be945a9fd
+:END:
 - https://www.future-science.com/doi/10.2144/000114133
 - [[http://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-2-r18][amplification bias]]
 **** Sequencing errors
+:PROPERTIES:
+:ID:       008673aa-98af-4ffb-89d9-cde43ededa83
+:END:
 - seq error correction
   - as an information model, propogation of errors, random vs. nonrandom
   - random start-stop- allows ID of PCR duplicates- by start/stop regardless of internal seq
@@ -1132,10 +1165,14 @@ data analysis. PLoS One, 8, e85024.
     - http://www.htslib.org/algorithms/duplicate.html
   - https://qcb.ucla.edu/wp-content/uploads/sites/14/2016/03/GATKwr12-2-Marking_duplicates.pdf
 ***** Paired tumor-normal sequencing
+:PROPERTIES:
+:ID:       0496ac54-3250-4fd3-9681-c880aaa296b2
+:END:
 - https://github.com/mskcc/facets
 ***** Tumor-only whole exome sequencing
 :PROPERTIES:
 :CREATED:  [2021-05-01 Sat 07:26]
+:ID:       eed43327-3a0c-4f7b-9886-855a88afa02d
 :END:
 - https://ascopubs.org/doi/full/10.1200/CCI.19.00130
 - https://www.cell.com/cell-reports/pdfExtended/S2211-1247(18)31635-8
@@ -1909,11 +1946,9 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
 :END:
-- by PCR
-  - https://www.pnas.org/content/117/9/4858
 - cite:feng2020 
 - cite:ge2020
-- cite:chen2019
+- cite:chen2019cna
 - cite:hemming2019 
 - cite:huang2019 
 - cite:mansukhani2018
@@ -1927,6 +1962,8 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
 - instability score
   - cite:li2017a  
+- by PCR
+  - https://www.pnas.org/content/117/9/4858
 **** [[id:5738AF1F-8621-40C3-AF80-0C396CDC889B][LINK TO Clinical NGS]]
 :PROPERTIES:
 :ID:       413414a5-651d-4d43-82c8-a6bb13de8ca3
@@ -2605,6 +2642,7 @@ phenotypes with genetic marker data. Genet. Epidemiol., 31(Suppl.
 :PROPERTIES:
 :ID:       22a6e4a4-60c2-44cf-8e5a-3ff351a02aa3
 :END:
+- https://mubaris.com/posts/kmeans-clustering/
 https://uc-r.github.io/hc_clustering
 https://www.biostars.org/p/287512/
 - https://www.datanovia.com/en/blog/types-of-clustering-methods-overview-and-quick-start-r-code/
@@ -3773,6 +3811,9 @@ https://science.sciencemag.org/content/360/6389/660
 :END:
 - http://gepia.cancer-pku.cn/
 **** Transcription factor binding and perturbation 
+:PROPERTIES:
+:ID:       9c741c65-a29f-4de2-9f92-464aa3ec0ee3
+:END:
 https://genome.cshlp.org/content/29/8/1363.full
 https://bmcresnotes.biomedcentral.com/articles/10.1186/s13104-018-3856-x
 https://www.nature.com/articles/ncomms15089#Sec2
@@ -4205,25 +4246,32 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :PROPERTIES:
 :ID:       DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
 :END:
-- heatmaps
-  - https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
-  - cite:lucas2020 fig3c
-- https://cmdcolin.github.io/awesome-genome-visualization/
+:LOGBOOK:
+CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
+:END:
 - https://sites.google.com/view/williamgilks/computational-analysis-of-whole-genome-sequencing-data/flow-chart-in-latex
+- https://www.photopea.com/
+- General reference
+  - http://genviz.org/
+- By content
+  - pathvisio https://www.pathvisio.org/documentation/tutorials/tutorial-1/
+  - svviz [[http://svviz.readthedocs.io/en/latest/install.html][documentation]]
+  - https://genome.sph.umich.edu/wiki/LocusZoom_Standalone
+  - http://miso.readthedocs.io/en/fastmiso/sashimi.html
+  - https://www.fusioncharts.com/resources/chart-primers/radar-chart
+  - https://github.com/Adrienrougny/sbgntikz/
+- [[id:1DA3ABC0-79B0-4CED-B926-22B37840379D][LINK TO Data Visualization]]
+  - Examples
+    - https://cmdcolin.github.io/awesome-genome-visualization/
+  - https://bioinfogp.cnb.csic.es/tools/venny/
 
-- https://github.com/Adrienrougny/sbgntikz/
-- https://bioinfogp.cnb.csic.es/tools/venny/
+**** Heatmaps
+- https://slowkow.com/notes/pheatmap-tutorial/
 - heatmaps
   - https://www.biostars.org/p/287512/
   - https://support.bioconductor.org/p/93424/
-- https://www.photopea.com/
-- https://observablehq.com/@petulla/statistical-power-explorable
-- https://www.fusioncharts.com/resources/chart-primers/radar-chart
-- http://miso.readthedocs.io/en/fastmiso/sashimi.html
-- https://genome.sph.umich.edu/wiki/LocusZoom_Standalone
-- http://genviz.org/
-- https://www.pathvisio.org/documentation/tutorials/tutorial-1/
-  [[http://svviz.readthedocs.io/en/latest/install.html][documentation]]
+- https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
+- cite:lucas2020 fig3c
 **** <<<Integrated Genomics Viewer>>> (<<<IGV>>>)
 :PROPERTIES:
 :ID:       917062AC-32E8-41F5-A511-84AA7B1504B0
@@ -4234,6 +4282,9 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 [[http://software.broadinstitute.org/software/igv/UserGuide][User Guide]]
 
 *** Special contexts
+:PROPERTIES:
+:ID:       b0c9bed7-0ff7-47ff-a10d-4fa632f4155e
+:END:
 **** Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
@@ -5257,6 +5308,10 @@ CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
 :PROPERTIES:
 :ID:       8c535c38-9310-4fd0-a8fe-c300639493da
 :END:
+  - [X] does hmmcopy need blacklist? - no mappability score part of hmmcopy The mappability file, which was generated using ENCODE Duke Uniqueness of 35bp sequences track from UCSC (http://genome.ucsc.edu/cgi-bin/hgTrackUi?db=hg18&g=wgEncodeMapability), provides scores indicating how mappable the reference sequence at each bin is to aligners; the higher the score, the more mappable the sequence.
+
+- https://www.google.com/search?q=viterbi+algorithm&oq=Viterbi+algorithm&aqs=chrome.0.0l8.356j0j7&client=ubuntu&sourceid=chrome&ie=UTF-8
+
 https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzEg:1617895629440&source=lnms&tbm=vid&sa=X&ved=2ahUKEwjZx5ry-u7vAhVJbs0KHXyIAGkQ_AUoAnoECAEQBA&biw=1596&bih=789
 - cite:guo2018
 - cite:klega2018
@@ -6974,6 +7029,10 @@ consModules[cmod])
 
 
 ** Ideas
+:PROPERTIES:
+:ID:       1a00532b-6854-48e5-9860-17d62fe1100e
+:END:
+- https://slowkow.com/publications/
 - Data dictionary 
   #+name: biotools_docker_versions
   | cutadapt_version |    1.18 |
