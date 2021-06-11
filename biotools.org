@@ -11,6 +11,7 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+https://cran.r-project.org/web/packages/chromoMap/vignettes/chromoMap.html#Data-based_annotation_plots
 ** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][LINK TO Information Science / Data Science]]
 :PROPERTIES:
 :ID:       014218e1-bb8b-4282-84ec-84354c29b8f5
@@ -594,7 +595,8 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 packages = c(
   "ComplexHeatmap",
   "fgsea",
-  "limma"
+  "limma",
+  "copynumber"
 )
 ##
 ##NOTE requires libcurl4-openssl-dev https://stackoverflow.com/questions/11471690/curl-h-no-such-file-or-directory/11471743
@@ -608,6 +610,7 @@ package.check = lapply(
   }
 )
 #
+
 #+end_src
 
 #+name: biotools_r_setup_wrapper
