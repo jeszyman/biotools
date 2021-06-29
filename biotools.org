@@ -11,8 +11,6 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-https://www.freecodecamp.org/news/python-for-bioinformatics-use-machine-learning-and-data-analysis-for-drug-discovery/
-https://cran.r-project.org/web/packages/chromoMap/vignettes/chromoMap.html#Data-based_annotation_plots
 ** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][LINK TO Information Science / Data Science]]
 :PROPERTIES:
 :ID:       014218e1-bb8b-4282-84ec-84354c29b8f5
@@ -571,6 +569,50 @@ mandatory
   - https://gatkforums.broadinstitute.org/gatk/discussion/6472/read-groups
 
 
+** Modules
+*** Common intro
+Workflow
+
+I use a core set of tools and data structures to perform and document common bioinformatics and data science tasks. 
+
+Using the same tools and strucutres, each task should be entirely generalized and reproducible. 
+
+These tools are 
+Docker - software install and versioning 
+Snakemake - workflow documentation
+Git - file level version control
+R - statistics and data visualizations
+Latex - text files
+
+Fig # generalized workflow 
+Inputs -> preprocessing
+             -> bioinformatics pipelines
+                    -> initial outputs
+                    -> analysis tables and figures
+                    -> report - publication quality figures and writeup
+
+Each workflow is validated on test data, and then associated with a biotools git repository commit and docker image commit. 
+
+Projects using these workflows are run on a specific repository and docker commit to ensure reproducibility.
+
+Rna-seq for de and pathways
+Quantification and normalization salmon
+Differential expression
+Gene set
+*** Whole transcriptome RNA-seq for differential expression and co-expression
+:LOGBOOK:
+CLOCK: [2021-06-29 Tue 07:30]--[2021-06-29 Tue 07:32] =>  0:02
+CLOCK: [2021-06-29 Tue 07:09]--[2021-06-29 Tue 07:22] =>  0:13
+:END:
+#+begin_src bash
+wget
+#+end_src
+- build decoy-aware transcriptome for salmon
+- build salmon index 
+- fastq QC
+- quantify transcript abundance with [[id:c0d79be1-f887-460e-9142-4d43c6632126][salmon]]
+
+-   
 ** Processes
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
@@ -772,7 +814,7 @@ https://singularity.lbl.gov/install-linux
   - https://bookdown.org/rdpeng/exdata/k-means-clustering.html
   - https://www.datanovia.com/en/lessons/cluster-analysis-example-quick-start-r-code/
 
-*** Probability and statistics related to bioinformatics
+**** Probability and statistics related to bioinformatics
 :PROPERTIES:
 :ID:       288fef57-f515-491f-be79-586ae494d7a1
 :END:
@@ -1976,8 +2018,6 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 :PROPERTIES:
 :ID:       b9db0398-4481-4502-abb0-bd9edcd353f2
 :END:
-- 
-- https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3016-x
 **** Microarray
 :PROPERTIES:
 :ID:       294edcbb-f306-4f94-9eba-e8a1c7c512f1
@@ -1990,6 +2030,7 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 :CREATED:  [2021-02-17 Wed 09:08]
 :END:
 :LOGBOOK:
+CLOCK: [2021-06-28 Mon 15:51]--[2021-06-28 Mon 16:43] =>  0:52
 CLOCK: [2021-02-17 Wed 08:34]--[2021-02-17 Wed 09:08] =>  0:34
 CLOCK: [2021-01-22 Fri 06:42]--[2021-01-22 Fri 06:53] =>  0:11
 CLOCK: [2020-12-28 Mon 07:46]--[2020-12-28 Mon 07:48] =>  0:02
@@ -2006,26 +2047,34 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
-https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
-cell of origin -- https://www.biorxiv.org/content/10.1101/2021.05.05.441859v1.full
-cite:kukurba2015 
-https://hbctraining.github.io/Training-modules/planning_successful_rnaseq/lessons/data_visualization.html
-https://www.bioconductor.org/packages/release/bioc/vignettes/DEGreport/inst/doc/DEGreport.html
-- http://www.nathalievialaneix.eu/doc/pdf/tutorial-rnaseq.pdf
 ***** General guides, github repos, training, etc
 :PROPERTIES:
 :ID:       945cb660-b2c2-4416-be64-b24b9fb79a0f
 :END:
-- [[https://www.youtube.com/channel/UCQqQpIx3zQPaifBj67ocv1w][BabrahamBioinf youtube]]
-- [[https://github.com/griffithlab/rnaseq_tutorial/blob/master/manuscript/supplementary_tables/supplementary_table_7.md][Griffith lab common RNASeq Q&A]]
-- cite:griffith2015c
-- https://pmbio.org/module-06-rnaseq/0006/02/01/RNAseq_Expression/
+****** General links
+  - [[https://github.com/griffithlab/rnaseq_tutorial/blob/master/manuscript/supplementary_tables/supplementary_table_7.md][Griffith lab common RNASeq Q&A]]
+  - http://mikelove.github.io/
+  - [[https://github.com/crazyhottommy/RNA-seq-analysis][crazyhottommy]]
+  - https://rnabio.org/resources/
+****** Standards and best practices
+  - cite:conesa2016
+  - SEQC
+    - cite:li2014
+    - cite:su2014 
+    - SEQC Major Findings: 
+      - Relative measurement is more consistent & reproducible than absolute
+      - Comparison w/ microarry
+        - 75% concordance for highly expressed, 35% for lowly expressed (w/ RNA-seq better at low via PCR)
+      - Pipelines
+        - Analyzed 12 pipelines, 278 permutations
+        - Assessment is coming in Nature Methods
+    - [[http://www.fda.gov/ScienceResearch/BioinformaticsTools/MicroarrayQualityControlProject/][Sequencing Quality Control Project (SEQC)]]
+  - ENCODE RNA-Seq guidelines
+****** Comprehensive guides
 - cite:vandenberge2019
-- cite:li2018rnastat
-- https://rnabio.org/module-02-alignment/0002/02/01/Adapter_Trim/
-- https://www.bioconductor.org/packages/devel/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096346/
-- [[https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#differential-expression-analysis][easy as 1-2-3]]
+- cite:koch2018 
+- cite:korpelainen2015
+- cite:kukurba2015     
 - cite:picardi2015
   - intro
     - raw sequence metrics (d/n require alignment, ensure sequencing platform did it’s job)
@@ -2038,65 +2087,12 @@ https://www.bioconductor.org/packages/release/bioc/vignettes/DEGreport/inst/doc/
       - if there is GC bias, coverage uniformity and transcript abundance will be off
     - PCR duplication
       - chance of random duplication is 1/(4^(read length *2)), so still slim up to depth of 100s of millions
-- cite:garve2012
-- standards and best practices- cite:conesa2016
-- cite:williams2014
-- general resources- https://github.com/crazyhottommy/RNA-seq-analysis
 - https://rnaseq.uoregon.edu/
 - https://www.labome.com/method/RNA-seq.html
-- http://mikelove.github.io/
-- cite:dundar2018
-- https://www.biostat.wisc.edu/bmi776/lectures/rnaseq.pdf
-- https://github.com/crazyhottommy/RNA-seq-analysis
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096346/
-- best practices
- - cite:conesa2016 
- - https://www.reddit.com/r/bioinformatics/comments/eahwak/an_update_on_rnaseq_differential_expression/
-- cite:karow2017
-- https://hub.docker.com/r/mgibio/rnaseq/dockerfile
-- http://rseqc.sourceforge.net/
-- cite:korpelainen2015
-- cite:griffith2015
-- https://www.rna-seqblog.com/blog/
-- https://github.com/genome/gms/wiki/RnaSeq
-- https://bioinformatics-core-shared-training.github.io/RNAseq_September_2018/slides/DAY_1.pdf
-- standards and best practices
- - [[http://gatkforums.broadinstitute.org/gatk/discussion/4067/best-practices-for-variant-discovery-in-rnaseq][Broad best practices for variant discovery in RNA Seq]]
- - ENCODE RNA-Seq guidelines
- - [[http://www.fda.gov/ScienceResearch/BioinformaticsTools/MicroarrayQualityControlProject/][Sequencing Quality Control Project (SEQC)]]
-   - [ ] [[http://www.ncbi.nlm.nih.gov/pubmed/?term=SEQC+sequencing+quality+control+project][pubmed: SEQC sequencing quality control project- 8 hits]]
-     - cite:xu2016fda
-       - SEQC Major Findings: 
-         - Relative measurement is more consistent & reproducible than absolute
-         - Comparison w/ microarry
-           - 75% concordance for highly expressed, 35% for lowly expressed (w/ RNA-seq better at low via PCR)
-         - Pipelines
-           - Analyzed 12 pipelines, 278 permutations
-           - Assessment is coming in Nature Methods
-       - cite:Zheng_2015
-       - cite:seqc2014comprehensive
-- https://ycl6.gitbooks.io/rna-seq-data-analysis/rna-seq_analysis_workflow.html
-- SEQC
- - cite:Li_2014
- - cite:seqc2014comprehensive
-- genomeweb: [[file:~/Box%20Sync/career/Optimizing%20Whole-Transcriptome%20RNA-Seq%20with%20Improved%20Library%20Prep%20and%20Data%20Analysis-20170316%201700-1.arf][optimizing whole genome RNA seq]]
-- [[https://blog.sbgenomics.com/rna-seq-the-first-wave/][RNA-seq: The first wave of papers]]
-- cite:conesa2016
-- cite:poplawski2015
-- pipelines 
- - cite:kalari2014
- - [[https://hub.docker.com/r/mgibio/rnaseq/dockerfile][mgi rna-seq dockerfile]]
-- cite:fonseca2014
-- cite:wilhelm2009
-****** Training
-:PROPERTIES:
-:ID:       10F920C2-3B28-4FC0-A91A-02F7229F2619
-:END:
-
-- - Garbe RNA-seq tutorial 1
-- [[https://www.youtube.com/watch?v=hksQlJLwKqo][NYU Langone RNAseq workshop]]
-
-******* Griffith AWS RNA-seq Tutorial
+****** Historical papers
+  - cite:wilhelm2009
+  - [[https://blog.sbgenomics.com/rna-seq-the-first-wave/][RNA-seq: The first wave of papers]]    
+****** Griffith AWS RNA-seq Tutorial
 :PROPERTIES:
 :ID:       520695E3-F98F-4195-8336-0A0E9589FB14
 :END:
@@ -2278,6 +2274,8 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
 :PROPERTIES:
 :ID:       19780d7c-afa7-4195-b1f9-df9c563de303
 :END:
+- cite:garve2012
+- cite:williams2014
 - https://www.degruyter.com/view/journals/sagmb/18/1/article-20180021.xml?language=en
 - https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/tuesday/ExperimentalDesign.pdf
 - http://scotty.genetics.utah.edu/help.html
@@ -2396,6 +2394,7 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
 :ID:       2d2f32cf-ef4a-4efe-90d1-ae85ad470e49
 >>>>>>> e60be068dcbc8c18477fc28e00ee3b742dcf0110
 :END:
+- http://rseqc.sourceforge.net/
 - https://www.reddit.com/r/bioinformatics/comments/flqb8e/how_do_i_differentiate_outliers_from_ingroup/
 - https://www.rna-seqblog.com/an-rna-seq-qc-overview/
 - https://www.biostars.org/p/368420/
@@ -2618,6 +2617,10 @@ R/FPKM and C/TPM are "local" to the sample while TMM must be recalculated with d
 [[file:work.org_imgs/20160419_132550_469_bk.png]]
 - corrects for less "sequencing real estate" due to high expression per tissue 
 
+***** RNA-seq probability and statistics
+- cite:li2018rnastat
+- https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
+- cite:gonzalez2014 
 ***** Exploratory data analysis
 :PROPERTIES:
 :ID:       77d2a559-9858-453a-83c5-a646bbf473a3
@@ -2662,6 +2665,9 @@ CLOCK: [2020-11-23 Mon 10:43]--[2020-11-23 Mon 10:57] =>  0:14
 CLOCK: [2016-03-28 Mon 19:06]--[2016-03-28 Mon 19:29] =>  0:23
 CLOCK: [2016-03-28 Mon 13:01]--[2016-03-28 Mon 13:06] =>  0:05
 :END:
+- https://www.bioconductor.org/packages/devel/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html
+
+- [[https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#differential-expression-analysis][easy as 1-2-3]]
 https://github.com/hbctraining/DGE_workshop_salmon_online
 https://f1000research.com/articles/5-1438/v2
 https://www.nature.com/articles/s41598-020-74567-y#Abs1
@@ -2738,6 +2744,7 @@ doi:10.2202/1544-6115.1637.
   - SAMSeq
   - NOISeq
 - methods comparisons
+  - cite:fonseca2014
   - cite:huang2015    
   - cite:seyednasrollah2015    
   - cite:tang2015 
@@ -2763,10 +2770,16 @@ doi:10.2202/1544-6115.1637.
 - https://pubmed.ncbi.nlm.nih.gov/22931062/
 - bench methods
   - cite:parekh2016
+***** RNA-based variant discovery
+- [[http://gatkforums.broadinstitute.org/gatk/discussion/4067/best-practices-for-variant-discovery-in-rnaseq][Broad best practices for variant discovery in RNA Seq]]
 ***** [[*workflow][LINK TO workflow]]
 :PROPERTIES:
 :ID:       af099dea-affd-4fdf-8745-aaa9b22bc505
 :END:
+- Workflow
+  - comparisons cite:poplawski2015
+  - [[https://hub.docker.com/r/mgibio/rnaseq/dockerfile][mgi rna-seq dockerfile]]
+- cite:griffith2015
 - http://bioinformatics.sdstate.edu/idep/
 ***** RNA-seq visualization
 :PROPERTIES:
@@ -2839,6 +2852,8 @@ doi:10.2202/1544-6115.1637.
 - extracellular
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5426982/
   - [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO circulating rna]]
+  - - cell of origin -- https://www.biorxiv.org/content/10.1101/2021.05.05.441859v1.full
+
 ***** Integrated miRNA-mRNA analysis
 :PROPERTIES:
 :ID:       82aafb6f-63a8-4ab7-867a-9add0e0c224a
@@ -3814,14 +3829,6 @@ https://science.sciencemag.org/content/360/6389/660
 :ID:       45a1d8fe-cdfb-4dce-8cf7-c7325c83e2d3
 :END:
 - http://gepia.cancer-pku.cn/
-**** Transcription factor binding and perturbation 
-:PROPERTIES:
-:ID:       9c741c65-a29f-4de2-9f92-464aa3ec0ee3
-:END:
-https://genome.cshlp.org/content/29/8/1363.full
-https://bmcresnotes.biomedcentral.com/articles/10.1186/s13104-018-3856-x
-https://www.nature.com/articles/ncomms15089#Sec2
-- cite:hu2019 
 *** Epigenetics
 :PROPERTIES:
 :CREATED:  [2019-10-30 Wed 10:52]
@@ -3875,23 +3882,21 @@ CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 - QC
   - https://www.cell.com/cell-systems/pdfExtended/S2405-4712(20)30079-X
   - https://bioconductor.org/packages/release/bioc/vignettes/ATACseqQC/inst/doc/ATACseqQC.html
-- Applications
-  - ATAC-seq and miRNA-seq cite:abernathy2017 
-  - Transcription factor binding sites- cite:li2019atac
 - General method guides
-  - cite:yan2020 
+  - cite:yan2020atac
   - cite:corces2017 
   - cite:buenrostro2015
   - https://informatics.fas.harvard.edu/atac-seq-guidelines.html
 - [[https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&nlo=&nlr=&nls=&sid=e3c13d36864e217e2edcf12df7a64b0a&sot=b&sdt=b&sl=59&s=%28TITLE-ABS-KEY%28atac-seq%29+AND+TITLE-ABS-KEY%28bioinformatics%29%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist][scopus atac-seq bioinformatics (42)]]
 - atac-seq and mirna-seq https://www.sciencedirect.com/science/article/pii/S193459091730320X?via%3Dihub
-- bioinformatics
-  - cite:yan2020
 - method-establishing papers
   - cite:buenrostro2013
   - cite:buenrostro2015
 - for tissue
   - cite:corces2017 
+- Applications
+  - ATAC-seq and miRNA-seq cite:abernathy2017 
+  - Transcription factor binding sites- cite:li2019atac
 - ENCODE pipeline
   - https://docs.google.com/document/d/1f0Cm4vRyDQDu0bMehHD7P7KOMxTOP-HiNoIvL1VcBt8/edit
   - https://github.com/ENCODE-DCC/atac-seq-pipeline
@@ -4125,7 +4130,7 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 :PROPERTIES:
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
 :END:
-
+- https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3016-x
 - http://bioportal.bioontology.org/ontologies/GO/?p=classes&conceptid=root
 - pathways
   - pathways
@@ -4253,6 +4258,7 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :LOGBOOK:
 CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
 :END:
+- https://cran.r-project.org/web/packages/chromoMap/vignettes/chromoMap.html#Data-based_annotation_plots
 - https://sites.google.com/view/williamgilks/computational-analysis-of-whole-genome-sequencing-data/flow-chart-in-latex
 - https://www.photopea.com/
 - General reference
@@ -4347,7 +4353,7 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 | rnaseqc        | rnaseq qc         | bam       | [[https://github.com/broadinstitute/rnaseqc][repo]]   | [[https://github.com/broadinstitute/rnaseqc][repo]]     |       |                        |
 | rsem           | transcript quant  | bam       | [[https://github.com/deweylab/RSEM][repo]]   |          | [[https://doi.org/10.1186/1471-2105-12-323][paper]] | cite:li2011            |
 | RSeQC          | rnaseq qc         | bam       |        | [[http://rseqc.sourceforge.net/][repo]]     | [[https://doi.org/10.1093/bioinformatics/bts356][paper]] | cite:wang2012          |
-| salmon         | transcript quat   |           |        |          |       |                        |
+| [[id:c0d79be1-f887-460e-9142-4d43c6632126][salmon]]         | transcript quat   | fastq     | [[https://github.com/COMBINE-lab/salmon][repo]]   | [[https://salmon.readthedocs.io/en/latest/][doc]]      | [[https://doi.org/10.1038/nmeth.4197][paper]] | cite:patro2017         |
 | sambamba       | sam processing    | bam       |        | [[http://lomereiter.github.io/sambamba/docs/sambamba-view.html][online]]   |       |                        |
 | samblaster     | single-pass dedup | bam       | [[https://github.com/GregoryFaust/samblaster][repo]]   | [[https://github.com/GregoryFaust/samblaster][repo]]     | [[https://academic.oup.com/bioinformatics/article/30/17/2503/2748175][paper]] |                        |
 | samtools       |                   | bam       |        | [[http://www.htslib.org/doc/samtools.html][online]]   |       |                        |
@@ -5524,6 +5530,12 @@ https://pathvisio.github.io/
   - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
   - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
   - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
+*** salmon
+:PROPERTIES:
+:ID:       c0d79be1-f887-460e-9142-4d43c6632126
+:END:
+- see [[id:a0923938-4021-44cd-a8f3-94c0eb10cdb5][table of tools]]
+-   
 *** samtools
 :PROPERTIES:
 :ID:       0a3acec7-f4d1-4cd1-b3c8-7ec769715cc1
@@ -7151,6 +7163,8 @@ consModules[cmod])
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- [[https://www.youtube.com/channel/UCQqQpIx3zQPaifBj67ocv1w][BabrahamBioinf youtube]]
+- https://www.freecodecamp.org/news/python-for-bioinformatics-use-machine-learning-and-data-analysis-for-drug-discovery/
 - https://pages.10xgenomics.com/ugm-2020-10-event-ra_g-user-group-meeting-amr_on-demand.html?src=email&utm_medium=email&lss=internal&utm_source=internal&cnm=ugm-2020-10-event-ra_g-user-group-meeting-amr&utm_campaign=ugm-2020-10-event-ra_g-user-group-meeting-amr&useroffertype=event&userresearcharea=ra_g&userregion=multi&mktouserid=1629122
 - https://slowkow.com/
 - http://rafalab.github.io/pages/harvardx.html
