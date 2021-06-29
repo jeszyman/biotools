@@ -665,9 +665,4 @@ RUN apt-get update \
 #
 # NOTE: Default, most recent bioconda salmon incompatible with ubuntu build,
 #  see 
-#
-RUN conda config --append channels conda-forge
-#
-RUN conda create -c bioconda -n salmon salmon=1.5.0-0
-
-
+RUN conda install -c bioconda salmon=1.5.0
