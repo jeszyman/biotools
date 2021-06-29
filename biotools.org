@@ -869,6 +869,9 @@ https://www.nature.com/articles/ncomms15089#Sec2
 :LOGBOOK:
 CLOCK: [2021-05-27 Thu 11:25]--[2021-05-27 Thu 11:38] =>  0:13
 :END:
+- for RNA
+  - cite:su2014
+  - cite:li2014
 **** General reference
 :PROPERTIES:
 :ID:       8438f135-bfc1-4d5e-8a02-f594a1d0773a
@@ -2087,6 +2090,7 @@ CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
       - if there is GC bias, coverage uniformity and transcript abundance will be off
     - PCR duplication
       - chance of random duplication is 1/(4^(read length *2)), so still slim up to depth of 100s of millions
+- cite:garve2012
 - https://rnaseq.uoregon.edu/
 - https://www.labome.com/method/RNA-seq.html
 ****** Historical papers
@@ -2274,43 +2278,20 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
 :PROPERTIES:
 :ID:       19780d7c-afa7-4195-b1f9-df9c563de303
 :END:
-- cite:garve2012
-- cite:williams2014
-- https://www.degruyter.com/view/journals/sagmb/18/1/article-20180021.xml?language=en
-- https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/tuesday/ExperimentalDesign.pdf
-- http://scotty.genetics.utah.edu/help.html
 - Depth
-  - - determine directly using technical replicates
-  - expression estimate correspondence among technical replicates (no biological variation) for genes with above-median coverage stabilized at about 10 million reads per sample (Wang et al. 2011).  
-- Replicates and power
-  - sufficient replication has to occur at every level of comparison. In a fully "factorial" design, for example, more than one experimental "factor" is of interest, each with two or more treatments, such that any individual receives one of multiple possible treatments at each factor. In this case, every possible combination of treatments across factors needs to be replicated sufficiently,
-  - biological variation is more important than technical variation- See Bullard,10 Evaluation of statistical methods for normalization and differential expression in mRNA-Seq experiments, fig. 4
-  - adding depth vs. replicate- replicates preferred, gives less uncertainty 
-  - remember, more comparisons require more replicates 
-  - cite:schurch2016 
-  - Power
-    - https://cofactorgenomics.com/6-changes-thatll-make-big-difference-rna-seq-part-5/
-    - cite:peixoto2015
-    - the rewards in statistical power due to additional biological replicates will surpass the improved parameterization of technical variation garnered from additional technical replicates
-    - low counts mean low power- see rna seqlopedia fig 1.1
-  - [[http://scotty.genetics.utah.edu/help.html][Scotty]]
-  - consider a "bank" of more sample replicates than are acutally sequenced 
+  - cite:su2014
+  - Can determine directly using technical replicates
+  - cite:williams2014
+    - contains the 30-50 mil read for DE recommendation
 - By specific experimental question
   - Differential expression
-    - [[http://rnaseq.uoregon.edu/#exp-design][RNA-seqlopedia]]
-      - qualitative or quantitative (DE, ect.) design- usually quant
-      - need bio replicates
-      - stranded and paired library prep not required
+  - Examples of experimental objectives
+    - cite:Cabanski_2014 RNA sequencing (RNA-Seq) approaches are designed to characterize the expressed genome in numerous ways1,2 from defining different types of RNA, such as long non- coding RNAs,3 to comparing RNA expression,4 splice iso- forms,5e7 allele-specific expression,8e10 fusions,11e14 RNA editing,15,16 
+- Sample pooling
+  - cite:rajkumar2015
 - Prefer “balanced block” design w/ barcode-> mixed prep-> all samples on all lanes
-- cite:auer2010
-- cite:williams2014
-  - contains the 30-50 mil read for DE recommendation
-- Examples of experimental objectives
-  - cite:Cabanski_2014 RNA sequencing (RNA-Seq) approaches are designed to characterize the expressed genome in numerous ways1,2 from defining different types of RNA, such as long non- coding RNAs,3 to comparing RNA expression,4 splice iso- forms,5e7 allele-specific expression,8e10 fusions,11e14 RNA editing,15,16 
 - sequencing platforms
-  - cite:li2014
-- cite:su2014
-- cite:rajkumar2015
+  
 - http://www.slideshare.net/YaoyuEWang/rnaseq-analysis-ngsapplication2
 - http://michelebusby.tumblr.com/post/26913184737/thinking-about-designing-rna-seq-experiments-to
 - Parameters affecting sequencing
@@ -2328,6 +2309,28 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
   - Strandedness
     - cite:Zhao_2015
 - [[*testing, modeling, and read simulation][testing, modeling, and read simulation]]
+- cite:settles 
+****** RNA-seq sample size
+- cite:li2019rna 
+- http://scotty.genetics.utah.edu/help.html
+- Replicates and power
+  - sufficient replication has to occur at every level of comparison. In a fully "factorial" design, for example, more than one experimental "factor" is of interest, each with two or more treatments, such that any individual receives one of multiple possible treatments at each factor. In this case, every possible combination of treatments across factors needs to be replicated sufficiently,
+  - biological variation is more important than technical variation- See Bullard,10 Evaluation of statistical methods for normalization and differential expression in mRNA-Seq experiments, fig. 4
+  - adding depth vs. replicate- replicates preferred, gives less uncertainty 
+  - remember, more comparisons require more replicates 
+  - cite:schurch2016 
+  - Power
+    - https://cofactorgenomics.com/6-changes-thatll-make-big-difference-rna-seq-part-5/
+    - cite:peixoto2015
+    - the rewards in statistical power due to additional biological replicates will surpass the improved parameterization of technical variation garnered from additional technical replicates
+    - low counts mean low power- see rna seqlopedia fig 1.1
+  - [[http://scotty.genetics.utah.edu/help.html][Scotty]]
+  - consider a "bank" of more sample replicates than are acutally sequenced   
+***** RNA-seq probability and statistics
+- cite:li2018rnastat
+- https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
+- cite:gonzalez2014 
+- cite:auer2010
 ***** [[id:7BF989EC-4DA7-4B0C-AAA9-0175156447FF][LINK TO RNA extraction, solubilization, and isolation]]
 :PROPERTIES:
 :ID:       b477ff77-85e8-4613-9bea-a703de899817
@@ -2617,10 +2620,6 @@ R/FPKM and C/TPM are "local" to the sample while TMM must be recalculated with d
 [[file:work.org_imgs/20160419_132550_469_bk.png]]
 - corrects for less "sequencing real estate" due to high expression per tissue 
 
-***** RNA-seq probability and statistics
-- cite:li2018rnastat
-- https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
-- cite:gonzalez2014 
 ***** Exploratory data analysis
 :PROPERTIES:
 :ID:       77d2a559-9858-453a-83c5-a646bbf473a3
@@ -2665,6 +2664,7 @@ CLOCK: [2020-11-23 Mon 10:43]--[2020-11-23 Mon 10:57] =>  0:14
 CLOCK: [2016-03-28 Mon 19:06]--[2016-03-28 Mon 19:29] =>  0:23
 CLOCK: [2016-03-28 Mon 13:01]--[2016-03-28 Mon 13:06] =>  0:05
 :END:
+- relative expression - cite:su2014
 - https://www.bioconductor.org/packages/devel/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html
 
 - [[https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#differential-expression-analysis][easy as 1-2-3]]
@@ -3871,6 +3871,7 @@ https://www.illumina.com/destination/epigenetics-webinar-series.html
 :ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
 :END:
 :LOGBOOK:
+CLOCK: [2021-06-29 Tue 12:04]--[2021-06-29 Tue 12:09] =>  0:05
 CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 :END:
 - Design
