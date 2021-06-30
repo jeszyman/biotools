@@ -100,7 +100,7 @@ RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::
 #RUN conda install -c bioconda manta
 #RUN conda install -c bioconda lumpy-sv
 #RUN conda install -c bioconda multiqc
-#RUN conda install -c bioconda flexbar
+
 ###8
 # #
 # ### LUMPY
@@ -669,5 +669,10 @@ RUN apt-get update \
 RUN conda config --append channels conda-forge
 #
 RUN conda create -c bioconda -n salmon salmon=1.5.0-0
+
+#
+RUN conda create -c bioconda -n flexbar flexbar=3.5.0
+
+#
 
 

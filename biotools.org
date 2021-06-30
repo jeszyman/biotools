@@ -4550,6 +4550,56 @@ https://singularity.lbl.gov/install-linux
 - https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
 
 
+*** Code associated with sequence reference builds
+:PROPERTIES:
+:ID:       767e5e30-8490-4cda-8018-8b0bd91c4ef3
+:END:
+#+begin_src bash
+refDIR=/mnt/users/jeszyman/data/ref
+
+assemblies=('http://ftp.ensembl.org/pub/release-104/fasta/rattus_norvegicus/dna/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.gz'
+            'http://ftp.ensembl.org/pub/release-104/fasta/rattus_norvegicus/cdna/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz'
+            'http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M27/GRCm39.primary_assembly.genome.fa.gz'
+            'http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M27/gencode.vM27.annotation.gtf.gz')
+
+
+for i in "${assemblies[@]}";
+do
+    wget \
+        --continue \
+        --directory-prefix $refDIR \
+        --execute robots=off \
+        --no-parent \
+        --timestamping $i
+    file=$(echo $i | sed "s/^.*\///g")
+    base=$(basename -s .gz "$file")
+    if [ "${file: -3}" == ".gz" ] && [ $refDIR/$base -ot $refDIR/$file ];
+    then
+        gunzip --to-stdout $refDIR/$file > $refDIR/$base
+    fi
+done
+#+end_src
+
+#+begin_src bash
+
+#+end_src
+- pull down common reference sequences
+  #+name: reference_pull
+  #+begin_src bash :tangle no
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+wget --no-clobber https://hgdownload.soe.ucsc.edu/goldenPath/rn6/bigZips/genes/rn6.ensGene.gtf.gz -O /mnt/users/jeszyman/data/rn6.ensGene.gtf.gz
+#
+gunzip -c /mnt/users/jeszyman/data/rn6.ensGene.gtf.gz > /mnt/users/jeszyman/data/rn6.ensGene.gtf
+#
+
+cd /mnt/users/jeszyman/data
+rsem-prepare-reference --gtf ./rn6.ensGene.gtf \
+#                       --bowtie \
+                       ./rn6.fa \
+                       rsem_ref
+
+#+end_src
 *** Transcription factor binding and perturbation 
 :PROPERTIES:
 :ID:       ae488938-90d4-4c91-8f91-e52b5bc6151d
@@ -8031,48 +8081,6 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 :END:
 - https://clincancerres.aacrjournals.org/content/26/11/2556#sec-6
 - cite:parikh2019
-*** Code associated with sequence reference builds
-:PROPERTIES:
-:ID:       767e5e30-8490-4cda-8018-8b0bd91c4ef3
-:END:
-#+begin_src bash
-assemblies=('http://ftp.ensembl.org/pub/release-104/fasta/rattus_norvegicus/dna/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.gz'
-            'http://ftp.ensembl.org/pub/release-104/fasta/rattus_norvegicus/cdna/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz')
-
-
-for i in "${assemblies[@]}";
-do
-    wget \
-        --continue \
-        --directory-prefix $refDIR \
-        --execute robots=off \
-        --no-parent \
-        --timestamping $i
-    file=$(echo $i | sed "s/^.*\///g")
-    base=$(basename -s .gz "$file")
-    if [ "${file: -3}" == ".gz" ] && [ $refDIR/$base -ot $refDIR/$file ];
-    then
-        gunzip --to-stdout $refDIR/$file > $refDIR/$base
-    fi
-done
-#+end_src
-- pull down common reference sequences
-  #+name: reference_pull
-  #+begin_src bash :tangle no
-#########1#########2#########3#########4#########5#########6#########7#########8
-#
-wget --no-clobber https://hgdownload.soe.ucsc.edu/goldenPath/rn6/bigZips/genes/rn6.ensGene.gtf.gz -O /mnt/users/jeszyman/data/rn6.ensGene.gtf.gz
-#
-gunzip -c /mnt/users/jeszyman/data/rn6.ensGene.gtf.gz > /mnt/users/jeszyman/data/rn6.ensGene.gtf
-#
-
-cd /mnt/users/jeszyman/data
-rsem-prepare-reference --gtf ./rn6.ensGene.gtf \
-#                       --bowtie \
-                       ./rn6.fa \
-                       rsem_ref
-
-#+end_src
 ** Modules
 *** Common intro
 Workflow
