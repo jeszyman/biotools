@@ -4581,7 +4581,10 @@ done
 #+end_src
 
 #+begin_src bash
-
+bwa index \
+    --algoType bwtsw \
+    --prefix $prefix \
+    $fasta
 #+end_src
 - pull down common reference sequences
   #+name: reference_pull
@@ -8273,6 +8276,7 @@ salmon
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+https://project-awesome.org/danielecook/Awesome-Bioinformatics
 - [[https://www.youtube.com/channel/UCQqQpIx3zQPaifBj67ocv1w][BabrahamBioinf youtube]]
 - https://www.freecodecamp.org/news/python-for-bioinformatics-use-machine-learning-and-data-analysis-for-drug-discovery/
 - https://pages.10xgenomics.com/ugm-2020-10-event-ra_g-user-group-meeting-amr_on-demand.html?src=email&utm_medium=email&lss=internal&utm_source=internal&cnm=ugm-2020-10-event-ra_g-user-group-meeting-amr&utm_campaign=ugm-2020-10-event-ra_g-user-group-meeting-amr&useroffertype=event&userresearcharea=ra_g&userregion=multi&mktouserid=1629122
