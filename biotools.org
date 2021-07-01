@@ -11,6 +11,11 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+
+- dev -
+  - runfast dataset or links to repo
+  - ugly code off runfast data
+  - cleanup   
 ** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][LINK TO Information Science / Data Science]]
 :PROPERTIES:
 :ID:       014218e1-bb8b-4282-84ec-84354c29b8f5
@@ -4550,6 +4555,19 @@ https://singularity.lbl.gov/install-linux
 - https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
 
 
+*** Common bioinformatics file manipulation
+:PROPERTIES:
+:ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
+:END:
+- [[Question: Selecting Random Pairs From Fastq?]]  
+- https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
+- [[https://www.biostars.org/p/68283/][count total length of regions in bed file]]
+- https://gatkforums.broadinstitute.org/gatk/discussion/6484/how-to-generate-an-unmapped-bam-from-fastq-or-aligned-bam
+- https://www.biostars.org/p/247903/
+- https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
+- [[https://github.com/lh3/seqtk][seqtk]] 
+- https://gist.github.com/davfre/8596159
+- [[https://www.biostars.org/p/6544/][look at all the ways to split a bam file!]]
 *** Code associated with sequence reference builds
 :PROPERTIES:
 :ID:       767e5e30-8490-4cda-8018-8b0bd91c4ef3
@@ -4625,19 +4643,6 @@ https://www.nature.com/articles/ncomms15089#Sec2
 - https://clincancerres.aacrjournals.org/content/26/11/2556#sec-6
 - cite:parikh2019
 
-*** Common bioinformatics file manipulation
-:PROPERTIES:
-:ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
-:END:
-- [[Question: Selecting Random Pairs From Fastq?]]  
-- https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
-- [[https://www.biostars.org/p/68283/][count total length of regions in bed file]]
-- https://gatkforums.broadinstitute.org/gatk/discussion/6484/how-to-generate-an-unmapped-bam-from-fastq-or-aligned-bam
-- https://www.biostars.org/p/247903/
-- https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
-- [[https://github.com/lh3/seqtk][seqtk]] 
-- https://gist.github.com/davfre/8596159
-- [[https://www.biostars.org/p/6544/][look at all the ways to split a bam file!]]
 *** Massively parallel sequencing 
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
