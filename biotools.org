@@ -1918,7 +1918,8 @@ https://pathvisio.github.io/
 :ID:       c0d79be1-f887-460e-9142-4d43c6632126
 :END:
 - see [[id:a0923938-4021-44cd-a8f3-94c0eb10cdb5][table of tools]]
--   
+- https://www.biostars.org/p/397086/
+- https://www.scopus.com/results/citedbyresults.uri?sort=cp-f&cite=2-s2.0-85014549629&src=s&nlo=&nlr=&nls=&imp=t&sid=b3adb06908021bf68bd2e4cbb741bd78&sot=cite&sdt=a&sl=0&origin=resultslist&offset=1&txGid=8f3b391583118470ef66b945cc173d58   
 *** samtools
 :PROPERTIES:
 :ID:       0a3acec7-f4d1-4cd1-b3c8-7ec769715cc1
@@ -1964,9 +1965,15 @@ https://pathvisio.github.io/
 :PROPERTIES:
 :ID:       a8b27140-4b9e-40c5-86ab-ee5afeae723f
 :END:
-https://github.com/EnvGen/snakemake-workflows
-#+name: 
-#+begin_src bash :tangle no
+:LOGBOOK:
+CLOCK: [2021-07-01 Thu 11:18]--[2021-07-01 Thu 11:48] =>  0:30
+:END:
+https://lachlandeer.github.io/snakemake-econ-r-tutorial/initial-steps-with-snakemake.html
+- for repos, git ignore the singularity build 
+- https://github.com/EnvGen/snakemake-workflows
+- 
+  #+name: 
+  #+begin_src bash :tangle no
 source ~/repos/biotools/src/functions.sh
 docker_interactive
 biotools
@@ -2021,9 +2028,20 @@ open report.html
 
 snakemake --cores 20 --forceall
 #+end_src
-  - https://snakemake.readthedocs.io/en/stable/tutorial/basics.html#step-1-mapping-reads
-- docker https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html?highlight=docker#running-jobs-in-containers
-- https://snakemake.readthedocs.io/en/stable/index.html
+- [[https://snakemake.readthedocs.io/en/stable/index.html][Documentation]]
+- Processes and commands
+  - install and setup
+    - via miniconda
+      - [[https://docs.anaconda.com/anaconda/install/multi-user/][install multi-user miniconda]] 
+    - add singularity
+      - 
+  - docker - https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html?highlight=docker#running-jobs-in-containers
+- Standards and best practice
+  - https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html#snakefiles-best-practices
+- Applications
+- Reference
+  - [[EA056C38-9DE6-47EE-A75B-0FCBAE62372B][YASnippets]]
+    
 *** STAR
 :PROPERTIES:
 :ID:       d1d5d554-57c4-4b9c-8385-2bb72369375e
