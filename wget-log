@@ -1,0 +1,36 @@
+HTTP request sent, awaiting response... 206 Partial Content
+Length: 773507376 (738M), 93540772 (89M) remaining [application/octet-stream]
+Saving to: ‘/mnt/users/jeszyman/data/ref/GRCm38.primary_assembly.genome.fa.gz’
+
+
+
+2021-07-06 11:15:15 (0.00 B/s) - Read error at byte 679966604/773507376 (Connection timed out). Retrying.
+
+--2021-07-06 11:15:17--  (try: 3)  http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
+Connecting to ftp.ebi.ac.uk (ftp.ebi.ac.uk)|193.62.197.74|:80... connected.
+HTTP request sent, awaiting response... 206 Partial Content
+Length: 773507376 (738M), 93540772 (89M) remaining [application/octet-stream]
+Saving to: ‘/mnt/users/jeszyman/data/ref/GRCm38.primary_assembly.genome.fa.gz’
+
+
+
+2021-07-06 11:30:17 (0.00 B/s) - Read error at byte 679966604/773507376 (Connection timed out). Retrying.
+
+--2021-07-06 11:30:20--  (try: 4)  http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
+Connecting to ftp.ebi.ac.uk (ftp.ebi.ac.uk)|193.62.197.74|:80... connected.
+HTTP request sent, awaiting response... 206 Partial Content
+Length: 773507376 (738M), 93540772 (89M) remaining [application/octet-stream]
+Saving to: ‘/mnt/users/jeszyman/data/ref/GRCm38.primary_assembly.genome.fa.gz’
+
+                 GR  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                               GRC  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                              GRCm  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                             GRCm3  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                            GRCm38  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                           GRCm38.  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                          GRCm38.p  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                         GRCm38.pr  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                        GRCm38.pri  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                       GRCm38.prim  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                      GRCm38.prima  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                     GRCm38.primar  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                    GRCm38.primary  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                   GRCm38.primary_  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                  GRCm38.primary_a  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                 GRCm38.primary_as  87%[+++++++++++++++++   ] 648.47M  --.-KB/s                GRCm38.primary_ass  87%[+++++++++++++++++   ] 648.47M  --.-KB/s               GRCm38.primary_asse  87%[+++++++++++++++++   ] 648.47M  --.-KB/s               RCm38.primary_assem  87%[+++++++++++++++++   ] 648.47M  --.-KB/s               Cm38.primary_assemb  87%[+++++++++++++++++   ] 648.47M  --.-KB/s               GRCm38.primary_asse  87%[+++++++++++++++++   ] 648.47M  --.-KB/s    in 15m 0s  
+
+2021-07-06 11:45:21 (0.00 B/s) - Read error at byte 679966604/773507376 (Connection timed out). Retrying.
+
+--2021-07-06 11:45:25--  (try: 5)  http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
+Connecting to ftp.ebi.ac.uk (ftp.ebi.ac.uk)|193.62.197.74|:80... connected.
+HTTP request sent, awaiting response... 206 Partial Content
+Length: 773507376 (738M), 93540772 (89M) remaining [application/octet-stream]
+Saving to: ‘/mnt/users/jeszyman/data/ref/GRCm38.primary_assembly.genome.fa.gz’
+
+        [ skipping 664000K ]
+664000K ,,,,,,,,,, ,,,,,,,,,, ,,,,,,,,,
