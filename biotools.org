@@ -1088,7 +1088,7 @@ CLOCK: [2021-01-26 Tue 11:53]--[2021-01-26 Tue 13:00] =>  1:07
 :END:
 - design
   - https://support.bioconductor.org/p/110163/
-- [[file:~/Box%20Sync/library/Love,16%20DESeq2%20manual.pdf][Manual]]
+- [[file:~/Box%20Sync/library/Love,16%20DESeq2%20manual.pdf][documentation]]
 - vignettes
   - [[https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#exploratory-analysis-and-visualization][gene workflow 19]]
   - [[http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#using-parallelization][package vignette]]
@@ -1968,6 +1968,9 @@ https://pathvisio.github.io/
 :LOGBOOK:
 CLOCK: [2021-07-01 Thu 11:18]--[2021-07-01 Thu 11:48] =>  0:30
 :END:
+https://github.com/snakemake-workflows/rna-seq-star-deseq2/blob/master/workflow/rules/diffexp.smk
+https://github.com/csoneson/ARMOR
+https://github.com/slowkow/snakefiles/blob/master/kallisto/Snakefile
 https://lachlandeer.github.io/snakemake-econ-r-tutorial/initial-steps-with-snakemake.html
 - for repos, git ignore the singularity build 
 - https://github.com/EnvGen/snakemake-workflows
@@ -3024,6 +3027,15 @@ https://www.illumina.com/destination/epigenetics-webinar-series.html
 CLOCK: [2021-06-29 Tue 12:04]--[2021-06-29 Tue 12:09] =>  0:05
 CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 :END:
+https://www.biostars.org/p/428577/
+http://homer.ucsd.edu/homer/introduction/programs.html
+https://bioconductor.org/packages/release/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.html
+http://bioconductor.org/packages/devel/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.html#:~:text=ChIPseeker%20is%20an%20R%20package,peaks%20binding%20to%20TSS%20regions.&text=Currently%2C%20ChIPseeker%20contains%2017%2C000%20bed%20file%20information%20from%20GEO%20database.
+https://bioconductor.org/packages/release/bioc/html/csaw.html
+https://nbisweden.github.io/workshop-archive/workshop-ChIP-seq/2018-11-07/labs/lab-csaw.html
+https://snakepipes.readthedocs.io/en/latest/content/workflows/ATAC-seq.html
+https://github.com/reskejak/ATAC-seq
+https://macs3-project.github.io/MACS/
 - Design
   - Read length
     - https://www.biostars.org/p/418363/
