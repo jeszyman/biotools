@@ -35,6 +35,9 @@ CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
 CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :END:
 *** Genome reference builds and associated sequences
+:PROPERTIES:
+:ID:       e9e201b5-4a94-4861-8de8-803676c3a37f
+:END:
 - https://gatk.broadinstitute.org/hc/en-us/articles/360035890951-Human-genome-reference-builds-GRCh38-or-hg38-b37-hg19
 - https://www.ncbi.nlm.nih.gov/tools/vecscreen/univec/
 *** By substrate
@@ -42,6 +45,9 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :ID:       ffe7a0f8-5e6d-45ff-adec-efbba7c44783
 :END:
 **** RNA
+:PROPERTIES:
+:ID:       59c43aa9-cfa1-4e03-b5fb-25c74f626352
+:END:
 cite:consortium2020
 ***** miRNA data
 :PROPERTIES:
@@ -64,6 +70,9 @@ cite:consortium2020
 :ID:       fc44f2e8-c32f-4169-ba9c-5032a35327a6
 :END:
 *** [[id:767e5e30-8490-4cda-8018-8b0bd91c4ef3][LINK TO Code associated with sequence reference builds]]
+:PROPERTIES:
+:ID:       a7a6c48c-f2a5-478e-858d-c99ebd9be027
+:END:
 *** By organism
 :PROPERTIES:
 :CREATED:  [2020-10-26 Mon 12:18]
@@ -473,6 +482,9 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 - [[https://www.biostars.org/p/84686/][Obi on 1 vs 0 based coordinates]]
 - cite:li2009 
 **** Sequence file formats
+:PROPERTIES:
+:ID:       4a86acd3-db60-4a63-979e-43e34070e7c7
+:END:
 - fasta
   - ("genomic" fasta .fna == .fa) 
 ***** fastq
@@ -1707,13 +1719,22 @@ Another use of the voom plot-  what you are failing to do completely in the voom
 
 [[https://www.biostars.org/p/131488/][subsetting from topTable]]
 *** multiqc
+:PROPERTIES:
+:ID:       066d50fc-5407-4c80-a6ca-2534f37ae043
+:END:
 
 ****** General links
+:PROPERTIES:
+:ID:       cf67aa6a-619e-4aa7-b69d-afe5fca7eded
+:END:
   - [[https://github.com/griffithlab/rnaseq_tutorial/blob/master/manuscript/supplementary_tables/supplementary_table_7.md][Griffith lab common RNASeq Q&A]]
   - http://mikelove.github.io/
   - [[https://github.com/crazyhottommy/RNA-seq-analysis][crazyhottommy]]
   - https://rnabio.org/resources/
 ****** Standards and best practices
+:PROPERTIES:
+:ID:       2c2a353e-6569-458a-a73e-14f0e102e0db
+:END:
   - cite:conesa2016
   - SEQC
     - cite:li2014
@@ -1728,6 +1749,9 @@ Another use of the voom plot-  what you are failing to do completely in the voom
     - [[http://www.fda.gov/ScienceResearch/BioinformaticsTools/MicroarrayQualityControlProject/][Sequencing Quality Control Project (SEQC)]]
   - ENCODE RNA-Seq guidelines
 ****** Comprehensive guides
+:PROPERTIES:
+:ID:       943f4806-8e6d-4f51-93e2-bbe267753d81
+:END:
 - cite:vandenberge2019
 - cite:koch2018 
 - cite:korpelainen2015
@@ -1748,9 +1772,15 @@ Another use of the voom plot-  what you are failing to do completely in the voom
 - https://rnaseq.uoregon.edu/
 - https://www.labome.com/method/RNA-seq.html
 ****** Historical papers
+:PROPERTIES:
+:ID:       68863e34-cbed-45d5-94b4-3ad6e2846252
+:END:
   - cite:wilhelm2009
   - [[https://blog.sbgenomics.com/rna-seq-the-first-wave/][RNA-seq: The first wave of papers]]    
 ****** Griffith AWS RNA-seq Tutorial
+:PROPERTIES:
+:ID:       8027e134-b3a6-4da5-8f73-608bbf9c6da2
+:END:
 >>>>>>> f2dcd10e6872b6daa5e778f09f113e8782822a3e
 :PROPERTIES:
 :ID:       3e585de3-3b67-4fe3-9f15-ed4e07778d09
@@ -1832,6 +1862,9 @@ https://www.pnas.org/content/115/4/E743.long
 https://pathvisio.github.io/
 - to switch to java 8 https://askubuntu.com/questions/1133216/downgrading-java-11-to-java-8
 *** picard
+:PROPERTIES:
+:ID:       9e48626d-47e1-477a-8b79-eff41f7974b8
+:END:
 
 - Depth
   - cite:su2014
@@ -1866,6 +1899,9 @@ https://pathvisio.github.io/
 - [[*testing, modeling, and read simulation][testing, modeling, and read simulation]]
 - cite:settles 
 ****** RNA-seq sample size
+:PROPERTIES:
+:ID:       fa2ef04b-3c70-43c0-abde-b0e19133880f
+:END:
 - cite:li2019rna 
 - http://scotty.genetics.utah.edu/help.html
 - Replicates and power
@@ -1882,11 +1918,17 @@ https://pathvisio.github.io/
   - [[http://scotty.genetics.utah.edu/help.html][Scotty]]
   - consider a "bank" of more sample replicates than are acutally sequenced   
 ***** RNA-seq probability and statistics
+:PROPERTIES:
+:ID:       6cfa59e4-c2d5-49e9-8fdc-8249826f7ce1
+:END:
 - cite:li2018rnastat
 - https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
 - cite:gonzalez2014 
 - cite:auer2010
 ***** [[id:7BF989EC-4DA7-4B0C-AAA9-0175156447FF][LINK TO RNA extraction, solubilization, and isolation]]
+:PROPERTIES:
+:ID:       743c8670-6ab1-467d-8c87-6d7a221c4833
+:END:
 >>>>>>> f2dcd10e6872b6daa5e778f09f113e8782822a3e
 :PROPERTIES:
 :ID:       6992d240-4089-49b0-8587-7b84202932eb
@@ -4386,6 +4428,9 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :ID:       03d2e84c-f016-4e3b-ba9c-9afe7d0656cc
 :END:
 **** R setup
+:PROPERTIES:
+:ID:       87b498a6-e553-4682-8038-96bbb21fda14
+:END:
 #+name: biotools_r_setup
 #+begin_src R :noweb yes :tangle ./src/setup.R
 #
@@ -4399,7 +4444,8 @@ packages = c(
   "ComplexHeatmap",
   "fgsea",
   "limma",
-  "copynumber"
+  "copynumber",
+  "DESeq2"
 )
 ##
 ##NOTE requires libcurl4-openssl-dev https://stackoverflow.com/questions/11471690/curl-h-no-such-file-or-directory/11471743
@@ -5861,11 +5907,17 @@ CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :ID:       945cb660-b2c2-4416-be64-b24b9fb79a0f
 :END:
 ****** General links
+:PROPERTIES:
+:ID:       264bdea7-dee2-4460-aec3-7c56fb455144
+:END:
   - [[https://github.com/griffithlab/rnaseq_tutorial/blob/master/manuscript/supplementary_tables/supplementary_table_7.md][Griffith lab common RNASeq Q&A]]
   - http://mikelove.github.io/
   - [[https://github.com/crazyhottommy/RNA-seq-analysis][crazyhottommy]]
   - https://rnabio.org/resources/
 ****** Standards and best practices
+:PROPERTIES:
+:ID:       8690932b-2062-4f5f-b007-36e2df1a68c6
+:END:
   - cite:conesa2016
   - SEQC
     - cite:li2014
@@ -5880,6 +5932,9 @@ CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
     - [[http://www.fda.gov/ScienceResearch/BioinformaticsTools/MicroarrayQualityControlProject/][Sequencing Quality Control Project (SEQC)]]
   - ENCODE RNA-Seq guidelines
 ****** Comprehensive guides
+:PROPERTIES:
+:ID:       d5ae15c1-9f7c-4bf0-b5d2-c8ed663d0889
+:END:
 - cite:vandenberge2019
 - cite:koch2018 
 - cite:korpelainen2015
@@ -5899,6 +5954,9 @@ CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 - https://rnaseq.uoregon.edu/
 - https://www.labome.com/method/RNA-seq.html
 ****** Historical papers
+:PROPERTIES:
+:ID:       d5e399f8-4845-4803-bc49-21a55fafb830
+:END:
   - cite:wilhelm2009
   - [[https://blog.sbgenomics.com/rna-seq-the-first-wave/][RNA-seq: The first wave of papers]]    
 ****** Griffith AWS RNA-seq Tutorial
@@ -6427,6 +6485,9 @@ R/FPKM and C/TPM are "local" to the sample while TMM must be recalculated with d
 - corrects for less "sequencing real estate" due to high expression per tissue 
 
 ***** RNA-seq probability and statistics
+:PROPERTIES:
+:ID:       33caca86-c950-4bca-be0b-c15d5dcf9741
+:END:
 - cite:li2018rnastat
 - https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
 - cite:gonzalez2014 
@@ -6474,6 +6535,10 @@ CLOCK: [2020-11-23 Mon 10:43]--[2020-11-23 Mon 10:57] =>  0:14
 CLOCK: [2016-03-28 Mon 19:06]--[2016-03-28 Mon 19:29] =>  0:23
 CLOCK: [2016-03-28 Mon 13:01]--[2016-03-28 Mon 13:06] =>  0:05
 :END:
+https://rnabio.org/module-03-expression/0003/06/01/DE_Pathway_Analysis/
+https://www.nature.com/articles/s41598-018-29077-3
+https://rnabio.org/module-03-expression/0003/05/01/Batch-Correction/
+https://compgenomr.github.io/book/clustering-grouping-samples-based-on-their-similarity.html
 - https://www.bioconductor.org/packages/devel/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html
 
 - [[https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#differential-expression-analysis][easy as 1-2-3]]
@@ -6580,6 +6645,9 @@ doi:10.2202/1544-6115.1637.
 - bench methods
   - cite:parekh2016
 ***** RNA-based variant discovery
+:PROPERTIES:
+:ID:       4049cae9-7479-4017-b42a-e397f7c761d0
+:END:
 - [[http://gatkforums.broadinstitute.org/gatk/discussion/4067/best-practices-for-variant-discovery-in-rnaseq][Broad best practices for variant discovery in RNA Seq]]
 ***** [[*workflow][LINK TO workflow]]
 :PROPERTIES:
@@ -8085,6 +8153,9 @@ CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
   - https://bioinfogp.cnb.csic.es/tools/venny/
 
 **** Heatmaps
+:PROPERTIES:
+:ID:       a259c668-737b-4ca3-9994-a9ce8afa01db
+:END:
 - https://slowkow.com/notes/pheatmap-tutorial/
 - heatmaps
   - https://www.biostars.org/p/287512/
@@ -8118,7 +8189,13 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 - https://clincancerres.aacrjournals.org/content/26/11/2556#sec-6
 - cite:parikh2019
 ** Modules
+:PROPERTIES:
+:ID:       a976fa13-3fa8-41f0-b847-3322f2827c3e
+:END:
 *** Common intro
+:PROPERTIES:
+:ID:       6213753d-2b4d-4877-ad8c-8d8d09db4471
+:END:
 Workflow
 
 I use a core set of tools and data structures to perform and document common bioinformatics and data science tasks. 
@@ -8150,6 +8227,7 @@ Gene set
 *** WAITING Whole transcriptome RNA-seq for differential expression and co-expression
 :PROPERTIES:
 :CREATED:  [2021-06-29 Tue 10:29]
+:ID:       6e335bc4-7588-4785-9364-eda3490c0cbc
 :END:
 :LOGBOOK:
 CLOCK: [2021-06-29 Tue 07:30]--[2021-06-29 Tue 07:32] =>  0:02
