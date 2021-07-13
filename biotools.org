@@ -11,7 +11,11 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-
+- http://bioconductor.org/packages/stats/
+  - top 75
+    - http://bioconductor.org/packages/release/bioc/html/fgsea.html
+    - http://bioconductor.org/packages/release/bioc/html/DOSE.html
+    - http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html 
 - dev -
   - runfast dataset or links to repo
   - ugly code off runfast data
