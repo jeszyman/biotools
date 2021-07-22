@@ -11,6 +11,8 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+https://www.reddit.com/r/bioinformatics/comments/nawxng/bioinformaticianswhat_do_you_wish_wet_lab/?sort=controversial
+https://www.nature.com/articles/s41467-020-16937-8#ref-CR20
 ** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][LINK TO Information Science / Data Science]]
 :PROPERTIES:
 :ID:       014218e1-bb8b-4282-84ec-84354c29b8f5
@@ -33,7 +35,6 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :PROPERTIES:
 :ID:       e9e201b5-4a94-4861-8de8-803676c3a37f
 :END:
-- UCSC is chr, ensembl is NOT
 - https://gatk.broadinstitute.org/hc/en-us/articles/360035890951-Human-genome-reference-builds-GRCh38-or-hg38-b37-hg19
 - https://www.ncbi.nlm.nih.gov/tools/vecscreen/univec/
 *** By substrate
@@ -3241,7 +3242,7 @@ https://singularity.lbl.gov/install-linux
   - http://statweb.stanford.edu/~susan/courses/stats305c/examplesClusters.html
   - https://bookdown.org/rdpeng/exdata/k-means-clustering.html
   - https://www.datanovia.com/en/lessons/cluster-analysis-example-quick-start-r-code/
-- cite:tarazona2020
+
 **** Probability and statistics related to bioinformatics
 :PROPERTIES:
 :ID:       288fef57-f515-491f-be79-586ae494d7a1
@@ -3265,12 +3266,11 @@ https://singularity.lbl.gov/install-linux
 - https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
 - [[https://github.com/lh3/seqtk][seqtk]] 
 - https://gist.github.com/davfre/8596159
-- [[https://www.biostars.org/p/6544/][look at all the ways to split a fastq file!]]
+- [[https://www.biostars.org/p/6544/][look at all the ways to split a bam file!]]
 *** Code associated with sequence reference builds
 :PROPERTIES:
 :ID:       767e5e30-8490-4cda-8018-8b0bd91c4ef3
 :END:
-- need wget for github-             'https://raw.githubusercontent.com/Boyle-Lab/Blacklist/blob/master/lists/mm10-blacklist.v2.bed.gz')
 #+begin_src bash
 refDIR=/mnt/users/jeszyman/data/ref
 
@@ -3283,7 +3283,6 @@ do
         --continue \
         --directory-prefix $refDIR \
         --execute robots=off \
-        --no-check-certificate \
         --no-parent \
         --timestamping $i
     file=$(echo $i | sed "s/^.*\///g")
@@ -3293,8 +3292,6 @@ do
         gunzip --to-stdout $refDIR/$file > $refDIR/$base
     fi
 done
-
-
 #+end_src
 
 #+begin_src bash
@@ -4457,6 +4454,7 @@ CLOCK: [2019-06-12 Wed 14:40]--[2019-06-12 Wed 14:58] =>  0:18
 CLOCK: [2019-05-29 Wed 15:23]--[2019-05-29 Wed 15:34] =>  0:11
 CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 :END:
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5891060/
 cite:hehir-kwa2015 
 https://www.nature.com/scitable/topicpage/copy-number-variation-and-human-disease-741737/
 https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
@@ -6391,7 +6389,6 @@ CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
     - https://bioconductor.org/packages/release/bioc/vignettes/ATACseqQC/inst/doc/ATACseqQC.html
     - https://bioconductor.org/packages/release/bioc/html/soGGi.html
   - General method guides
-    - https://ucdavis-bioinformatics-training.github.io/2020-Epigenetics_Workshop/data_reduction/chip_atac/04-peaks
     - cite:yan2020atac
     - cite:corces2017 
     - cite:buenrostro2015
@@ -6651,7 +6648,6 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 :PROPERTIES:
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
 :END:
-- cite:tarazona2020
 - kboost https://bioconductor.org/packages/release/bioc/html/KBoost.html
 - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3016-x
 - http://bioportal.bioontology.org/ontologies/GO/?p=classes&conceptid=root
@@ -7035,7 +7031,6 @@ salmon
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
-- https://www.reddit.com/r/bioinformatics/comments/nawxng/bioinformaticianswhat_do_you_wish_wet_lab/?sort=controversial
 - http://bioconductor.org/packages/stats/
   - top 75
     - http://bioconductor.org/packages/release/bioc/html/fgsea.html
