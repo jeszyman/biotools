@@ -11,6 +11,9 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+- https://support.illumina.com/downloads/sequencing_coverage_calculator.html
+- cfRNA cite:larson2021
+- DRIMSeq https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSeq.pdf
 - Granges manipulations https://rockefelleruniversity.github.io/Bioconductor_Introduction/exercises/answers/GenomicFeatures_answers.html
 - https://rockefelleruniversity.github.io/Bioconductor_Introduction/
 ** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][LINK TO Information Science / Data Science]]
@@ -2008,6 +2011,7 @@ https://pathvisio.github.io/
 :LOGBOOK:
 CLOCK: [2021-07-01 Thu 11:18]--[2021-07-01 Thu 11:48] =>  0:30
 :END:
+https://lachlandeer.github.io/snakemake-econ-r-tutorial/config-files.html
 https://github.com/snakemake-workflows/rna-seq-star-deseq2/blob/master/workflow/rules/diffexp.smk
 https://github.com/csoneson/ARMOR
 https://github.com/slowkow/snakefiles/blob/master/kallisto/Snakefile
@@ -2530,6 +2534,7 @@ packages = c(
   "ComplexHeatmap",
   "copynumber",
   "DESeq2",
+  "DRIMSeq",
   "fgsea",
   "GenomicFeatures",
   "limma",
@@ -2686,6 +2691,7 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       ee5eb087-d368-4dae-a249-d8d6bd913c4d
 :END:
+- cite:chabon2020
 - Delphi
   - https://github.com/Cancer-Genomics/delfi_scripts
   - cite:cristiano2019
@@ -2815,6 +2821,8 @@ https://www.nature.com/articles/ncomms15089#Sec2
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
+https://www.nature.com/articles/s41587-021-00981-w
+- cite:cohen2021
 - https://www.nature.com/articles/s41585-021-00503-y
 - cite:heberts2021
 - fragment size
@@ -2834,6 +2842,7 @@ https://www.nature.com/articles/ncomms15089#Sec2
 :LOGBOOK:
 CLOCK: [2021-05-27 Thu 11:25]--[2021-05-27 Thu 11:38] =>  0:13
 :END:
+https://www.nature.com/articles/s41467-018-06159-4
 **** General reference
 :PROPERTIES:
 :ID:       8438f135-bfc1-4d5e-8a02-f594a1d0773a
@@ -3980,6 +3989,7 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 :PROPERTIES:
 :ID:       a52b4ca3-c3ca-4aec-b68a-01c1de39fc8a
 :END:
+
 - https://github.com/secastel/allelecounter
 - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0762-6#Sec11
 *** Alternative splicing
@@ -4625,6 +4635,7 @@ https://mikelove.github.io/counts-model/
 :PROPERTIES:
 :ID:       77d2a559-9858-453a-83c5-a646bbf473a3
 :END:
+https://bookdown.org/rdpeng/exdata/k-means-clustering.html
 - cite:vidman2019
 Bergkvist,A., Rusnakova,V., Sindelka,R., Garda,J.M., Sjogreen,B.,
 Lindh,D., Forootan,A. and Kubista,M. (2010) Gene expression
@@ -4650,6 +4661,10 @@ phenotypes with genetic marker data. Genet. Epidemiol., 31(Suppl.
 :PROPERTIES:
 :ID:       22a6e4a4-60c2-44cf-8e5a-3ff351a02aa3
 :END:
+https://developers.google.com/machine-learning/clustering/clustering-algorithms
+https://www.analyticsvidhya.com/blog/2016/11/an-introduction-to-clustering-and-different-methods-of-clustering/
+https://www.datanovia.com/en/lessons/cluster-analysis-example-quick-start-r-code/
+http://statweb.stanford.edu/~susan/courses/stats305c/examplesClusters.html
 - https://mubaris.com/posts/kmeans-clustering/
 https://uc-r.github.io/hc_clustering
 https://www.biostars.org/p/287512/
@@ -6371,6 +6386,8 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
 :END:
+https://pubmed.ncbi.nlm.nih.gov/34172972/ https://umgear.org/
+https://www.nature.com/articles/d41586-021-01994-w
 - cite:tarazona2020
 - https://www.sciencedirect.com/science/article/pii/S2001037020302816#s0030
 - https://workflows.omnipathdb.org/
@@ -6416,6 +6433,7 @@ CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
 :PROPERTIES:
 :ID:       a259c668-737b-4ca3-9994-a9ce8afa01db
 :END:
+https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
 - https://slowkow.com/notes/pheatmap-tutorial/
 - heatmaps
   - https://www.biostars.org/p/287512/
