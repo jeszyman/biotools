@@ -11,6 +11,9 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+- https://github.com/Bioinformatics-Research-Network/training-requirements
+- DESeq2 methods writeup
+  -  LRT is evaluated akin to ANOVA with Wald tests serving as post-hoc significance of specific group comparisons. 
 - https://support.illumina.com/downloads/sequencing_coverage_calculator.html
 - cfRNA cite:larson2021
 - DRIMSeq https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSeq.pdf
@@ -575,6 +578,7 @@ mandatory
 | [[id:0a319950-3215-4846-a020-a08b78f3323d][FastQC]]         | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]]            |           |        | [[https://www.bioinformatics.babraham.ac.uk/projects/fastqc/INSTALL.txt][site]]     |       |                        |
 | [[http://hannonlab.cshl.edu/fastx_toolkit/commandline.html][FASTX-Toolkit]]  |                   |           |        |          |       |                        |
 | featureCounts  |                   |           |        |          | [[https://watermark.silverchair.com/btt656.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAApgwggKUBgkqhkiG9w0BBwagggKFMIICgQIBADCCAnoGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMofurkoV2NWsQqlelAgEQgIICS7iktDnfv1X3fe1vdQQcXCS09zT549UGvBjDCLHoNebBGfiQi_Eo7ZjUHVH_Yay_p1DlFd4eDeXU4WEX6HTQ-MzPqmtZ6RMGegyEptsqxaLnvr3QfpGO6WRT01dViqp6xya9-CqCRGV3E7F37VruIYzZEFjr-2svIgoRydPyF4pkSzA2hkvwV_g-JT2YSnqboZ5DOGtwZXeMaLKf48_aEpuYemRUx8VqOfM8xnOm4_jumLGd_BBqCCv6brLX8z3WVJpWfJ4YfpJXhemFRt8mSvIsAe9pYXV52W7-psxHlM2ocXzdD_7vLSD7iy1NocDXWLFT5HRH_Cq8NyiRq1s4Mq-QYuvQJFlTxWArVC6vdpE40bDr9slGD6KTJ0DpUQeC52q-aoKJXr9Y7Pi2SDo881eFuJxTWuSuMjxcXStn9MkPKZfcKa10Vu4CdJSSnvJAKAvd4GsshsfCVGCvkgy4ZfEabo5nOZaB82UYC-8AZEpdbD3RtJg1FUQJHDz0tlY-2gZYf2VB3KU1JK4wZcHzn8T8R5BSChB6MjFrRdTZeo3M8-ZIK3eWQGH2vLj8_bPsYlBF-wfj2JzSG3zJGgUUa_rSBzoK8Vvw8k_BPxCq63h6u-k49l-X0o-MO6f8mOdm_YliTT0dWu_ujvlbXMw9AIBrKjwBJncq27EwMOX0shm8nnzPMoPTfOzoekZR2nYTDPayGjHhqkAs6haFAQrI8XAAd0PfbMtW4l54ArULWEH6hCVxzDX8_h8F8oWgOc_3h2ktpbTLNsiX6Bxj][paper]] |                        |
+| flexbar        |                   |           |        | [[https://github.com/seqan/flexbar/wiki/Manual][doc]]      |       | cite:roehr2017         |
 | G2P            |                   |           |        |          | [[https://www.nature.com/articles/s41467-019-10016-3][paper]] |                        |
 | GAGE           | enrichment        | express   |        |          | [[https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-10-161][paper]] |                        |
 | GATK           |                   |           |        | [[https://software.broadinstitute.org/gatk/documentation/][doc]]      |       |                        |
@@ -605,6 +609,14 @@ mandatory
 | tophat2        |                   |           |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                        |
 | tximport       |                   |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
 | WGCNA          |                   |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] |                        |
+*** ATACseqQC
+:PROPERTIES:
+:ID:       a5b73c70-3f1f-4018-92b2-bfdcaed53cf5
+:END:
+- http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/ATACseqQCWorkshop__ATACseqQC_workshop/
+- https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-018-4559-3#Sec15
+- https://haibol2016.github.io/ATACseqQCWorkshop/articles/ATACseqQC_workshop.html
+- https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2019/ChIPSeq/Materials/Practicals/Day5/Practical01_ATAC-seq_analysis_SS.html
 *** bowtie
 :PROPERTIES:
 :ID:       8883a37b-867c-4c19-8e9c-2b46004125a1
@@ -1539,7 +1551,7 @@ A negative binomial GLM
 :END:
 - https://www.bioconductor.org/packages/devel/data/experiment/manuals/gageData/man/gageData.pdf
 - https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
-- http://amp.pharm.mssm.edu/Enrichr/help#basics
+- cite:luo2009
 *** gistic2 
 :PROPERTIES:
 :ID:       4f0b84ab-1dec-45c9-a7d4-bdce41e13150
@@ -1568,6 +1580,7 @@ CLOCK: [2020-11-17 Tue 09:56]--[2020-11-17 Tue 12:07] =>  2:11
 CLOCK: [2020-10-26 Mon 13:01]--[2020-10-26 Mon 13:55] =>  0:54
 CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
 :END:
+- https://www.nature.com/articles/s41598-019-46059-1
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6607905/
 - leading edge https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5066188/
 - [[https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideTEXT.htm#_Consistent_Feature_Identifiers_Acro][documentation]]
@@ -2571,8 +2584,8 @@ CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
 - build biotools docker container
   #+begin_src bash
 run_dir=~/repos/biotools
-dockerfile=atac_Dockerfile
-tag=atac
+dockerfile=Dockerfile
+tag=biotools
 
 #########1#########2#########3#########4#########5#########6#########7#########8
 cd $run_dir
@@ -2761,29 +2774,35 @@ https://singularity.lbl.gov/install-linux
 :END:
 - need wget for github-             'https://raw.githubusercontent.com/Boyle-Lab/Blacklist/blob/master/lists/mm10-blacklist.v2.bed.gz')
 #+begin_src bash
-refDIR=/mnt/users/jeszyman/data/ref
+ref_dir=/mnt/local/users/jeszyman/data/ref/raw_downloads
 
 assemblies=('http://ftp.ensembl.org/pub/release-104/fasta/rattus_norvegicus/dna/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.gz'
-            'http://ftp.ensembl.org/pub/release-104/fasta/rattus_norvegicus/cdna/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz')
+            'http://ftp.ensembl.org/pub/release-104/fasta/rattus_norvegicus/cdna/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz'
+            'https://ftp.ncbi.nlm.nih.gov/genomes/genbank/vertebrate_mammalian/Mus_musculus/latest_assembly_versions/GCA_000001635.9_GRCm39/GCA_000001635.9_GRCm39_genomic.fna.gz'
+            'https://ftp.ncbi.nlm.nih.gov/genomes/genbank/vertebrate_mammalian/Mus_musculus/latest_assembly_versions/GCA_000001635.9_GRCm39/GCA_000001635.9_GRCm39_genomic.gtf.gz'
+            'https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/635/GCA_000001635.8_GRCm38.p6/GCA_000001635.8_GRCm38.p6_genomic.fna.gz'
+            'https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/635/GCA_000001635.8_GRCm38.p6/GCA_000001635.8_GRCm38.p6_genomic.gtf.gz'
+            'http://hgdownload.cse.ucsc.edu/goldenpath/mm10/bigZips/latest/mm10.fa.gz'
+            'https://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/genes/mm10.knownGene.gtf.gz')
 
 for i in "${assemblies[@]}";
 do
     wget \
         --continue \
-        --directory-prefix $refDIR \
+        --directory-prefix $ref_dir \
         --execute robots=off \
         --no-check-certificate \
         --no-parent \
         --timestamping $i
     file=$(echo $i | sed "s/^.*\///g")
     base=$(basename -s .gz "$file")
-    if [ "${file: -3}" == ".gz" ] && [ $refDIR/$base -ot $refDIR/$file ];
-    then
-        gunzip --to-stdout $refDIR/$file > $refDIR/$base
-    fi
 done
 
 
+    # if [ "${file: -3}" == ".gz" ] && [ $ref_dir/$base -ot $ref_dir/$file ];
+    # then
+    #     gunzip --to-stdout $ref_dir/$file > $ref_dir/$base
+    # fi
 #+end_src
 
 #+begin_src bash
@@ -4692,100 +4711,6 @@ https://github.com/hbctraining/DGE_workshop_salmon_online
 https://f1000research.com/articles/5-1438/v2
 https://www.nature.com/articles/s41598-020-74567-y#Abs1
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6954399/
-****** co-expression 
-:PROPERTIES:
-:ID:       91d46e60-eec3-48c7-97f1-b53eb1559b3f
-:END:
-- [[id:e4351ef3-6d41-4121-a2cc-c63d89f997ac][pathway analysis]]
-- cite:rahmatallah2016
-- [[id:9b222d1c-ab61-450c-8b77-a98ec3213867][gage]]
-- https://bioconductor.org/packages/release/bioc/vignettes/pathview/inst/doc/pathview.pdf
-- gscna
-  - cite:rahmatallah2014
-- gene set enrichment
-  - https://david.ncifcrf.gov/gene2gene.jsp
-  - https://genviz.org/module-04-expression/0004/03/01/pathwayAnalysis/
-  - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
-  - http://software.broadinstitute.org/gsea/msigdb/collections.jsp
-  - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
-  - pathway enrichment
-    - - https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
-    - - https://www.nature.com/articles/s41596-018-0103-9.pdf?proof=true19
-    - https://bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
-- [[id:948289d8-3a77-471a-b068-0507285e0bac][wgcna]]
-  - wgcna
-    - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-02-networkConstr-man.pdf
-    - cite:vanDam2018 
-      #+begin_src bash 
-    mkdir -p /tmp/wgnca-example
-    cd /tmp/wgnca-example/
-    wget https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-Data.zip
-    unzip FemaleLiver-Data.zip
-    #+end_src
-      #+begin_src R 
-  setwd("/tmp/wgnca-example")
-  source("~/repos/basecamp/bin/setup.R")
-  #
-  # ez install of wgcna and dependencies for R 3.6
-  if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-  BiocManager::install("fastLiquidAssociation")
-  #
-  library(WGCNA)
-  options(stringsAsFactors=F)
-  femData=read.csv("./LiverFemale3600.csv")
-  datExpr0=as.data.frame(t(femData[,-c(1:8)]))
-  head(datExpr0)
-  gsg=goodSamplesGenes(datExpr0, verbose=3)
-  gsg$allOK
-  if (!gsg$allOK)
-  {
-  # Optionally, print the gene and sample names that were removed:
-  if (sum(!gsg$goodGenes)>0)
-  printFlush(paste("Removing genes:", paste(names(datExpr0)[!gsg$goodGenes], collapse = ", ")));
-  if (sum(!gsg$goodSamples)>0)
-  printFlush(paste("Removing samples:", paste(rownames(datExpr0)[!gsg$goodSamples], collapse = ", ")));
-  # Remove the offending genes and samples from the data:
-  datExpr0 = datExpr0[gsg$goodSamples, gsg$goodGenes]
-  }
-  #
-  sampleTree=hclust(dist(datExpr0),method="average")
-  plot(sampleTree)
-  #
-  # Plot a line to show the cut
-  abline(h = 15, col = "red");
-  # Determine cluster under the line
-  clust = cutreeStatic(sampleTree, cutHeight = 15, minSize = 10)
-  table(clust)
-  # clust 1 contains the samples we want to keep.
-  keepSamples = (clust==1)
-  datExpr = datExpr0[keepSamples, ]
-  nGenes = ncol(datExpr)
-  nSamples = nrow(datExpr)
-  #
-  traitData = read.csv("ClinicalTraits.csv")
-  dim(traitData)
-  names(traitData)
-  # remove columns that hold information we do not need.
-  allTraits = traitData[, -c(31, 16)]
-  allTraits = allTraits[, c(2, 11:36) ]
-  dim(allTraits)
-  names(allTraits)
-  # Form a data frame analogous to expression data that will hold the clinical traits.
-  femaleSamples = rownames(datExpr)
-  traitRows = match(femaleSamples, allTraits$Mice)
-  datTraits = allTraits[traitRows, -1]
-  rownames(datTraits) = allTraits[traitRows, 1]
-  collectGarbage()
-  #
-  save(datExpr, datTraits, file = "FemaleLiver-01-dataInput.RData")
-  #
-  enableWGCNAThreads()
-  lnames=load(file="FemaleLiver-01-dataInput.RData")
-  #
-  lnames
-    #+end_src
-- [[id:D68E1182-1F7B-4160-A6DD-BD2635F8085F][GSEA]]
 ****** time course
 :PROPERTIES:
 :ID:       43f1772e-f8ce-4f6b-a4bd-d35d381b89c9
@@ -5018,7 +4943,7 @@ doi:10.2202/1544-6115.1637.
 :PROPERTIES:
 :ID:       2CA85A6B-7B1E-4A38-96AA-717847A59168
 :END:
-
+https://www.nature.com/articles/s41588-018-0091-2
 ********* Chemical- NextBio, see Webster,15ref Kupershmidt,10
 :PROPERTIES:
 :ID:       f9f486c9-cd9b-401a-a3c0-523a5d09d92b
@@ -5287,99 +5212,6 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
     - Integrate fusion /gscmnt/gc2555/spencer/jeff/data/reference/Homo_sapiens.GRCh38.dna.primary_assembly.fa /gscmnt/gc2555/spencer/jeff/data/reference/annot-hg38-refeseq.txt /gscmnt/gc2555/spencer/jeff/data/reference/Integrate/bwts /gscmnt/gc2555/spencer/jeff/dev/starhcc/Aligned.out.sorted.bam /gscmnt/gc2555/spencer/jeff/dev/starhcc/Aligned.out.sorted.bam
       - 
 
-********* co-expression 
-:PROPERTIES:
-:ID:       91d46e60-eec3-48c7-97f1-b53eb1559b3f
-:END:
-- cite:rahmatallah2016
-- [[id:9b222d1c-ab61-450c-8b77-a98ec3213867][gage]]
-- https://bioconductor.org/packages/release/bioc/vignettes/pathview/inst/doc/pathview.pdf
-- gscna
-  - cite:rahmatallah2014
-- gene set enrichment
-  - https://david.ncifcrf.gov/gene2gene.jsp
-  - https://genviz.org/module-04-expression/0004/03/01/pathwayAnalysis/
-  - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
-  - http://software.broadinstitute.org/gsea/msigdb/collections.jsp
-  - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
-  - pathway enrichment
-    - - https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
-    - - https://www.nature.com/articles/s41596-018-0103-9.pdf?proof=true19
-    - https://bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
-- [[id:948289d8-3a77-471a-b068-0507285e0bac][wgcna]]
-  - wgcna
-    - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-02-networkConstr-man.pdf
-    - cite:vanDam2018 
-      #+begin_src bash 
-    mkdir -p /tmp/wgnca-example
-    cd /tmp/wgnca-example/
-    wget https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-Data.zip
-    unzip FemaleLiver-Data.zip
-    #+end_src
-      #+begin_src R 
-  setwd("/tmp/wgnca-example")
-  source("~/repos/basecamp/bin/setup.R")
-  #
-  # ez install of wgcna and dependencies for R 3.6
-  if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-  BiocManager::install("fastLiquidAssociation")
-  #
-  library(WGCNA)
-  options(stringsAsFactors=F)
-  femData=read.csv("./LiverFemale3600.csv")
-  datExpr0=as.data.frame(t(femData[,-c(1:8)]))
-  head(datExpr0)
-  gsg=goodSamplesGenes(datExpr0, verbose=3)
-  gsg$allOK
-  if (!gsg$allOK)
-  {
-  # Optionally, print the gene and sample names that were removed:
-  if (sum(!gsg$goodGenes)>0)
-  printFlush(paste("Removing genes:", paste(names(datExpr0)[!gsg$goodGenes], collapse = ", ")));
-  if (sum(!gsg$goodSamples)>0)
-  printFlush(paste("Removing samples:", paste(rownames(datExpr0)[!gsg$goodSamples], collapse = ", ")));
-  # Remove the offending genes and samples from the data:
-  datExpr0 = datExpr0[gsg$goodSamples, gsg$goodGenes]
-  }
-  #
-  sampleTree=hclust(dist(datExpr0),method="average")
-  plot(sampleTree)
-  #
-  # Plot a line to show the cut
-  abline(h = 15, col = "red");
-  # Determine cluster under the line
-  clust = cutreeStatic(sampleTree, cutHeight = 15, minSize = 10)
-  table(clust)
-  # clust 1 contains the samples we want to keep.
-  keepSamples = (clust==1)
-  datExpr = datExpr0[keepSamples, ]
-  nGenes = ncol(datExpr)
-  nSamples = nrow(datExpr)
-  #
-  traitData = read.csv("ClinicalTraits.csv")
-  dim(traitData)
-  names(traitData)
-  # remove columns that hold information we do not need.
-  allTraits = traitData[, -c(31, 16)]
-  allTraits = allTraits[, c(2, 11:36) ]
-  dim(allTraits)
-  names(allTraits)
-  # Form a data frame analogous to expression data that will hold the clinical traits.
-  femaleSamples = rownames(datExpr)
-  traitRows = match(femaleSamples, allTraits$Mice)
-  datTraits = allTraits[traitRows, -1]
-  rownames(datTraits) = allTraits[traitRows, 1]
-  collectGarbage()
-  #
-  save(datExpr, datTraits, file = "FemaleLiver-01-dataInput.RData")
-  #
-  enableWGCNAThreads()
-  lnames=load(file="FemaleLiver-01-dataInput.RData")
-  #
-  lnames
-    #+end_src
-- [[id:D68E1182-1F7B-4160-A6DD-BD2635F8085F][GSEA]]
 ********* Broad Calling variants in RNAseq
 :PROPERTIES:
 :ID:       DA64BC88-8BD6-40DF-9D80-5596BFA4D643
@@ -5474,100 +5306,6 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
   - https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
   - http://seqanswers.com/forums/showthread.php?t=64039
   - https://www.sciencedirect.com/science/article/pii/S2001037015000392
-******** co-expression 
-:PROPERTIES:
-:ID:       91d46e60-eec3-48c7-97f1-b53eb1559b3f
-:END:
-- [[id:e4351ef3-6d41-4121-a2cc-c63d89f997ac][pathway analysis]]
-- cite:rahmatallah2016
-- [[id:9b222d1c-ab61-450c-8b77-a98ec3213867][gage]]
-- https://bioconductor.org/packages/release/bioc/vignettes/pathview/inst/doc/pathview.pdf
-- gscna
-  - cite:rahmatallah2014
-- gene set enrichment
-  - https://david.ncifcrf.gov/gene2gene.jsp
-  - https://genviz.org/module-04-expression/0004/03/01/pathwayAnalysis/
-  - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
-  - http://software.broadinstitute.org/gsea/msigdb/collections.jsp
-  - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
-  - pathway enrichment
-    - - https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
-    - - https://www.nature.com/articles/s41596-018-0103-9.pdf?proof=true19
-    - https://bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
-- [[id:948289d8-3a77-471a-b068-0507285e0bac][wgcna]]
-  - wgcna
-    - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-02-networkConstr-man.pdf
-    - cite:vanDam2018 
-      #+begin_src bash 
-    mkdir -p /tmp/wgnca-example
-    cd /tmp/wgnca-example/
-    wget https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-Data.zip
-    unzip FemaleLiver-Data.zip
-    #+end_src
-      #+begin_src R 
-  setwd("/tmp/wgnca-example")
-  source("~/repos/basecamp/bin/setup.R")
-  #
-  # ez install of wgcna and dependencies for R 3.6
-  if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-  BiocManager::install("fastLiquidAssociation")
-  #
-  library(WGCNA)
-  options(stringsAsFactors=F)
-  femData=read.csv("./LiverFemale3600.csv")
-  datExpr0=as.data.frame(t(femData[,-c(1:8)]))
-  head(datExpr0)
-  gsg=goodSamplesGenes(datExpr0, verbose=3)
-  gsg$allOK
-  if (!gsg$allOK)
-  {
-  # Optionally, print the gene and sample names that were removed:
-  if (sum(!gsg$goodGenes)>0)
-  printFlush(paste("Removing genes:", paste(names(datExpr0)[!gsg$goodGenes], collapse = ", ")));
-  if (sum(!gsg$goodSamples)>0)
-  printFlush(paste("Removing samples:", paste(rownames(datExpr0)[!gsg$goodSamples], collapse = ", ")));
-  # Remove the offending genes and samples from the data:
-  datExpr0 = datExpr0[gsg$goodSamples, gsg$goodGenes]
-  }
-  #
-  sampleTree=hclust(dist(datExpr0),method="average")
-  plot(sampleTree)
-  #
-  # Plot a line to show the cut
-  abline(h = 15, col = "red");
-  # Determine cluster under the line
-  clust = cutreeStatic(sampleTree, cutHeight = 15, minSize = 10)
-  table(clust)
-  # clust 1 contains the samples we want to keep.
-  keepSamples = (clust==1)
-  datExpr = datExpr0[keepSamples, ]
-  nGenes = ncol(datExpr)
-  nSamples = nrow(datExpr)
-  #
-  traitData = read.csv("ClinicalTraits.csv")
-  dim(traitData)
-  names(traitData)
-  # remove columns that hold information we do not need.
-  allTraits = traitData[, -c(31, 16)]
-  allTraits = allTraits[, c(2, 11:36) ]
-  dim(allTraits)
-  names(allTraits)
-  # Form a data frame analogous to expression data that will hold the clinical traits.
-  femaleSamples = rownames(datExpr)
-  traitRows = match(femaleSamples, allTraits$Mice)
-  datTraits = allTraits[traitRows, -1]
-  rownames(datTraits) = allTraits[traitRows, 1]
-  collectGarbage()
-  #
-  save(datExpr, datTraits, file = "FemaleLiver-01-dataInput.RData")
-  #
-  enableWGCNAThreads()
-  lnames=load(file="FemaleLiver-01-dataInput.RData")
-  #
-  lnames
-    #+end_src
-- [[id:D68E1182-1F7B-4160-A6DD-BD2635F8085F][GSEA]]
 ******** [[*omics integration][omics integration]]
 :PROPERTIES:
 :ID:       db8191ed-937d-456b-90d6-63c39fa90758
@@ -5942,6 +5680,142 @@ https://www.biostars.org/p/428905/
   - [[mu4e:msgid:BYAPR02MB5592ACF7A79C1137A6F0A974B77B0@BYAPR02MB5592.namprd02.prod.outlook.com][Re: cibersortx from docker]]
   - docker pull lyronctk/cibersortxfractions
 - have access token for docker: https://cibersortx.stanford.edu/getoken.php
+**** Co-expression 
+:PROPERTIES:
+:ID:       91d46e60-eec3-48c7-97f1-b53eb1559b3f
+:END:
+:LOGBOOK:
+CLOCK: [2021-07-29 Thu 12:04]--[2021-07-29 Thu 12:24] =>  0:20
+CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
+:END:
+***** General reference
+- https://yulab-smu.top/biomedical-knowledge-mining-book/enrichment-overview.html
+- pathway annotation and conservation 
+  - https://academic.oup.com/nar/article/48/D1/D479/5626534#190997651
+- method and tool comparisons
+  - cite:amadoz2019
+- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1790-4
+- cite:reimand2019
+- https://link.springer.com/article/10.1186/s40246-019-0226-2
+- https://www.sciencedirect.com/science/article/pii/S0022519314001969?via%3Dihub
+- cite:creixell2015 
+- cite:rahmatallah2016
+***** Methods and associated tools 
+- https://maayanlab.cloud/Enrichr/
+- [[id:2CA85A6B-7B1E-4A38-96AA-717847A59168][QTL mapping]]
+- iPANDA
+  - https://www.nature.com/articles/ncomms13427#Sec10
+    - https://github.com/varnivey/ipanda/blob/master/MANUAL.txt
+- Aggregate - clusterProfiler
+  - http://yulab-smu.top/clusterProfiler-book/index.html
+  - http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html 
+- Gene set enrichment
+  - https://david.ncifcrf.gov/gene2gene.jsp
+  - https://genviz.org/module-04-expression/0004/03/01/pathwayAnalysis/
+  - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
+  - http://software.broadinstitute.org/gsea/msigdb/collections.jsp
+  - https://monashbioinformaticsplatform.github.io/RNAseq-DE-analysis-with-R/RNAseq_DE_analysis_with_R.html#gene-set-enrichment
+  - pathway enrichment
+    - - https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
+    - - https://www.nature.com/articles/s41596-018-0103-9.pdf?proof=true19
+    - https://bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
+  - [[id:9b222d1c-ab61-450c-8b77-a98ec3213867][gage]]
+  - cite:rahmatallah2014
+  - https://academic.oup.com/bioinformatics/article/33/3/414/2875813
+  - [[id:D68E1182-1F7B-4160-A6DD-BD2635F8085F][GSEA]]
+- Fisher exact
+  - https://maayanlab.cloud/Enrichr/
+- [[id:948289d8-3a77-471a-b068-0507285e0bac][wgcna]]
+  - wgcna
+    - https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-02-networkConstr-man.pdf
+    - cite:vanDam2018 
+      #+begin_src bash 
+    mkdir -p /tmp/wgnca-example
+    cd /tmp/wgnca-example/
+    wget https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/FemaleLiver-Data.zip
+    unzip FemaleLiver-Data.zip
+    #+end_src
+      #+begin_src R 
+  setwd("/tmp/wgnca-example")
+  source("~/repos/basecamp/bin/setup.R")
+  #
+  # ez install of wgcna and dependencies for R 3.6
+  if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+  BiocManager::install("fastLiquidAssociation")
+  #
+  library(WGCNA)
+  options(stringsAsFactors=F)
+  femData=read.csv("./LiverFemale3600.csv")
+  datExpr0=as.data.frame(t(femData[,-c(1:8)]))
+  head(datExpr0)
+  gsg=goodSamplesGenes(datExpr0, verbose=3)
+  gsg$allOK
+  if (!gsg$allOK)
+  {
+  # Optionally, print the gene and sample names that were removed:
+  if (sum(!gsg$goodGenes)>0)
+  printFlush(paste("Removing genes:", paste(names(datExpr0)[!gsg$goodGenes], collapse = ", ")));
+  if (sum(!gsg$goodSamples)>0)
+  printFlush(paste("Removing samples:", paste(rownames(datExpr0)[!gsg$goodSamples], collapse = ", ")));
+  # Remove the offending genes and samples from the data:
+  datExpr0 = datExpr0[gsg$goodSamples, gsg$goodGenes]
+  }
+  #
+  sampleTree=hclust(dist(datExpr0),method="average")
+  plot(sampleTree)
+  #
+  # Plot a line to show the cut
+  abline(h = 15, col = "red");
+  # Determine cluster under the line
+  clust = cutreeStatic(sampleTree, cutHeight = 15, minSize = 10)
+  table(clust)
+  # clust 1 contains the samples we want to keep.
+  keepSamples = (clust==1)
+  datExpr = datExpr0[keepSamples, ]
+  nGenes = ncol(datExpr)
+  nSamples = nrow(datExpr)
+  #
+  traitData = read.csv("ClinicalTraits.csv")
+  dim(traitData)
+  names(traitData)
+  # remove columns that hold information we do not need.
+  allTraits = traitData[, -c(31, 16)]
+  allTraits = allTraits[, c(2, 11:36) ]
+  dim(allTraits)
+  names(allTraits)
+  # Form a data frame analogous to expression data that will hold the clinical traits.
+  femaleSamples = rownames(datExpr)
+  traitRows = match(femaleSamples, allTraits$Mice)
+  datTraits = allTraits[traitRows, -1]
+  rownames(datTraits) = allTraits[traitRows, 1]
+  collectGarbage()
+  #
+  save(datExpr, datTraits, file = "FemaleLiver-01-dataInput.RData")
+  #
+  enableWGCNAThreads()
+  lnames=load(file="FemaleLiver-01-dataInput.RData")
+  #
+  lnames
+    #+end_src
+***** Co-expression visualizations
+
+- https://kiharalab.org/web/navigo/views/goset.php
+- http://www.visantnet.org/visantnet.html
+- [[https://bioconductor.org/packages/release/bioc/vignettes/pathview/inst/doc/pathview.pdf][Pathview]]
+- visualization
+  - heatmaps
+    - https://www.frontiersin.org/files/Articles/425394/fgene-10-00858-HTML/image_m/fgene-10-00858-g002.jpg
+    - https://www.bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
+  - wire diagrams
+  - bar and lolipop for p-value and set size
+    - https://www.nature.com/articles/s41598-018-29420-8
+    - https://www.frontiersin.org/articles/10.3389/fgene.2019.00858/full
+- https://github.com/PathwayCommons/chibe
+- https://github.com/Adrienrougny/sbgntikz/
+
+***** Ideas
+- molecular disease signatures
 **** Spatial transcriptomics
 :PROPERTIES:
 :ID:       053daf71-9f9f-4b5e-b400-222c4d24afea
@@ -6001,9 +5875,29 @@ https://www.illumina.com/destination/epigenetics-webinar-series.html
 :LOGBOOK:
 CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 :END:
+- https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
+- homer
+  - some basic homer commands
+    To identify Tn5 hypersensitive sites (THSs), peak calling was performed by findPeak in HOMER software (v4.9) with “-localSize 50000 -size 100 -minDist 50 -fragLength 0 -o auto.” ΔTHS score was calculated with all pairwise comparison of ESC, hCO and hMGEO by dnase_ddhs_scorer.py script with “-A” option in pyDNase library (v0.2.4) (Figure S2)   
+
+- [[https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sid=1b5013f3a0a4db522d602fa164281aa0&sot=a&sdt=a&cluster=scopubyr%2c%222021%22%2ct%2c%222020%22%2ct%2c%222019%22%2ct%2c%222018%22%2ct%2c%222017%22%2ct%2c%222016%22%2ct&sl=262&s=TITLE-ABS-KEY%28atac-seq%29+AND+NOT+TITLE-ABS-KEY%28chip%29+AND+NOT+DOI%2810.1016%2fj.cell.2017.12.014%29+AND+NOT+DOI%2810.1016%2fj.molmet.2016.01.002%29+AND+NOT+DOI%2810.1038%2fnature23283%29+AND+NOT+DOI%2810.1038%2fnature18606%29+AND+NOT+TITLE-ABS-KEY%28single-cell%29+AND+NOT+TITLE-ABS-KEY%28Hi-C%29&origin=searchadvanced&editSaveSearch=&txGid=38c8cceffee3c655f632c5736cf123cd][top atac-seq cites w/ good methods writeup]]
+  - https://www.pnas.org/content/114/13/E2776
+  - https://science.sciencemag.org/content/sci/suppl/2018/10/24/362.6413.eaav1898.DC1/aav1898_Corces_SM.pdf
+  - https://www.nature.com/articles/ng.3844#Sec14https://www.sciencedirect.com/science/article/pii/S1074761316304393?via%3Dihub#mmc1
+  - https://ars.els-cdn.com/content/image/1-s2.0-S1074761316304393-mmc1.pdf
+
+- cite:reske2020 
+- http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/ATACseqQCWorkshop__ATACseqQC_workshop/
+- QC
+  - [[id:a5b73c70-3f1f-4018-92b2-bfdcaed53cf5][ATACseqQC]]
+    - 
 - https://github.com/nf-core/atacseq/blob/master/main.nf
 - https://bioconductor.org/packages/release/BiocViews.html#___ATACSeq
 - https://www.illumina.com/techniques/popular-applications/epigenetics/atac-seq-chromatin-accessibility.html
+- Encode
+  - https://github.com/kundajelab/atac_dnase_pipelines/issues/143
+  - https://www.encodeproject.org/data-standards/reference-sequences/
+  - https://www.encodeproject.org/search/?type=Pipeline&accession=ENCPL787FUN&accession=ENCPL344QWT
 - Design
   - Read length
     - https://www.biostars.org/p/418363/
@@ -6320,68 +6214,11 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 - Kitano H (2002) Systems biology: A brief overview. Science 295: 1662–1664.
 - Ehrenberg M, Elf J, Aurell E, Sandberg R, Tegner J (2003) Systems biology is taking off. Genome Res 13: 2377–2380.
 - http://www.springer.com/us/book/9780387989921
+**** LINK TO [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][Co-expression]]
 **** [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
 :PROPERTIES:
 :ID:       34a99004-090f-44c6-a721-f5f1054e5b1f
 :END:
-**** pathway analysis
-:PROPERTIES:
-:CREATED:  [2020-07-20 Mon 10:05]
-:ID:       e4351ef3-6d41-4121-a2cc-c63d89f997ac
-:END:
-- https://bioconductor.org/packages/release/bioc/html/pathview.html
-- http://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC3618897&blobtype=pdf
-- https://www.sciencedirect.com/science/article/pii/S0022519314001969?via%3Dihub
-- https://link.springer.com/article/10.1186/s40246-019-0226-2
-- methods papers
-  - cite:reimand2019
-  - cite:creixell2015 
-- https://academic.oup.com/bioinformatics/article/33/3/414/2875813
-- tools
-  - https://old.reddit.com/r/bioinformatics/comments/jbmw6t/which_software_to_use_for_gene_functionalpathway/
-  - http://www.visantnet.org/visantnet.html
-  - https://www.nature.com/articles/ncomms13427#Sec10
-    - https://github.com/varnivey/ipanda/blob/master/MANUAL.txt
-  - [[id:D68E1182-1F7B-4160-A6DD-BD2635F8085F][GSEA]]
-- tutorials
-  - https://sbc.shef.ac.uk/workshops/2019-01-14-rna-seq-r/rna-seq-gene-set-testing.nb.html
-  - https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2019/RNAseq/html/06_Gene_set_testing.html
-- https://academic.oup.com/nar/article/48/D1/D479/5626534#190997651
-- - http://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-2-r14
-- https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btt285
-- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1790-4
-- https://www.nature.com/articles/s41598-019-46059-1
-- https://www.nature.com/articles/ncomms13427#Sec10
-- cite:amadoz2019
-- https://www.nature.com/articles/s41598-019-46059-1
-- visualization
-  - heatmaps
-    - https://www.frontiersin.org/files/Articles/425394/fgene-10-00858-HTML/image_m/fgene-10-00858-g002.jpg
-    - https://www.bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
-  - wire diagrams
-  - bar and lolipop for p-value and set size
-    - https://www.nature.com/articles/s41598-018-29420-8
-    - https://www.frontiersin.org/articles/10.3389/fgene.2019.00858/full
-***** pathways
-:PROPERTIES:
-:CREATED:  [2019-09-28 Sat 10:37]
-:ID:       e5089cac-0ade-48ea-9417-58bfb67a6338
-:END:
-- https://github.com/Adrienrougny/sbgntikz/
-- pathways
-  - https://github.com/PathwayCommons/chibe
-
-****** decoding pt pathways ideker
-:PROPERTIES:
-:ID:       4CAA5252-B978-4A24-BED0-7A476E35FB44
-:CREATED:  [2019-04-26 Fri 10:30]
-:END:
-:LOGBOOK:
-CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
-:END:
-
-- [[file:~/Box%20Sync/data/written.notes/180525.14.note.pdf][180525.14.note.pdf]]
-
 **** Omics integration
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
@@ -6412,6 +6249,9 @@ https://www.nature.com/articles/d41586-021-01994-w
 :LOGBOOK:
 CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
 :END:
+- upset
+    - https://www.nature.com/articles/nmeth.3033
+    - https://github.com/hms-dbmi/UpSetR
 - https://cran.r-project.org/web/packages/chromoMap/vignettes/chromoMap.html#Data-based_annotation_plots
 - https://sites.google.com/view/williamgilks/computational-analysis-of-whole-genome-sequencing-data/flow-chart-in-latex
 - https://www.photopea.com/
@@ -6670,7 +6510,6 @@ salmon
   - top 75
     - http://bioconductor.org/packages/release/bioc/html/fgsea.html
     - http://bioconductor.org/packages/release/bioc/html/DOSE.html
-    - http://bioconductor.org/packages/release/bioc/html/clusterProfiler.html 
 - https://project-awesome.org/danielecook/Awesome-Bioinformatics
 - [[https://www.youtube.com/channel/UCQqQpIx3zQPaifBj67ocv1w][BabrahamBioinf youtube]]
 - https://www.freecodecamp.org/news/python-for-bioinformatics-use-machine-learning-and-data-analysis-for-drug-discovery/
