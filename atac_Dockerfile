@@ -65,6 +65,7 @@ RUN apt-get install -yq --no-install-recommends --allow-unauthenticated \
 #     BiocManager::install(c("ATACseqQC", "ChIPpeakAnno", "MotifDb", "GenomicAlignments","BSgenome.Hsapiens.UCSC.hg19", "TxDb.Hsapiens.UCSC.hg19.knownGene","phastCons100way.UCSC.hg19"));'
 #   BiocManager::install("ATACseqQC"); \
 
+
 # RUN R -e 'install.packages("BiocManager"); \
 #     BiocManager::install(); \
 #     BiocManager::install(c("ATACseqQC",
