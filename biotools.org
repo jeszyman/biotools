@@ -11,9 +11,12 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+- https://www.google.com/search?q=riboerase+adapter+trimming
+- https://github.com/ENCODE-DCC/caper
+  - https://github.com/ENCODE-DCC/demo-pipeline
 - https://github.com/Bioinformatics-Research-Network/training-requirements
 - DESeq2 methods writeup
-  -  LRT is evaluated akin to ANOVA with Wald tests serving as post-hoc significance of specific group comparisons. 
+  - LRT is evaluated akin to ANOVA with Wald tests serving as post-hoc significance of specific group comparisons. 
 - https://support.illumina.com/downloads/sequencing_coverage_calculator.html
 - cfRNA cite:larson2021
 - DRIMSeq https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSeq.pdf
@@ -5875,6 +5878,7 @@ https://www.illumina.com/destination/epigenetics-webinar-series.html
 :LOGBOOK:
 CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 :END:
+- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1642-2
 - https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
 - homer
   - some basic homer commands
@@ -6505,6 +6509,8 @@ salmon
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://www.reddit.com/r/bioinformatics/comments/n2fwz4/what_is_something_that_you_realized_that_entirely/
+
 - https://www.reddit.com/r/bioinformatics/comments/nawxng/bioinformaticianswhat_do_you_wish_wet_lab/?sort=controversial
 - http://bioconductor.org/packages/stats/
   - top 75

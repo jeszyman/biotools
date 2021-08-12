@@ -676,3 +676,4 @@ RUN conda create -c bioconda -n flexbar flexbar=3.5.0
 #
 
 
+RUN conda install -c bioconda subread
