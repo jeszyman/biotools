@@ -2134,6 +2134,9 @@ notes- https://www.biostars.org/p/251018/
 - https://github.com/FelixKrueger/TrimGalore
 
 *** tximport
+:PROPERTIES:
+:ID:       a5d4a32f-764b-4930-80e9-2a6e8d562ae8
+:END:
 offsets handled directly in DESeq2 command - https://bioconductor.org/packages/devel/bioc/vignettes/tximport/inst/doc/tximport.html#Downstream_DGE_in_Bioconductor
 "tximport can alternatively produce a matrix of data that is roughly on the scale of counts, by scaling transcript-per-million (TPM) abundances to add up to the total number of mapped reads. This counts-from-abundance approach directly corrects for technical biases and differential transcript usage across samples, obviating the need for the accompanying offset matrix"
 *** UCSC table browser
@@ -2700,6 +2703,9 @@ done
 #########1#########2#########3#########4#########5#########6#########7#########8
 #+end_src
 *** DNA break mapping
+:PROPERTIES:
+:ID:       8a2ff484-d234-48fa-88c9-c4994f2e0d14
+:END:
 https://febs.onlinelibrary.wiley.com/doi/10.1111/febs.15568
 https://www.nature.com/articles/s41467-019-10332-8#Sec13
 
@@ -5692,6 +5698,9 @@ CLOCK: [2021-07-29 Thu 12:04]--[2021-07-29 Thu 12:24] =>  0:20
 CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :END:
 ***** General reference
+:PROPERTIES:
+:ID:       98048a64-6bd5-4107-ab7e-573b57758f12
+:END:
 - https://yulab-smu.top/biomedical-knowledge-mining-book/enrichment-overview.html
 - pathway annotation and conservation 
   - https://academic.oup.com/nar/article/48/D1/D479/5626534#190997651
@@ -5704,6 +5713,9 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 - cite:creixell2015 
 - cite:rahmatallah2016
 ***** Methods and associated tools 
+:PROPERTIES:
+:ID:       d11cda99-d3a3-4549-a828-d065c6979c5d
+:END:
 - https://maayanlab.cloud/Enrichr/
 - [[id:2CA85A6B-7B1E-4A38-96AA-717847A59168][QTL mapping]]
 - iPANDA
@@ -5802,6 +5814,9 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
   lnames
     #+end_src
 ***** Co-expression visualizations
+:PROPERTIES:
+:ID:       fe3baa6c-d28e-48c4-91b1-0539e01a4cb1
+:END:
 
 - https://kiharalab.org/web/navigo/views/goset.php
 - http://www.visantnet.org/visantnet.html
@@ -5818,6 +5833,9 @@ CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 - https://github.com/Adrienrougny/sbgntikz/
 
 ***** Ideas
+:PROPERTIES:
+:ID:       a04c9e3a-8dd1-427d-a9cd-72aa7caf7ca5
+:END:
 - molecular disease signatures
 **** Spatial transcriptomics
 :PROPERTIES:
@@ -6219,6 +6237,9 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 - Ehrenberg M, Elf J, Aurell E, Sandberg R, Tegner J (2003) Systems biology is taking off. Genome Res 13: 2377–2380.
 - http://www.springer.com/us/book/9780387989921
 **** LINK TO [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][Co-expression]]
+:PROPERTIES:
+:ID:       632d1c7d-aecc-4ad5-85ad-0f26571e454d
+:END:
 **** [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
 :PROPERTIES:
 :ID:       34a99004-090f-44c6-a721-f5f1054e5b1f
