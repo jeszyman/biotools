@@ -2849,7 +2849,8 @@ https://www.nature.com/articles/ncomms15089#Sec2
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
-https://www.nature.com/articles/s41587-021-00981-w
+- cite:zviran2020
+- https://www.nature.com/articles/s41587-021-00981-w
 - cite:cohen2021
 - https://www.nature.com/articles/s41585-021-00503-y
 - cite:heberts2021
@@ -3991,6 +3992,7 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
 :END:
+- cite:zviran2020
 - cite:feng2020 
 - cite:ge2020
 - cite:chen2019cna
@@ -6530,6 +6532,7 @@ salmon
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://www.reddit.com/r/bioinformatics/comments/n2fwz4/what_is_something_that_you_realized_that_entirely/
 - https://www.reddit.com/r/bioinformatics/comments/n2fwz4/what_is_something_that_you_realized_that_entirely/
 
 - https://www.reddit.com/r/bioinformatics/comments/nawxng/bioinformaticianswhat_do_you_wish_wet_lab/?sort=controversial
