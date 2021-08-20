@@ -678,3 +678,6 @@ RUN conda create -c bioconda -n flexbar flexbar=3.5.0
 RUN conda install -c bioconda samtools=1.9 --force-reinstall
 
 RUN conda install -c bioconda bedops
+
+RUN conda install -c bioconda subread
+

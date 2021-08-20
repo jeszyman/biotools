@@ -75,3 +75,20 @@ RUN apt-get install -yq --no-install-recommends --allow-unauthenticated \
 RUN R -e 'install.packages("BiocManager"); \
     BiocManager::install(); \
     BiocManager::install(c("ATACseqQC", "Rsamtools", "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
+
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+RUN R -e 'install.packages("caret")'
+
+RUN R -e 'install.packages("cowplot")'
+
+RUN R -e 'install.packages("tidyverse")'
+
+
+
+
+#RUN R -e "install.packages(c("caret", "circlize"), dependencies=TRUE, repos='http://cran.rstudio.com/')"
+
+
+##, "cowplot", "cutpointr", "FSA", "ggplot2", "ggpval", "ggsci", "ggvenn", "ggrepel", "grid", "gridExtra", "Hmisc", "kableExtra", "magrittr", "naniar", "pheatmap", "RColorBrewer", "readr", #"readxl", "scales", "tidyverse", "UpSetR", "viridis"), dependencies=TRUE, repos='http://cran.rstudio.com/')"
