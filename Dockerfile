@@ -661,6 +661,7 @@ RUN apt-get update \
    && apt-get install -y \
    screen
 
+RUN conda install -c bioconda subread
 #########1#########2#########3#########4#########5#########6#########7#########8
 #
 # NOTE: Default, most recent bioconda salmon incompatible with ubuntu build,
@@ -674,5 +675,6 @@ RUN conda create -c bioconda -n salmon salmon=1.5.0-0
 RUN conda create -c bioconda -n flexbar flexbar=3.5.0
 
 #
+RUN conda install -c bioconda samtools=1.9 --force-reinstall
 
-
+RUN conda install -c bioconda bedops
