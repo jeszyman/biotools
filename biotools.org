@@ -4,6 +4,7 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :END:
 :LOGBOOK:
+CLOCK: [2021-08-20 Fri 11:33]--[2021-08-20 Fri 11:41] =>  0:08
 CLOCK: [2021-05-20 Thu 13:14]--[2021-05-20 Thu 13:38] =>  0:24
 CLOCK: [2020-12-16 Wed 07:08]--[2020-12-16 Wed 07:25] =>  0:17
 CLOCK: [2020-12-15 Tue 20:02]--[2020-12-15 Tue 21:02] =>  1:00
@@ -11,9 +12,8 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-- https://www.google.com/search?q=riboerase+adapter+trimming
-- https://github.com/ENCODE-DCC/caper
-  - https://github.com/ENCODE-DCC/demo-pipeline
+
+- https://www.nature.com/articles/nature12477
 - https://github.com/Bioinformatics-Research-Network/training-requirements
 - DESeq2 methods writeup
   - LRT is evaluated akin to ANOVA with Wald tests serving as post-hoc significance of specific group comparisons. 
@@ -154,6 +154,12 @@ docker_interactive() {
     fi
 }
 #+end_src
+**** Biotools bash setup
+#+name: biotools_bash_setup_wrapper
+#+begin_src bash :noweb yes
+<<docker_interactive>>
+
+#+end_src
 **** Setup common reference files
 :PROPERTIES:
 :ID:       813ed980-1c55-44d7-84d8-67afdad2e5bc
@@ -222,6 +228,8 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       b7c65054-f648-4579-9c5f-7bedbe272b5c
 :END:
+- https://github.com/ENCODE-DCC/caper
+  - https://github.com/ENCODE-DCC/demo-pipeline
 - https://sites.google.com/view/williamgilks/computational-analysis-of-whole-genome-sequencing-data/flow-chart-in-latex
 
 https://www.reddit.com/r/bioinformatics/comments/ahbzg5/how_do_people_turn_their_scripts_into_a_program/
@@ -352,6 +360,7 @@ https://www.nature.com/articles/ncomms15089#Sec2
 - cfDNA from nonterminal mouse blood draws
   - https://www.frontiersin.org/articles/10.3389/fgene.2018.00006/full#T3
   - https://www.nature.com/articles/cr2017121.pdf?origin=ppub
+  - https://clincancerres.aacrjournals.org/content/23/20/6305?ijkey=46368653e37c96739922e66f2f6ae51379b550f3&keytype2=tf_ipsecsha
 - cite:zviran2020
 - https://www.nature.com/articles/s41587-021-00981-w
 - cite:cohen2021
@@ -561,6 +570,7 @@ CLOCK: [2019-06-03 Mon 18:40]--[2019-06-03 Mon 20:30] =>  1:22
 CLOCK: [2019-06-04 Tue 12:39]--[2019-06-04 Tue 13:12] =>  0:33
 CLOCK: [2020-10-13 Tue 13:38]--[2020-10-13 Tue 14:00] =>  0:22
 :END:
+- https://www.google.com/search?q=riboerase+adapter+trimming
 - https://genomics.sschmeier.com/ngs-qc/index.html?highlight=phix#phix-genome
 161. Lo,C.-C. and Chain,P.S.G. (2014) Rapid evaluation and quality
 control of next generation sequencing data with FaQCs. BMC
@@ -2125,7 +2135,7 @@ R/FPKM and C/TPM are "local" to the sample while TMM must be recalculated with d
 :PROPERTIES:
 :ID:       9D6324B7-D9A2-44ED-A54F-B0C0C8DCECE2
 :END:
-
+https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/
 - normalization for library size (i.e. sequencing depth) and transcript length
 - use to
   - compare a gene across samples or
@@ -3478,6 +3488,7 @@ CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 :LOGBOOK:
 CLOCK: [2019-06-26 Wed 14:06]--[2019-06-26 Wed 14:45] =>  0:39
 :END:
+cite:giacopelli2021prostate
 - Bisulfite sequencing
   - methylation protects/blocks cytosine conversion to uracil
   - PCR amp can produce forward/reverse with and without bisulfite block
@@ -3670,18 +3681,20 @@ Mass Spectrometry
 :PROPERTIES:
 :ID:       89b4ec6d-992d-4551-81da-19011597732a
 :END:
+:LOGBOOK:
+CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
+:END:
 - somascan examples
-    - https://www.ncbi.nlm.nih.gov/pubmed/27327800
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6277005/
-- https://www.somalogic.com/wp-content/uploads/2017/01/SSM-046-Rev-2-Verification-and-Validation-of-the-SOMAscan-Assay-1.3k.pdf
-- https://www.agilent.com/cs/library/eseminars/public/SomaLogic_Agilent_081816.pdf
-- http://mohanlab.bme.uh.edu/wp-content/uploads/2015/09/HOU-SOMAscan-Methods-2016.pdf
-
-- https://somalogic.com/wp-content/uploads/2017/06/SSM-002-Technical-White-Paper_010916_LSM1.pdf
-- https://somalogic.com/wp-content/uploads/2017/06/SSM-071-Rev-0-Technical-Note-SOMAscan-Data-Standardization.pdf
-- https://link.springer.com/protocol/10.1007%2F978-1-4939-9706-0_13
-- [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd][email: GTAC SOMAscan notes]]
+  - https://www.ncbi.nlm.nih.gov/pubmed/27327800
+- cite:yang2020
+- cite:joshi2018  
 - cite:candia2017 
+- cite:wilcox2016 
+- isolation for somascan
+  - http://mohanlab.bme.uh.edu/wp-content/uploads/2015/09/HOU-SOMAscan-Methods-2016.pdf
+- per-reviewed protocols
+  - https://link.springer.com/protocol/10.1007%2F978-1-4939-9706-0_13
+- [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd][email: GTAC SOMAscan notes]]
 - https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd
 - https://www.sciencedirect.com/science/article/pii/S1874391916304006
 - For protein, SOMAscan has a higher dynamic range and lower limit of detection than comparable Luminex antibody-based assays (cite doi.org/10.1038/s41591-019-0665-2). Moreover, SOMAscan includes targets such as Jagged-1 and -2 not available for multiplexed antibody assays.
@@ -3852,6 +3865,8 @@ CLOCK: [2019-07-07 Sun 09:58]--[2019-07-07 Sun 10:01] =>  0:03
 CLOCK: [2019-02-22 Fri 07:58]--[2019-02-22 Fri 08:39] =>  0:41
 CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :END:
+- Uniprot
+  - https://www.uniprot.org/help/query-fields
 *** Genome reference builds and associated sequences
 :PROPERTIES:
 :ID:       e9e201b5-4a94-4861-8de8-803676c3a37f
@@ -4432,6 +4447,11 @@ mandatory
 - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-018-4559-3#Sec15
 - https://haibol2016.github.io/ATACseqQCWorkshop/articles/ATACseqQC_workshop.html
 - https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2019/ChIPSeq/Materials/Practicals/Day5/Practical01_ATAC-seq_analysis_SS.html
+*** BEDOPS
+:PROPERTIES:
+:ID:       0be280ad-47b6-42f4-8a65-4fadadf4940b
+:END:
+https://bedops.readthedocs.io/en/latest/index.html
 *** bowtie
 :PROPERTIES:
 :ID:       8883a37b-867c-4c19-8e9c-2b46004125a1
@@ -4928,15 +4948,15 @@ CLOCK: [2021-01-26 Tue 11:53]--[2021-01-26 Tue 13:00] =>  1:07
 :END:
 - design
   - https://support.bioconductor.org/p/110163/
+  - handling nested designs https://support.bioconductor.org/p/64480/
+- a negative binomial GLM 
 - [[file:~/Box%20Sync/library/Love,16%20DESeq2%20manual.pdf][documentation]]
 - vignettes
   - [[https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#exploratory-analysis-and-visualization][gene workflow 19]]
   - [[http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#using-parallelization][package vignette]]
-- handling nested designs https://support.bioconductor.org/p/64480/
 - https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
 - https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf
 - [[file:~/Box%20Sync/library/Love,14%20Moderated%20estimation%20of%20fold%20change%20and%20dispersion%20for%20RNA%20seq%20data%20with%20DESeq2.pdf][Love,14 Moderated estimation of fold change and dispersion for RNA seq data with DESeq2]]
-- a negative binomial GLM 
 - http://www.nathalievilla.org/doc/html/solution-DESeq2-rnaseq.html
 - import functions
   | function          | package           | framework | output               | DESeq2 input function    |
