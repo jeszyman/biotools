@@ -50,13 +50,22 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 packages = c(
   "AnnotationDbi",
   "biomaRt",
+  "circlize",
   "ComplexHeatmap",
   "copynumber",
   "DESeq2",
   "DRIMSeq",
+  "edgeR",
   "fgsea",
+  "gage",
+  "gageData",  
   "GenomicFeatures",
+  "gplots",
   "limma",
+  "pathview",
+  "pheatmap",
+  "PoiClaClu",
+  "SummarizedExperiment",
   "tximport"
 )
 ##
@@ -2166,14 +2175,7 @@ https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-e
 [[file:work.org_imgs/20160419_132550_469_bk.png]]
 - corrects for less "sequencing real estate" due to high expression per tissue 
 
-***** RNA-seq probability and statistics
-:PROPERTIES:
-:ID:       33caca86-c950-4bca-be0b-c15d5dcf9741
-:END:
-https://mikelove.github.io/counts-model/
-- cite:li2018rnastat
-- https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
-- cite:gonzalez2014 
+
 ***** Exploratory data analysis
 :PROPERTIES:
 :ID:       77d2a559-9858-453a-83c5-a646bbf473a3
@@ -4447,6 +4449,11 @@ mandatory
 - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-018-4559-3#Sec15
 - https://haibol2016.github.io/ATACseqQCWorkshop/articles/ATACseqQC_workshop.html
 - https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2019/ChIPSeq/Materials/Practicals/Day5/Practical01_ATAC-seq_analysis_SS.html
+*** bedtools
+:PROPERTIES:
+:CREATED:  [2021-09-01 Wed 13:42]
+:END:
+
 *** BEDOPS
 :PROPERTIES:
 :ID:       0be280ad-47b6-42f4-8a65-4fadadf4940b
