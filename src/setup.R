@@ -6,12 +6,25 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 ##
 packages = c(
+  "AnnotationDbi",
   "biomaRt",
+  "circlize",
   "ComplexHeatmap",
-  "fgsea",
-  "limma",
   "copynumber",
-  "DESeq2"
+  "DESeq2",
+  "DRIMSeq",
+  "edgeR",
+  "fgsea",
+  "gage",
+  "gageData",  
+  "GenomicFeatures",
+  "gplots",
+  "limma",
+  "pathview",
+  "pheatmap",
+  "PoiClaClu",
+  "SummarizedExperiment",
+  "tximport"
 )
 ##
 ##NOTE requires libcurl4-openssl-dev https://stackoverflow.com/questions/11471690/curl-h-no-such-file-or-directory/11471743
