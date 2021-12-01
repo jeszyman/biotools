@@ -13,6 +13,7 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+- https://www.cancergenomicscloud.org/
 ** Setup
 :PROPERTIES:
 :ID:       06e0c839-8a84-4890-9939-71e1bb5e7c6c
@@ -1699,6 +1700,12 @@ assembly. J. Hum. Genet., 56, 406–414.
       - 
   - [[*STAR][STAR]]
 - HISAT2
+**** Mappability 
+:PROPERTIES:
+:ID:       347d4cc0-a25d-4636-96d4-65e6319022df
+:END:
+- http://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig
+- cite:derrien2012
 *** Sequence similarity and patterns
 :PROPERTIES:
 :ID:       508ac0df-9d93-4455-a451-cb876f83498d
@@ -1712,11 +1719,14 @@ assembly. J. Hum. Genet., 56, 406–414.
 CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
 :END:
 - cite:peneder2021     
-- cite:chabon2020
+  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
+- cite:chabon2020 - per individual mutant molecules- see "ctDNA fragment size analysis", R zoo for sliding window, relative enrichment per frag size   
+- cite:mouliere2018
+  - cite:mouliere2018a
 - DELFI (DNA evaluation of fragments for early interception)
   - short-to-long ratio by genomic bin cite:mathios2021
   - cite:cristiano2019 Delphi
-    - https://github.com/Cancer-Genomics/delfi_scripts
+  - https://github.com/Cancer-Genomics/delfi_scripts
 *** Sequence variation and variant calling
 :PROPERTIES:
 :ID:       57E81A44-3233-479B-8264-2CD5F1904A60
@@ -2273,6 +2283,8 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
+https://www.jci.org/articles/view/145973
+- https://cancerdiscovery.aacrjournals.org/content/early/2021/11/16/2159-8290.CD-21-0634.abstract
 - https://www.nature.com/articles/s41523-021-00237-5
 - https://royalsocietypublishing.org/doi/10.1098/rsob.200119
 - fragments for open chromatin and tissue of origin
@@ -2362,7 +2374,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
-https://tavareshugo.github.io/data-carpentry-rnaseq/03_rnaseq_pca.html#Running_PCA_using_prcomp()
+- https://tavareshugo.github.io/data-carpentry-rnaseq/03_rnaseq_pca.html#Running_PCA_using_prcomp()
 ***** General guides, github repos, training, etc
 :PROPERTIES:
 :ID:       945cb660-b2c2-4416-be64-b24b9fb79a0f
@@ -3864,6 +3876,14 @@ cite:buschmann2016 pg6011
 :PROPERTIES:
 :ID:       cbf67ef7-39ec-45ec-b599-cdc0e8590cf7
 :END:
+- cite:srinivasan2019
+- by fluid
+  - https://pubmed.ncbi.nlm.nih.gov/30380423/
+  - urine
+    - https://pubmed.ncbi.nlm.nih.gov/28303895/
+  - salivary
+    - https://pubmed.ncbi.nlm.nih.gov/28303895/
+    - - https://www.ncbi.nlm.nih.gov/pubmed/28961734
 - cite:coenen-stass2018
 - https://www.zotero.org/jeszyman3/search/mu%20transcriptional%20analysis/titleCreatorYear
 
@@ -4453,6 +4473,8 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
 :END:
+https://www.science.org/doi/10.1126/science.abj1541
+https://www.science.org/doi/10.1126/science.abj1541
 https://www.degruyter.com/document/doi/10.1515/hsz-2017-0104/html
 https://www.annualreviews.org/doi/10.1146/annurev-anchem-071015-041535
 https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/full/10.1002/pmic.201800247
@@ -4621,6 +4643,8 @@ https://www.nature.com/articles/d41586-021-01994-w
 - cite:wu2019
 - https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
 
+*** Machine learning in genomics and bioinformatics
+https://www.nature.com/articles/s41576-021-00434-9
 *** Bioinformatics visualization 
 :PROPERTIES:
 :ID:       DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
@@ -4708,7 +4732,7 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :ID:       59c43aa9-cfa1-4e03-b5fb-25c74f626352
 :END:
 cite:consortium2020
-***** miRNA data
+***** miRNA data sources
 :PROPERTIES:
 :ID:       95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88
 :END:
