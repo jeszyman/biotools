@@ -13,7 +13,11 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+- https://www.cancergenomicscloud.org/
 ** Setup
+:PROPERTIES:
+:ID:       06e0c839-8a84-4890-9939-71e1bb5e7c6c
+:END:
 #+begin_src bash
 repo="/home/jeszyman/repos/biotools"
 mkdir -p "${repo}/docker"
@@ -52,6 +56,7 @@ docker push jeszyman/$tag
 
 cd ~/repos/biotools/docker/
 docker build . --file biotools_Dockerfile --tag jeszyman/biotools
+docker push jeszyman/biotools
 #+end_src
 - run docker interactively 
   #+name: docker_interactive
@@ -110,6 +115,9 @@ docker_interactive() {
 }
 #+end_src
 **** Write Dockerfile
+:PROPERTIES:
+:ID:       400562f2-e750-46b3-98ef-84ea59d447c9
+:END:
 #+begin_src fundamental :tangle ./docker/biotools_Dockerfile
 FROM jeszyman/basecamp
 
@@ -927,6 +935,8 @@ done
 # get readmes
 #########1#########2#########3#########4#########5#########6#########7#########8
 #+end_src
+*** Database downloads
+- https://www.google.com/search?q=download+genbank+fasta 
 *** Platform and Workflows
 :PROPERTIES:
 :ID:       b7c65054-f648-4579-9c5f-7bedbe272b5c
@@ -982,8 +992,11 @@ https://singularity.lbl.gov/install-linux
 :PROPERTIES:
 :ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
 :END:
+- Subsetting
+  - [[Question: Selecting Random Pairs From Fastq?]]  
+  - [[https://www.biostars.org/p/6544/][look at all the ways to split a fastq file!]]
+  - https://www.google.com/search?q=subset+bam+file 
 - https://www.google.com/search?q=annotate+bed+file+with+gene+names 
-- [[Question: Selecting Random Pairs From Fastq?]]  
 - https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
 - [[https://www.biostars.org/p/68283/][count total length of regions in bed file]]
 - https://gatkforums.broadinstitute.org/gatk/discussion/6484/how-to-generate-an-unmapped-bam-from-fastq-or-aligned-bam
@@ -991,7 +1004,6 @@ https://singularity.lbl.gov/install-linux
 - https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
 - [[https://github.com/lh3/seqtk][seqtk]] 
 - https://gist.github.com/davfre/8596159
-- [[https://www.biostars.org/p/6544/][look at all the ways to split a fastq file!]]
 *** Code associated with sequence reference builds
 :PROPERTIES:
 :ID:       767e5e30-8490-4cda-8018-8b0bd91c4ef3
@@ -1059,6 +1071,7 @@ rsem-prepare-reference --gtf ./rn6.ensGene.gtf \
 :LOGBOOK:
 CLOCK: [2021-05-27 Thu 11:25]--[2021-05-27 Thu 11:38] =>  0:13
 :END:
+- https://www.youtube.com/user/IlluminaInc/playlists
 - https://support.illumina.com/downloads/sequencing_coverage_calculator.html
 
 - https://rochesequencingstore.com/wp-content/uploads/2017/10/KAPA-DI-Adapter-Kit_KR1318-%E2%80%93-v3.19.pdf
@@ -1070,7 +1083,7 @@ CLOCK: [2021-05-27 Thu 11:25]--[2021-05-27 Thu 11:38] =>  0:13
     - [[mu4e:msgid:33C61570-8F28-4ED8-B061-60E315F153D8@wustl.edu][Coverage for WGS]]
   - need depth plots depth (y) vs. 10kb bin x smooth across genome
     - https://www.biostars.org/p/104063/
-https://www.nature.com/articles/s41467-018-06159-4
+- https://www.nature.com/articles/s41467-018-06159-4
 **** General reference
 :PROPERTIES:
 :ID:       8438f135-bfc1-4d5e-8a02-f594a1d0773a
@@ -1260,21 +1273,15 @@ CLOCK: [2020-10-13 Tue 13:38]--[2020-10-13 Tue 14:00] =>  0:22
 :END:
 - https://www.google.com/search?q=riboerase+adapter+trimming
 - https://genomics.sschmeier.com/ngs-qc/index.html?highlight=phix#phix-genome
-161. Lo,C.-C. and Chain,P.S.G. (2014) Rapid evaluation and quality
+- 161. Lo,C.-C. and Chain,P.S.G. (2014) Rapid evaluation and quality
 control of next generation sequencing data with FaQCs. BMC
 Bioinformatics, 15, doi:10.1186/s12859-014-0366-2.
-
-
-. Chen,C., Khaleel,S.S., Huang,H. and Wu,C.H. (2014) Software for
+- . Chen,C., Khaleel,S.S., Huang,H. and Wu,C.H. (2014) Software for
 pre-processing Illumina next-generation sequencing short read
 sequences. Source Code Biol. Med., 9, doi:10.1186/1751-0473-9-8.
-
-
-165. Del Fabbro,C., Scalabrin,S., Morgante,M. and Giorgi,F.M. (2013)
+- 165. Del Fabbro,C., Scalabrin,S., Morgante,M. and Giorgi,F.M. (2013)
 An extensive evaluation of read trimming effects on Illumina NGS
 data analysis. PLoS One, 8, e85024.
-
-
 - raw read trimming and filtering
   - https://www.biostars.org/p/368420/
   - adapter
@@ -1656,6 +1663,70 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
 - cite:campbell2020
 - https://www.nejm.org/doi/10.1056/NEJMoa2024534?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub++0pubmed
 - duplication rate as a measure of lib complexity
+*** Nucleic acid sequence alignment
+:PROPERTIES:
+:ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
+:END:
+
+73. Li,H. and Homer,N. (2010) A survey of sequence alignment
+algorithms for next-generation sequencing. Brief. Bioinform., 11,
+473–483.
+174. Bao,S., Jiang,R., Kwan,W., Wang,B., Ma,X. and Song,Y.-Q. (2011)
+Evaluation of next-generation sequencing software in mapping and
+assembly. J. Hum. Genet., 56, 406–414.
+
+- hash table like BLAST or suffic/prefix like Burrows-Wheeler Transform
+- https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
+- prerequisites
+  - adaptor identification and trimming
+- pseudoaligner
+  - kallisto
+  - Salmon
+- Aligners
+  - TopHat2
+  - Specialized aligners
+    - Fusions
+      - TopHat Fusion
+        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html 
+      - STAR for chimeric reads / STAR-Fusion
+        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
+        - From cite:star_2.5_dobin Chapter 5
+        - From cite:dobin2015mapping Alternate Protocol 6
+          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
+        - additional outputs are
+          - Chimeric.out.sam
+          - Chimeric.out.junction- a STAR-specific format
+    - To transcriptome
+      - 
+  - [[*STAR][STAR]]
+- HISAT2
+**** Mappability 
+:PROPERTIES:
+:ID:       347d4cc0-a25d-4636-96d4-65e6319022df
+:END:
+- http://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig
+- cite:derrien2012
+*** Sequence similarity and patterns
+:PROPERTIES:
+:ID:       508ac0df-9d93-4455-a451-cb876f83498d
+:END:
+- https://www.nature.com/articles/nature12477
+**** Fragmentomics
+:PROPERTIES:
+:ID:       ee5eb087-d368-4dae-a249-d8d6bd913c4d
+:END:
+:LOGBOOK:
+CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
+:END:
+- cite:peneder2021     
+  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
+- cite:chabon2020 - per individual mutant molecules- see "ctDNA fragment size analysis", R zoo for sliding window, relative enrichment per frag size   
+- cite:mouliere2018
+  - cite:mouliere2018a
+- DELFI (DNA evaluation of fragments for early interception)
+  - short-to-long ratio by genomic bin cite:mathios2021
+  - cite:cristiano2019 Delphi
+  - https://github.com/Cancer-Genomics/delfi_scripts
 *** Sequence variation and variant calling
 :PROPERTIES:
 :ID:       57E81A44-3233-479B-8264-2CD5F1904A60
@@ -2171,6 +2242,7 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
 :END:
+- cite:shah2021
 - cite:bujak2020
 - cite:zviran2020
 - cite:feng2020 
@@ -2203,20 +2275,6 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 https://febs.onlinelibrary.wiley.com/doi/10.1111/febs.15568
 https://www.nature.com/articles/s41467-019-10332-8#Sec13
 
-*** Sequence similarity and patterns
-:PROPERTIES:
-:ID:       508ac0df-9d93-4455-a451-cb876f83498d
-:END:
-- https://www.nature.com/articles/nature12477
-**** Fragmentomics
-:PROPERTIES:
-:ID:       ee5eb087-d368-4dae-a249-d8d6bd913c4d
-:END:
-- cite:peneder2021     
-- cite:chabon2020
-- Delphi
-  - https://github.com/Cancer-Genomics/delfi_scripts
-  - cite:cristiano2019
 *** Analysis of cell-free nucleic acids
 :PROPERTIES:
 :ID:       906150c9-910e-464c-9d7f-d8608abf6c07
@@ -2225,6 +2283,11 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
+https://www.jci.org/articles/view/145973
+- https://cancerdiscovery.aacrjournals.org/content/early/2021/11/16/2159-8290.CD-21-0634.abstract
+- https://www.nature.com/articles/s41523-021-00237-5
+- https://royalsocietypublishing.org/doi/10.1098/rsob.200119
+- fragments for open chromatin and tissue of origin
 - phased seq https://www.sciencedirect.com/science/article/pii/S2666634021003202
 - cfDNA datasets-  https://generegulation.org/cfdna/
 - see  [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDNNMGQwVvHMjSKjBHhrkMLrS][jake's ulpwgs cfdna preprocessing]]
@@ -2244,6 +2307,11 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 - fragment size
   - https://www.nature.com/articles/s41586-020-2140-0
   - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
+***** nucleosome footprinting
+:PROPERTIES:
+:ID:       4c9ddac5-2e09-48e0-975f-ca5a8ac4c292
+:END:
+  - cite:snyder2016
 ***** Methods for analysis of WGS, WES, and off-target reads for cfDNA and ctDNA
 :PROPERTIES:
 :ID:       e387037a-85c0-4eda-a26f-9b6386e95a34
@@ -2252,47 +2320,13 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 - https://clincancerres.aacrjournals.org/content/26/11/2556#sec-6
 - cite:parikh2019
 
-**** cfRNA [[#larson2021][larson2021]]
+**** cfRNA
 :PROPERTIES:
 :ID:       f4d64349-0202-41e5-9143-39de3dd63d90
 :END:
-*** Nucleic acid sequence alignment
-:PROPERTIES:
-:ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
-:END:
-
-73. Li,H. and Homer,N. (2010) A survey of sequence alignment
-algorithms for next-generation sequencing. Brief. Bioinform., 11,
-473–483.
-174. Bao,S., Jiang,R., Kwan,W., Wang,B., Ma,X. and Song,Y.-Q. (2011)
-Evaluation of next-generation sequencing software in mapping and
-assembly. J. Hum. Genet., 56, 406–414.
-
-- hash table like BLAST or suffic/prefix like Burrows-Wheeler Transform
-- https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
-- prerequisites
-  - adaptor identification and trimming
-- pseudoaligner
-  - kallisto
-  - Salmon
-- Aligners
-  - TopHat2
-  - Specialized aligners
-    - Fusions
-      - TopHat Fusion
-        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html 
-      - STAR for chimeric reads / STAR-Fusion
-        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
-        - From cite:star_2.5_dobin Chapter 5
-        - From cite:dobin2015mapping Alternate Protocol 6
-          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
-        - additional outputs are
-          - Chimeric.out.sam
-          - Chimeric.out.junction- a STAR-specific format
-    - To transcriptome
-      - 
-  - [[*STAR][STAR]]
-- HISAT2
+https://mail.google.com/mail/u/0/#inbox/FMfcgzGlksDcrLMrdlPVPsVnzpdCNTsx
+ [[#larson2021][larson2021]]
+https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
 *** Allele-specific expression
 :PROPERTIES:
 :ID:       a52b4ca3-c3ca-4aec-b68a-01c1de39fc8a
@@ -2340,6 +2374,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+- https://tavareshugo.github.io/data-carpentry-rnaseq/03_rnaseq_pca.html#Running_PCA_using_prcomp()
 ***** General guides, github repos, training, etc
 :PROPERTIES:
 :ID:       945cb660-b2c2-4416-be64-b24b9fb79a0f
@@ -2977,6 +3012,7 @@ phenotypes with genetic marker data. Genet. Epidemiol., 31(Suppl.
 :PROPERTIES:
 :ID:       22a6e4a4-60c2-44cf-8e5a-3ff351a02aa3
 :END:
+https://old.reddit.com/r/AskStatistics/comments/qcxb6c/evaluation_of_clustering_rand_index_and_nmi_i_do/
 https://developers.google.com/machine-learning/clustering/clustering-algorithms
 https://www.analyticsvidhya.com/blog/2016/11/an-introduction-to-clustering-and-different-methods-of-clustering/
 https://www.datanovia.com/en/lessons/cluster-analysis-example-quick-start-r-code/
@@ -3190,11 +3226,17 @@ doi:10.2202/1544-6115.1637.
     - no SNV discovery
     - no fusion
     - "RNA-seq provides much more detailed information on specific transcript expression patterns in clinico-genetic neuroblastoma subgroups than microarrays. " cite:zhang2015comparison
-- extracellular
-  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5426982/
-  - [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO circulating rna]]
-  - - cell of origin -- https://www.biorxiv.org/content/10.1101/2021.05.05.441859v1.full
 
+****** Extracellular RNA (exRNA)
+:PROPERTIES:
+:ID:       76718cf1-9fdf-4955-8733-3f8423915844
+:END:
+- https://www.sciencedirect.com/science/article/pii/S0092867419301679?via%3Dihub#sec4
+- https://www.sciencedirect.com/science/article/pii/S2211124720315412?via%3Dihub
+- https://www.sciencedirect.com/science/article/pii/S0092867419302855?via%3Dihub
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5426982/
+- [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO circulating rna]]
+- - cell of origin -- https://www.biorxiv.org/content/10.1101/2021.05.05.441859v1.full
 ***** Integrated miRNA-mRNA analysis
 :PROPERTIES:
 :ID:       82aafb6f-63a8-4ab7-867a-9add0e0c224a
@@ -3208,6 +3250,7 @@ doi:10.2202/1544-6115.1637.
 :PROPERTIES:
 :ID:       33823415-f2e4-4cdf-b3aa-a01000b35249
 :END:
+- https://academic.oup.com/bib/article/22/2/1706/5758193
 ****** Bulk RNA
 :PROPERTIES:
 :ID:       933724d3-ef49-46f9-9b60-63372c236a98
@@ -3833,6 +3876,14 @@ cite:buschmann2016 pg6011
 :PROPERTIES:
 :ID:       cbf67ef7-39ec-45ec-b599-cdc0e8590cf7
 :END:
+- cite:srinivasan2019
+- by fluid
+  - https://pubmed.ncbi.nlm.nih.gov/30380423/
+  - urine
+    - https://pubmed.ncbi.nlm.nih.gov/28303895/
+  - salivary
+    - https://pubmed.ncbi.nlm.nih.gov/28303895/
+    - - https://www.ncbi.nlm.nih.gov/pubmed/28961734
 - cite:coenen-stass2018
 - https://www.zotero.org/jeszyman3/search/mu%20transcriptional%20analysis/titleCreatorYear
 
@@ -4422,6 +4473,8 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
 :END:
+https://www.science.org/doi/10.1126/science.abj1541
+https://www.science.org/doi/10.1126/science.abj1541
 https://www.degruyter.com/document/doi/10.1515/hsz-2017-0104/html
 https://www.annualreviews.org/doi/10.1146/annurev-anchem-071015-041535
 https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/full/10.1002/pmic.201800247
@@ -4590,6 +4643,8 @@ https://www.nature.com/articles/d41586-021-01994-w
 - cite:wu2019
 - https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
 
+*** Machine learning in genomics and bioinformatics
+https://www.nature.com/articles/s41576-021-00434-9
 *** Bioinformatics visualization 
 :PROPERTIES:
 :ID:       DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
@@ -4640,10 +4695,6 @@ https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
 https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Giraud_visualisation-IGV_TP_EBA-2014-10.pdf
 [[http://software.broadinstitute.org/software/igv/UserGuide][User Guide]]
 
-*** Special contexts
-:PROPERTIES:
-:ID:       b0c9bed7-0ff7-47ff-a10d-4fa632f4155e
-:END:
 ** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][LINK TO Information Science / Data Science]]
 :PROPERTIES:
 :ID:       014218e1-bb8b-4282-84ec-84354c29b8f5
@@ -4681,7 +4732,7 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 :ID:       59c43aa9-cfa1-4e03-b5fb-25c74f626352
 :END:
 cite:consortium2020
-***** miRNA data
+***** miRNA data sources
 :PROPERTIES:
 :ID:       95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88
 :END:
@@ -5353,6 +5404,8 @@ https://github.com/Illumina/canvas
 :ID:       6fdb7ece-efbb-4523-a7a5-7dd594d199dd
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
+- https://www.cell.com/cell/fulltext/S0092-8674(21)01061-8?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867421010618%3Fshowall%3Dtrue
+- https://ecotyper.stanford.edu/
 - https://cytotrace.stanford.edu/
 *** cnvkit                                                          :biotool:
 :PROPERTIES:
@@ -6341,92 +6394,7 @@ https://pathvisio.github.io/
     | sam to bam        | samtools view -bS test.sam > test.bam             |
     | remove unmapped   | samtools view -h -F 4 file.bam                    |
 
-*** snakemake                                                       :biotool:
-:PROPERTIES:
-:ID:       a8b27140-4b9e-40c5-86ab-ee5afeae723f
-:CREATED:  [2021-09-13 Mon 07:29]
-:END:
-:LOGBOOK:
-CLOCK: [2021-07-01 Thu 11:18]--[2021-07-01 Thu 11:48] =>  0:30
-:END:
-https://lachlandeer.github.io/snakemake-econ-r-tutorial/config-files.html
-https://github.com/snakemake-workflows/rna-seq-star-deseq2/blob/master/workflow/rules/diffexp.smk
-https://github.com/csoneson/ARMOR
-https://github.com/slowkow/snakefiles/blob/master/kallisto/Snakefile
-https://lachlandeer.github.io/snakemake-econ-r-tutorial/initial-steps-with-snakemake.html
-- for repos, git ignore the singularity build 
-- https://github.com/EnvGen/snakemake-workflows
-- 
-  #+name: 
-  #+begin_src bash
-source ~/repos/biotools/src/functions.sh
-docker_interactive
-biotools
-
-#
-mkdir -p /tmp/snakemake-tutorial
-cd /tmp/snakemake-tutorial
-#
-wget https://github.com/snakemake/snakemake-tutorial-data/archive/v5.24.1.tar.gz
-#
-tar --wildcards -xf v5.24.1.tar.gz --strip 1 "*/data" "*/environment.yaml"
-ls
-
-#
-snakemake --help
-
-snakemake -np mapped_reads/A.bam
-#+end_src
-- https://reproducibility.sschmeier.com/index.html
-- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
-- [[https://snakemake.readthedocs.io/en/stable/index.html][documentation]]
-  - [[Snakemake Tutorial][Snakemake Tutorial]]
-  #+name: snakemake_tutorial
-#+begin_src bash
-sudo apt-get install singularity-container
-
-cd ~/snakemake-tutorial/
-
-conda activate snakemake-tutorial
-
-
-snakemake -p --cores 2 sorted_reads/{A,B}.bam
-#    --dry-run \
-
-snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
-
-expand("sorted_reads/{sample}.bam", sample=SAMPLES)
-
-snakemake -p --cores 2 plots/quals.svg
-
-snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
-
-snakemake --cores 20 --forceall --summary
-
-snakemake --cores 20 --forceall
-
-conda install pygraphviz
-
-snakemake --report report.html
-
-open report.html
-
-snakemake --cores 20 --forceall
-#+end_src
-- [[https://snakemake.readthedocs.io/en/stable/index.html][Documentation]]
-- Processes and commands
-  - install and setup
-    - via miniconda
-      - [[https://docs.anaconda.com/anaconda/install/multi-user/][install multi-user miniconda]] 
-    - add singularity
-      - 
-  - docker - https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html?highlight=docker#running-jobs-in-containers
-- Standards and best practice
-  - https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html#snakefiles-best-practices
-- Applications
-- Reference
-  - [[EA056C38-9DE6-47EE-A75B-0FCBAE62372B][YASnippets]]
-    
+*** [[id:a8b27140-4b9e-40c5-86ab-ee5afeae723f][LINK TO snakemake]]
 *** STAR                                                            :biotool:
 :PROPERTIES:
 :ID:       d1d5d554-57c4-4b9c-8385-2bb72369375e
@@ -7021,6 +6989,7 @@ Gene set
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://med.stanford.edu/dbds/education/workshops-in-biostatistics/workshop-archives.html
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5302158/
 - https://www.reddit.com/r/bioinformatics/comments/pt7ecx/to_all_the_seasoned_bioinformaticians_out_there/
 - https://github.com/genome/bfx-workshop/blob/master/README.md#communications
