@@ -31,6 +31,7 @@ mkdir -p "${repo}/docker"
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
+https://www.nature.com/articles/s41587-018-0006-x
 *** Setup
 :PROPERTIES:
 :ID:       03d2e84c-f016-4e3b-ba9c-9afe7d0656cc
@@ -118,82 +119,114 @@ docker_interactive() {
 :PROPERTIES:
 :ID:       400562f2-e750-46b3-98ef-84ea59d447c9
 :END:
-#+begin_src fundamental :tangle ./docker/biotools_Dockerfile
-FROM jeszyman/basecamp
+:LOGBOOK:
+CLOCK: [2021-12-09 Thu 16:19]
+:END:
+#+begin_src bash :tangle ./docker/biotools_Dockerfile
+#########1#########2#########3#########4#########5#########6#########7#########8
 
-#########1#########2#########3#########4#########5#########6#########7
+###################################################################
+###################################################################
+###   Dockerfile to build a basic bioinformatics docker image   ###
+###################################################################
+###################################################################
+
 #############
 ### Notes ###
 #############
-## All tool builds are independent, except using apt or Conda 
-## Tools are preferentially
-### 1) managed by apt or 
-### 2) installed into /opt/
-## See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 #
+# After build, the image will be pushed to the dockerhub as
+# jeszyman/biotools
+# (https://hub.docker.com/repository/docker/jeszyman/atac)
 #
-#
-############################
-### Python 3.6 and Conda ###
-############################
-#
-#
-# Alphebetical 
-RUN conda install -c bioconda pysam
+# See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
+FROM jeszyman/basecamp
+
+#############
+### Conda ###
+#############
+
+RUN conda install -c bioconda bbmap
 RUN conda install -c bioconda bcftools
+RUN conda install -c bioconda bedops
 RUN conda install -c bioconda bedtools
+RUN conda install -c bioconda bowtie
 RUN conda install -c bioconda bowtie2
 RUN conda install -c bioconda bwa
 RUN conda install -c bioconda cutadapt
 RUN conda install -c bioconda deeptools
 RUN conda install -c bioconda fastp
 RUN conda install -c bioconda fastqc
+RUN conda install -c bioconda flexbar
 RUN conda install -c bioconda gatk
+RUN conda install -c bioconda goleft
 RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda mosdepth
+RUN conda install -c bioconda multiqc
 RUN conda install -c bioconda picard
 RUN conda install -c bioconda preseq
 RUN conda install -c bioconda qualimap
+RUN conda install -c bioconda pysam
+RUN conda install -c bioconda rsem 
 RUN conda install -c bioconda salmon
 RUN conda install -c bioconda sambamba
 RUN conda install -c bioconda samblaster
-RUN conda install -c bioconda samtools
+RUN conda install -c bioconda samtools=1.9 --force-reinstall
 RUN conda install -c bioconda seqkit
+RUN conda install -c bioconda seqtk
 RUN conda install -c bioconda skewer
+RUN conda install -c bioconda snakemake
 RUN conda install -c bioconda star
+RUN conda install -c bioconda subread
 RUN conda install -c bioconda vcftools
-RUN conda install -c bioconda bedops
-RUN conda install -c bioconda goleft
-#
-# TMP NEED TO REMOVE CRAN FROM APT BELOW
 
-#########
-### R ###
-#########
-#
+# To avoid conflict with jeszyman/basecamp R install
+RUN conda uninstall r-base
+
+##########################
+###   R Bioconductor   ###
+##########################
+
+RUN R -e 'install.packages("BiocManager"); \
+          BiocManager::install(); \
+          BiocManager::install(c("BSgenome.Hsapiens.UCSC.hg19", \
+                                 "DESeq2", \
+                                 "EnsDb.Mmusculus.v79", \
+                                 "org.Mm.eg.db", \
+                                 "readr", \
+                                 "Rsamtools", \
+                                 "TxDb.Mmusculus.UCSC.mm10.ensGene", \
+                                 "tximport"));'
+
+#+end_src
+#+begin_src fundamental :tangle ./docker/biotools_Dockerfile
 RUN R -e 'install.packages("BiocManager"); \
     BiocManager::install(); \
-    BiocManager::install("DESeq2"); \
-    BiocManager::install("polyester"); \    
-    BiocManager::install("readr"); \
-    BiocManager::install("tximport");'
-#
-# Get test data
-##
-#
-###############################################################
-### ^^^ BUILDS INDEPENDENTLY VALIDATED ABOVE THIS POINT ^^^ ### 
-### Last successful build 2020-01-14 15:26 CST              ###
-###############################################################
-#
-### TESTING ###
-### Installs below this point are not individually validated and my require dependencies from above
-# multiqc
-## Set the locale
-## https://stackoverflow.com/questions/28405902/how-to-set-the-locale-inside-a-debian-ubuntu-docker-container#28406007
-#
-RUN pip install -U multiqc
-#
+    BiocManager::install(c("AnnotationDbi", \
+                           "biomaRt", \
+                           "circlize", \
+                           "ComplexHeatmap", \
+                           "copynumber", \
+                           "DESeq2", \
+                           "DRIMSeq", \
+                           "edgeR", \
+                           "fgsea", \
+                           "gage", \
+                           "gageData", \  
+                           "GenomicFeatures", \
+                           "gplots", \
+                           "limma", \
+                           "pathview", \
+                           "pheatmap", \
+                           "PoiClaClu", \
+                           "SummarizedExperiment", \
+                           "tximport"));'
+
+
+#+end_src
+- Old code
+  #
 # cnvkit
 RUN pip install -U cython
 #FAILS [2021-02-17] RUN pip install -U future futures pandas pomegranate pyfaidx
@@ -686,7 +719,20 @@ RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::
 # # RUN apt-get update && apt-get install -y python3.6 
 
 
-RUN apt-get update -y && apt-get install -y emacs
+###############################################################
+### ^^^ BUILDS INDEPENDENTLY VALIDATED ABOVE THIS POINT ^^^ ### 
+### Last successful build 2020-01-14 15:26 CST              ###
+###############################################################
+#
+### TESTING ###
+### Installs below this point are not individually validated and my require dependencies from above
+# multiqc
+## Set the locale
+## https://stackoverflow.com/questions/28405902/how-to-set-the-locale-inside-a-debian-ubuntu-docker-container#28406007
+#
+RUN pip install -U multiqc
+
+
 
 
 ##############
@@ -704,11 +750,9 @@ RUN apt-get update -y && apt-get install -y emacs
 #RUN cd /opt/simNGS/src && make -f Makefile.linux
 #ENV PATH="/opt/simNGS/bin:${PATH}"
 
-RUN conda install -c bioconda seqtk
-RUN apt-get install -qq --no-install-recommends --allow-unauthenticated \
-libcurl4-openssl-dev
+
 #
-RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("BSgenome.Hsapiens.UCSC.hg19");'
+RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install(
 #
 # WORKS TO HERE [2020-09-21]
 #
@@ -726,12 +770,7 @@ RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::
 # RUN chown -R root:root /opt/GISTIC2
 # ENV MCR_ROOT=/opt/GISTIC2/MATLAB_Compiler_Runtime
 #
-RUN apt-get install -qq --no-install-recommends --allow-unauthenticated \
-libxmu-dev
 
-RUN conda install -c bioconda rsem 
-RUN conda install -c bioconda bbmap
-RUN conda install -c bioconda snakemake
 #
 #RUN conda install -c bioconda mirge3
 #
@@ -741,7 +780,7 @@ RUN conda install -c bioconda snakemake
 #
 #########1#########2#########3#########4#########5#########6#########7#########8
 #
-RUN R -e "install.packages('devtools')"
+
 #########1#########2#########3#########4#########5#########6#########7#########8
 #
 # ichorCNA
@@ -767,63 +806,7 @@ RUN cd /opt \
 ##
 #RUN echo "source activate py2" > ~/.bashrc
 #ENV PATH /opt/conda/envs/py2/bin:$PATH
-#
-RUN conda install -c bioconda bowtie
-#
-RUN conda install -c bioconda mirdeep2
-#
-RUN R -e 'install.packages("optparse")'
-#
-RUN conda uninstall r-base
-#
-#RUN conda install -c bioconda flexbar
-#
-RUN apt-get update \
-   && apt-get install -y \
-   screen
 
-#########1#########2#########3#########4#########5#########6#########7#########8
-#
-# NOTE: Default, most recent bioconda salmon incompatible with ubuntu build,
-#  see 
-#
-RUN conda config --append channels conda-forge
-#
-RUN conda create -c bioconda -n salmon salmon=1.5.0-0
-
-#
-RUN conda create -c bioconda -n flexbar flexbar=3.5.0
-
-#
-
-
-RUN conda install -c bioconda subread
-#+end_src
-#+begin_src fundamental :tangle ./docker/biotools_Dockerfile
-RUN R -e 'install.packages("BiocManager"); \
-    BiocManager::install(); \
-    BiocManager::install(c("AnnotationDbi", \
-                           "biomaRt", \
-                           "circlize", \
-                           "ComplexHeatmap", \
-                           "copynumber", \
-                           "DESeq2", \
-                           "DRIMSeq", \
-                           "edgeR", \
-                           "fgsea", \
-                           "gage", \
-                           "gageData", \  
-                           "GenomicFeatures", \
-                           "gplots", \
-                           "limma", \
-                           "pathview", \
-                           "pheatmap", \
-                           "PoiClaClu", \
-                           "SummarizedExperiment", \
-                           "tximport"));'
-
-
-#+end_src
 **** R bioinformatics setup
 :PROPERTIES:
 :ID:       87b498a6-e553-4682-8038-96bbb21fda14
@@ -5228,7 +5211,8 @@ mandatory
   - https://gatkforums.broadinstitute.org/gatk/discussion/6472/read-groups
 
 
-** Tools
+** Bioinformatics software
+*** Bioinformatics software flat list
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
@@ -5281,7 +5265,7 @@ CLOCK: [2021-09-13 Mon 07:27]--[2021-09-13 Mon 07:46] =>  0:19
 |----------------------------+----------+-------+------+-----+-----------+-------------|
 |                            |          |       |      |     |           |             |
 #+end:
-*** table of tools
+**** table of tools
 :PROPERTIES:
 :ID:       a0923938-4021-44cd-a8f3-94c0eb10cdb5
 :END:
@@ -5336,7 +5320,7 @@ CLOCK: [2021-09-13 Mon 07:27]--[2021-09-13 Mon 07:46] =>  0:19
 | tophat2        |                   |           |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                        |
 | tximport       |                   |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
 | WGCNA          |                   |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] |                        |
-*** ATACseqQC                                                       :biotool:
+**** ATACseqQC                                                      :biotool:
 :PROPERTIES:
 :ID:       a5b73c70-3f1f-4018-92b2-bfdcaed53cf5
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5350,26 +5334,26 @@ CLOCK: [2021-09-13 Mon 07:27]--[2021-09-13 Mon 07:46] =>  0:19
 - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-018-4559-3#Sec15
 - https://haibol2016.github.io/ATACseqQCWorkshop/articles/ATACseqQC_workshop.html
 - https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2019/ChIPSeq/Materials/Practicals/Day5/Practical01_ATAC-seq_analysis_SS.html
-*** bedtools                                                        :biotool:
+**** bedtools                                                       :biotool:
 :PROPERTIES:
 :CREATED:  [2021-09-01 Wed 13:42]
 :ID:       05f314e8-f402-45cb-ac1f-e3dece4f3114
 :END:
 
-*** BEDOPS                                                          :biotool:
+**** BEDOPS                                                         :biotool:
 :PROPERTIES:
 :ID:       0be280ad-47b6-42f4-8a65-4fadadf4940b
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 https://bedops.readthedocs.io/en/latest/index.html
-*** bowtie                                                          :biotool:
+**** bowtie                                                         :biotool:
 :PROPERTIES:
 :ID:       8883a37b-867c-4c19-8e9c-2b46004125a1
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 - [[https://currentprotocols.onlinelibrary.wiley.com/doi/10.1002/0471250953.bi1107s32][protocol paper]]
 - [[http://bowtie-bio.sourceforge.net/index.shtml][doc]]
-*** BBmap / BBSplit                                                 :biotool:
+**** BBmap / BBSplit                                                :biotool:
 :PROPERTIES:
 :ID:       52363054-5138-419c-8d45-4ec9b0b02b24
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5381,13 +5365,13 @@ https://bedops.readthedocs.io/en/latest/index.html
 - http://seqanswers.com/forums/showthread.php?t=41288
 - [ ] BBSplit in BBmap - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwJZJWQrGSPgdPGNfStWbxXkmhP][email]]]]
 - https://www.google.com/search?q=bbmap+docker use bioconda
-*** BLAT                                                            :biotool:
+**** BLAT                                                           :biotool:
 :PROPERTIES:
 :ID:       6e44c130-0eaa-4e44-8c12-c7c8125ab9ec
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
   - https://www.youtube.com/watch?v=E6DDNGDXH8A
-*** canvas                                                          :biotool:
+**** canvas                                                         :biotool:
 :PROPERTIES:
 :ID:       74ef57cd-c44a-4f28-b4a1-5a54a82ce5a3
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5399,7 +5383,7 @@ https://github.com/Illumina/canvas
   - for cah https://bioconductor.org/packages/release/bioc/html/DNAcopy.html
 
 
-*** CIBERSORTx and cytotrace                                        :biotool:
+**** CIBERSORTx and cytotrace                                       :biotool:
 :PROPERTIES:
 :ID:       6fdb7ece-efbb-4523-a7a5-7dd594d199dd
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5407,7 +5391,7 @@ https://github.com/Illumina/canvas
 - https://www.cell.com/cell/fulltext/S0092-8674(21)01061-8?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867421010618%3Fshowall%3Dtrue
 - https://ecotyper.stanford.edu/
 - https://cytotrace.stanford.edu/
-*** cnvkit                                                          :biotool:
+**** cnvkit                                                         :biotool:
 :PROPERTIES:
 :ID:       b471102b-2e5a-4d67-97e6-b03cf4d923b9
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5466,21 +5450,21 @@ cnvkit.py batch /duo4/mpnst/downsample-bam/pn*.sorted.bam /duo4/mpnst/downsample
 - sequence file manipulation
   - https://gist.github.com/davfre/8596159
   - [[https://www.biostars.org/p/6544/][look at all the ways to split a bam file!]]
-*** complexheatmap                                                  :biotool:
+**** complexheatmap                                                 :biotool:
 :PROPERTIES:
 :ID:       af78e4e0-a184-480f-95ac-ce9a0db35246
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
 - https://www.biostars.org/p/286187/#286507
-*** Cytoscape                                                       :biotool:
+**** Cytoscape                                                      :biotool:
 :PROPERTIES:
 :ID:       46cf789e-d185-46da-bb32-8cf6113f3425
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 - [[http://manual.cytoscape.org/en/stable/index.html][documentation]]
 - https://stackoverflow.com/questions/tagged/cytoscape
-*** DESeq2                                                          :biotool:
+**** DESeq2                                                         :biotool:
 :PROPERTIES:
 :ID:       2F642F69-A9C8-46DA-BE31-783AC8D4F4B6
 :CREATED:  [2021-01-27 Wed 07:00]
@@ -5508,13 +5492,13 @@ CLOCK: [2021-01-26 Tue 11:53]--[2021-01-26 Tue 13:00] =>  1:07
   | featureCounts     | Rsubread          | R         | matrix               | DESeqDataSetFromMatrix   |
   | tximport          | tximport          | R         | list of matrices     | DESeqDataSetFromTximport |
   | htseq-count       | HTSeq             | Python    | files                | DESeqDataSetFromHTSeq    |
-**** Examples- see [[file:~/Box%20Sync/comp_bio/deseq2_template/][deseq2_template]] 
+***** Examples- see [[file:~/Box%20Sync/comp_bio/deseq2_template/][deseq2_template]] 
 :PROPERTIES:
 :ID:       5C8E2A3B-2C16-4FB3-9F86-5A1D8AD4802F
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-***** DONE Example 1: [[file:~/Box%20Sync/comp_bio/deseq2_template/Love,15%20RNA%20seq%20workflow%20gene%20level%20exploratory%20analysis%20and%20differential%20expression.pdf][Love,15 Airway]]
+****** DONE Example 1: [[file:~/Box%20Sync/comp_bio/deseq2_template/Love,15%20RNA%20seq%20workflow%20gene%20level%20exploratory%20analysis%20and%20differential%20expression.pdf][Love,15 Airway]]
 CLOSED: [2016-06-27 Mon 14:45]
 :PROPERTIES:
 :ID:       791A1ABC-4138-4CD2-82AE-63905C053571
@@ -5529,7 +5513,7 @@ CLOCK: [2016-06-22 Wed 12:09]--[2016-06-22 Wed 12:57] =>  0:48
 CLOCK: [2016-06-22 Wed 11:40]--[2016-06-22 Wed 11:46] =>  0:06
 :END:      
 
-***** DONE Example 2: [[file:~/Box%20Sync/comp_bio/deseq2_template/https___software.rc.fas.harvard.edu_ngsdata_workshops_2015_March_DESeq2_fruitfly.pdf][Drosophila]]
+****** DONE Example 2: [[file:~/Box%20Sync/comp_bio/deseq2_template/https___software.rc.fas.harvard.edu_ngsdata_workshops_2015_March_DESeq2_fruitfly.pdf][Drosophila]]
 CLOSED: [2016-06-27 Mon 14:45]
 :PROPERTIES:
 :ID:       CC047BA0-35A3-420B-BB60-CA1AA7AE275B
@@ -5538,7 +5522,7 @@ CLOSED: [2016-06-27 Mon 14:45]
 
 https://software.rc.fas.harvard.edu/ngsdata/workshops/2015_March/DESeq2_fruitfly.html
 
-***** DONE Example 3: Hox
+****** DONE Example 3: Hox
 CLOSED: [2016-06-28 Tue 13:48]
 :PROPERTIES:
 :ID:       97126EA4-E1CD-4CD5-9746-A7C9393DF712
@@ -5547,7 +5531,7 @@ CLOSED: [2016-06-28 Tue 13:48]
 
 http://www.gettinggeneticsdone.com/2015/12/tutorial-rna-seq-differential.html
 
-***** Example 4 [[file:~/Box%20Sync/comp_bio/Love,16%20Differential%20analysis%20of%20RNA%20seq%20data%20using%20the%20DESeq2%20package.pdf][Love,16 Differential analysis of RNA seq data the DESeq2 package]]
+****** Example 4 [[file:~/Box%20Sync/comp_bio/Love,16%20Differential%20analysis%20of%20RNA%20seq%20data%20using%20the%20DESeq2%20package.pdf][Love,16 Differential analysis of RNA seq data the DESeq2 package]]
 :PROPERTIES:
 :ID:       61BDAC0E-3F02-482A-868E-93AC26B33361
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5560,19 +5544,19 @@ CLOCK: [2016-06-20 Mon 13:48]--[2016-06-20 Mon 14:21] =>  0:33
 CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 :END:      
 
-****** Standard workflow
+******* Standard workflow
 :PROPERTIES:
 :ID:       ABBDC255-8B16-4598-AA75-6D0ADAD3E48E
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Input data
+******** Input data
 :PROPERTIES:
 :ID:       71704A3E-FEE2-4363-BA67-4CA68D516375
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******** SummarizedExperiment input
+********* SummarizedExperiment input
 :PROPERTIES:
 :ID:       F4CCA76E-3FBE-4E20-B6DE-69FB848D7123
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5585,7 +5569,7 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
     - put variable of interest at end of formula
 - Preferred count algorithm is summarizedOverlaps w/ mode="Union"
 
-******** Pre-filtering
+********* Pre-filtering
 :PROPERTIES:
 :ID:       1D88E488-4AFA-4A0F-A994-3C1664B5D156
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5597,13 +5581,13 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
   - increases processing speed and reduces memory
   - b/ not necessary for DESeq2 function
 
-******* Exploring and exporting results
+******** Exploring and exporting results
 :PROPERTIES:
 :ID:       B87063F9-4578-440B-BF94-9DF134AF438A
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******** MA-plot
+********* MA-plot
 :PROPERTIES:
 :ID:       BBEB1ADB-F328-4B7B-807D-F8C158D60083
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5613,7 +5597,7 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 - after calling plotMA, the identify function can interactively select dots
 - for unshrunken results, add addMLE=T to get a column called lfcMLE 
 
-******** Plot counts
+********* Plot counts
 :PROPERTIES:
 :ID:       CB3647FE-90B2-47AD-8E89-AA206A6C207F
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5621,7 +5605,7 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 
 - plotCounts will give counts normalized by sequencing depth for a specific gene 
 
-******** p values set to NA
+********* p values set to NA
 :PROPERTIES:
 :ID:       F28D686F-0E61-42C9-81DB-6BD581223377
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5631,19 +5615,19 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 - rows w/ extreme count outlier by Cook's distance
 - low mean normalized count (here only the p value will be NA) 
 
-******** Rich visualization and reporting of results- checkout Bioconductor packages [[http://bioconductor.org/packages/release/bioc/html/ReportingTools.html][ReportingTools]], regionReport, [[http://bioconductor.org/packages/release/bioc/html/Glimma.html][Glimma]], and pcaExplorer
+********* Rich visualization and reporting of results- checkout Bioconductor packages [[http://bioconductor.org/packages/release/bioc/html/ReportingTools.html][ReportingTools]], regionReport, [[http://bioconductor.org/packages/release/bioc/html/Glimma.html][Glimma]], and pcaExplorer
 :PROPERTIES:
 :ID:       8CE69F91-1AFB-477A-996A-95212336AD6D
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-****** Data transformations and visualization
+******* Data transformations and visualization
 :PROPERTIES:
 :ID:       99C0CCAA-43A0-4E37-8C72-98617C51D928
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Count data transformations
+******** Count data transformations
 :PROPERTIES:
 :ID:       3E7192A1-175C-4D3A-A5E7-08D6CC64DCEC
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5656,7 +5640,7 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
     - rlog
     - VST (variance stabilizing transformations) 
 
-******** Blind dispersion estimation
+********* Blind dispersion estimation
 :PROPERTIES:
 :ID:       BFA60D58-A2E6-49F4-9912-2CF15D0BD356
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5665,13 +5649,13 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 - blind to sample information is default
 - change if many/most genes will have large differences- can be checked with MA over-shrinking 
 
-****** Variations to the standard workflow
+******* Variations to the standard workflow
 :PROPERTIES:
 :ID:       7A2DB9FE-8DE5-481A-9C1A-4F26DC867582
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Contrasts
+******** Contrasts
 :PROPERTIES:
 :ID:       A6AC8C5D-8828-4B96-BDB4-760B1F0DE0BA
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5681,13 +5665,13 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
   - i.e. w/ levels A,B,C, test all possible differences of A vs B, A vs C, B vs C, ... 
   - linear combination of estimated log2 fold changes
 
-******* Interactions- tests whether log2 fold change attributable to one condition is different based on another condition
+******** Interactions- tests whether log2 fold change attributable to one condition is different based on another condition
 :PROPERTIES:
 :ID:       E2EE7973-FFB1-4842-83E8-665DCCA8F2C9
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Likelihood ratio test
+******** Likelihood ratio test
 :PROPERTIES:
 :ID:       F15FCEE5-B88F-4712-B3B1-03C576F8E44F
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5698,7 +5682,7 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
   - asks whether full model (w/ groups) and reduced model (w/ some terms removed) are different
   - like a ANOVA except this is analysis of deviance
 
-******* Approach to count outliers
+******** Approach to count outliers
 :PROPERTIES:
 :ID:       682697F8-D316-4A04-9B6D-8BCB0261DE15
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5710,7 +5694,7 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
   - @ >6 samples, instead of eliminating gene, the outlier is replaced w/ the trimmed mean over all samples
   - not run when continuous variables are in the design 
 
-******* Independent filtering of results
+******** Independent filtering of results
 :PROPERTIES:
 :ID:       0778E394-2A3A-4952-9126-668AC8162D3A
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5718,193 +5702,193 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 
 results function maximizes p values less than * over quantiles of mean normalized counts
 
-******* Tests of log2 fold change above or below a threshold
+******** Tests of log2 fold change above or below a threshold
 :PROPERTIES:
 :ID:       70E0F04B-9D6B-4C11-A34E-6EE2FB008185
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Access to all calculated values
+******** Access to all calculated values
 :PROPERTIES:
 :ID:       60580A3B-7A73-45A0-984F-0E83E5B6F2EC
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Sample-/gene-dependent normalization factors
+******** Sample-/gene-dependent normalization factors
 :PROPERTIES:
 :ID:       BB95C4F2-763B-447D-A840-372588D43C79
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* “Model matrix not full rank”
+******** “Model matrix not full rank”
 :PROPERTIES:
 :ID:       7F14D356-858D-46DD-9044-C1A6CD2F8A08
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******** Linear combinations
+********* Linear combinations
 :PROPERTIES:
 :ID:       D9625DD4-D506-4E43-836D-9E0CDDCB9A79
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******** Levels without samples
+********* Levels without samples
 :PROPERTIES:
 :ID:       E65BA44B-FBA9-4A05-93B0-1246608C3754
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-****** Theory behind DESeq2
+******* Theory behind DESeq2
 :PROPERTIES:
 :ID:       C0765E52-718B-4771-9ECC-3689EE7CAA21
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* The DESeq2 model
+******** The DESeq2 model
 :PROPERTIES:
 :ID:       08949A97-2A7C-4D21-A9EB-811440E003A8
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Changes compared to the DESeq package
+******** Changes compared to the DESeq package
 :PROPERTIES:
 :ID:       41E50955-4ADF-4560-ACD0-86F58F544033
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Methods changes since the 2014 DESeq2 paper
+******** Methods changes since the 2014 DESeq2 paper
 :PROPERTIES:
 :ID:       1D28C489-FF28-4112-B9B9-70C09D382608
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Count outlier detection
+******** Count outlier detection
 :PROPERTIES:
 :ID:       14989EE3-4903-4FCB-A270-E3BAFFCD6EFA
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Contrasts
+******** Contrasts
 :PROPERTIES:
 :ID:       45C7C99A-DC18-4293-9381-878DE892D84A
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Expanded model matrices
+******** Expanded model matrices
 :PROPERTIES:
 :ID:       FBAAB9AE-7D25-43A5-9363-766F84F32198
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Independent filtering and multiple testing
+******** Independent filtering and multiple testing
 :PROPERTIES:
 :ID:       EB54BD27-FD99-45DD-B671-8BBEB06857FE
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******** Filtering criteria
+********* Filtering criteria
 :PROPERTIES:
 :ID:       4705CA0F-C007-4503-A898-74E946304812
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******** Why does it work?
+********* Why does it work?
 :PROPERTIES:
 :ID:       BA1FC087-AAF6-4116-9B86-0B0B4BBC5FDB
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-****** Frequently asked questions
+******* Frequently asked questions
 :PROPERTIES:
 :ID:       7A2CF9E1-0C06-45FF-9637-C085CC6F15A0
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* How can I get support for DESeq2?
+******** How can I get support for DESeq2?
 :PROPERTIES:
 :ID:       B5ADEA5D-15C6-4449-B15F-908E63118B76
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Why are some pvalues set to NA?
+******** Why are some pvalues set to NA?
 :PROPERTIES:
 :ID:       3D889B88-07E4-4D2C-91F1-58CCF54C9C2C
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* How can I get unfiltered DESeq results?
+******** How can I get unfiltered DESeq results?
 :PROPERTIES:
 :ID:       A4107221-A74A-4E79-AC6E-057F5CAB86DF
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* How do I use the variance stabilized or rlog transformed data for differential testing?
+******** How do I use the variance stabilized or rlog transformed data for differential testing?
 :PROPERTIES:
 :ID:       F6C4F4CE-03E9-46FC-8F9A-EF915DF7FEF2
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Can I use DESeq2 to analyze paired samples?
+******** Can I use DESeq2 to analyze paired samples?
 :PROPERTIES:
 :ID:       DA9671DE-23CE-4603-9077-0F8576CEECBF
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* If I have multiple groups, should I run all together or split into pairs of groups?
+******** If I have multiple groups, should I run all together or split into pairs of groups?
 :PROPERTIES:
 :ID:       5384671F-9FF2-4589-80E4-7B6E7AA681FF
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Can I run DESeq2 to contrast the levels of 100 groups?
+******** Can I run DESeq2 to contrast the levels of 100 groups?
 :PROPERTIES:
 :ID:       355A5DC0-1A35-4315-8DEB-4C2275EA9A7C
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Can I use DESeq2 to analyze a dataset without replicates?
+******** Can I use DESeq2 to analyze a dataset without replicates?
 :PROPERTIES:
 :ID:       4AF6174D-0E98-4139-89B6-2E2AB1B13BA4
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* How can I include a continuous covariate in the design formula?
+******** How can I include a continuous covariate in the design formula?
 :PROPERTIES:
 :ID:       BBFFFE10-B8CF-4E66-9BA9-B78B0DA2FAF9
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Will the log fold change shrinkage “overshrink” large differences?
+******** Will the log fold change shrinkage “overshrink” large differences?
 :PROPERTIES:
 :ID:       01210C6E-221E-403D-AE9C-63946B83F9A4
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* I ran a likelihood ratio test, but results() only gives me one comparison
+******** I ran a likelihood ratio test, but results() only gives me one comparison
 :PROPERTIES:
 :ID:       76AC2A68-59B8-4E92-B384-822B8CE0DD7B
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* What are the exact steps performed by DESeq()?
+******** What are the exact steps performed by DESeq()?
 :PROPERTIES:
 :ID:       74C55B19-7DAA-4357-8F15-179AF2645CFF
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Is there an official Galaxy tool for DESeq2
+******** Is there an official Galaxy tool for DESeq2
 :PROPERTIES:
 :ID:       5A4CB62B-A91F-467F-AA52-B8D1C66D9D28
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* I want to benchmark DESeq2 comparing to other DE tools.
+******** I want to benchmark DESeq2 comparing to other DE tools.
 :PROPERTIES:
 :ID:       9B564504-8E91-4921-87D8-3AE89F5F6E2F
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-****** SessionInfo
+******* SessionInfo
 :PROPERTIES:
 :ID:       626CE66C-E3D7-4D09-BEDC-27812DB3689B
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5922,14 +5906,14 @@ A negative binomial GLM
 [[https://dwheelerau.com/2014/02/17/how-to-use-deseq2-to-analyse-rnaseq-data/][And another workflow example]]
 
 
-*** DRIMSeq                                                         :biotool:
+**** DRIMSeq                                                        :biotool:
 :PROPERTIES:
 :CREATED:  [2021-09-13 Mon 07:29]
 :ID:       7cbebba6-1707-41ea-aad4-ca697b99b03a
 :END:
 https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSeq.pdf
 
-*** edgeR                                                           :biotool:
+**** edgeR                                                          :biotool:
 :PROPERTIES:
 :ID:       32BB77F2-0283-4A52-86AC-CDF2CB6A7315
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5944,12 +5928,12 @@ https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSe
 - cite:robinson2010
 [[file:~/Box%20Sync/library/Robinson,09%20edgeR%20a%20Bioconductor%20package%20for%20differential%20expression%20analysis%20of%20digitial%20gene%20expression%20data.pdf][Robinson,09 edgeR a Bioconductor package for differential expression analysis of digitial gene expression data]]
 
-**** edgeR full example                                          
+***** edgeR full example                                          
 :PROPERTIES:
 :ID:       846943FC-BA4B-4658-9B1E-85FBA536D9EE
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
-*** exceRpt                                                         :biotool:
+**** exceRpt                                                        :biotool:
 :PROPERTIES:
 :ID:       1db0ffb6-25b7-4c97-9aa0-263b8c96373b
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5959,7 +5943,9 @@ https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSe
 - used in
   - cite:godoy2019 
   - cite:giraldez2018 
-*** fastqc                                                          :biotool:
+**** faSplit
+https://www.biostars.org/p/13270/
+**** fastqc                                                         :biotool:
 :PROPERTIES:
 :ID:       0a319950-3215-4846-a020-a08b78f3323d
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -5989,12 +5975,12 @@ https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSe
 - cite:williams2014 for a FastQC aggregator Perl script 
 - [[https://www.biostars.org/p/56088/#56102][Fastq Quality Read And Score Length Check]]
 - 
-*** flexbar :biotool:
+**** flexbar                                                        :biotool:
 :PROPERTIES:
 :doc: https://github.com/seqan/flexbar/wiki/Manual
 :ID:       5c20daf7-d02e-4447-bd1e-f991e1366c48
 :END:
-*** gage                                                            :biotool:
+**** gage                                                           :biotool:
 :PROPERTIES:
 :ID:       9b222d1c-ab61-450c-8b77-a98ec3213867
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6002,7 +5988,7 @@ https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSe
 - https://www.bioconductor.org/packages/devel/data/experiment/manuals/gageData/man/gageData.pdf
 - https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
 - cite:luo2009
-*** gistic2                                                         :biotool:
+**** gistic2                                                        :biotool:
 :PROPERTIES:
 :ID:       4f0b84ab-1dec-45c9-a7d4-bdce41e13150
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6022,7 +6008,7 @@ segmentation file column 6 is log2(x)-1 of the copy number, so
 - https://docs.cbioportal.org/5.1-data-loading/data-loading/file-formats#gistic-2-0-data
 - https://blindwith.science/2018/10/442.html/
 - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
-*** GRanges                                                         :biotool:
+**** GRanges                                                        :biotool:
 :PROPERTIES:
 :CREATED:  [2021-09-13 Mon 07:29]
 :ID:       78b22803-f843-41f2-9390-d621caae82c0
@@ -6030,7 +6016,7 @@ segmentation file column 6 is log2(x)-1 of the copy number, so
 - https://www.google.com/search?q=convert+bed+to+granges 
 - Granges manipulations https://rockefelleruniversity.github.io/Bioconductor_Introduction/exercises/answers/GenomicFeatures_answers.html
 
-*** GSEA                                                            :biotool:
+**** GSEA                                                           :biotool:
 :PROPERTIES:
 :ID:       D68E1182-1F7B-4160-A6DD-BD2635F8085F
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6080,7 +6066,7 @@ CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
   #+end_src
 - [[http://software.broadinstitute.org/cancer/software/genepattern/modules/docs/ssGSEAProjection/4][ssGSEA]] calculates enrichment for each sample-gene set pair
 - cite:mootha2003 
-*** ichorcna                                                        :biotool:
+**** ichorcna                                                       :biotool:
 :PROPERTIES:
 :ID:       8c535c38-9310-4fd0-a8fe-c300639493da
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6101,7 +6087,7 @@ https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzE
 - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDDjrSfkvnNDnxMlVJNFgfnfk][email from:Sundby re:ichor method]]
 - https://www.biostars.org/local/search/page/?q=ichorcna
 - for install see [[file:/ssh:chaudhuri-roche:/home/jszymanski/repos/biotools/Dockerfile][biotools Dockerfile]]  
-*** INTEGRATE                                                       :biotool:
+**** INTEGRATE                                                      :biotool:
 :PROPERTIES:
 :ID:       7519d47f-18e8-4a28-be11-9d081b68b52d
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6117,13 +6103,13 @@ https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzE
     - https://github.com/ChrisMaherLab/INTEGRATE-Vis/blob/master/README.md
     for integrate, see - cite:li2020
   
-*** limma                                                           :biotool:
+**** limma                                                          :biotool:
 :PROPERTIES:
 :ID:       3283b8b2-fc42-4a71-a8e9-7dbdd7ab62ce
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 https://www.coursera.org/lecture/bioconductor/limma-aoNwW
-*** limma voom                                                      :biotool:
+**** limma voom                                                     :biotool:
 :PROPERTIES:
 :ID:       F9684168-A438-4F5E-81D6-D645B52B4074
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6142,7 +6128,7 @@ CLOCK: [2016-05-09 Mon 12:24]--[2016-05-09 Mon 12:25] =>  0:01
 - Math, concept- [[file:~/Box%20Sync/comp_bio/RNA-seq/Law,14%20voom%20precision%20weights%20unlock%20linear%20model%20analysis%20tools%20for%20RNA%20seq.pdf][Law,14 voom precision weights unlock linear model analysis tools for RNA seq]]
 - voom transformation- from counts to log-counts per million w/ associated weight (just think of it as if microarray data)
 
-**** [[file:~/Box%20Sync/comp_bio/RNA-seq/limma%20User%20Guide.pdf][User Guide]] 
+***** [[file:~/Box%20Sync/comp_bio/RNA-seq/limma%20User%20Guide.pdf][User Guide]] 
 :PROPERTIES:
 :ID:       15C1AE68-19D2-4FBD-B51E-DA37C605F0D7
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6155,13 +6141,13 @@ CLOCK: [2016-05-09 Mon 12:24]--[2016-05-09 Mon 12:25] =>  0:01
     - design- which RNA to which sample (i.e. specify groups)
     - contrast- which group comparions to make
 
-**** [[file:~/Box%20Sync/comp_bio/limma_voom_template/][Examples and Template]] 
+***** [[file:~/Box%20Sync/comp_bio/limma_voom_template/][Examples and Template]] 
 :PROPERTIES:
 :ID:       D1B28C0A-9AAD-4245-BE85-61300CE4A02B
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-***** WEHI example ([[file:~/Box%20Sync/comp_bio/RNA-seq/wehi_limma_example/wehi_limma_example.Rproj][Rproject]], [[file:~/Box%20Sync/comp_bio/RNA-seq/wehi_limma_example/wehi_limma_example.R][Rscript]]), [[http://bioinf.wehi.edu.au/RNAseqCaseStudy/][link]] 
+****** WEHI example ([[file:~/Box%20Sync/comp_bio/RNA-seq/wehi_limma_example/wehi_limma_example.Rproj][Rproject]], [[file:~/Box%20Sync/comp_bio/RNA-seq/wehi_limma_example/wehi_limma_example.R][Rscript]]), [[http://bioinf.wehi.edu.au/RNAseqCaseStudy/][link]] 
 :PROPERTIES:
 :ID:       1E96E985-8BD2-4D8F-AC88-FB509B99F513
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6172,26 +6158,26 @@ CLOCK: [2016-05-10 Tue 15:07]--[2016-05-10 Tue 15:20] =>  0:13
 CLOCK: [2016-05-09 Mon 12:25]--[2016-05-09 Mon 13:13] =>  0:48
 :END:      
 
-***** User Guide Chapter 18                                      
+****** User Guide Chapter 18                                      
 :PROPERTIES:
 :ID:       817998EF-31AD-4A22-BF91-ACF72A1C29E5
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-****** 18.1 [[file:~/Box%20Sync/comp_bio/limma_voom_template/yoruba_hapmap/][Profiles of Yoruba HapMap]] 
+******* 18.1 [[file:~/Box%20Sync/comp_bio/limma_voom_template/yoruba_hapmap/][Profiles of Yoruba HapMap]] 
 :PROPERTIES:
 :ID:       1E8CAB25-19C2-4745-B157-FA46D84549CD
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* DONE Read
+******** DONE Read
 CLOSED: [2016-06-30 Thu 11:22]
 :PROPERTIES:
 :ID:       91CBDFB8-17EB-4F2D-B2A4-58F656C64332
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* Work through code
+******** Work through code
 :PROPERTIES:
 :ID:       374ef56d-7a1a-4c40-ade8-f4acafd37602
 :END:
@@ -6207,7 +6193,7 @@ Venn diagrams with limma]]
 Another use of the voom plot-  what you are failing to do completely in the voom analysis is to remove the rows of your count matrix that are lowly expressed, because these hose the mean/variance estimation, which you can see/diagnose on the plot generated with you call to voom(..., plot=TRUE). In brief, you want to ensure that the red fit line doesn't "slope/hook back down" (I'm talking as if you are "reading" the graph from right to left here) due to the drop/discretization in the observed variance from the black dots on the left side of the plot.
 
 [[https://www.biostars.org/p/131488/][subsetting from topTable]]
-*** MACS2                                                           :biotool:
+**** MACS2                                                          :biotool:
 :PROPERTIES:
 :CREATED:  [2021-09-13 Mon 07:29]
 :ID:       75ca7513-8f01-4819-a813-f9459f447483
@@ -6240,12 +6226,12 @@ a _peaks.xls file looks like
 chr start end length abs_summit pileup -log10(pvalue) fold_enrichment -log10(qvalue) name
 chr1 3120443 3120560 118 3120499 6.00 7.58942 5.43209 5.03290 ct01_aut_blk_ddp_open.bam_peak_1
 - https://www.google.com/search?q=macs2 
-*** multiqc                                                         :biotool:
+**** multiqc                                                        :biotool:
 :PROPERTIES:
 :ID:       066d50fc-5407-4c80-a6ca-2534f37ae043
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
-*** nextflow                                                        :biotool:
+**** nextflow                                                       :biotool:
 :PROPERTIES:
 :CREATED:  [2019-12-27 Fri 14:48]
 :ID:       6116d262-9ca8-430b-b385-65e1a7fc0a70
@@ -6313,7 +6299,7 @@ https://www.pnas.org/content/115/4/E743.long
 - reference
   - [[file:~/.emacs.d/snippets/org-mode/software]]
 
-*** pathvisio                                                       :biotool:
+**** pathvisio                                                      :biotool:
 :PROPERTIES:
 :ID:       17c865dc-765c-496d-b5c7-60d3d3439de3
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6321,19 +6307,19 @@ https://www.pnas.org/content/115/4/E743.long
 
 https://pathvisio.github.io/
 - to switch to java 8 https://askubuntu.com/questions/1133216/downgrading-java-11-to-java-8
-*** picard                                                          :biotool:
+**** picard                                                         :biotool:
 :PROPERTIES:
 :ID:       9e48626d-47e1-477a-8b79-eff41f7974b8
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
-*** polyester                                                       :biotool:
+**** polyester                                                      :biotool:
 :PROPERTIES:
 :ID:       065725b4-43d3-48d4-a4e2-3ca5c1e1e6fd
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
   - https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
 
-*** rsem                                                            :biotool:
+**** rsem                                                           :biotool:
 :PROPERTIES:
 :ID:       85db5c34-b5fd-4b6c-bdb7-88263e553ba3
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6347,7 +6333,7 @@ https://pathvisio.github.io/
   - http://deweylab.biostat.wisc.edu/rsem/rsem-prepare-reference.html
   - https://deweylab.github.io/RSEM/rsem-calculate-expression.html
   - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
-*** salmon                                                          :biotool:
+**** salmon                                                         :biotool:
 :PROPERTIES:
 :ID:       c0d79be1-f887-460e-9142-4d43c6632126
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6355,7 +6341,7 @@ https://pathvisio.github.io/
 - see [[id:a0923938-4021-44cd-a8f3-94c0eb10cdb5][table of tools]]
 - https://www.biostars.org/p/397086/
 - https://www.scopus.com/results/citedbyresults.uri?sort=cp-f&cite=2-s2.0-85014549629&src=s&nlo=&nlr=&nls=&imp=t&sid=b3adb06908021bf68bd2e4cbb741bd78&sot=cite&sdt=a&sl=0&origin=resultslist&offset=1&txGid=8f3b391583118470ef66b945cc173d58   
-*** samtools                                                        :biotool:
+**** samtools                                                       :biotool:
 :PROPERTIES:
 :ID:       0a3acec7-f4d1-4cd1-b3c8-7ec769715cc1
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6365,7 +6351,7 @@ https://pathvisio.github.io/
 - [[http://www.htslib.org/workflow/#mapping_to_cram][using cram]]
 - [[https://www.samformat.info/sam-format-header][header tool]]
 
-**** commands                                                 
+***** commands                                                 
 :PROPERTIES:
 :CREATED:  [2019-04-26 Fri 10:32]
 :ID:       31C15E78-2EAE-4D54-94FF-91A5AF05190A
@@ -6394,8 +6380,11 @@ https://pathvisio.github.io/
     | sam to bam        | samtools view -bS test.sam > test.bam             |
     | remove unmapped   | samtools view -h -F 4 file.bam                    |
 
-*** [[id:a8b27140-4b9e-40c5-86ab-ee5afeae723f][LINK TO snakemake]]
-*** STAR                                                            :biotool:
+**** SeqKit
+https://bioinf.shenwei.me/seqkit/usage/#fx2tab-tab2fx
+https://www.biostars.org/p/9465609/
+**** [[id:a8b27140-4b9e-40c5-86ab-ee5afeae723f][LINK TO snakemake]]
+**** STAR                                                           :biotool:
 :PROPERTIES:
 :ID:       d1d5d554-57c4-4b9c-8385-2bb72369375e
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6403,13 +6392,13 @@ https://pathvisio.github.io/
 - used in [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][alignment]]
 - star-rsem pipeline
   - cite:djebali2017
-*** tool collections                                            
+**** tool collections                                            
 :PROPERTIES:
 :ID:       7cce7be9-b3ac-4127-9a92-71559617588e
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 - [[https://www.ebi.ac.uk/services][EMBL-EBI Tools]]
-**** UCSC tools                                                     :biotool:
+***** UCSC tools                                                    :biotool:
 :PROPERTIES:
 :ID:       be612cfb-2a75-4935-92fd-85620dcabf92
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6430,13 +6419,13 @@ wget -r --no-parent --reject "index.html*" -nH --cut-dirs=3 http://genome.ucsc.e
   - https://www.biostars.org/p/19029/
   - http://genome.ucsc.edu/FAQ/FAQreleases.html
   - cite:karolchik2011
-*** tophat2                                                         :biotool:
+**** tophat2                                                        :biotool:
 :PROPERTIES:
 :ID:       db678422-a644-4298-b962-33657a5dee7e
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 notes- https://www.biostars.org/p/251018/
-*** Trim Galore                                                     :biotool:
+**** Trim Galore                                                    :biotool:
 :PROPERTIES:
 :ID:       3e4ca528-a604-4bfe-b235-2052e6d2d4a9
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6448,14 +6437,14 @@ notes- https://www.biostars.org/p/251018/
   - on CHPC cluster - http://mgt2.chpc.wustl.edu/wiki119/index.php/Software
 - https://github.com/FelixKrueger/TrimGalore
 
-*** tximport                                                        :biotool:
+**** tximport                                                       :biotool:
 :PROPERTIES:
 :ID:       a5d4a32f-764b-4930-80e9-2a6e8d562ae8
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 offsets handled directly in DESeq2 command - https://bioconductor.org/packages/devel/bioc/vignettes/tximport/inst/doc/tximport.html#Downstream_DGE_in_Bioconductor
 "tximport can alternatively produce a matrix of data that is roughly on the scale of counts, by scaling transcript-per-million (TPM) abundances to add up to the total number of mapped reads. This counts-from-abundance approach directly corrects for technical biases and differential transcript usage across samples, obviating the need for the accompanying offset matrix"
-*** wgcna                                                           :biotool:
+**** wgcna                                                          :biotool:
 :PROPERTIES:
 :ID:       948289d8-3a77-471a-b068-0507285e0bac
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -6789,7 +6778,7 @@ net = blockwiseConsensusModules(
 #=====================================================================================
 
 
-************ NEXT HCC1395 straight align and integrate and compare to published
+************* NEXT HCC1395 straight align and integrate and compare to published
 :PROPERTIES:
 :CREATED:  [2019-03-13 Wed 10:11]
 :ID:       58F7BED2-DED1-4911-9E8C-104E12126A73
