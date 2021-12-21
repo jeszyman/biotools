@@ -1694,22 +1694,7 @@ assembly. J. Hum. Genet., 56, 406–414.
 :ID:       508ac0df-9d93-4455-a451-cb876f83498d
 :END:
 - https://www.nature.com/articles/nature12477
-**** Fragmentomics
-:PROPERTIES:
-:ID:       ee5eb087-d368-4dae-a249-d8d6bd913c4d
-:END:
-:LOGBOOK:
-CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
-:END:
-- cite:peneder2021     
-  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
-- cite:chabon2020 - per individual mutant molecules- see "ctDNA fragment size analysis", R zoo for sliding window, relative enrichment per frag size   
-- cite:mouliere2018
-  - cite:mouliere2018a
-- DELFI (DNA evaluation of fragments for early interception)
-  - short-to-long ratio by genomic bin cite:mathios2021
-  - cite:cristiano2019 Delphi
-  - https://github.com/Cancer-Genomics/delfi_scripts
+
 *** Sequence variation and variant calling
 :PROPERTIES:
 :ID:       57E81A44-3233-479B-8264-2CD5F1904A60
@@ -2248,29 +2233,41 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
 :END:
-- cite:shah2021
-- cite:bujak2020
-- cite:zviran2020
-- cite:feng2020 
-- cite:ge2020
-  - tumor vs cfDNA CN see cite:ge2020 fig2C
-- cite:chen2019cna
-- cite:hemming2019 
-- cite:huang2019 
-- cite:mansukhani2018
-- cite:molparia2018
-- cite:paoletti2018 
-- cite:stover2018 
-- cite:xu2018 
-- cite:adalsteinsson2017
-- cite:cristofanilli2017
-  - (p. 119)"In addition, although copy number assessments can be challenging in ptDNA, there are studies that suggest that this is feasible. For example, HER2 amplification for breast and possibly other cancers may one day be assayed through the use of blood [49],"
-  - (p. 119)"Wyatt et  al. serially profiled ptDNA in men with castration-resistant metastatic prostate cancer to assess for copy number and mutations in androgen receptor (AR) along with targeted sequencing of 19 genes through subsequent therapies [51]."
-- cite:hovelson2017
-- cite:molparia2017 
-- https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
+- post-CN call processessing and denoising
+  - cite:zviran2020
+- BIC-seq
+  - cite:zviran2020
+- Proprietary method
+  - cite:chen2019cna
+- CNVkit on duplex hybrid capture reads
+  - cite:mansukhani2018
+- optimal read pre-processing for cfDNA CNV
+  - cite:molparia2018
+- arm-level by z-score
+  - cite:xu2018crc
+- review articles
+  - cite:cristofanilli2017
+    - (p. 119)"In addition, although copy number assessments can be challenging in ptDNA, there are studies that suggest that this is feasible. For example, HER2 amplification for breast and possibly other cancers may one day be assayed through the use of blood [49],"
+    - (p. 119)"Wyatt et  al. serially profiled ptDNA in men with castration-resistant metastatic prostate cancer to assess for copy number and mutations in androgen receptor (AR) along with targeted sequencing of 19 genes through subsequent therapies [51]."
+  - cite:huang2019 
+- simulation and power calculation 
+  - cite:molparia2017 
+- GISTIC2
+  - cite:bujak2020
+  - cite:hemming2019 
+- ichorCNA
+  - cite:hemming2019 
+  - ichorCNA on off-target reads - cite:shah2021
+  - Other papers applying ichorCNA
+    - cite:bujak2020
+    - cite:ge2020
+      - tumor vs cfDNA CN see cite:ge2020 fig2C
+    - cite:stover2018 
+    - cite:adalsteinsson2017
+    - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
 - instability score
   - cite:li2017a  
+  - cite:feng2020 
 - by PCR
   - https://www.pnas.org/content/117/9/4858
 ***** cfDNA methylation
@@ -2314,6 +2311,9 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 - see  [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDNNMGQwVvHMjSKjBHhrkMLrS][jake's ulpwgs cfdna preprocessing]]
 - cite:heberts2021
 ***** cfDNA fragmentomics
+:LOGBOOK:
+CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
+:END:
 - fragments for open chromatin and tissue of origin
 - footprinting
   - https://www.nature.com/articles/s41523-021-00237-5
@@ -2321,8 +2321,15 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 - fragment size
   - https://www.nature.com/articles/s41586-020-2140-0
   - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
-
-
+- DELFI (DNA evaluation of fragments for early interception)
+  - short-to-long ratio by genomic bin cite:mathios2021
+  - cite:cristiano2019 Delphi
+  - https://github.com/Cancer-Genomics/delfi_scripts
+- cite:mouliere2018
+  - cite:mouliere2018a
+- cite:chabon2020 - per individual mutant molecules- see "ctDNA fragment size analysis", R zoo for sliding window, relative enrichment per frag size   
+- cite:peneder2021     
+  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
 **** cfRNA
 :PROPERTIES:
 :ID:       f4d64349-0202-41e5-9143-39de3dd63d90
