@@ -120,9 +120,10 @@ docker_interactive() {
 :ID:       400562f2-e750-46b3-98ef-84ea59d447c9
 :END:
 :LOGBOOK:
-CLOCK: [2021-12-09 Thu 16:19]
+CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:19] =>  1:00
 :END:
 #+begin_src bash :tangle ./docker/biotools_Dockerfile
+FROM jeszyman/basecamp
 #########1#########2#########3#########4#########5#########6#########7#########8
 
 ###################################################################
@@ -141,8 +142,6 @@ CLOCK: [2021-12-09 Thu 16:19]
 #
 # See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 
-FROM jeszyman/basecamp
-
 #############
 ### Conda ###
 #############
@@ -158,12 +157,10 @@ RUN conda install -c bioconda cutadapt
 RUN conda install -c bioconda deeptools
 RUN conda install -c bioconda fastp
 RUN conda install -c bioconda fastqc
-RUN conda install -c bioconda flexbar
 RUN conda install -c bioconda gatk
 RUN conda install -c bioconda goleft
 RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda mosdepth
-RUN conda install -c bioconda multiqc
 RUN conda install -c bioconda picard
 RUN conda install -c bioconda preseq
 RUN conda install -c bioconda qualimap
@@ -198,6 +195,15 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "Rsamtools", \
                                  "TxDb.Mmusculus.UCSC.mm10.ensGene", \
                                  "tximport"));'
+
+#######################
+### Custom Installs ###
+#######################
+
+RUN pip install multiqc
+
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated \
+    flexbar
 
 #+end_src
 #+begin_src fundamental :tangle ./docker/biotools_Dockerfile
