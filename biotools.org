@@ -6007,6 +6007,8 @@ https://www.biostars.org/p/13270/
 :doc: https://github.com/seqan/flexbar/wiki/Manual
 :ID:       5c20daf7-d02e-4447-bd1e-f991e1366c48
 :END:
+- [[https://github.com/seqan/flexbar/wiki/Manual][Documentation]]
+- https://www.google.com/search?q=flexbar+sequencing+manual 
 **** gage                                                           :biotool:
 :PROPERTIES:
 :ID:       9b222d1c-ab61-450c-8b77-a98ec3213867
