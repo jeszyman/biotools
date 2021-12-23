@@ -120,7 +120,11 @@ docker_interactive() {
 :ID:       400562f2-e750-46b3-98ef-84ea59d447c9
 :END:
 :LOGBOOK:
+<<<<<<< HEAD
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:19] =>  1:00
+=======
+CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
+>>>>>>> 881cc173bd0cb9c758b9417edcb1cfb47a45d75a
 :END:
 #+begin_src bash :tangle ./docker/biotools_Dockerfile
 FROM jeszyman/basecamp
@@ -1700,22 +1704,7 @@ assembly. J. Hum. Genet., 56, 406–414.
 :ID:       508ac0df-9d93-4455-a451-cb876f83498d
 :END:
 - https://www.nature.com/articles/nature12477
-**** Fragmentomics
-:PROPERTIES:
-:ID:       ee5eb087-d368-4dae-a249-d8d6bd913c4d
-:END:
-:LOGBOOK:
-CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
-:END:
-- cite:peneder2021     
-  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
-- cite:chabon2020 - per individual mutant molecules- see "ctDNA fragment size analysis", R zoo for sliding window, relative enrichment per frag size   
-- cite:mouliere2018
-  - cite:mouliere2018a
-- DELFI (DNA evaluation of fragments for early interception)
-  - short-to-long ratio by genomic bin cite:mathios2021
-  - cite:cristiano2019 Delphi
-  - https://github.com/Cancer-Genomics/delfi_scripts
+
 *** Sequence variation and variant calling
 :PROPERTIES:
 :ID:       57E81A44-3233-479B-8264-2CD5F1904A60
@@ -2217,9 +2206,10 @@ CLOCK: [2019-06-12 Wed 14:40]--[2019-06-12 Wed 14:58] =>  0:18
 CLOCK: [2019-05-29 Wed 15:23]--[2019-05-29 Wed 15:34] =>  0:11
 CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 :END:
-cite:hehir-kwa2015 
-https://www.nature.com/scitable/topicpage/copy-number-variation-and-human-disease-741737/
-https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
+- https://bioinformaticsdotca.github.io/bicg_2017_module4_lab
+- cite:hehir-kwa2015 
+- https://www.nature.com/scitable/topicpage/copy-number-variation-and-human-disease-741737/
+- https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 - [[id:8c535c38-9310-4fd0-a8fe-c300639493da][ichorcna]]
 - copy number classifiers
   - https://www.sciencedirect.com/science/article/pii/S0016508521002778?via%3Dihub
@@ -2227,32 +2217,6 @@ https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 - allele-specific copy number: the number of copies of each inherited allele, allows for the detection of copy-neutral loss of heterozygosity https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5627665/
 - [[https://www.bioconductor.org/packages/devel/bioc/vignettes/TitanCNA/inst/doc/TitanCNA.pdf][see ploidy purity correction math]]
 - [[https://www.biostars.org/p/383522/][good CN,purity,ploid discussion]]
-***** cfDNA copy number calling
-:PROPERTIES:
-:ID:       21d876e8-8646-4773-91c1-c4385c3218c7
-:END:
-- cite:shah2021
-- cite:bujak2020
-- cite:zviran2020
-- cite:feng2020 
-- cite:ge2020
-  - tumor vs cfDNA CN see cite:ge2020 fig2C
-- cite:chen2019cna
-- cite:hemming2019 
-- cite:huang2019 
-- cite:mansukhani2018
-- cite:molparia2018
-- cite:paoletti2018 
-- cite:stover2018 
-- cite:xu2018 
-- cite:adalsteinsson2017
-- cite:hovelson2017
-- cite:molparia2017 
-- https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
-- instability score
-  - cite:li2017a  
-- by PCR
-  - https://www.pnas.org/content/117/9/4858
 **** [[id:5738AF1F-8621-40C3-AF80-0C396CDC889B][LINK TO Clinical NGS]]
 :PROPERTIES:
 :ID:       413414a5-651d-4d43-82c8-a6bb13de8ca3
@@ -2272,43 +2236,110 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
-https://www.jci.org/articles/view/145973
-- https://cancerdiscovery.aacrjournals.org/content/early/2021/11/16/2159-8290.CD-21-0634.abstract
-- https://www.nature.com/articles/s41523-021-00237-5
-- https://royalsocietypublishing.org/doi/10.1098/rsob.200119
-- fragments for open chromatin and tissue of origin
-- phased seq https://www.sciencedirect.com/science/article/pii/S2666634021003202
-- cfDNA datasets-  https://generegulation.org/cfdna/
-- see  [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDNNMGQwVvHMjSKjBHhrkMLrS][jake's ulpwgs cfdna preprocessing]]
-- visualizations
+- phylogenic for cancer evolution cite:abbosh2017 
+- inferred gene expression
+  - cite:ulz2016
+***** cfDNA copy number calling
+:PROPERTIES:
+:ID:       21d876e8-8646-4773-91c1-c4385c3218c7
+:END:
+- post-CN call processessing and denoising
+  - cite:zviran2020
+- BIC-seq
+  - cite:zviran2020
+- Proprietary method
+  - cite:chen2019cna
+- CNVkit on duplex hybrid capture reads
+  - cite:mansukhani2018
+- optimal read pre-processing for cfDNA CNV
+  - cite:molparia2018
+- arm-level by z-score
+  - cite:xu2018crc
+- review articles
+  - cite:cristofanilli2017
+    - (p. 119)"In addition, although copy number assessments can be challenging in ptDNA, there are studies that suggest that this is feasible. For example, HER2 amplification for breast and possibly other cancers may one day be assayed through the use of blood [49],"
+    - (p. 119)"Wyatt et  al. serially profiled ptDNA in men with castration-resistant metastatic prostate cancer to assess for copy number and mutations in androgen receptor (AR) along with targeted sequencing of 19 genes through subsequent therapies [51]."
+  - cite:huang2019 
+- simulation and power calculation 
+  - cite:molparia2017 
+- GISTIC2
+  - cite:bujak2020
+  - cite:hemming2019 
+- ichorCNA
+  - cite:hemming2019 
+  - ichorCNA on off-target reads - cite:shah2021
+  - Other papers applying ichorCNA
+    - cite:bujak2020
+    - cite:ge2020
+      - tumor vs cfDNA CN see cite:ge2020 fig2C
+    - cite:stover2018 
+    - cite:adalsteinsson2017
+    - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
+- instability score
+  - cite:li2017a  
+  - cite:feng2020 
+- by PCR
+  - https://www.pnas.org/content/117/9/4858
+***** cfDNA methylation
+- cfDNA methylation
+  - cite:liu2020
+    - https://www.dana-farber.org/newsroom/news-releases/2020/new-blood-test-can-detect-wide-range-of-cancers--now-available-to-at-risk-individuals-in-clinical-study-at-dana-farber/ 
+  - ct methylation
+    - cite:widschwendter2017
+    - cite:xu2017a
+    - cite:heitzer2017
+  - cite:guo2017
+  - meth for early detection
+    - https://www.biorxiv.org/content/10.1101/422675v1
+    - https://www.pnas.org/content/113/16/4338.long
+    - https://www.nature.com/articles/cr2017106
+- https://www.jci.org/articles/view/145973
+***** cfDNA and ctDNA-specific visualizations
   - cite:moding2020 
   - cite:everett2020
   - - https://d0dd8a80-1a24-4cc5-a00a-3f42615181d7.filesusr.com/ugd/ad98ab_846561db683443d3af0664c558849464.pdf
-- cfDNA from nonterminal mouse blood draws
+
+***** WGS cfDNA methods
+- cite:zviran2020
+***** cfDNA from nonterminal mouse blood draws
   - https://www.frontiersin.org/articles/10.3389/fgene.2018.00006/full#T3
   - https://www.nature.com/articles/cr2017121.pdf?origin=ppub
   - https://clincancerres.aacrjournals.org/content/23/20/6305?ijkey=46368653e37c96739922e66f2f6ae51379b550f3&keytype2=tf_ipsecsha
-- cite:zviran2020
-- https://www.nature.com/articles/s41587-021-00981-w
+***** cfDNA small variant calling
+- PhasED-seq- https://www.nature.com/articles/s41587-021-00981-w
+  - - phased seq https://www.sciencedirect.com/science/article/pii/S2666634021003202
 - cite:cohen2021
-- https://www.nature.com/articles/s41585-021-00503-y
+- cfDNA and ctDNA sequence variant calling
+  - cite:razavi2019
+  - cite:chabon2020
+    - https://www.theguardian.com/society/2020/mar/25/ai-program-could-check-blood-for-signs-of-lung-cancer
+  - tumor mutational burden
+    - https://ascopubs.org/doi/full/10.1200/PO.19.00204
+***** General reference
+- https://royalsocietypublishing.org/doi/10.1098/rsob.200119
+- cfDNA datasets-  https://generegulation.org/cfdna/
+- see  [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDNNMGQwVvHMjSKjBHhrkMLrS][jake's ulpwgs cfdna preprocessing]]
 - cite:heberts2021
+***** cfDNA fragmentomics
+:LOGBOOK:
+CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
+:END:
+- fragments for open chromatin and tissue of origin
+- footprinting
+  - https://www.nature.com/articles/s41523-021-00237-5
+  - for nucleosome footprinting cite:snyder2016
 - fragment size
   - https://www.nature.com/articles/s41586-020-2140-0
   - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
-***** nucleosome footprinting
-:PROPERTIES:
-:ID:       4c9ddac5-2e09-48e0-975f-ca5a8ac4c292
-:END:
-  - cite:snyder2016
-***** Methods for analysis of WGS, WES, and off-target reads for cfDNA and ctDNA
-:PROPERTIES:
-:ID:       e387037a-85c0-4eda-a26f-9b6386e95a34
-:END:
-- cite:shah2021
-- https://clincancerres.aacrjournals.org/content/26/11/2556#sec-6
-- cite:parikh2019
-
+- DELFI (DNA evaluation of fragments for early interception)
+  - short-to-long ratio by genomic bin cite:mathios2021
+  - cite:cristiano2019 Delphi
+  - https://github.com/Cancer-Genomics/delfi_scripts
+- cite:mouliere2018
+  - cite:mouliere2018a
+- cite:chabon2020 - per individual mutant molecules- see "ctDNA fragment size analysis", R zoo for sliding window, relative enrichment per frag size   
+- cite:peneder2021     
+  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
 **** cfRNA
 :PROPERTIES:
 :ID:       f4d64349-0202-41e5-9143-39de3dd63d90
@@ -2334,6 +2365,7 @@ https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
 :PROPERTIES:
 :ID:       b9db0398-4481-4502-abb0-bd9edcd353f2
 :END:
+https://cancerdiscovery.aacrjournals.org/content/early/2021/12/22/2159-8290.CD-RW2021-181
 **** Microarray
 :PROPERTIES:
 :ID:       294edcbb-f306-4f94-9eba-e8a1c7c512f1
@@ -5986,6 +6018,8 @@ https://www.biostars.org/p/13270/
 :doc: https://github.com/seqan/flexbar/wiki/Manual
 :ID:       5c20daf7-d02e-4447-bd1e-f991e1366c48
 :END:
+- [[https://github.com/seqan/flexbar/wiki/Manual][Documentation]]
+- https://www.google.com/search?q=flexbar+sequencing+manual 
 **** gage                                                           :biotool:
 :PROPERTIES:
 :ID:       9b222d1c-ab61-450c-8b77-a98ec3213867
