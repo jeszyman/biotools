@@ -1703,6 +1703,7 @@ CLOCK: [2019-04-26 Fri 11:28]--[2019-04-26 Fri 11:44] =>  0:16
 CLOCK: [2019-04-26 Fri 11:03]--[2019-04-26 Fri 11:13] =>  0:10
 CLOCK: [2019-04-26 Fri 10:43]--[2019-04-26 Fri 10:57] =>  0:14
 :END:
+- https://pubmed.ncbi.nlm.nih.gov/33580225/
 - https://www.nature.com/articles/s41598-020-60559-5c
 - https://github.com/nickhir/GermlineMutationCalling
 - cite:kocakavuk2021 
@@ -2312,6 +2313,7 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :LOGBOOK:
 CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
 :END:
+- http://m.genome.cshlp.org/content/early/2021/12/20/gr.275691.121.full.pdf#page=1&view=FitH
 - fragments for open chromatin and tissue of origin
 - footprinting
   - https://www.nature.com/articles/s41523-021-00237-5
@@ -2353,6 +2355,8 @@ https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
 :PROPERTIES:
 :ID:       b9db0398-4481-4502-abb0-bd9edcd353f2
 :END:
+https://www.sciencedirect.com/science/article/pii/S2666166721004755
+https://www.biorxiv.org/content/10.1101/2021.12.19.473368v1
 https://cancerdiscovery.aacrjournals.org/content/early/2021/12/22/2159-8290.CD-RW2021-181
 **** Microarray
 :PROPERTIES:
@@ -4564,7 +4568,7 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
 :END:
 
-
+- https://www.sciencedirect.com/science/article/pii/S2666166721004755
 - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3016-x
 - http://bioportal.bioontology.org/ontologies/GO/?p=classes&conceptid=root
 - pathways
@@ -4665,6 +4669,7 @@ https://www.nature.com/articles/s41576-021-00434-9
 :LOGBOOK:
 CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
 :END:
+- ideogram /karyotye https://bioinformatics.stackexchange.com/questions/3600/how-to-make-chromosome-color-maps-for-bed-ranges
 - GEDI SOMs https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1007034#sec002
 - https://currentprotocols.onlinelibrary.wiley.com/doi/10.1002/cpz1.252
 - https://genviz.org/module-03-genvisr/0003/02/01/waterfall_GenVisR/
@@ -7009,6 +7014,7 @@ Gene set
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://www.reddit.com/r/bioinformatics/comments/rkqci9/whats_something_cool_and_exiting_going_on_in/
 - https://med.stanford.edu/dbds/education/workshops-in-biostatistics/workshop-archives.html
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5302158/
 - https://www.reddit.com/r/bioinformatics/comments/pt7ecx/to_all_the_seasoned_bioinformaticians_out_there/
@@ -7127,6 +7133,8 @@ https://genome.ucsc.edu/FAQ/index.html
 :CREATED:  [2019-04-26 Fri 10:36]
 :ID:       374F30CA-2E80-4CC2-8FD3-5B9BC8083889
 :END:
+- https://www.reddit.com/r/bioinformatics/comments/rc9901/how_do_you_see_the_future_of_computational/
+- https://www.reddit.com/r/bioinformatics/comments/r941br/does_this_learning_path_seem_good_to_become_a/
 - https://www.reddit.com/r/bioinformatics/comments/esr5mw/any_good_books_about_bioinformatics/
 - https://protocolexchange.researchsquare.com/browse?journal=protocol-exchange&subjectArea=Computational%20biology%20and%20bioinformatics
 
