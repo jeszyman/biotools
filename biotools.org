@@ -1468,10 +1468,6 @@ https://www.nature.com/articles/s41586-021-03894-5
 - Subset a bam
   - By chromosome
     - e.g.: ​samtools view -b in.bam chr1 > in_chr1.bam
-- [[http://barcwiki.wi.mit.edu/wiki/SOPs/miningSAMBAM][some common Samtools tasks]]
-- [[http://davetang.org/wiki/tiki-index.php?page=SAMTools][a Samtools tutorial]]
-- [[http://biobits.org/samtools_primer.html][another Samtools tutorial]]
-- [[http://broadinstitute.github.io/picard/explain-flags.html][SAM flags]]
 - [[https://www.biostars.org/p/17361/][Picard is Samtools!]]
 - Find ummapped reads by flags
 - [[http://davetang.org/wiki/tiki-index.php?page=SAMTools#Converting_a_SAM_file_to_a_BAM_file][Sam to Bam, indexing ]]   
@@ -1528,6 +1524,8 @@ https://www.nature.com/articles/s41586-021-03894-5
 :PROPERTIES:
 :ID:       83F91393-2108-4785-9696-BDE8EC09FA88
 :END:
+
+https://bioinformatics.stackexchange.com/questions/2955/is-there-a-more-elegant-solution-to-the-bwa-mem-paired-reads-have-different-nam
 
 -"bwa concatenates all the references sequences together before aligning. So if a read hangs off of one sequence onto the next, it's given the appropriate mapping position, and the unmapped flag is also set, as a sign that something is off about the alignment."
 
@@ -1715,6 +1713,7 @@ CLOCK: [2019-04-26 Fri 11:28]--[2019-04-26 Fri 11:44] =>  0:16
 CLOCK: [2019-04-26 Fri 11:03]--[2019-04-26 Fri 11:13] =>  0:10
 CLOCK: [2019-04-26 Fri 10:43]--[2019-04-26 Fri 10:57] =>  0:14
 :END:
+- https://pubmed.ncbi.nlm.nih.gov/33580225/
 - https://www.nature.com/articles/s41598-020-60559-5c
 - https://github.com/nickhir/GermlineMutationCalling
 - cite:kocakavuk2021 
@@ -2324,6 +2323,7 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :LOGBOOK:
 CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
 :END:
+- http://m.genome.cshlp.org/content/early/2021/12/20/gr.275691.121.full.pdf#page=1&view=FitH
 - fragments for open chromatin and tissue of origin
 - footprinting
   - https://www.nature.com/articles/s41523-021-00237-5
@@ -2365,6 +2365,8 @@ https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
 :PROPERTIES:
 :ID:       b9db0398-4481-4502-abb0-bd9edcd353f2
 :END:
+https://www.sciencedirect.com/science/article/pii/S2666166721004755
+https://www.biorxiv.org/content/10.1101/2021.12.19.473368v1
 https://cancerdiscovery.aacrjournals.org/content/early/2021/12/22/2159-8290.CD-RW2021-181
 **** Microarray
 :PROPERTIES:
@@ -4269,22 +4271,13 @@ CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 - https://training.galaxyproject.org/training-material/topics/epigenetics/tutorials/atac-seq/tutorial.html
 - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1642-2
 - https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
-- homer
-  - some basic homer commands
-    To identify Tn5 hypersensitive sites (THSs), peak calling was performed by findPeak in HOMER software (v4.9) with “-localSize 50000 -size 100 -minDist 50 -fragLength 0 -o auto.” ΔTHS score was calculated with all pairwise comparison of ESC, hCO and hMGEO by dnase_ddhs_scorer.py script with “-A” option in pyDNase library (v0.2.4) (Figure S2)   
 - [[https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sid=1b5013f3a0a4db522d602fa164281aa0&sot=a&sdt=a&cluster=scopubyr%2c%222021%22%2ct%2c%222020%22%2ct%2c%222019%22%2ct%2c%222018%22%2ct%2c%222017%22%2ct%2c%222016%22%2ct&sl=262&s=TITLE-ABS-KEY%28atac-seq%29+AND+NOT+TITLE-ABS-KEY%28chip%29+AND+NOT+DOI%2810.1016%2fj.cell.2017.12.014%29+AND+NOT+DOI%2810.1016%2fj.molmet.2016.01.002%29+AND+NOT+DOI%2810.1038%2fnature23283%29+AND+NOT+DOI%2810.1038%2fnature18606%29+AND+NOT+TITLE-ABS-KEY%28single-cell%29+AND+NOT+TITLE-ABS-KEY%28Hi-C%29&origin=searchadvanced&editSaveSearch=&txGid=38c8cceffee3c655f632c5736cf123cd][top atac-seq cites w/ good methods writeup]]
   - https://www.pnas.org/content/114/13/E2776
   - https://science.sciencemag.org/content/sci/suppl/2018/10/24/362.6413.eaav1898.DC1/aav1898_Corces_SM.pdf
-  - https://www.nature.com/articles/ng.3844#Sec14https://www.sciencedirect.com/science/article/pii/S1074761316304393?via%3Dihub#mmc1
   - https://ars.els-cdn.com/content/image/1-s2.0-S1074761316304393-mmc1.pdf
-- cite:reske2020 
-- http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/ATACseqQCWorkshop__ATACseqQC_workshop/
 - QC
   - [[id:a5b73c70-3f1f-4018-92b2-bfdcaed53cf5][ATACseqQC]]
     - 
-- https://github.com/nf-core/atacseq/blob/master/main.nf
-- https://bioconductor.org/packages/release/BiocViews.html#___ATACSeq
-- https://www.illumina.com/techniques/popular-applications/epigenetics/atac-seq-chromatin-accessibility.html
 - Encode
   - https://github.com/kundajelab/atac_dnase_pipelines/issues/143
   - https://www.encodeproject.org/data-standards/reference-sequences/
@@ -4292,26 +4285,20 @@ CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 - Design
   - Read length
     - https://www.biostars.org/p/418363/
+- Method-establishing papers
+  - cite:buenrostro2013
+  - cite:buenrostro2015
 - Bench
   - cite:corces2017 
+  - cite:buenrostro2015
   - cite:buenrostro2015
   - for tissue
     - cite:corces2017 
 - Bioinformatics
-  - QC
-    - https://www.cell.com/cell-systems/pdfExtended/S2405-4712(20)30079-X
-    - https://bioconductor.org/packages/release/bioc/vignettes/ATACseqQC/inst/doc/ATACseqQC.html
-    - https://bioconductor.org/packages/release/bioc/html/soGGi.html
-  - General method guides
-    - https://ucdavis-bioinformatics-training.github.io/2020-Epigenetics_Workshop/data_reduction/chip_atac/04-peaks
+  - General method guides    
     - cite:yan2020atac
     - cite:corces2017 
-    - cite:buenrostro2015
-    - https://informatics.fas.harvard.edu/atac-seq-guidelines.html
-    - https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-019-44076-8/MediaObjects/41598_2019_44076_MOESM1_ESM.pdf
-    - method-establishing papers
-      - cite:buenrostro2013
-      - cite:buenrostro2015
+    - [[https://informatics.fas.harvard.edu/atac-seq-guidelines.html][Harvard FAS]]
     - ENCODE pipeline
       - https://docs.google.com/document/d/1f0Cm4vRyDQDu0bMehHD7P7KOMxTOP-HiNoIvL1VcBt8/edit
       - https://github.com/ENCODE-DCC/atac-seq-pipeline
@@ -4321,6 +4308,17 @@ CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
     - https://snakepipes.readthedocs.io/en/latest/content/workflows/ATAC-seq.html
     - https://bcbio-nextgen.readthedocs.io/en/latest/contents/atac.html
     - https://rockefelleruniversity.github.io/RU_ATAC_Workshop.html
+    - https://www.illumina.com/techniques/popular-applications/epigenetics/atac-seq-chromatin-accessibility.html
+    - http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/ATACseqQCWorkshop__ATACseqQC_workshop/
+  - Alignment parameters
+    - https://www.nature.com/articles/ng.3844#Sec14https://www.sciencedirect.com/science/article/pii/S1074761316304393?via%3Dihub#mmc1
+    - https://www.pnas.org/content/114/13/E2776
+    - https://informatics.fas.harvard.edu/atac-seq-guidelines.html#alignments
+    - https://ars.els-cdn.com/content/image/1-s2.0-S1074761316304393-mmc1.pdf
+  - QC
+    - https://www.cell.com/cell-systems/pdfExtended/S2405-4712(20)30079-X
+    - https://bioconductor.org/packages/release/bioc/vignettes/ATACseqQC/inst/doc/ATACseqQC.html
+    - https://bioconductor.org/packages/release/bioc/html/soGGi.html
   - Differential accessibility
     - Homer
       - http://homer.ucsd.edu/homer/ngs/mergePeaks.html
@@ -4336,6 +4334,12 @@ CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
   - Integration
     - atac-seq and mirna-seq https://www.sciencedirect.com/science/article/pii/S193459091730320X?via%3Dihub
     - ATAC-seq and miRNA-seq cite:abernathy2017 
+  - cite:reske2020 
+  - https://bioconductor.org/packages/release/BiocViews.html#___ATACSeq
+  - https://github.com/nf-core/atacseq/blob/master/main.nf
+  - homer
+    - some basic homer commands
+      To identify Tn5 hypersensitive sites (THSs), peak calling was performed by findPeak in HOMER software (v4.9) with “-localSize 50000 -size 100 -minDist 50 -fragLength 0 -o auto.” ΔTHS score was calculated with all pairwise comparison of ESC, hCO and hMGEO by dnase_ddhs_scorer.py script with “-A” option in pyDNase library (v0.2.4) (Figure S2)   
 **** methylation                                                    :biopipe:
 :PROPERTIES:
 :CREATED:  [2019-05-29 Wed 14:46]
@@ -4574,7 +4578,7 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
 :END:
 
-
+- https://www.sciencedirect.com/science/article/pii/S2666166721004755
 - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3016-x
 - http://bioportal.bioontology.org/ontologies/GO/?p=classes&conceptid=root
 - pathways
@@ -4639,10 +4643,11 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 - REMARK biomarker guidelines
   - https://ascopubs.org/doi/full/10.1200/jco.2005.04.3778
   - https://ascopubs.org/doi/full/10.1200/jco.2004.01.0454
-**** Omics integration
+*** Omics integration
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
 :END:
+https://www.nature.com/articles/s41568-021-00408-3
 cite:bakhoum2021 
 https://www.nature.com/articles/s41591-018-0323-0
 https://pubmed.ncbi.nlm.nih.gov/34172972/ https://umgear.org/
@@ -4665,6 +4670,7 @@ https://www.nature.com/articles/d41586-021-01994-w
 - https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
 
 *** Machine learning in genomics and bioinformatics
+https://www.nature.com/articles/s41568-021-00408-3
 https://www.nature.com/articles/s41576-021-00434-9
 *** Bioinformatics visualization 
 :PROPERTIES:
@@ -4673,6 +4679,7 @@ https://www.nature.com/articles/s41576-021-00434-9
 :LOGBOOK:
 CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
 :END:
+- ideogram /karyotye https://bioinformatics.stackexchange.com/questions/3600/how-to-make-chromosome-color-maps-for-bed-ranges
 - GEDI SOMs https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1007034#sec002
 - https://currentprotocols.onlinelibrary.wiley.com/doi/10.1002/cpz1.252
 - https://genviz.org/module-03-genvisr/0003/02/01/waterfall_GenVisR/
@@ -6238,6 +6245,8 @@ Another use of the voom plot-  what you are failing to do completely in the voom
 :CREATED:  [2021-09-13 Mon 07:29]
 :ID:       75ca7513-8f01-4819-a813-f9459f447483
 :END:
+- https://ucdavis-bioinformatics-training.github.io/2020-Epigenetics_Workshop/data_reduction/chip_atac/04-peaks
+
 a _peaks.xls file looks like
 # This file is generated by MACS version 2.2.6
 # Command line: callpeak --treatment /mnt/ris/jschwarz/cardiac-radiobiology/bam/ct01_aut_blk_ddp_open.bam --format BAMPE --gsize mm --keep-dup all --outdir /mnt/ris/jschwarz/cardiac-radiobiology/macs2 --name ct01_aut_blk_ddp_open.bam --bdg --SPMR --extsize 150 --nomodel --call-summits --nolambda
@@ -6386,17 +6395,14 @@ https://pathvisio.github.io/
 :ID:       0a3acec7-f4d1-4cd1-b3c8-7ec769715cc1
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
+- [[http://barcwiki.wi.mit.edu/wiki/SOPs/miningSAMBAM][some common Samtools tasks]]
+- [[http://davetang.org/wiki/tiki-index.php?page=SAMTools][a Samtools tutorial]]
+- [[http://biobits.org/samtools_primer.html][another Samtools tutorial]]
+- [[http://broadinstitute.github.io/picard/explain-flags.html][SAM flags]]
 - https://github.com/merenlab/anvio/issues/1479
 - [[http://biobits.org/samtools_primer.html][another Samtools tutorial]]
 - [[http://www.htslib.org/workflow/#mapping_to_cram][using cram]]
 - [[https://www.samformat.info/sam-format-header][header tool]]
-
-***** commands                                                 
-:PROPERTIES:
-:CREATED:  [2019-04-26 Fri 10:32]
-:ID:       31C15E78-2EAE-4D54-94FF-91A5AF05190A
-:END:
-
 - commands
   - sequence inspection and quality
     | function                              | command                                       |
@@ -7018,6 +7024,7 @@ Gene set
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://www.reddit.com/r/bioinformatics/comments/rkqci9/whats_something_cool_and_exiting_going_on_in/
 - https://med.stanford.edu/dbds/education/workshops-in-biostatistics/workshop-archives.html
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5302158/
 - https://www.reddit.com/r/bioinformatics/comments/pt7ecx/to_all_the_seasoned_bioinformaticians_out_there/
@@ -7136,6 +7143,8 @@ https://genome.ucsc.edu/FAQ/index.html
 :CREATED:  [2019-04-26 Fri 10:36]
 :ID:       374F30CA-2E80-4CC2-8FD3-5B9BC8083889
 :END:
+- https://www.reddit.com/r/bioinformatics/comments/rc9901/how_do_you_see_the_future_of_computational/
+- https://www.reddit.com/r/bioinformatics/comments/r941br/does_this_learning_path_seem_good_to_become_a/
 - https://www.reddit.com/r/bioinformatics/comments/esr5mw/any_good_books_about_bioinformatics/
 - https://protocolexchange.researchsquare.com/browse?journal=protocol-exchange&subjectArea=Computational%20biology%20and%20bioinformatics
 
