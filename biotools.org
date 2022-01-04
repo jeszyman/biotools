@@ -13,7 +13,6 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-- https://www.cancergenomicscloud.org/
 ** Setup
 :PROPERTIES:
 :ID:       06e0c839-8a84-4890-9939-71e1bb5e7c6c
@@ -31,98 +30,27 @@ mkdir -p "${repo}/docker"
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
-https://www.nature.com/articles/s41587-018-0006-x
 *** Setup
 :PROPERTIES:
 :ID:       03d2e84c-f016-4e3b-ba9c-9afe7d0656cc
 :END:
-**** Biotools docker setup
+**** Biotools docker 
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
 :END:
 :LOGBOOK:
 CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
 :END:
-- [[file:~/repos/biotools/Dockerfile]]
-- build biotools docker container
-  #+begin_src bash
-run_dir=~/repos/biotools
-dockerfile=Dockerfile
-tag=biotools
-
-#########1#########2#########3#########4#########5#########6#########7#########8
-cd $run_dir
-docker build . --file $dockerfile --tag jeszyman/$tag
-docker push jeszyman/$tag
-
-cd ~/repos/biotools/docker/
-docker build . --file biotools_Dockerfile --tag jeszyman/biotools
-docker push jeszyman/biotools
-#+end_src
-- run docker interactively 
-  #+name: docker_interactive
-  #+begin_src bash
-docker_interactive() {
-    if [ -f /.dockerenv ]; then
-        echo "shell already in docker, exiting"
-        exit 1
-    else
-        account="USER INPUT"
-        container="USER INPUT"
-        read -p "docker account name: " account
-        account="${account:=jeszyman}"
-        read -p "container name: " container
-        container="${container:=biotools}"
-        case $HOSTNAME in
-            (radonc-cancerbio) docker run -it \
-                                      --env HOME=${HOME} \
-                                      --hostname ${HOSTNAME} \
-                                      --user $(id -u ${USER}) \
-                                      --volume /home/:/home/ \
-                                      --volume /mnt/:/mnt/ \
-                                      --volume /tmp/:/tmp/ \
-                                      $account/$container \
-                                      /bin/bash;;
-            (acl*) docker run -it \
-                          --env HOME=${HOME} \
-                          --hostname ${HOSTNAME} \
-                          -v /drive3/:/drive3/ \
-                          -v /duo4/:/duo4/ \
-                          -v /home/:/home/ \
-                          -v /tmp/:/tmp/ \
-                          -u $(id -u ${USER}) \
-                          $account/$container \
-                          /bin/bash;;
-            (ACL*) docker run -it \
-                          --env HOME=${HOME} \
-                          --hostname ${HOSTNAME} \
-                          -v /home/:/home/ \
-                          -v /duo4/:/duo4/ \
-                          -u $(id -u ${USER}):$(id -g ${USER}) \
-                          $account/$container \
-                          /bin/bash;;
-            (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker($account/'"$container"')' /bin/bash;;
-            (*) docker run -it \
-                       --env HOME=/home/${USER} \
-                       --hostname ${HOSTNAME} \
-                       --user $(id -u ${USER}) \
-                       --volume /home/:/home/ \
-                       --volume /mnt/:/mnt/ \
-                       --volume /tmp/:/tmp/ \
-                       $account/$container \
-                       /bin/bash;;
-        esac
-    fi
-}
-#+end_src
-**** Write Dockerfile
+***** Write [[file:docker/biotools_Dockerfile]]
 :PROPERTIES:
 :ID:       400562f2-e750-46b3-98ef-84ea59d447c9
 :END:
 :LOGBOOK:
+CLOCK: [2022-01-04 Tue 09:15]--[2022-01-04 Tue 09:16] =>  0:01
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
 :END:
 #+begin_src bash :tangle ./docker/biotools_Dockerfile
+FROM jeszyman/basecamp
 #########1#########2#########3#########4#########5#########6#########7#########8
 
 ###################################################################
@@ -141,7 +69,19 @@ CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
 #
 # See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 
-FROM jeszyman/basecamp
+###########
+### APT ###
+###########
+
+# Required for bioconda flexbar
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
+    libtbb-dev \
+    libtbb2 
+
+# Required for bioconda samtools
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
+    libssl1.0.0 \
+    libssl-dev
 
 #############
 ### Conda ###
@@ -172,7 +112,7 @@ RUN conda install -c bioconda rsem
 RUN conda install -c bioconda salmon
 RUN conda install -c bioconda sambamba
 RUN conda install -c bioconda samblaster
-RUN conda install -c bioconda samtools=1.9 --force-reinstall
+RUN conda install -c bioconda samtools
 RUN conda install -c bioconda seqkit
 RUN conda install -c bioconda seqtk
 RUN conda install -c bioconda skewer
@@ -200,7 +140,7 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "tximport"));'
 
 #+end_src
-#+begin_src fundamental :tangle ./docker/biotools_Dockerfile
+#+begin_src bash :tangle ./docker/biotools_Dockerfile
 RUN R -e 'install.packages("BiocManager"); \
     BiocManager::install(); \
     BiocManager::install(c("AnnotationDbi", \
@@ -807,6 +747,80 @@ RUN cd /opt \
 #RUN echo "source activate py2" > ~/.bashrc
 #ENV PATH /opt/conda/envs/py2/bin:$PATH
 
+***** Build
+- build biotools docker container
+  #+begin_src bash
+run_dir=~/repos/biotools
+dockerfile=Dockerfile
+tag=biotools
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+cd $run_dir
+docker build . --file $dockerfile --tag jeszyman/$tag
+docker push jeszyman/$tag
+
+cd ~/repos/biotools/docker/
+docker build . --file biotools_Dockerfile --tag jeszyman/biotools
+docker push jeszyman/biotools
+#+end_src
+***** Run functions
+- run docker interactively 
+  #+name: docker_interactive
+  #+begin_src bash
+docker_interactive() {
+    if [ -f /.dockerenv ]; then
+        echo "shell already in docker, exiting"
+        exit 1
+    else
+        account="USER INPUT"
+        container="USER INPUT"
+        read -p "docker account name: " account
+        account="${account:=jeszyman}"
+        read -p "container name: " container
+        container="${container:=biotools}"
+        case $HOSTNAME in
+            (radonc-cancerbio) docker run -it \
+                                      --env HOME=${HOME} \
+                                      --hostname ${HOSTNAME} \
+                                      --user $(id -u ${USER}) \
+                                      --volume /home/:/home/ \
+                                      --volume /mnt/:/mnt/ \
+                                      --volume /tmp/:/tmp/ \
+                                      $account/$container \
+                                      /bin/bash;;
+            (acl*) docker run -it \
+                          --env HOME=${HOME} \
+                          --hostname ${HOSTNAME} \
+                          -v /drive3/:/drive3/ \
+                          -v /duo4/:/duo4/ \
+                          -v /home/:/home/ \
+                          -v /tmp/:/tmp/ \
+                          -u $(id -u ${USER}) \
+                          $account/$container \
+                          /bin/bash;;
+            (ACL*) docker run -it \
+                          --env HOME=${HOME} \
+                          --hostname ${HOSTNAME} \
+                          -v /home/:/home/ \
+                          -v /duo4/:/duo4/ \
+                          -u $(id -u ${USER}):$(id -g ${USER}) \
+                          $account/$container \
+                          /bin/bash;;
+            (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker($account/'"$container"')' /bin/bash;;
+            (*) docker run -it \
+                       --env HOME=/home/${USER} \
+                       --hostname ${HOSTNAME} \
+                       --user $(id -u ${USER}) \
+                       --volume /home/:/home/ \
+                       --volume /mnt/:/mnt/ \
+                       --volume /tmp/:/tmp/ \
+                       $account/$container \
+                       /bin/bash;;
+        esac
+    fi
+}
+#+end_src
+
 **** R bioinformatics setup
 :PROPERTIES:
 :ID:       87b498a6-e553-4682-8038-96bbb21fda14
@@ -975,10 +989,16 @@ https://singularity.lbl.gov/install-linux
 :PROPERTIES:
 :ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
 :END:
-- Subsetting
-  - [[Question: Selecting Random Pairs From Fastq?]]  
-  - [[https://www.biostars.org/p/6544/][look at all the ways to split a fastq file!]]
-  - https://www.google.com/search?q=subset+bam+file 
+- https://bioinf.shenwei.me/seqkit/usage/#pair
+- Subsetting and splitting 
+  - Fastas
+    - https://www.biostars.org/p/13270/
+  - Fastqs
+    - [[Question: Selecting Random Pairs From Fastq?]]  
+    - [[https://www.biostars.org/p/6544/][look at all the ways to split a fastq file!]]
+  - Bams
+    - https://www.google.com/search?q=subset+bam+file
+    - samtools view -bo subset.bam -s 123.4 alignments.bam chr1 chr2
 - https://www.google.com/search?q=annotate+bed+file+with+gene+names 
 - https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
 - [[https://www.biostars.org/p/68283/][count total length of regions in bed file]]
@@ -1054,6 +1074,7 @@ rsem-prepare-reference --gtf ./rn6.ensGene.gtf \
 :LOGBOOK:
 CLOCK: [2021-05-27 Thu 11:25]--[2021-05-27 Thu 11:38] =>  0:13
 :END:
+- https://www.nature.com/articles/s41587-018-0006-x
 - https://www.youtube.com/user/IlluminaInc/playlists
 - https://support.illumina.com/downloads/sequencing_coverage_calculator.html
 
@@ -2323,6 +2344,7 @@ CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
   - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
 - DELFI (DNA evaluation of fragments for early interception)
   - short-to-long ratio by genomic bin cite:mathios2021
+    - https://github.com/cancer-genomics/reproduce_lucas_wflow
   - cite:cristiano2019 Delphi
   - https://github.com/Cancer-Genomics/delfi_scripts
 - cite:mouliere2018
@@ -7014,6 +7036,8 @@ Gene set
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+https://pubmed.ncbi.nlm.nih.gov/34935906/
+- https://www.cancergenomicscloud.org/
 - https://www.reddit.com/r/bioinformatics/comments/rkqci9/whats_something_cool_and_exiting_going_on_in/
 - https://med.stanford.edu/dbds/education/workshops-in-biostatistics/workshop-archives.html
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5302158/
