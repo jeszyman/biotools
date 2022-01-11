@@ -3426,7 +3426,7 @@ https://www.bioconductor.org/packages/devel/bioc/vignettes/SummarizedExperiment/
 :PROPERTIES:
 :ID:       87734999-3139-4343-A323-925416811B12
 :END:
-
+https://www.pathwaycommons.org/guide/primers/data_analysis/gsea/#:~:text=The%20GSEA%20enrichment%20score%20(S,sets%20one%20at%20a%20time.
 - https://www.reddit.com/r/bioinformatics/comments/66374x/gsea_vs_go_enrichment/
 
 ********* [[http://www.bioconductor.org/packages/release/bioc/html/gage.html][GAGE]] (generally applicable gene-set enrichment for pathway analysis)
@@ -4042,6 +4042,8 @@ https://www.biostars.org/p/428905/
 CLOCK: [2021-07-29 Thu 12:04]--[2021-07-29 Thu 12:24] =>  0:20
 CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :END:
+https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rfea/rfea/
+https://bioinformaticsbreakdown.com/how-to-gsea/
 https://metascape.org/gp/index.html#/main/step1
 https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 ***** General reference
@@ -7008,7 +7010,8 @@ Gene set
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
-https://pubmed.ncbi.nlm.nih.gov/34935906/
+- https://wustl.app.box.com/s/00qniw32ng670650r1cz5bljq2uja4q1
+- https://pubmed.ncbi.nlm.nih.gov/34935906/
 - https://www.cancergenomicscloud.org/
 - https://www.reddit.com/r/bioinformatics/comments/rkqci9/whats_something_cool_and_exiting_going_on_in/
 - https://med.stanford.edu/dbds/education/workshops-in-biostatistics/workshop-archives.html
