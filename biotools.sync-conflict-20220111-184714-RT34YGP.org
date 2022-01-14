@@ -2217,7 +2217,6 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
-- https://www.nature.com/articles/s41416-021-01696-0
 - phylogenic for cancer evolution cite:abbosh2017 
 - inferred gene expression
   - cite:ulz2016
@@ -4246,8 +4245,6 @@ https://www.illumina.com/destination/epigenetics-webinar-series.html
 :LOGBOOK:
 CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 :END:
-- https://rockefelleruniversity.github.io/RU_ATACseq/
-- https://nbisweden.github.io/workshop-archive/workshop-ChIP-seq/2018-11-07/
 - https://www.sciencedirect.com/science/article/pii/S0888754321001531?via%3Dihub
 - https://www.sciencedirect.com/science/article/pii/S1535610817302040?via%3Dihub
 - https://www.nature.com/articles/nbt.1630
@@ -6062,6 +6059,11 @@ CLOCK: [2020-11-17 Tue 09:56]--[2020-11-17 Tue 12:07] =>  2:11
 CLOCK: [2020-10-26 Mon 13:01]--[2020-10-26 Mon 13:55] =>  0:54
 CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
 :END:
+- https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideFrame.html
+- https://academic.oup.com/bib/article/22/1/545/5722384#225532980
+- https://bioconductor.org/packages/3.14/bioc/html/EnrichmentBrowser.html
+- http://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideFrame.html?_Interpreting_GSEA_Results
+- https://bioconductor.org/packages/devel/bioc/vignettes/EnrichmentBrowser/inst/doc/EnrichmentBrowser.pdf
 - https://www.nature.com/articles/s41598-019-46059-1
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6607905/
 - leading edge https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5066188/
@@ -7013,8 +7015,7 @@ Gene set
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
-- https://wustl.app.box.com/s/00qniw32ng670650r1cz5bljq2uja4q1
-- https://pubmed.ncbi.nlm.nih.gov/34935906/
+https://pubmed.ncbi.nlm.nih.gov/34935906/
 - https://www.cancergenomicscloud.org/
 - https://www.reddit.com/r/bioinformatics/comments/rkqci9/whats_something_cool_and_exiting_going_on_in/
 - https://med.stanford.edu/dbds/education/workshops-in-biostatistics/workshop-archives.html
