@@ -31,6 +31,11 @@ mkdir -p "${repo}/docker"
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
+*** Motifs
+https://academic.oup.com/genetics/article/216/2/353/6066178
+*** Batch effect
+- batch effect https://evayiwenwang.github.io/Managing_batch_effects/detect.html
+https://www.reddit.com/r/bioinformatics/comments/s3twgh/working_with_batch_effects/
 *** Setup
 :PROPERTIES:
 :ID:       03d2e84c-f016-4e3b-ba9c-9afe7d0656cc
@@ -3933,13 +3938,13 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 - https://www.nature.com/articles/srep05150#Sec11
 - http://www.mircode.org/faq.php
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4652620/
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
+- [[id:5d9593fd-f083-450f-a510-449aa15ae670][LINK TO miRNA biology]]
+- [[id:95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88][LINK TO miRNA data]]
 - spike-ins
   - cite:qiagen2018mirnaspike cite:exiqon2016exiseq 
   - cite:locati2015
   - https://genome.cshlp.org/content/21/9/1543.long
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
-- [[id:5d9593fd-f083-450f-a510-449aa15ae670][LINK TO miRNA biology]]
-- [[id:95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88][LINK TO miRNA data]]
 - processes
   - preprocessing
     - read collapse just speads up downstream
@@ -4051,6 +4056,7 @@ https://www.biostars.org/p/428905/
 CLOCK: [2021-07-29 Thu 12:04]--[2021-07-29 Thu 12:24] =>  0:20
 CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :END:
+https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rfea/rfea/
 https://bioinformaticsbreakdown.com/how-to-gsea/
 https://metascape.org/gp/index.html#/main/step1
@@ -4247,6 +4253,8 @@ https://www.illumina.com/destination/epigenetics-webinar-series.html
       - methylKit
       - mehtySig
       - metilene
+**** ChIP-seq
+https://github.com/crazyhottommy/ChIP-seq-analysis
 **** ATAC-seq
 :PROPERTIES:
 :ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
@@ -4254,6 +4262,8 @@ https://www.illumina.com/destination/epigenetics-webinar-series.html
 :LOGBOOK:
 CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 :END:
+- https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
+- https://www.biostars.org/p/287624/
 - https://rockefelleruniversity.github.io/RU_ATACseq/
 - https://nbisweden.github.io/workshop-archive/workshop-ChIP-seq/2018-11-07/
 - https://www.sciencedirect.com/science/article/pii/S0888754321001531?via%3Dihub
@@ -4924,6 +4934,7 @@ cite:consortium2020
 :PROPERTIES:
 :ID:       333ebad6-9ed4-4d5b-a50e-f9fe9a8c3a92
 :END:
+https://www.nature.com/articles/s41598-020-72664-6
 - https://github.com/czbiohub/tabula-muris
 - [[http://firebrowse.org/?cohort=ACC&download_dialog=true][firehose]]
 - [[https://gtexportal.org/home/datasets][GTEx]]
@@ -6068,6 +6079,7 @@ CLOCK: [2020-11-17 Tue 09:56]--[2020-11-17 Tue 12:07] =>  2:11
 CLOCK: [2020-10-26 Mon 13:01]--[2020-10-26 Mon 13:55] =>  0:54
 CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
 :END:
+- https://www.biostars.org/p/375584/
 - https://www.nature.com/articles/s41598-019-46059-1
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6607905/
 - leading edge https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5066188/
