@@ -13,7 +13,6 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-https://www.sciencedirect.com/science/article/pii/S2666979X21000367?via%3Dihub
 ** Setup
 :PROPERTIES:
 :ID:       06e0c839-8a84-4890-9939-71e1bb5e7c6c
@@ -5308,6 +5307,7 @@ mandatory
 
 
 ** Bioinformatics software
+*** Hierarchical lists
 *** Bioinformatics software flat list
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
@@ -5484,6 +5484,13 @@ https://github.com/Illumina/canvas
   - https://github.com/chrisamiller/copyCat
   - for cah https://bioconductor.org/packages/release/bioc/html/DNAcopy.html
 
+
+**** ChIPseeker :biotool:
+:PROPERTIES:
+:ID:       a4cf29e3-7fa6-4ea2-a538-f59ec450cc7b
+:END:
+- [[https://rdrr.io/bioc/ChIPseeker/man/annotatePeak.html][rdrr ChIPseeker]]
+- [[https://bioconductor.org/packages/devel/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.html#:~:text=ChIPseeker%20is%20an%20R%20package,peaks%20binding%20to%20TSS%20regions.&text=Moreover%2C%20it%20supports%20evaluating%20significant%20overlap%20among%20ChIP%2Dseq%20datasets][ChIPseeker vignette]].
 
 **** CIBERSORTx and cytotrace                                       :biotool:
 :PROPERTIES:
@@ -7091,6 +7098,7 @@ Gene set
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://www.sciencedirect.com/science/article/pii/S2666979X21000367?via%3Dihub
 - https://github.com/genome/bfx-workshop
 - https://www.biostars.org/p/190366/
 - https://wustl.app.box.com/s/00qniw32ng670650r1cz5bljq2uja4q1
