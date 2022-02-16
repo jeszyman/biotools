@@ -5447,7 +5447,8 @@ CLOCK: [2021-09-13 Mon 07:27]--[2021-09-13 Mon 07:46] =>  0:19
 :ID:       0be280ad-47b6-42f4-8a65-4fadadf4940b
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
-https://bedops.readthedocs.io/en/latest/index.html
+- https://bedops.altius.org/forum/index.php?topic=20.0
+- https://bedops.readthedocs.io/en/latest/index.html
 **** bowtie                                                         :biotool:
 :PROPERTIES:
 :ID:       8883a37b-867c-4c19-8e9c-2b46004125a1
@@ -6126,11 +6127,24 @@ segmentation file column 6 is log2(x)-1 of the copy number, so
 - https://docs.cbioportal.org/5.1-data-loading/data-loading/file-formats#gistic-2-0-data
 - https://blindwith.science/2018/10/442.html/
 - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
-**** GRanges                                                        :biotool:
+**** Genomic Alignments
+:PROPERTIES:
+:ID:       608b8cb2-4c77-4a9b-bc6a-24470bb572b0
+:END:
+- see [[id:78b22803-f843-41f2-9390-d621caae82c0][Genomic Ranges]]
+- summarizeOverlaps https://bioconductor.org/packages/release/bioc/vignettes/GenomicAlignments/inst/doc/summarizeOverlaps.pdf
+**** Genomic Ranges                                                 :biotool:
 :PROPERTIES:
 :CREATED:  [2021-09-13 Mon 07:29]
 :ID:       78b22803-f843-41f2-9390-d621caae82c0
 :END:
+- https://bioconductor.github.io/BiocWorkshops/solving-common-bioinformatic-challenges-using-genomicranges.html
+- https://rstudio-pubs-static.s3.amazonaws.com/142838_0374b144401c449eb17ed5c2c70cb513.html#grangeslist-multiple-interval-range-features
+- see [[id:608b8cb2-4c77-4a9b-bc6a-24470bb572b0][Genomic Alignments]]
+- https://seandavi.github.io/ITR/RangesAndSignal.html
+- https://rdrr.io/bioc/GenomicRanges/
+- https://kasperdanielhansen.github.io/genbioconductor/html/GenomicRanges_Lists.html
+- https://bioconductor.riken.jp/packages/3.8/bioc/vignettes/GenomicRanges/inst/doc/GenomicRangesIntroduction.html
 - https://www.google.com/search?q=convert+bed+to+granges 
 - Granges manipulations https://rockefelleruniversity.github.io/Bioconductor_Introduction/exercises/answers/GenomicFeatures_answers.html
 
@@ -7098,6 +7112,7 @@ Gene set
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+https://mail.google.com/mail/u/0/#inbox/FMfcgzGmtrSDsSwZKDbRkXhVfzJPStMW
 - https://www.sciencedirect.com/science/article/pii/S2666979X21000367?via%3Dihub
 - https://github.com/genome/bfx-workshop
 - https://www.biostars.org/p/190366/
