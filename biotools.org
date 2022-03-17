@@ -1105,6 +1105,7 @@ https://www.nature.com/articles/s41568-021-00408-3
 https://www.nature.com/articles/s41576-021-00434-9
 ***** [[id:1768b182-858a-46f8-97a8-4cd9747a2361][LINK TO Probability and statistics related to bioinformatics]]
 **** Nucleic acid sequening processes
+https://www.reddit.com/r/bioinformatics/comments/te1f5w/what_is_important_to_know_about_your_ngs_library/
 ***** Nucleic acid sequence alignment
 :PROPERTIES:
 :ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
@@ -1943,6 +1944,13 @@ CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
   - homer
     - some basic homer commands
       To identify Tn5 hypersensitive sites (THSs), peak calling was performed by findPeak in HOMER software (v4.9) with “-localSize 50000 -size 100 -minDist 50 -fragLength 0 -o auto.” ΔTHS score was calculated with all pairwise comparison of ESC, hCO and hMGEO by dnase_ddhs_scorer.py script with “-A” option in pyDNase library (v0.2.4) (Figure S2)   
+******** Visualizations
+- global accessibility change
+  - cite:wang2018amd fig2b
+- accessibility difference at gene
+  - cite:wang2018amd fig2a
+- peak heatmaps
+  - cite:wang2018amd fig1c
 ******* methylation                                                 :biopipe:
 :PROPERTIES:
 :CREATED:  [2019-05-29 Wed 14:46]
@@ -2735,6 +2743,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+http://www.nathalievialaneix.eu/doc/html/solution_edgeR-tomato.html#exploratory-analysis-of-degs
 - https://www.liebertpub.com/doi/10.1089/cmb.2015.0085
 - https://tavareshugo.github.io/data-carpentry-rnaseq/03_rnaseq_pca.html#Running_PCA_using_prcomp()
 ******* General guides, github repos, training, etc
@@ -5490,6 +5499,8 @@ CLOCK: [2021-09-13 Mon 07:27]--[2021-09-13 Mon 07:46] =>  0:19
 :END:
 - https://bedops.altius.org/forum/index.php?topic=20.0
 - https://bedops.readthedocs.io/en/latest/index.html
+**** BiocParallel :biotool:
+https://bioconductor.org/packages/devel/bioc/vignettes/BiocParallel/inst/doc/Introduction_To_BiocParallel.pdf
 **** bowtie                                                         :biotool:
 :PROPERTIES:
 :ID:       8883a37b-867c-4c19-8e9c-2b46004125a1
