@@ -13,6 +13,7 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+https://www.nature.com/articles/s41592-022-01412-7
 ** Setup
 :PROPERTIES:
 :ID:       06e0c839-8a84-4890-9939-71e1bb5e7c6c
@@ -2570,7 +2571,9 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
-https://www.nature.com/articles/s41551-021-00837-3
+- https://www.nature.com/collections/gcdaehehhf/webinars
+- cite:liu2020
+- https://www.nature.com/articles/s41551-021-00837-3
 ******** [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling]]
 ******** [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 ******** [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
@@ -4744,6 +4747,7 @@ https://www.nature.com/articles/d41586-021-01994-w
 :LOGBOOK:
 CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
 :END:
+https://www.reddit.com/r/bioinformatics/comments/tgzeya/t_sne_graphs_for_data_visualization/
 - ideogram /karyotye https://bioinformatics.stackexchange.com/questions/3600/how-to-make-chromosome-color-maps-for-bed-ranges
 - GEDI SOMs https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1007034#sec002
 - https://currentprotocols.onlinelibrary.wiley.com/doi/10.1002/cpz1.252
