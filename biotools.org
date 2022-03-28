@@ -13,7 +13,7 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-- cappseq https://mail.google.com/mail/u/0/?ui=2&ik=ff50768eb7&view=lg&permmsgid=msg-f:1658523263188957345
+
 ** ENCODE
 :PROPERTIES:
 :ID:       585e27b3-3c79-46d5-aeab-9430251d4318
@@ -910,6 +910,8 @@ done
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
 *** Flat list
+**** Copy-neutral loss of heterozygosity
+https://www.biostars.org/p/254848/#:~:text=%22The%20B%2DAllele%20Frequency%20is,alleles%20(e.g.%20AB).%22
 **** ATAC-seq
 :PROPERTIES:
 :ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
@@ -2421,7 +2423,7 @@ CLOSED: [2016-12-05 Mon 14:22]
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5737511/
 - WGS callers
   - https://github.com/GavinHaLab
-******* copy-number                                                 :biopipe:
+******* copy-number                                         
 :PROPERTIES:
 :CREATED:  [2019-05-29 Wed 14:46]
 :ID:       0206fb96-8785-47fb-87ca-1f597de0ee85
@@ -2437,6 +2439,7 @@ CLOCK: [2019-06-12 Wed 14:40]--[2019-06-12 Wed 14:58] =>  0:18
 CLOCK: [2019-05-29 Wed 15:23]--[2019-05-29 Wed 15:34] =>  0:11
 CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 :END:
+- https://link.springer.com/protocol/10.1007/978-1-4939-9004-7_8
 - https://bioinformaticsdotca.github.io/bicg_2017_module4_lab
 - cite:hehir-kwa2015 
 - https://www.nature.com/scitable/topicpage/copy-number-variation-and-human-disease-741737/
@@ -5380,7 +5383,6 @@ mandatory
 
 
 ** Bioinformatics software
-*** Hierarchical lists
 *** Bioinformatics software flat list
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
@@ -5561,6 +5563,8 @@ https://github.com/Illumina/canvas
   - for cah https://bioconductor.org/packages/release/bioc/html/DNAcopy.html
 
 
+**** cappSeq
+- cappseq https://mail.google.com/mail/u/0/?ui=2&ik=ff50768eb7&view=lg&permmsgid=msg-f:1658523263188957345
 **** ChIPseeker :biotool:
 :PROPERTIES:
 :ID:       a4cf29e3-7fa6-4ea2-a538-f59ec450cc7b
@@ -6275,6 +6279,14 @@ CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
   #+end_src
 - [[http://software.broadinstitute.org/cancer/software/genepattern/modules/docs/ssGSEAProjection/4][ssGSEA]] calculates enrichment for each sample-gene set pair
 - cite:mootha2003 
+**** homer :biotool:
+https://www.biostars.org/tag/homer/?order=views
+https://www.biostars.org/p/138407/
+- Processes
+  - Results interp
+    - http://homer.ucsd.edu/homer/motif/index.html
+  - Gene-based promoter motif enrichment
+    - http://homer.ucsd.edu/homer/microarray/index.html
 **** ichorcna                                                       :biotool:
 :PROPERTIES:
 :ID:       8c535c38-9310-4fd0-a8fe-c300639493da
@@ -7047,6 +7059,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 
 
 
+*** Hierarchical lists
 ** Modules
 :PROPERTIES:
 :ID:       a976fa13-3fa8-41f0-b847-3322f2827c3e
