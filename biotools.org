@@ -910,6 +910,58 @@ done
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
 *** Flat list
+**** Nucleic acid sequence alignment
+:PROPERTIES:
+:ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
+:END:
+https://www.biostars.org/p/342482/
+
+https://mail.google.com/mail/u/0/#inbox/FMfcgzGmvfcqZVjmjRkGBncgDNclkfTm
+
+https://www.biostars.org/p/388935/
+
+https://www.illumina.com/science/genomics-research/articles/dragen-demystifying-reference-genomes.html
+
+https://gatk.broadinstitute.org/hc/en-us/articles/360041155232-Reference-Genome-Components
+
+73. Li,H. and Homer,N. (2010) A survey of sequence alignment
+algorithms for next-generation sequencing. Brief. Bioinform., 11,
+473–483.
+174. Bao,S., Jiang,R., Kwan,W., Wang,B., Ma,X. and Song,Y.-Q. (2011)
+Evaluation of next-generation sequencing software in mapping and
+assembly. J. Hum. Genet., 56, 406–414.
+
+- hash table like BLAST or suffic/prefix like Burrows-Wheeler Transform
+- https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
+- prerequisites
+  - adaptor identification and trimming
+- pseudoaligner
+  - kallisto
+  - Salmon
+- Aligners
+  - TopHat2
+  - Specialized aligners
+    - Fusions
+      - TopHat Fusion
+        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html 
+      - STAR for chimeric reads / STAR-Fusion
+        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
+        - From cite:star_2.5_dobin Chapter 5
+        - From cite:dobin2015mapping Alternate Protocol 6
+          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
+        - additional outputs are
+          - Chimeric.out.sam
+          - Chimeric.out.junction- a STAR-specific format
+    - To transcriptome
+      - 
+  - [[*STAR][STAR]]
+- HISAT2
+***** Mappability 
+:PROPERTIES:
+:ID:       347d4cc0-a25d-4636-96d4-65e6319022df
+:END:
+- http://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig
+- cite:derrien2012
 **** Copy-neutral loss of heterozygosity
 https://www.biostars.org/p/254848/#:~:text=%22The%20B%2DAllele%20Frequency%20is,alleles%20(e.g.%20AB).%22
 **** ATAC-seq
@@ -1229,49 +1281,7 @@ https://www.nature.com/articles/s41576-021-00434-9
 ***** [[id:1768b182-858a-46f8-97a8-4cd9747a2361][LINK TO Probability and statistics related to bioinformatics]]
 **** Nucleic acid sequening processes
 https://www.reddit.com/r/bioinformatics/comments/te1f5w/what_is_important_to_know_about_your_ngs_library/
-***** Nucleic acid sequence alignment
-:PROPERTIES:
-:ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
-:END:
-
-73. Li,H. and Homer,N. (2010) A survey of sequence alignment
-algorithms for next-generation sequencing. Brief. Bioinform., 11,
-473–483.
-174. Bao,S., Jiang,R., Kwan,W., Wang,B., Ma,X. and Song,Y.-Q. (2011)
-Evaluation of next-generation sequencing software in mapping and
-assembly. J. Hum. Genet., 56, 406–414.
-
-- hash table like BLAST or suffic/prefix like Burrows-Wheeler Transform
-- https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
-- prerequisites
-  - adaptor identification and trimming
-- pseudoaligner
-  - kallisto
-  - Salmon
-- Aligners
-  - TopHat2
-  - Specialized aligners
-    - Fusions
-      - TopHat Fusion
-        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html 
-      - STAR for chimeric reads / STAR-Fusion
-        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
-        - From cite:star_2.5_dobin Chapter 5
-        - From cite:dobin2015mapping Alternate Protocol 6
-          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
-        - additional outputs are
-          - Chimeric.out.sam
-          - Chimeric.out.junction- a STAR-specific format
-    - To transcriptome
-      - 
-  - [[*STAR][STAR]]
-- HISAT2
-****** Mappability 
-:PROPERTIES:
-:ID:       347d4cc0-a25d-4636-96d4-65e6319022df
-:END:
-- http://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig
-- cite:derrien2012
+***** [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][Nucleic acid sequence alignment]]
 ***** Massively parallel sequencing 
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
@@ -4985,6 +4995,7 @@ cite:consortium2020
     - Ensembl
   - [[https://support.illumina.com/sequencing/sequencing_software/igenome.html][illumina iGenomes refrence sequence and annotation]]
   - [[https://software.broadinstitute.org/gatk/documentation/article?id=11010][gatk:  Human genome reference builds - GRCh38/hg38 - b37 - hg19]]
+  - https://www.ncbi.nlm.nih.gov/grc/help/faq/
   - https://www.ncbi.nlm.nih.gov/grc/help/definitions/
   - https://www.ccdatalab.org/blog/2019/3/29/gene-expression-repos-explained
   - https://useast.ensembl.org/info/data/ftp/index.html
@@ -5551,6 +5562,8 @@ https://bioconductor.org/packages/devel/bioc/vignettes/BiocParallel/inst/doc/Int
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
   - https://www.youtube.com/watch?v=E6DDNGDXH8A
+**** bwa :biotools:
+
 **** canvas                                                         :biotool:
 :PROPERTIES:
 :ID:       74ef57cd-c44a-4f28-b4a1-5a54a82ce5a3
