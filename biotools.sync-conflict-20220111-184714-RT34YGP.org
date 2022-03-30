@@ -13,7 +13,6 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-https://www.sciencedirect.com/science/article/pii/S2666979X21000367?via%3Dihub
 ** Setup
 :PROPERTIES:
 :ID:       06e0c839-8a84-4890-9939-71e1bb5e7c6c
@@ -23,6 +22,14 @@ repo="/home/jeszyman/repos/biotools"
 mkdir -p "${repo}/docker"
 #+end_src
 
+** Processes
+:PROPERTIES:
+:CREATED:  [2020-04-23 Thu 08:54]
+:ID:       eaac4fb0-ebc3-43c3-9b27-d0633f728fc9
+:END:
+:LOGBOOK:
+CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
+:END:
 *** Setup
 :PROPERTIES:
 :ID:       03d2e84c-f016-4e3b-ba9c-9afe7d0656cc
@@ -39,15 +46,8 @@ CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
 :ID:       400562f2-e750-46b3-98ef-84ea59d447c9
 :END:
 :LOGBOOK:
-<<<<<<< HEAD
-<<<<<<< HEAD
-CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:19] =>  1:00
-=======
-=======
 CLOCK: [2022-01-04 Tue 09:15]--[2022-01-04 Tue 09:16] =>  0:01
->>>>>>> c7cf2572c54fd42def640fdf5cb9c8b5c6722ee9
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
->>>>>>> 881cc173bd0cb9c758b9417edcb1cfb47a45d75a
 :END:
 #+begin_src bash :tangle ./docker/biotools_Dockerfile
 FROM jeszyman/basecamp
@@ -69,8 +69,6 @@ FROM jeszyman/basecamp
 #
 # See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 
-<<<<<<< HEAD
-=======
 ###########
 ### APT ###
 ###########
@@ -85,7 +83,6 @@ RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-mi
     libssl1.0.0 \
     libssl-dev
 
->>>>>>> c7cf2572c54fd42def640fdf5cb9c8b5c6722ee9
 #############
 ### Conda ###
 #############
@@ -101,10 +98,12 @@ RUN conda install -c bioconda cutadapt
 RUN conda install -c bioconda deeptools
 RUN conda install -c bioconda fastp
 RUN conda install -c bioconda fastqc
+RUN conda install -c bioconda flexbar
 RUN conda install -c bioconda gatk
 RUN conda install -c bioconda goleft
 RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda mosdepth
+RUN conda install -c bioconda multiqc
 RUN conda install -c bioconda picard
 RUN conda install -c bioconda preseq
 RUN conda install -c bioconda qualimap
@@ -139,15 +138,6 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "Rsamtools", \
                                  "TxDb.Mmusculus.UCSC.mm10.ensGene", \
                                  "tximport"));'
-
-#######################
-### Custom Installs ###
-#######################
-
-RUN pip install multiqc
-
-RUN apt-get install -yq --no-install-recommends --allow-unauthenticated \
-    flexbar
 
 #+end_src
 #+begin_src bash :tangle ./docker/biotools_Dockerfile
@@ -913,165 +903,9 @@ done
 # get readmes
 #########1#########2#########3#########4#########5#########6#########7#########8
 #+end_src
-** Processes
-:PROPERTIES:
-:CREATED:  [2020-04-23 Thu 08:54]
-:ID:       eaac4fb0-ebc3-43c3-9b27-d0633f728fc9
-:END:
-:LOGBOOK:
-CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
-:END:
-*** Flat list
-**** cdDNA 5' motif analysis 
-:PROPERTIES:
-:ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
-:END:
-- [[file:~/data/career/golkaram2022.pdf]]
-**** cfDNA window protection score
-:PROPERTIES:
-:ID:       2b5a4f91-873a-4c79-a265-f528c52f06bc
-:END:
-- [[file:~/data/career/golkaram2022.pdf]]
-**** cfDNA tissue of origin discovery
-:PROPERTIES:
-:ID:       47c4ed56-1dea-48dc-bb25-ddbb0a4cd359
-:END:
-- https://www.frontiersin.org/articles/10.3389/fgene.2021.671057/full
-- https://onlinelibrary.wiley.com/doi/10.1002/ctm2.177
-- https://insight.jci.org/articles/view/153559#SEC4
-**** cfDNA small variant calling
-- PhasED-seq- https://www.nature.com/articles/s41587-021-00981-w
-  - - phased seq https://www.sciencedirect.com/science/article/pii/S2666634021003202
-- cite:cohen2021
-- cfDNA and ctDNA sequence variant calling
-  - cite:razavi2019
-  - cite:chabon2020
-    - https://www.theguardian.com/society/2020/mar/25/ai-program-could-check-blood-for-signs-of-lung-cancer
-  - tumor mutational burden
-    - https://ascopubs.org/doi/full/10.1200/PO.19.00204
-**** cfDNA fragmentomics
-:LOGBOOK:
-CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
-:END:
-- http://m.genome.cshlp.org/content/early/2021/12/20/gr.275691.121.full.pdf#page=1&view=FitH
-- fragments for open chromatin and tissue of origin
-- footprinting
-  - https://www.nature.com/articles/s41523-021-00237-5
-  - for nucleosome footprinting cite:snyder2016
-- fragment size
-  - https://www.nature.com/articles/s41586-020-2140-0
-  - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
-- DELFI (DNA evaluation of fragments for early interception)
-  - short-to-long ratio by genomic bin cite:mathios2021
-    - https://github.com/cancer-genomics/reproduce_lucas_wflow
-  - cite:cristiano2019 Delphi
-  - https://github.com/Cancer-Genomics/delfi_scripts
-- cite:mouliere2018
-  - cite:mouliere2018a
-- cite:chabon2020 - per individual mutant molecules- see "ctDNA fragment size analysis", R zoo for sliding window, relative enrichment per frag size   
-- cite:peneder2021     
-  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
-**** cfDNA methylation
-- [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
-- cfDNA methylation
-  - cite:liu2020
-    - https://www.dana-farber.org/newsroom/news-releases/2020/new-blood-test-can-detect-wide-range-of-cancers--now-available-to-at-risk-individuals-in-clinical-study-at-dana-farber/ 
-  - ct methylation
-    - cite:widschwendter2017
-    - cite:xu2017a
-    - cite:heitzer2017
-  - cite:guo2017
-  - meth for early detection
-    - https://www.biorxiv.org/content/10.1101/422675v1
-    - https://www.pnas.org/content/113/16/4338.long
-    - https://www.nature.com/articles/cr2017106
-- https://www.jci.org/articles/view/145973
-**** cfDNA copy number calling
-:PROPERTIES:
-:ID:       21d876e8-8646-4773-91c1-c4385c3218c7
-:END:
-- https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-020-00735-4#Sec12
-- snv based with ABSOLUTE https://www.nature.com/articles/nbt.2203#Sec12
-  - https://bioconductor.org/packages/devel/bioc/vignettes/PureCN/inst/doc/PureCN.pdf
-- post-CN call processessing and denoising
-  - cite:zviran2020
-- BIC-seq
-  - cite:zviran2020
-- Proprietary method
-  - cite:chen2019cna
-- CNVkit on duplex hybrid capture reads
-  - cite:mansukhani2018
-- optimal read pre-processing for cfDNA CNV
-  - cite:molparia2018
-- arm-level by z-score
-  - cite:xu2018crc
-- review articles
-  - cite:cristofanilli2017
-    - (p. 119)"In addition, although copy number assessments can be challenging in ptDNA, there are studies that suggest that this is feasible. For example, HER2 amplification for breast and possibly other cancers may one day be assayed through the use of blood [49],"
-    - (p. 119)"Wyatt et  al. serially profiled ptDNA in men with castration-resistant metastatic prostate cancer to assess for copy number and mutations in androgen receptor (AR) along with targeted sequencing of 19 genes through subsequent therapies [51]."
-  - cite:huang2019 
-- simulation and power calculation 
-  - cite:molparia2017 
-- GISTIC2
-  - cite:bujak2020
-  - cite:hemming2019 
-- ichorCNA
-  - cite:hemming2019 
-  - ichorCNA on off-target reads - cite:shah2021
-  - Other papers applying ichorCNA
-    - cite:bujak2020
-    - cite:ge2020
-      - tumor vs cfDNA CN see cite:ge2020 fig2C
-    - cite:stover2018 
-    - cite:adalsteinsson2017
-    - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
-- instability score
-  - cite:li2017a  
-  - cite:feng2020 
-- by PCR
-  - https://www.pnas.org/content/117/9/4858
-**** cfDNA nucleosome profiling
-:PROPERTIES:
-:ID:       c4dde8d6-1a02-42c7-a6b6-786b757fcad1
-:END:
-- inferred gene expression
-  - cite:ulz2016
-- https://github.com/alexcpan/Griffin
-- nucleosome profiling with griffin 
-  - https://github.com/adoebley/Griffin/wiki
-  - https://www.medrxiv.org/content/10.1101/2021.08.31.21262867v1.full-text
-  - https://github.com/alexcpan/Griffin
-**** Fusion calling
-- https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-021-08094-z
-**** Assess library complexity
-[[id:6d8cbcc0-2651-4c51-991e-639dbc81ea66][preseq]]
-**** Batch effect
-- batch effect https://evayiwenwang.github.io/Managing_batch_effects/detect.html
-https://www.reddit.com/r/bioinformatics/comments/s3twgh/working_with_batch_effects/
-*** Hierarchies
-**** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][LINK TO Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
-**** Probability and statistics related to bioinformatics
-:PROPERTIES:
-:ID:       1768b182-858a-46f8-97a8-4cd9747a2361
-:END:
-- https://www.nature.com/articles/s41576-019-0130-6
-- https://www.pnas.org/content/107/21/9546
-- cite:tarazona2020
-- https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
-- Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
-- https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
-
-***** Clustering and cluster analysis 
-- http://statweb.stanford.edu/~susan/courses/stats305c/examplesClusters.html
-- https://bookdown.org/rdpeng/exdata/k-means-clustering.html
-- https://www.datanovia.com/en/lessons/cluster-analysis-example-quick-start-r-code/
-- https://academic.oup.com/biostatistics/article/19/1/71/3852318
-***** [[*Machine learning in genomics and bioinformatics][LINK TO Machine learning in genomics and bioinformatics]]
-**** Machine learning in genomics and bioinformatics
-https://www.nature.com/articles/s41568-021-00408-3
-https://www.nature.com/articles/s41576-021-00434-9
-***** [[id:1768b182-858a-46f8-97a8-4cd9747a2361][LINK TO Probability and statistics related to bioinformatics]]
-**** Platform and Workflows
+*** Database downloads
+- https://www.google.com/search?q=download+genbank+fasta 
+*** Platform and Workflows
 :PROPERTIES:
 :ID:       b7c65054-f648-4579-9c5f-7bedbe272b5c
 :END:
@@ -1095,57 +929,116 @@ https://www.reddit.com/r/bioinformatics/comments/ahbzg5/how_do_people_turn_their
 - [[https://software.broadinstitute.org/wdl/userguide/][widdle]]
 - http://rabix.io/
 - http://bioboxes.org/docs/example-biobox-use/
-***** Computer clusters
+**** Computer clusters
 :PROPERTIES:
 :CREATED:  [2020-12-18 Fri 18:50]
 :ID:       10c078fd-a281-4612-a28b-5ceea1fa7af5
 :END:
 https://singularity.lbl.gov/install-linux
-**** Nucleic acid sequening processes
-***** Nucleic acid sequence alignment
+*** Probability and statistics related to bioinformatics
 :PROPERTIES:
-:ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
+:ID:       1768b182-858a-46f8-97a8-4cd9747a2361
+:END:
+- https://www.nature.com/articles/s41576-019-0130-6
+- https://www.pnas.org/content/107/21/9546
+- clustering
+  - http://statweb.stanford.edu/~susan/courses/stats305c/examplesClusters.html
+  - https://bookdown.org/rdpeng/exdata/k-means-clustering.html
+  - https://www.datanovia.com/en/lessons/cluster-analysis-example-quick-start-r-code/
+- cite:tarazona2020
+**** Probability and statistics related to bioinformatics
+:PROPERTIES:
+:ID:       288fef57-f515-491f-be79-586ae494d7a1
 :END:
 
-73. Li,H. and Homer,N. (2010) A survey of sequence alignment
-algorithms for next-generation sequencing. Brief. Bioinform., 11,
-473–483.
-174. Bao,S., Jiang,R., Kwan,W., Wang,B., Ma,X. and Song,Y.-Q. (2011)
-Evaluation of next-generation sequencing software in mapping and
-assembly. J. Hum. Genet., 56, 406–414.
+- https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
+- Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
 
-- hash table like BLAST or suffic/prefix like Burrows-Wheeler Transform
-- https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
-- prerequisites
-  - adaptor identification and trimming
-- pseudoaligner
-  - kallisto
-  - Salmon
-- Aligners
-  - TopHat2
-  - Specialized aligners
-    - Fusions
-      - TopHat Fusion
-        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html 
-      - STAR for chimeric reads / STAR-Fusion
-        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
-        - From cite:star_2.5_dobin Chapter 5
-        - From cite:dobin2015mapping Alternate Protocol 6
-          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
-        - additional outputs are
-          - Chimeric.out.sam
-          - Chimeric.out.junction- a STAR-specific format
-    - To transcriptome
-      - 
-  - [[*STAR][STAR]]
-- HISAT2
-****** Mappability 
+- https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
+
+*** Common bioinformatics file manipulation
 :PROPERTIES:
-:ID:       347d4cc0-a25d-4636-96d4-65e6319022df
+:ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
 :END:
-- http://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig
-- cite:derrien2012
-***** Massively parallel sequencing 
+- https://bioinf.shenwei.me/seqkit/usage/#pair
+- Subsetting and splitting 
+  - Fastas
+    - https://www.biostars.org/p/13270/
+  - Fastqs
+    - [[Question: Selecting Random Pairs From Fastq?]]  
+    - [[https://www.biostars.org/p/6544/][look at all the ways to split a fastq file!]]
+  - Bams
+    - https://www.google.com/search?q=subset+bam+file
+    - samtools view -bo subset.bam -s 123.4 alignments.bam chr1 chr2
+- https://www.google.com/search?q=annotate+bed+file+with+gene+names 
+- https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
+- [[https://www.biostars.org/p/68283/][count total length of regions in bed file]]
+- https://gatkforums.broadinstitute.org/gatk/discussion/6484/how-to-generate-an-unmapped-bam-from-fastq-or-aligned-bam
+- https://www.biostars.org/p/247903/
+- https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
+- [[https://github.com/lh3/seqtk][seqtk]] 
+- https://gist.github.com/davfre/8596159
+*** Code associated with sequence reference builds
+:PROPERTIES:
+:ID:       767e5e30-8490-4cda-8018-8b0bd91c4ef3
+:END:
+- need wget for github-             'https://raw.githubusercontent.com/Boyle-Lab/Blacklist/blob/master/lists/mm10-blacklist.v2.bed.gz')
+#+begin_src bash
+ref_dir=/mnt/local/users/jeszyman/data/ref/raw_downloads
+
+assemblies=('http://ftp.ensembl.org/pub/release-104/fasta/rattus_norvegicus/dna/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.gz'
+            'http://ftp.ensembl.org/pub/release-104/fasta/rattus_norvegicus/cdna/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz'
+            'https://ftp.ncbi.nlm.nih.gov/genomes/genbank/vertebrate_mammalian/Mus_musculus/latest_assembly_versions/GCA_000001635.9_GRCm39/GCA_000001635.9_GRCm39_genomic.fna.gz'
+            'https://ftp.ncbi.nlm.nih.gov/genomes/genbank/vertebrate_mammalian/Mus_musculus/latest_assembly_versions/GCA_000001635.9_GRCm39/GCA_000001635.9_GRCm39_genomic.gtf.gz'
+            'https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/635/GCA_000001635.8_GRCm38.p6/GCA_000001635.8_GRCm38.p6_genomic.fna.gz'
+            'https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/635/GCA_000001635.8_GRCm38.p6/GCA_000001635.8_GRCm38.p6_genomic.gtf.gz'
+            'http://hgdownload.cse.ucsc.edu/goldenpath/mm10/bigZips/latest/mm10.fa.gz'
+            'https://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/genes/mm10.knownGene.gtf.gz')
+
+for i in "${assemblies[@]}";
+do
+    wget \
+        --continue \
+        --directory-prefix $ref_dir \
+        --execute robots=off \
+        --no-check-certificate \
+        --no-parent \
+        --timestamping $i
+    file=$(echo $i | sed "s/^.*\///g")
+    base=$(basename -s .gz "$file")
+done
+
+
+    # if [ "${file: -3}" == ".gz" ] && [ $ref_dir/$base -ot $ref_dir/$file ];
+    # then
+    #     gunzip --to-stdout $ref_dir/$file > $ref_dir/$base
+    # fi
+#+end_src
+
+#+begin_src bash
+bwa index \
+    --algoType bwtsw \
+    --prefix $prefix \
+    $fasta
+#+end_src
+- pull down common reference sequences
+  #+name: reference_pull
+  #+begin_src bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+wget --no-clobber https://hgdownload.soe.ucsc.edu/goldenPath/rn6/bigZips/genes/rn6.ensGene.gtf.gz -O /mnt/users/jeszyman/data/rn6.ensGene.gtf.gz
+#
+gunzip -c /mnt/users/jeszyman/data/rn6.ensGene.gtf.gz > /mnt/users/jeszyman/data/rn6.ensGene.gtf
+#
+
+cd /mnt/users/jeszyman/data
+rsem-prepare-reference --gtf ./rn6.ensGene.gtf \
+#                       --bowtie \
+                       ./rn6.fa \
+                       rsem_ref
+
+#+end_src
+*** Massively parallel sequencing 
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
@@ -1166,7 +1059,7 @@ CLOCK: [2021-05-27 Thu 11:25]--[2021-05-27 Thu 11:38] =>  0:13
   - need depth plots depth (y) vs. 10kb bin x smooth across genome
     - https://www.biostars.org/p/104063/
 - https://www.nature.com/articles/s41467-018-06159-4
-****** General reference
+**** General reference
 :PROPERTIES:
 :ID:       8438f135-bfc1-4d5e-8a02-f594a1d0773a
 :END:
@@ -1174,7 +1067,7 @@ CLOCK: [2021-05-27 Thu 11:25]--[2021-05-27 Thu 11:38] =>  0:13
 - https://support.illumina.com/training.html
 - cite:goodwin2016
 - cite:lee2016
-****** High Throughput Sequencing Platforms
+**** High Throughput Sequencing Platforms
 :PROPERTIES:
 :ID:       DF6FFA19-8867-49AC-947D-FD57B403761A
 :END:
@@ -1197,12 +1090,12 @@ CLOCK: [2021-05-27 Thu 11:25]--[2021-05-27 Thu 11:38] =>  0:13
 - Sequencing platform overview and limitations
   - cite:payton2016
 - cite:glenn2011     
-******* Ion Torrent
+***** Ion Torrent
 :PROPERTIES:
 :ID:       EC631BCD-1A9B-4B8B-877E-7861C27D948B
 :END:
 
-******* Illumina
+***** Illumina
 :PROPERTIES:
 :ID:       D1A3EF94-7933-4854-99ED-C63DE8F7741D
 :END:
@@ -1229,7 +1122,7 @@ also demultiplexes
 - library preparation kits
   - [[https://www.illumina.com/library-prep-array-kit-selector.html][selector]]
   - https://support.illumina.com/sequencing/sequencing_kits/truseq-small-rna-kit.html
-******** Illumina TruSeq
+****** Illumina TruSeq
 :PROPERTIES:
 :ID:       3CE663C4-BF37-4E2E-9A0D-0E822241D05E
 :END:
@@ -1244,12 +1137,12 @@ also demultiplexes
   - Size selection
   - PCR amplification
 
-********* Removal of rRNA and tRNA
+******* Removal of rRNA and tRNA
 :PROPERTIES:
 :ID:       D509473A-536B-46D2-8639-22DC19DF41E2
 :END:
 
-****** Sequencing testing, modeling, and read simulation
+**** Sequencing testing, modeling, and read simulation
 :PROPERTIES:
 :ID:       f44b9dce-d7fa-4b6a-9949-49ff3c02547c
 :END:
@@ -1290,7 +1183,7 @@ also demultiplexes
 #     sambamba view -f sam -t 30 $1 | shuf -n $2 > $3/${base}_${2}_sample
 # }
 
-******* modeling
+***** modeling
 :PROPERTIES:
 :ID:       00983e26-ec16-4f68-be0d-2f59eb31def4
 :END:
@@ -1298,27 +1191,27 @@ also demultiplexes
 - https://www.ebi.ac.uk/biomodels-main/
 - https://precision.fda.gov/challenges/
 - Synthetic biology- cite:caschera2014
-******* Generating Simulated Reads
+***** Generating Simulated Reads
 :PROPERTIES:
 :ID:       8877C684-C217-4E7C-8E19-3D972A4015B2
 :END:
 
 Generating Simulated Reads
 First, we need a small set of sample read data. A number of tools, including ArtificialFastqGenerator, and SimSeq, will generate artificial or simulated sequence data for you. For this tutorial, I chose to use the wgsim tool (created by Heng Li, also the creator of SAMtools).
-****** Adapter design
+**** Adapter design
 :PROPERTIES:
 :ID:       8f0a09c6-2a68-425c-91a9-4d09866c8ae2
 :END:
 
 - https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/user-guide-manual/xgen-prism-dna-library-prep-kit-processing-sequencing-data-with-umis.pdf
 - https://github.com/pughlab/ConsensusCruncher
-****** Library preparation
+**** Library preparation
 :PROPERTIES:
 :ID:       cae4df04-eb04-4148-88a3-798be945a9fd
 :END:
 - https://www.future-science.com/doi/10.2144/000114133
 - [[http://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-2-r18][amplification bias]]
-****** Sequencing errors
+**** Sequencing errors
 :PROPERTIES:
 :ID:       008673aa-98af-4ffb-89d9-cde43ededa83
 :END:
@@ -1332,7 +1225,7 @@ First, we need a small set of sample read data. A number of tools, including Art
     - distinguishing strands 
 - 1st exon GC-rich, poorly seq by illumina 
 - https://www.nature.com/articles/s41598-018-29325-6
-****** Raw sequence QC and processing
+**** Raw sequence QC and processing
 :PROPERTIES:
 :ID:       1EE731A3-83DD-46AF-B988-2311307C335F
 :CREATED:  [2020-10-14 Wed 08:47]
@@ -1468,7 +1361,7 @@ data analysis. PLoS One, 8, e85024.
     - script comment design
   - https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
 
-****** DNA-seq
+**** DNA-seq
 :PROPERTIES:
 :ID:       728e8984-696f-4531-8e76-bf6d78bfa3b7
 :END:
@@ -1504,12 +1397,12 @@ https://www.nature.com/articles/s41586-021-03894-5
       - https://www.biostars.org/p/247588/
     - http://www.htslib.org/algorithms/duplicate.html
   - https://qcb.ucla.edu/wp-content/uploads/sites/14/2016/03/GATKwr12-2-Marking_duplicates.pdf
-******* Paired tumor-normal sequencing
+***** Paired tumor-normal sequencing
 :PROPERTIES:
 :ID:       0496ac54-3250-4fd3-9681-c880aaa296b2
 :END:
 - https://github.com/mskcc/facets
-******* Tumor-only whole exome sequencing
+***** Tumor-only whole exome sequencing
 :PROPERTIES:
 :CREATED:  [2021-05-01 Sat 07:26]
 :ID:       eed43327-3a0c-4f7b-9886-855a88afa02d
@@ -1519,7 +1412,7 @@ https://www.nature.com/articles/s41586-021-03894-5
 - cite:carter2012 ABSOLUTE
   - https://software.broadinstitute.org/cancer/cga/absolute
   - https://www.biostars.org/p/175131/
-******* DNA Bioinformatics
+***** DNA Bioinformatics
 :PROPERTIES:
 :ID:       1C24E3B6-CE16-47C8-8D7B-95EB530560F1
 :END:
@@ -1536,7 +1429,7 @@ https://www.nature.com/articles/s41586-021-03894-5
 - Fonseca,12 Tools for mapping high throughput sequencing data(2)
 - [[file:~/Box%20Sync/scientific_technique/Cruchaga%20lab%20eQTLs.pptx][Cruchaga eQTLs]]
 
-******** Post-alignment Samtools
+****** Post-alignment Samtools
 :PROPERTIES:
 :ID:       2D153E08-9F4A-4564-ACA7-5B4932D1022B
 :END:
@@ -1561,7 +1454,7 @@ https://www.nature.com/articles/s41586-021-03894-5
 - Find ummapped reads by flags
 - [[http://davetang.org/wiki/tiki-index.php?page=SAMTools#Converting_a_SAM_file_to_a_BAM_file][Sam to Bam, indexing ]]   
 
-******** Ideas
+****** Ideas
 :PROPERTIES:
 :ID:       F6511EA3-A5B4-455E-99F1-D536EE81F22D
 :END:
@@ -1570,24 +1463,24 @@ https://www.nature.com/articles/s41586-021-03894-5
 
 - incorporate samtools in R workflow via Rsamtools
 
-******** Exome Sequencing Pipeline
+****** Exome Sequencing Pipeline
 :PROPERTIES:
 :ID:       57992D53-D767-4E44-9E3F-B4A05E5B4EF1
 :END:
 
-******** Specialized Applications
+****** Specialized Applications
 :PROPERTIES:
 :ID:       7A9FC47A-2E9E-46D5-8E3E-E7C7C5C5AD9E
 :END:
 
-********* Detecting Internal Tandem Duplications
+******* Detecting Internal Tandem Duplications
 :PROPERTIES:
 :ID:       4B340D6D-E38D-42E5-AD1F-3CB0BDF62545
 :END:
 
 [[file:~/Box%20Sync/library/Spencer,12%20Detection%20of%20FLT3%20ITD%20in%20short%20read%20length%20NGS.pdf][Spencer,12 Detection of FLT3 ITD in short read length NGS]]
 
-******** DNA Alignment
+****** DNA Alignment
 :PROPERTIES:
 :ID:       B2F17B06-C1BA-487A-93EC-D9737584BC0E
 :END:
@@ -1601,7 +1494,7 @@ https://www.nature.com/articles/s41586-021-03894-5
   - http://www.ngscourse.org/Course_Materials/alignment/tutorial/example.html
   - https://wikis.utexas.edu/display/bioiteam/Mapping+tutorial
 
-********* Novoalign
+******* Novoalign
 :PROPERTIES:
 :ID:       22097A02-1E18-40BD-BA2F-0D3BC645F0D5
 :END:
@@ -1609,7 +1502,7 @@ https://www.nature.com/articles/s41586-021-03894-5
 - cite:Novocraft
 - [[http://www.novocraft.com/support/download/][Novoalign]]
 
-********* BWA
+******* BWA
 :PROPERTIES:
 :ID:       83F91393-2108-4785-9696-BDE8EC09FA88
 :END:
@@ -1634,7 +1527,7 @@ https://bioinformatics.stackexchange.com/questions/2955/is-there-a-more-elegant-
     - mem is generally recommended
     - 
 
-******** Post-Alignment QC
+****** Post-Alignment QC
 :PROPERTIES:
 :ID:       F689D6FA-071C-4167-BC21-85A7EC20DA41
 :END:
@@ -1642,17 +1535,17 @@ https://bioinformatics.stackexchange.com/questions/2955/is-there-a-more-elegant-
 filtering
 noncoding, known mis-spliced, mitochondrial, x/y in mixed sex, unannotated 
 
-********* Inspection
+******* Inspection
 :PROPERTIES:
 :ID:       07602EB8-5EFD-4179-9F55-320190ECE670
 :END:
 
-********* Processing
+******* Processing
 :PROPERTIES:
 :ID:       2A4B2B42-C088-4479-BC65-670CC8377D39
 :END:
 
-********* FASTX-Toolkit
+******* FASTX-Toolkit
 :PROPERTIES:
 :ID:       8169C9DC-FDB6-473E-9B54-E154261186EA
 :END:
@@ -1665,19 +1558,19 @@ noncoding, known mis-spliced, mitochondrial, x/y in mixed sex, unannotated
   - Clipper 
     https://github.com/NCBI-Hackathons/RNA_mapping
 
-******** Broad Best Practices for Variant Discovery in DNAseq
+****** Broad Best Practices for Variant Discovery in DNAseq
 :PROPERTIES:
 :ID:       850AA38C-75E9-42E2-8DEE-61F4950BCFDE
 :END:
 
 https://software.broadinstitute.org/gatk/documentation/topic?name=methods
 
-******* Adaptive TCR-beta immunosequencing 
+***** Adaptive TCR-beta immunosequencing 
 :PROPERTIES:
 :CREATED:  [2020-12-20 Sun 16:45]
 :ID:       61aac189-1770-4d80-a367-e7c39b46e0d1
 :END:
-******* aligned sequence qc
+***** aligned sequence qc
 :PROPERTIES:
 :ID:       1165bc2b-9373-4313-94bd-2a1d7be34fb8
 :END:
@@ -1685,7 +1578,7 @@ https://software.broadinstitute.org/gatk/documentation/topic?name=methods
 - coverage
   - cite:illumina2014
   - Picard CollectWgsMetrics
-******** coverage and depth
+****** coverage and depth
 :PROPERTIES:
 :ID:       a4dcf0d6-1619-4f82-989d-2bd599cdf061
 :END:
@@ -1693,7 +1586,7 @@ https://software.broadinstitute.org/gatk/documentation/topic?name=methods
 - https://www.biostars.org/p/331957/
 - https://www.htslib.org/doc/samtools-depth.1.html#OPTIONS
 - for coverage https://www.biostars.org/p/104063/
-******* capture probes and barcoding
+***** capture probes and barcoding
 :PROPERTIES:
 :ID:       675eba72-76e5-4b49-81e9-37bdc02cce9b
 :END:
@@ -1736,303 +1629,736 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
       - present experiments as condition vs. condition 
 
 - see edit distance in [[id:A91BF233-F14E-4E91-A1E9-B39802A9ED2D][Computers, Computer Science, and Information Technology]]
-****** Whole-genome sequencing
+**** Whole-genome sequencing
 :PROPERTIES:
 :ID:       ccab4617-0399-4ba3-828e-b5fbbb972ba1
 :END:
 - cite:campbell2020
 - https://www.nejm.org/doi/10.1056/NEJMoa2024534?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub++0pubmed
 - duplication rate as a measure of lib complexity
-***** Code associated with sequence reference builds
+*** Nucleic acid sequence alignment
 :PROPERTIES:
-:ID:       767e5e30-8490-4cda-8018-8b0bd91c4ef3
+:ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
 :END:
-- need wget for github-             'https://raw.githubusercontent.com/Boyle-Lab/Blacklist/blob/master/lists/mm10-blacklist.v2.bed.gz')
-#+begin_src bash
-ref_dir=/mnt/local/users/jeszyman/data/ref/raw_downloads
 
-assemblies=('http://ftp.ensembl.org/pub/release-104/fasta/rattus_norvegicus/dna/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.gz'
-            'http://ftp.ensembl.org/pub/release-104/fasta/rattus_norvegicus/cdna/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz'
-            'https://ftp.ncbi.nlm.nih.gov/genomes/genbank/vertebrate_mammalian/Mus_musculus/latest_assembly_versions/GCA_000001635.9_GRCm39/GCA_000001635.9_GRCm39_genomic.fna.gz'
-            'https://ftp.ncbi.nlm.nih.gov/genomes/genbank/vertebrate_mammalian/Mus_musculus/latest_assembly_versions/GCA_000001635.9_GRCm39/GCA_000001635.9_GRCm39_genomic.gtf.gz'
-            'https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/635/GCA_000001635.8_GRCm38.p6/GCA_000001635.8_GRCm38.p6_genomic.fna.gz'
-            'https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/635/GCA_000001635.8_GRCm38.p6/GCA_000001635.8_GRCm38.p6_genomic.gtf.gz'
-            'http://hgdownload.cse.ucsc.edu/goldenpath/mm10/bigZips/latest/mm10.fa.gz'
-            'https://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/genes/mm10.knownGene.gtf.gz')
+73. Li,H. and Homer,N. (2010) A survey of sequence alignment
+algorithms for next-generation sequencing. Brief. Bioinform., 11,
+473–483.
+174. Bao,S., Jiang,R., Kwan,W., Wang,B., Ma,X. and Song,Y.-Q. (2011)
+Evaluation of next-generation sequencing software in mapping and
+assembly. J. Hum. Genet., 56, 406–414.
 
-for i in "${assemblies[@]}";
-do
-    wget \
-        --continue \
-        --directory-prefix $ref_dir \
-        --execute robots=off \
-        --no-check-certificate \
-        --no-parent \
-        --timestamping $i
-    file=$(echo $i | sed "s/^.*\///g")
-    base=$(basename -s .gz "$file")
-done
-
-
-    # if [ "${file: -3}" == ".gz" ] && [ $ref_dir/$base -ot $ref_dir/$file ];
-    # then
-    #     gunzip --to-stdout $ref_dir/$file > $ref_dir/$base
-    # fi
-#+end_src
-
-#+begin_src bash
-bwa index \
-    --algoType bwtsw \
-    --prefix $prefix \
-    $fasta
-#+end_src
-- pull down common reference sequences
-  #+name: reference_pull
-  #+begin_src bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-#
-wget --no-clobber https://hgdownload.soe.ucsc.edu/goldenPath/rn6/bigZips/genes/rn6.ensGene.gtf.gz -O /mnt/users/jeszyman/data/rn6.ensGene.gtf.gz
-#
-gunzip -c /mnt/users/jeszyman/data/rn6.ensGene.gtf.gz > /mnt/users/jeszyman/data/rn6.ensGene.gtf
-#
-
-cd /mnt/users/jeszyman/data
-rsem-prepare-reference --gtf ./rn6.ensGene.gtf \
-#                       --bowtie \
-                       ./rn6.fa \
-                       rsem_ref
-
-#+end_src
-***** Sequencing target data types and methods
-****** Motifs
-https://academic.oup.com/genetics/article/216/2/353/6066178
-****** Epigenetics
+- hash table like BLAST or suffic/prefix like Burrows-Wheeler Transform
+- https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
+- prerequisites
+  - adaptor identification and trimming
+- pseudoaligner
+  - kallisto
+  - Salmon
+- Aligners
+  - TopHat2
+  - Specialized aligners
+    - Fusions
+      - TopHat Fusion
+        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html 
+      - STAR for chimeric reads / STAR-Fusion
+        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
+        - From cite:star_2.5_dobin Chapter 5
+        - From cite:dobin2015mapping Alternate Protocol 6
+          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
+        - additional outputs are
+          - Chimeric.out.sam
+          - Chimeric.out.junction- a STAR-specific format
+    - To transcriptome
+      - 
+  - [[*STAR][STAR]]
+- HISAT2
+**** Mappability 
 :PROPERTIES:
-:CREATED:  [2019-10-30 Wed 10:52]
-:ID:       079e398f-e3b0-49c4-92da-9b4f6a73684c
+:ID:       347d4cc0-a25d-4636-96d4-65e6319022df
 :END:
-- https://www.illumina.com/destination/epigenetics-webinar-series.html
-- methylation
-  - https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/medip-seq-dip-seq.html
-  - cite:shen2018
-- [[id:8ca221b7-b51a-4382-9844-5d8ba7193ff6][Chromatin accessibility]]
-- epigenetics
-    - ATAC-seq for chromatin accessiblity
-    - ChIP-seq
-    - differential peak analysis-
-      - epigen-specific tools DiffBind, MAnorm
-      - uses RNA-seq tools for differential expression 
-    - peak-calling: identifying enriched signal from ATAC-seq and ChIP-seq, see cite:liu2019a ref 40
-      - MACS/MACS2
-      - measures of signal-to-noise by ENCODE
-        - FRiP fraction of reads in peaks
-        - cross-correlation profiles
-    - methylation profiling
-      - BSmooth
-      - Merman
-      - single cell
-        - Minifi
-      - bisulfite- unmethylated cytosines converted to uralcil, uracil converted to thyamine during amp- ratio T to C
-      - methylcap-seq
-      - differential peak
-        - DiffBind
-        - MAnorm
-        - DBChIP
-        - DAStk
-      - Minfi
-      - BSmooth
-      - methylKit
-      - mehtySig
-      - metilene
-******* ChIP-seq
-https://github.com/crazyhottommy/ChIP-seq-analysis
-******* ATAC-seq
+- http://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig
+- cite:derrien2012
+*** Sequence similarity and patterns
 :PROPERTIES:
-:ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
+:ID:       508ac0df-9d93-4455-a451-cb876f83498d
+:END:
+- https://www.nature.com/articles/nature12477
+
+*** Sequence variation and variant calling
+:PROPERTIES:
+:ID:       57E81A44-3233-479B-8264-2CD5F1904A60
 :END:
 :LOGBOOK:
-CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
+CLOCK: [2020-07-07 Tue 12:17]--[2020-07-07 Tue 12:52] =>  0:35
+CLOCK: [2019-04-26 Fri 11:28]--[2019-04-26 Fri 11:44] =>  0:16
+CLOCK: [2019-04-26 Fri 11:03]--[2019-04-26 Fri 11:13] =>  0:10
+CLOCK: [2019-04-26 Fri 10:43]--[2019-04-26 Fri 10:57] =>  0:14
 :END:
-- https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
-- https://www.biostars.org/p/287624/
-- https://rockefelleruniversity.github.io/RU_ATACseq/
-- https://nbisweden.github.io/workshop-archive/workshop-ChIP-seq/2018-11-07/
-- https://www.sciencedirect.com/science/article/pii/S0888754321001531?via%3Dihub
-- https://www.sciencedirect.com/science/article/pii/S1535610817302040?via%3Dihub
-- https://www.nature.com/articles/nbt.1630
-- cite:sun2019atac
-- https://www.annualreviews.org/doi/10.1146/annurev-genom-090413-025448#_i21
-- https://support.bioconductor.org/p/61604/
-- https://tobiasrausch.com/courses/atac/atac-seq-data-analysis.html
-- https://nf-co.re/atacseq/1.1.0/output
-- https://www.rna.uzh.ch/dam/jcr:87c1ca13-58e5-4be8-82cc-e7807809b63e/20180522_CMueller.pdf
-- https://training.galaxyproject.org/training-material/topics/epigenetics/tutorials/atac-seq/tutorial.html
-- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1642-2
-- https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
-- [[https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sid=1b5013f3a0a4db522d602fa164281aa0&sot=a&sdt=a&cluster=scopubyr%2c%222021%22%2ct%2c%222020%22%2ct%2c%222019%22%2ct%2c%222018%22%2ct%2c%222017%22%2ct%2c%222016%22%2ct&sl=262&s=TITLE-ABS-KEY%28atac-seq%29+AND+NOT+TITLE-ABS-KEY%28chip%29+AND+NOT+DOI%2810.1016%2fj.cell.2017.12.014%29+AND+NOT+DOI%2810.1016%2fj.molmet.2016.01.002%29+AND+NOT+DOI%2810.1038%2fnature23283%29+AND+NOT+DOI%2810.1038%2fnature18606%29+AND+NOT+TITLE-ABS-KEY%28single-cell%29+AND+NOT+TITLE-ABS-KEY%28Hi-C%29&origin=searchadvanced&editSaveSearch=&txGid=38c8cceffee3c655f632c5736cf123cd][top atac-seq cites w/ good methods writeup]]
-  - https://www.pnas.org/content/114/13/E2776
-  - https://science.sciencemag.org/content/sci/suppl/2018/10/24/362.6413.eaav1898.DC1/aav1898_Corces_SM.pdf
-  - https://ars.els-cdn.com/content/image/1-s2.0-S1074761316304393-mmc1.pdf
-- QC
-  - [[id:a5b73c70-3f1f-4018-92b2-bfdcaed53cf5][ATACseqQC]]
-    - 
-- Encode
-  - https://github.com/kundajelab/atac_dnase_pipelines/issues/143
-  - https://www.encodeproject.org/data-standards/reference-sequences/
-  - https://www.encodeproject.org/search/?type=Pipeline&accession=ENCPL787FUN&accession=ENCPL344QWT
-- Design
-  - Read length
-    - https://www.biostars.org/p/418363/
-- Method-establishing papers
-  - cite:buenrostro2013
-  - cite:buenrostro2015
-- Bench
-  - cite:corces2017 
-  - cite:buenrostro2015
-  - cite:buenrostro2015
-  - for tissue
-    - cite:corces2017 
-- Bioinformatics
-  - General method guides    
-    - cite:yan2020atac
-    - cite:corces2017 
-    - [[https://informatics.fas.harvard.edu/atac-seq-guidelines.html][Harvard FAS]]
-    - ENCODE pipeline
-      - https://docs.google.com/document/d/1f0Cm4vRyDQDu0bMehHD7P7KOMxTOP-HiNoIvL1VcBt8/edit
-      - https://github.com/ENCODE-DCC/atac-seq-pipeline
-      - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5170597/
-    - [[https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&nlo=&nlr=&nls=&sid=e3c13d36864e217e2edcf12df7a64b0a&sot=b&sdt=b&sl=59&s=%28TITLE-ABS-KEY%28atac-seq%29+AND+TITLE-ABS-KEY%28bioinformatics%29%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist][scopus atac-seq bioinformatics (42)]]
-    - https://github.com/reskejak/ATAC-seq
-    - https://snakepipes.readthedocs.io/en/latest/content/workflows/ATAC-seq.html
-    - https://bcbio-nextgen.readthedocs.io/en/latest/contents/atac.html
-    - https://rockefelleruniversity.github.io/RU_ATAC_Workshop.html
-    - https://www.illumina.com/techniques/popular-applications/epigenetics/atac-seq-chromatin-accessibility.html
-    - http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/ATACseqQCWorkshop__ATACseqQC_workshop/
-  - Alignment parameters
-    - https://www.nature.com/articles/ng.3844#Sec14https://www.sciencedirect.com/science/article/pii/S1074761316304393?via%3Dihub#mmc1
-    - https://www.pnas.org/content/114/13/E2776
-    - https://informatics.fas.harvard.edu/atac-seq-guidelines.html#alignments
-    - https://ars.els-cdn.com/content/image/1-s2.0-S1074761316304393-mmc1.pdf
-  - QC
-    - https://www.cell.com/cell-systems/pdfExtended/S2405-4712(20)30079-X
-    - https://bioconductor.org/packages/release/bioc/vignettes/ATACseqQC/inst/doc/ATACseqQC.html
-    - https://bioconductor.org/packages/release/bioc/html/soGGi.html
-  - Differential accessibility
-    - Homer
-      - http://homer.ucsd.edu/homer/ngs/mergePeaks.html
-    - Diffbind
-      - https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/software/diffbind-tool-for-chip-seq-and-atac-seq-analysis
-      - https://bioinformatics-core-shared-training.github.io/Quantitative-ChIPseq-Workshop/articles/Quantitative-ChIPseq-Workshop.html#loading-an-experiment-into-diffbind-1
-    - csaw
-      - http://bioconductor.org/books/3.14/csawBook/counting-reads-into-windows.html#
-      - https://www.biostars.org/p/320394/
-    - https://rdrr.io/bioc/DiffBind/f/inst/doc/DiffBind.pdf
-    - https://bioconductor.org/packages/release/bioc/vignettes/DiffBind/inst/doc/DiffBind.pdf
-  - Transcription factor binding sites- cite:li2019atac
-  - Integration
-    - atac-seq and mirna-seq https://www.sciencedirect.com/science/article/pii/S193459091730320X?via%3Dihub
-    - ATAC-seq and miRNA-seq cite:abernathy2017 
-  - cite:reske2020 
-  - https://bioconductor.org/packages/release/BiocViews.html#___ATACSeq
-  - https://github.com/nf-core/atacseq/blob/master/main.nf
-  - homer
-    - some basic homer commands
-      To identify Tn5 hypersensitive sites (THSs), peak calling was performed by findPeak in HOMER software (v4.9) with “-localSize 50000 -size 100 -minDist 50 -fragLength 0 -o auto.” ΔTHS score was calculated with all pairwise comparison of ESC, hCO and hMGEO by dnase_ddhs_scorer.py script with “-A” option in pyDNase library (v0.2.4) (Figure S2)   
-******* methylation                                                 :biopipe:
+- https://pubmed.ncbi.nlm.nih.gov/33580225/
+- https://www.nature.com/articles/s41598-020-60559-5c
+- https://github.com/nickhir/GermlineMutationCalling
+- cite:kocakavuk2021 
+- https://www.bioconductor.org/packages/devel/bioc/vignettes/TCGAbiolinks/inst/doc/index.html
+- https://github.com/raerose01/deconstructSigs
+- https://github.com/google/deepvariant 
+- variant calling
+  - fusion
+    - - https://www.biorxiv.org/content/biorxiv/early/2019/01/16/521039.full.pdf
+- cite:kulkarni2014 
+- [ ] cite:leonard2016 chapter 60 
+- https://www.broadinstitute.org/partnerships/education/broade/best-practices-variant-calling-gatk-1
+- BreakDancer
+  - cite:chen2009
+  - [[http://gmt.genome.wustl.edu/packages/breakdancer/][MGI website]]
+  - cite:chen2009
+- by input
+  - wgs
+    - [[http://zzz.bwh.harvard.edu/plink/profile.shtml#dose][plink]]
+- by variant class
+  - structural 
+  - indel
+  - SNP / SNV
+    - cite:nielsen2011 
+  - cna
+    - - for CNV method see prichard paper- cite:armenia2018
+    - [ ] ("copy number variation" OR "copy number alteration") AND (ctDNA or "circulating tumor DNA" ) SEARCH TERMS ([[https://www.ncbi.nlm.nih.gov/pubmed/?term=(%22copy+number+variation%22+OR+%22copy+number+alteration%22)+AND+(ctDNA+or+%22circulating+tumor+DNA%22+)][PubMed]]) 21 hits on 2019-04-17
+      - https://www.ncbi.nlm.nih.gov/pubmed/30371735       
+      - irrelevant
+        - AR-specific gain https://www.ncbi.nlm.nih.gov/pubmed/27191887
+        - CTCs https://www.pnas.org/content/110/52/21083.long
+        - mlpa https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5593570/
+        - https://www.ncbi.nlm.nih.gov/pubmed/28448765
+        - partek software w/ normalizer pop https://febs.onlinelibrary.wiley.com/doi/full/10.1002/1878-0261.12077
+        - ddpcr https://www.ncbi.nlm.nih.gov/pubmed/29717451
+        - uses guardant CNA https://ascopubs.org/doi/full/10.1200/JCO.18.00328?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%3dpubmed
+        - https://www.liebertpub.com/doi/full/10.1089/dna.2017.4112?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub%3Dpubmed&
+        - heme malig https://www.ncbi.nlm.nih.gov/pubmed/30371735
+        - casadio- uses MLPA
+    - comparitor
+      - single normal
+      - none- assumed 0 across bins
+      - copycat uses paired tumor/normal PER sample 
+    - tools
+      - https://cnvkit.readthedocs.io/en/stable/pipeline.html#reference
+        - cite:talevich2016 
+        - cite:mansukhani2018
+        - cite:mayrhofer2018
+        - https://www.biostars.org/p/265951/
+      - used in cite:quigley2018
+        - https://github.com/chrisamiller/copyCat/commits?author=chrisamiller
+        - canvas
+          - https://github.com/Illumina/canvas
+          - https://academic.oup.com/bioinformatics/article/32/15/2375/1743834
+        - circular binary segmentation? 
+      - other 
+        - https://github.com/bcbio/bcbio-nextgen/issues/2254
+        - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5870863/pdf/btx284.pdf
+        - https://academic.oup.com/bioinformatics/article/30/17/i639/201399
+        - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0617-1
+        - EXCAVATOR2- https://www.ncbi.nlm.nih.gov/pubmed/27507884
+    - seq - depth? cite:mansukhani2018
+    - cite:rieber2017
+    - cite:miller2011a
+- [[https://gatkforums.broadinstitute.org/gatk/discussion/39/variant-quality-score-recalibration][gatk: variant quality score recalibration]]
+- http://www.nature.com/nrg/journal/v12/n6/full/nrg2986.html
+- Splice site prediction
+  - cite:jian2014
+- Variant Effect Predictor (VEP)
+  - [[https://useast.ensembl.org/info/docs/tools/vep/index.html][website]]
+  - cite:mclaren2016
+**** By variant type
+:PROPERTIES:
+:ID:       ad551ebe-d082-4dc7-bbcd-5b921c143168
+:END:
+**** By sequencing modality
+:PROPERTIES:
+:ID:       55cd7600-4999-453f-8d50-4d76558055fc
+:END:
+- wes
+  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2928-9
+**** structural variation 
+:PROPERTIES:
+:ID:       0f679231-b782-4001-b7c3-91ec3a8816d2
+:END:
+https://www.nature.com/articles/s41598-020-71168-7
+***** sv
+:PROPERTIES:
+:CREATED:  [2019-08-15 Thu 15:43]
+:ID:       5ff1bbbb-3471-4f2a-b9eb-43b293eee807
+:END:
+:LOGBOOK:
+CLOCK: [2019-10-11 Fri 11:03]--[2019-10-11 Fri 11:38] =>  0:35
+CLOCK: [2019-10-10 Thu 17:16]--[2019-10-10 Thu 18:16] =>  1:00
+CLOCK: [2019-10-10 Thu 15:53]--[2019-10-10 Thu 16:54] =>  1:01
+CLOCK: [2019-10-07 Mon 17:34]--[2019-10-07 Mon 17:43] =>  0:09
+:END:
+[[file:~/repos/sv/sv.org]]
+[[file:~/repos/sv/Dockerfile]]
+- sv
+  - https://github.com/stat-lab/EvalSVcallers/tree/master/scripts
+  - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1720-5
+- [-] build docker image into fat bioinformatics-toolkit container 
+- [ ] build slim docker image 
+- reference
+  - [[~/repos/.emacs.d/snippets/org-mode/biopipe][YAS]] 
+  - [[id:333E498B-E0EA-460C-95EC-1931ACE19473][mod]]
+    - attributes
+      | isa | module                     |
+      | isa | work module                |
+      | isa | engineering module         |
+      | isa | code module                |
+      | isa | process development module |
+  - principles and philosophy
+    - antifragility
+    - minimization
+    - transparency
+    - reproducibility
+    - efficiency
+    - ?intpretabilty? - code logging, etc 
+  - best practices
+    - each tool install as standalone
+    - Version control - git / github
+    - File organization
+      - https://libraries.mit.edu/data-management/
+      - See [[file:~/maintenance.org::Information Maintenance][information maintenance]] Organization -> File tree structure
+    - https://github.com/kylelobo/The-Documentation-Compendium/
+    - http://www.broadinstitute.org/gatk/guide/best-practices
+      best practices include recording everything
+      record of all commands
+      record of all software versions
+      see Emacs, rpubs.com, sessionInfo and knitR
+    - [[http://www.nature.com/sdata/for-authors/submission-guidelines][Nature data submission guidelines]]
+    - https://kieranhealy.org/resources/
+    - http://kieranhealy.org/files/misc/workflow-apps.pdf
+    - see Anders,13
+    - no docker in docker for dev- confuses vols, etc. instead add emacs to each container and have local repos of .emacs and org
+    - prefer binaries over source- only real advantage to source is custom build
+  - stack
+    - [[id:c28ef36f-5b5c-4789-90da-270e56fc4898][ubuntu]]
+    - [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][git and github]]
+    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
+      - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]] 
+        - dockerfile - include current build status in comments
+        - sequencing dockerfile repos
+          - https://github.com/broadinstitte/gtex-pipeline.git
+          - https://hub.docker.com/u/mgibio/
+          - https://hub.docker.com/u/biocontainers
+    - nextflow
+      - https://www.youtube.com/watch?v=jsxTC8pNPUc&t=579s
+      - https://github.com/cbcrg/lncrna-annotation-nf
+      - https://www.nextflow.io/example1.html
+      - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
+      - commands
+        |----------+---------|
+        | function | command |
+        |----------+---------|
+        | <35>     | <35>    |
+        |          |         |
+      - processes
+      - documentation
+    - compendia
+      - [[file:~/Box%20Sync/org/compend.org::*UNIX][UNIX]]
+      - [[file:~/.emacs.d/settings.org::*Emacs][Emacs]]
+      - git
+    - set alias https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
+    - https://github.com/cbcrg/lncrna-annotation-nf
+    - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
+    - https://github.com/bioinformatics-core-shared-training/docker-4-bioinformatics
+    - https://gatkforums.broadinstitute.org/firecloud/discussion/6886/guidelines-for-working-with-docker-images-and-dockerfiles-broadies-only
+    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker]]
+      - https://www.boynux.com/containers-fat-thin/
+  - examples 
+    - https://wiki.cyverse.org/wiki/display/TUT/Biocontainers+for+the+Discovery+Environment
+    - https://blog.bananacoding.com/2016/08/29/how-to-build-bioinformatic-tools-image-for-docker/#.XSvInN-YW02
+  - package managers
+    - bioconda-
+      - EZ to add to dockerfile,
+      - source difficult to understand, but can see sh and yaml- e.g. https://github.com/bioconda/bioconda-recipes/tree/master/recipes/samtools
+      - https://www.nature.com/articles/s41592-018-0046-7
+  - modules
+  - https://www.reddit.com/r/bioinformatics/comments/d260ok/no_your_ten_rules_arent_simple_and_they_wont_fix/
+  - [X] module instance startup- upon initial entry into work heading of a module
+    - identify and invoke most specific applicable module 
+    - invoke module hierarchy
+  - [X] setup repository artifact
+    - github and local 
+    - Dockerfile
+    - org file 
+  - https://pmbio.org/module-05-somatic/0005/03/02/Somatic_SV_FilteringAnnotationReview/
+- ideas
+  - module improvement
+    - work module
+      - focus on minimal work to closeout this objective
+        - move unnecessary work to ideas
+  - https://nextflow-io.github.io/nf-hack18/training.html
+  - Consider more emacs shell work: 
+  - add to gatk docker
+    - https://hub.docker.com/u/broadinstitute
+    - https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_cancer_m2_MuTect2.php
+  - optimization
+    - Lock pipe
+    - [[https://www.biostars.org/p/241437/][bioinformatics software distribution]] 
+  - extend    
+  - [ ] information management- see cite:griffith2015b           
+    - https://github.com/genome/gms
+  - https://stackoverflow.com/questions/31578446/running-a-script-inside-a-docker-container-using-shell-script
+  - https://software.broadinstitute.org/gatk/documentation/article?id=11101
+- [ ] closeout
+  - [ ] update mod- consolidate and functionalize common tasks
+  - [ ] export
+
+
+:PROPERTIES:
+:ID:       2D39899E-F415-4B16-B5ED-4A36465F4CB4
+:END:
+https://lbgi.fr/AnnotSV/
+- cite:kumar2016
+  [[http://svviz.readthedocs.io/en/latest/install.html][documentation]]
+  [[http://breakdancer.sourceforge.net/][Breakdancer]]
+
+***** Fusion Proteins
+:PROPERTIES:
+:ID:       C3E4A442-77C6-4A0C-8A9A-3FAA04DAF632
+:END:
+
+- [ ] cite:newman2014a 
+http://ignyta.com/providers/dx-molecular-diagnostic-cancer-testing/
+- cite:beadling16_multip_amplic_approac_detec_gene
+- cite:zhao2014detecting
+- cite:zheng2013oncogenic
+- cite:bunting2013end
+- cite:maher2009transcriptome
+- cite:scolnick2015efficient
+
+
+- cite:kumar2016comparative
+- cite:korla2015fare
+- cite:wang2015fusioncancer
+- cite:webster2015mining
+- cite:pekar2015fluorescence
+- cite:alves14_next_gener_sequen_reveal_novel
+- cite:qadir2014childseq
+- cite:greaves14_janet_rowley
+- cite:heydt2014comparison
+- cite:yoshihara2014landscape
+
+- cite:smallridge2013rna
+
+- cite:duncavage2012targeted
+- cite:edgren2011identification
+
+
+
+- [[file:~/Box%20Sync/clin_research/fishseq/Fusion_Gene_Detection.pdf][Partek fusion detection book]]
+
+****** Low Yield
+:PROPERTIES:
+:ID:       65A89F9B-9FCE-420F-906A-BD7EC0C23919
+:END:
+
+- cite:wheeler2013human
+- cite:wilhelm2009rna
+- purple book
+
+****** Alignment
+:PROPERTIES:
+:ID:       CDEC529A-B11D-4890-B75D-9B9470D8F856
+:END:
+
+cite:williams2014rna
+
+https://www.biostars.org/p/45986/#144082
+[[https://www.biostars.org/p/158039/][visualization tools]]
+[[https://sourceforge.net/p/samtools/mailman/message/30210230/][Dobin on SAM handling of chimerica alignment]]
+https://igor.sbgenomics.com/public/pipelines/540dd2fad79f00766c174eb0/
+
+cite:yoshihara2014landscape
+
+cite:dobin12_star
+
+******* Aligners, unranked
+:PROPERTIES:
+:ID:       5DE5AD4D-7634-46D7-86F4-6111B2A3A3B5
+:END:
+
+  - [[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3691734/][FusionQ, 2013]] https://sites.google.com/site/fusionq1/home/
+  - [[http://genome.cshlp.org/content/early/2015/11/10/gr.186114.114?top=1][using both DNA and RNA-seq]]
+  - [[https://github.com/ndaniel/fusioncatcher/blob/master/doc/manual.md#2---hardware-requirements-and-dependencies][FusionCatcher]]
+  - [[https://github.com/Oshlack/JAFFA/wiki][JAFFA]]
+  - SOAPfuse
+    - https://www.biostars.org/p/144077/
+    - vs star https://www.biostars.org/p/171531/#171544
+
+    comparisons
+    cite:kumar2016comparative
+
+******** Chimerascan
+:PROPERTIES:
+:ID:       A6FFE9F2-4004-429D-8057-30D663E4069C
+:END:
+
+https://code.google.com/archive/p/chimerascan/wikis/Installation.wiki
+
+******** Ericscript
+:PROPERTIES:
+:ID:       5B8010B9-93DB-4CC2-9321-210E7CB045F8
+:END:
+
+    - NOTE- the ericscript samtools version wasn't going b/c I was asking for samtools, not ./samtools !
+      - [[https://sites.google.com/site/bioericscript/home][website]]
+      - [[https://groups.google.com/forum/#!forum/ericscript][google group]]
+      - 
+        cite:Benelli01122012
+
+****** Reviews
+:PROPERTIES:
+:ID:       EE65AF13-DB95-4F64-8640-4FC890197DCD
+:END:
+
+cite:Latysheva02062016
+cite:stransky2014landscape
+
+
+
+
+http://bib.oxfordjournals.org/content/early/2012/08/09/bib.bbs044.short?rss=1
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3595110/
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3713712/
+https://nar.oxfordjournals.org/content/early/2015/11/17/nar.gkv1234.full
+
+******* Clinical
+:PROPERTIES:
+:ID:       9D02E90C-AE0B-4805-8F78-7FF6787B4606
+:END:
+
+cite:maher2009transcriptome
+
+cite:mitelman2007impact
+
+cite:lieber2016mechanisms
+
+****** Human Pathological Translocations
+:PROPERTIES:
+:ID:       92C7145A-9535-4E74-B4FF-88A90EE6A78F
+:END:
+
+cite:lipson2012identification 
+
+cite:bunting2013end
+
+cite:zheng2013oncogenic
+
+cite:greaves14_janet_rowley
+
+cite:wheeler2013human
+
+****** [[Clinical Fusion Protein Databases]]
+:PROPERTIES:
+:ID:       4AE77A12-C491-4590-9F8B-6C6EC4077242
+:END:
+
+****** Clinical RNA-seq Assays to Detect Fusion Proteins
+:PROPERTIES:
+:ID:       9786E312-B8BC-4F14-BAF2-C9B682703FB7
+:END:
+
+cite:beadling16_multip_amplic_approac_detec_gene
+
+cite:qadir2014childseq
+
+
+cite:scolnick2015efficient
+
+******* Specific Cancers
+:PROPERTIES:
+:ID:       E44CCF9D-6D9A-4F01-B90F-929D038CF4F4
+:END:
+
+cite:alves2015next
+
+cite:smallridge2013rna
+
+cite:edgren2011identification
+
+cite:pekar2015fluorescence
+
+cite:duncavage2012targeted
+
+****** [[FISH]]
+:PROPERTIES:
+:ID:       F54BB35F-3BAA-4AA9-928C-18FAB543D7C6
+:END:
+
+
+****** Post-Alignment Analysis Programs
+:PROPERTIES:
+:ID:       EC14669D-1B71-45FD-9D4D-62E405CE6917
+:END:
+
+https://rdrr.io/bioc/chimera/man/starReads.html
+http://www.bioconductor.org/packages/release/bioc/vignettes/chimera/inst/doc/chimera.pdf
+https://github.com/STAR-Fusion/STAR-Fusion/wiki
+
+cite:chimera_r
+
+**** Variant Calling
+:PROPERTIES:
+:ID:       E3637686-6560-4088-9784-0A601F39C34D
+:END:
+- tumor evolution
+  - fishplot https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-016-3195-z
+- incidental acquired variant detection in germline https://www.nature.com/articles/s41436-021-01138-5?proof=t+target%3D#Sec3
+- clonal evolution- https://cancerdiscovery.aacrjournals.org/content/8/11/1390.long
+- HRDtools for homologous recombination index 
+  - https://github.com/eyzhao/hrdtools
+- cite:ainscough2018  
+- - cite:barnell2018  
+- [[https://software.broadinstitute.org/gatk/best-practices/bp_3step.php?case=GermShortWGS][GATK Best Practices Germline SNP and Indel]]
+- [[http://www.htslib.org/workflow/][WGS/WES Mapping to Variant Calls - Version 1.0]]
+- [[https://software.broadinstitute.org/gatk/documentation/tooldocs/org_broadinstitute_gatk_tools_walkers_genotyper_UnifiedGenotyper.php][Broad UnifiedGenotyper]]
+- [[https://software.broadinstitute.org/gatk/documentation/article?id=3238][Broad best practices DNAseq variant]]
+- cite:vcf
+http://swog.org/Visitors/Fall13GpMtg/plenary/03-Corless-SWOG-Genomics-TM-ver1.pdf
+
+***** GATK Tool Set
+:PROPERTIES:
+:ID:       B4100085-BD16-442F-9AB8-586241CD897A
+:END:
+
+****** GATK UnifiedGenotyper
+:PROPERTIES:
+:ID:       0D7356A4-E139-4BDF-BD6B-4170C15531F9
+:END:
+
+- one of several GATK variant discovery tools 
+
+****** DONE Setup GATK
+CLOSED: [2016-12-05 Mon 14:22]
+:PROPERTIES:
+:ID:       E38AAAE9-DB89-42C8-9CE3-C18003F720D3
+:END:
+
+- resuem here https://software.broadinstitute.org/gatk/documentation/quickstart.php
+
+- [[https://software.broadinstitute.org/gatk/documentation/quickstart.php][Getting Started]]
+  - "Unlike C-compiled programs such as Samtools, GATK cannot simply be added to your PATH, so we recommend setting up an environment variable to act as a shortcut."
+
+**** sequence variation
+:PROPERTIES:
+:ID:       ec437673-e697-4c0d-a65f-46aec2641ed2
+:END:
+- https://ai.googleblog.com/2020/09/improving-accuracy-of-genomic-analysis.html?m=1
+***** variant calling
+:PROPERTIES:
+:ID:       743b5990-53e6-4cce-8adc-a9d766d1c5e2
+:END:
+****** SCNA variants 
+:PROPERTIES:
+:ID:       179ce37c-f8cf-44b3-872b-e32677bcb49c
+:END:
+- SCNAs
+  - https://pmbio.org/module-05-somatic/0005/04/02/Somatic_CNV_FilteringAnnotationReview/
+  - https://www.annualreviews.org/doi/full/10.1146/annurev-genom-082410-101404?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub%3Dpubmed
+  - cite:quigley2018
+  - https://bioconductor.org/packages/release/bioc/html/DNAcopy.html
+  - cite:talevich2016
+  - [[file:~/repos/copy-number/]]
+  - [[file:~/repos/copy-number/copy-number.org]]
+  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-S11-S1
+  - https://www.youtube.com/watch?v=m9XPWJrMThY&t=8s
+  - https://deeptools.readthedocs.io/en/latest/content/installation.html
+  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5737511/
+- WGS callers
+  - https://github.com/GavinHaLab
+**** copy-number                                                    :biopipe:
 :PROPERTIES:
 :CREATED:  [2019-05-29 Wed 14:46]
-:ID:       b8db46d3-8329-4fef-82b1-4d99c2c9312b
+:ID:       0206fb96-8785-47fb-87ca-1f597de0ee85
 :END:
 :LOGBOOK:
-CLOCK: [2019-06-26 Wed 14:06]--[2019-06-26 Wed 14:45] =>  0:39
+CLOCK: [2019-10-10 Thu 15:45]--[2019-10-10 Thu 15:53] =>  0:08
+CLOCK: [2019-05-15 Wed 13:09]--[2019-05-15 Wed 13:24] =>  0:15
+CLOCK: [2019-06-25 Tue 07:51]--[2019-06-25 Tue 08:00] =>  0:09
+CLOCK: [2019-06-23 Sun 07:49]--[2019-06-23 Sun 07:53] =>  0:04
+CLOCK: [2019-06-19 Wed 14:28]--[2019-06-19 Wed 14:49] =>  0:21
+CLOCK: [2019-06-19 Wed 12:38]--[2019-06-19 Wed 13:33] =>  0:55
+CLOCK: [2019-06-12 Wed 14:40]--[2019-06-12 Wed 14:58] =>  0:18
+CLOCK: [2019-05-29 Wed 15:23]--[2019-05-29 Wed 15:34] =>  0:11
+CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 :END:
-cite:giacopelli2021prostate
-- Bisulfite sequencing
-  - methylation protects/blocks cytosine conversion to uracil
-  - PCR amp can produce forward/reverse with and without bisulfite block
-  - BSMAP, Bismark, BWA-meth, biscuit
-  - VCF > bedgraph > bigwig > IGV
-  - metilene segments methylation
-  - visualization
-    - heatmap
-    - canyon plot- methylation proportion vs distance from target locus
-- cite:liu2020 
-- https://www.nature.com/articles/s41591-020-0933-1
-- https://www.nature.com/articles/nm.4045
-- [[id:6ad7cfcb-1e8b-4d72-b18a-40f80a00f242][nih liq biopsy]] see [2021-01-26 Tue]
-- "All the cell line datasets generated during and/or analysed during the current study are available in the GEO repository under accession code GSE79838. The
-cfMeDIP-seq NGS data for patient samples that support the findings of this study are available upon request from the corresponding author (D.D.C) to comply with
-institutional ethics regulation. Source data for Fig. 1d and e are provided in Supplementary Table 9, and for Figure 1G are provided in Supplementary Table 10.
-Additional source data can be found on Zenodo (Supplementary Table 13)."
-- to add
-  - R
-    - MethylKit
-    - DESeq2
-    - caret
-    - minfi
-    - Rtsne
-  - SAMtools
-  - Bowtie
-  - MEDIPS
-  - BWA
-  - GATK IndelRealigner
-  - MuTect
-  - TrimGalore
-  - Bismark6
-  - Bowtie
-  - 
-- from cite:shen2018
-  - "The generated SAM files from hg19 alignment were converted to BAM format, ensuring the removal of duplicate reads, and the reads were then sorted and indexed using SAMtools21 before subsequent analysis with the R package MEDIPS22. The CpG enrichment score, as a quality control measure for the immunoprecipitation reaction, was calculated as part of the MEDIPS package."
-  - Shell scripts were used to process MeDIP sequencing data to produce RPKM estimates for downstream analysis. Custom R scripts with a collection of R/Bioconductor packages were used to analyse the resulting dataset. The code used for analysis is available in the form of R markdowns deposited onto Zenodo as detailed in Supplementary Table 13.
-  - 
-| Description                                                                                    | Zenodo DOI for Data    | Zenodo DOI for Code    |
-| <25>                                                                                           | <25>                   | <25>                   |
-| IHEC Figure                                                                                    | 10.5281/zenodo.1205714 |                        |
-| Simulations                                                                                    | 10.5281/zenodo.1205730 | 10.5281/zenodo.1205728 |
-| Extended Data Fig. 6 violin plots                                                              | 10.5281/zenodo.1205744 | 10.5281/zenodo.1205735 |
-| Bed file of genomic windows that contain CpGs                                                  | 10.5281/zenodo.1205752 |                        |
-| TCGA and COSMIC tSNEs                                                                          | 10.5281/zenodo.1205754 |                        |
-| Machine learning                                                                               |                        | 10.5281/zenodo.1242697 |
-| Markdown with ensemble of non-machine learning scripts including Extended Data Fig. 6 heatmaps |                        | 10.5281/zenodo.1205756 |
-| Stand alone scripts called by non-machine learning markdown                                    |                        | 10.5281/zenodo.1205746 |
-
-- Open source code/packages used for data analysis: R, SAMtools (v. 1.3.1), Bowtie (v. 0.12.9), MEDIPS (v. 1.22.0), BWA (v. 0.7.1220),
-- Genome Analysis ToolKit (GATK) IndelRealigner, MuTect (v.1.1.5) , Trim Galore! (v. 0.4.4), Bismark (v. 0.10.1), Bowtie2 (v. 2.0.5),
-- MethylKit (v 0.99.2), DESeq2 (v. 1.4.5), caret R package, minfi bioconductor package, Rtsne
-- Commercial software used for data analysis: Microsoft Excel for Mac (v. 16.16.1)
-=======
+- https://bioinformaticsdotca.github.io/bicg_2017_module4_lab
+- cite:hehir-kwa2015 
+- https://www.nature.com/scitable/topicpage/copy-number-variation-and-human-disease-741737/
+- https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
+- [[id:8c535c38-9310-4fd0-a8fe-c300639493da][ichorcna]]
+- copy number classifiers
+  - https://www.sciencedirect.com/science/article/pii/S0016508521002778?via%3Dihub
+- https://www.sciencedirect.com/science/article/pii/S1535610818301119?via%3Dihub
+- allele-specific copy number: the number of copies of each inherited allele, allows for the detection of copy-neutral loss of heterozygosity https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5627665/
+- [[https://www.bioconductor.org/packages/devel/bioc/vignettes/TitanCNA/inst/doc/TitanCNA.pdf][see ploidy purity correction math]]
+- [[https://www.biostars.org/p/383522/][good CN,purity,ploid discussion]]
+**** [[id:5738AF1F-8621-40C3-AF80-0C396CDC889B][LINK TO Clinical NGS]]
 :PROPERTIES:
 :ID:       413414a5-651d-4d43-82c8-a6bb13de8ca3
 :END:
-******* protein-DNA interactions
+**** DNA break mapping
 :PROPERTIES:
-:CREATED:  [2021-01-18 Mon 09:45]
-:ID:       b612a1b1-2c01-49c3-a20c-5a890fa1a6e5
+:ID:       8a2ff484-d234-48fa-88c9-c4994f2e0d14
 :END:
-- cut and run - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302505/
-  - cite:bakhoum2021  
-******* transcription factor enrichment
+https://febs.onlinelibrary.wiley.com/doi/10.1111/febs.15568
+https://www.nature.com/articles/s41467-019-10332-8#Sec13
+
+*** Analysis of cell-free nucleic acids
 :PROPERTIES:
-:ID:       809e1a39-2a8e-46ec-863c-d7b03511fcfb
+:ID:       906150c9-910e-464c-9d7f-d8608abf6c07
 :END:
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4009616/
-- https://science.sciencemag.org/content/352/6288/aad3018
-- motif-based- high false pos
-- benchtop with ChIP-seq 
-****** Transcriptomics
+**** Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
+:PROPERTIES:
+:ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
+:END:
+- phylogenic for cancer evolution cite:abbosh2017 
+- inferred gene expression
+  - cite:ulz2016
+***** cfDNA copy number calling
+:PROPERTIES:
+:ID:       21d876e8-8646-4773-91c1-c4385c3218c7
+:END:
+- post-CN call processessing and denoising
+  - cite:zviran2020
+- BIC-seq
+  - cite:zviran2020
+- Proprietary method
+  - cite:chen2019cna
+- CNVkit on duplex hybrid capture reads
+  - cite:mansukhani2018
+- optimal read pre-processing for cfDNA CNV
+  - cite:molparia2018
+- arm-level by z-score
+  - cite:xu2018crc
+- review articles
+  - cite:cristofanilli2017
+    - (p. 119)"In addition, although copy number assessments can be challenging in ptDNA, there are studies that suggest that this is feasible. For example, HER2 amplification for breast and possibly other cancers may one day be assayed through the use of blood [49],"
+    - (p. 119)"Wyatt et  al. serially profiled ptDNA in men with castration-resistant metastatic prostate cancer to assess for copy number and mutations in androgen receptor (AR) along with targeted sequencing of 19 genes through subsequent therapies [51]."
+  - cite:huang2019 
+- simulation and power calculation 
+  - cite:molparia2017 
+- GISTIC2
+  - cite:bujak2020
+  - cite:hemming2019 
+- ichorCNA
+  - cite:hemming2019 
+  - ichorCNA on off-target reads - cite:shah2021
+  - Other papers applying ichorCNA
+    - cite:bujak2020
+    - cite:ge2020
+      - tumor vs cfDNA CN see cite:ge2020 fig2C
+    - cite:stover2018 
+    - cite:adalsteinsson2017
+    - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
+- instability score
+  - cite:li2017a  
+  - cite:feng2020 
+- by PCR
+  - https://www.pnas.org/content/117/9/4858
+***** cfDNA methylation
+- cfDNA methylation
+  - cite:liu2020
+    - https://www.dana-farber.org/newsroom/news-releases/2020/new-blood-test-can-detect-wide-range-of-cancers--now-available-to-at-risk-individuals-in-clinical-study-at-dana-farber/ 
+  - ct methylation
+    - cite:widschwendter2017
+    - cite:xu2017a
+    - cite:heitzer2017
+  - cite:guo2017
+  - meth for early detection
+    - https://www.biorxiv.org/content/10.1101/422675v1
+    - https://www.pnas.org/content/113/16/4338.long
+    - https://www.nature.com/articles/cr2017106
+- https://www.jci.org/articles/view/145973
+***** cfDNA and ctDNA-specific visualizations
+  - cite:moding2020 
+  - cite:everett2020
+  - - https://d0dd8a80-1a24-4cc5-a00a-3f42615181d7.filesusr.com/ugd/ad98ab_846561db683443d3af0664c558849464.pdf
+
+***** WGS cfDNA methods
+- cite:zviran2020
+***** cfDNA from nonterminal mouse blood draws
+  - https://www.frontiersin.org/articles/10.3389/fgene.2018.00006/full#T3
+  - https://www.nature.com/articles/cr2017121.pdf?origin=ppub
+  - https://clincancerres.aacrjournals.org/content/23/20/6305?ijkey=46368653e37c96739922e66f2f6ae51379b550f3&keytype2=tf_ipsecsha
+***** cfDNA small variant calling
+- PhasED-seq- https://www.nature.com/articles/s41587-021-00981-w
+  - - phased seq https://www.sciencedirect.com/science/article/pii/S2666634021003202
+- cite:cohen2021
+- cfDNA and ctDNA sequence variant calling
+  - cite:razavi2019
+  - cite:chabon2020
+    - https://www.theguardian.com/society/2020/mar/25/ai-program-could-check-blood-for-signs-of-lung-cancer
+  - tumor mutational burden
+    - https://ascopubs.org/doi/full/10.1200/PO.19.00204
+***** General reference
+- https://royalsocietypublishing.org/doi/10.1098/rsob.200119
+- cfDNA datasets-  https://generegulation.org/cfdna/
+- see  [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDNNMGQwVvHMjSKjBHhrkMLrS][jake's ulpwgs cfdna preprocessing]]
+- cite:heberts2021
+***** cfDNA fragmentomics
+:LOGBOOK:
+CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
+:END:
+- http://m.genome.cshlp.org/content/early/2021/12/20/gr.275691.121.full.pdf#page=1&view=FitH
+- fragments for open chromatin and tissue of origin
+- footprinting
+  - https://www.nature.com/articles/s41523-021-00237-5
+  - for nucleosome footprinting cite:snyder2016
+- fragment size
+  - https://www.nature.com/articles/s41586-020-2140-0
+  - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
+- DELFI (DNA evaluation of fragments for early interception)
+  - short-to-long ratio by genomic bin cite:mathios2021
+    - https://github.com/cancer-genomics/reproduce_lucas_wflow
+  - cite:cristiano2019 Delphi
+  - https://github.com/Cancer-Genomics/delfi_scripts
+- cite:mouliere2018
+  - cite:mouliere2018a
+- cite:chabon2020 - per individual mutant molecules- see "ctDNA fragment size analysis", R zoo for sliding window, relative enrichment per frag size   
+- cite:peneder2021     
+  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
+**** cfRNA
+:PROPERTIES:
+:ID:       f4d64349-0202-41e5-9143-39de3dd63d90
+:END:
+https://www.nature.com/articles/d41586-021-03801-y
+https://mail.google.com/mail/u/0/#inbox/FMfcgzGlksDcrLMrdlPVPsVnzpdCNTsx
+ [[#larson2021][larson2021]]
+https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
+*** Allele-specific expression
+:PROPERTIES:
+:ID:       a52b4ca3-c3ca-4aec-b68a-01c1de39fc8a
+:END:
+
+- https://github.com/secastel/allelecounter
+- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0762-6#Sec11
+*** Alternative splicing
+:PROPERTIES:
+:ID:       eba855e5-ce0e-4318-894d-4942f7e2fe45
+:END:
+- w/ RNA-seq via splAdder
+  - https://github.com/ratschlab/spladder
+  - https://academic.oup.com/bioinformatics/article/32/12/1840/1744052?login=true
+*** Transcriptomics
 :PROPERTIES:
 :ID:       b9db0398-4481-4502-abb0-bd9edcd353f2
 :END:
 https://www.sciencedirect.com/science/article/pii/S2666166721004755
 https://www.biorxiv.org/content/10.1101/2021.12.19.473368v1
 https://cancerdiscovery.aacrjournals.org/content/early/2021/12/22/2159-8290.CD-RW2021-181
-******* Microarray
+**** Microarray
 :PROPERTIES:
 :ID:       294edcbb-f306-4f94-9eba-e8a1c7c512f1
 :END:
 - cite:lee2004
 - cite:nguyen2002 
-******* RNA-seq                                                      :career:
+**** RNA-seq                                                         :career:
 :PROPERTIES:
 :ID:       4206be38-8d3c-43c4-a5c7-ca6a8bd8361a
 :CREATED:  [2021-02-17 Wed 09:08]
@@ -2056,11 +2382,11 @@ CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
 - https://tavareshugo.github.io/data-carpentry-rnaseq/03_rnaseq_pca.html#Running_PCA_using_prcomp()
-******** General guides, github repos, training, etc
+***** General guides, github repos, training, etc
 :PROPERTIES:
 :ID:       945cb660-b2c2-4416-be64-b24b9fb79a0f
 :END:
-********* General links
+****** General links
 :PROPERTIES:
 :ID:       264bdea7-dee2-4460-aec3-7c56fb455144
 :END:
@@ -2068,7 +2394,7 @@ CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
   - http://mikelove.github.io/
   - [[https://github.com/crazyhottommy/RNA-seq-analysis][crazyhottommy]]
   - https://rnabio.org/resources/
-********* Standards and best practices
+****** Standards and best practices
 :PROPERTIES:
 :ID:       8690932b-2062-4f5f-b007-36e2df1a68c6
 :END:
@@ -2085,7 +2411,7 @@ CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
         - Assessment is coming in Nature Methods
     - [[http://www.fda.gov/ScienceResearch/BioinformaticsTools/MicroarrayQualityControlProject/][Sequencing Quality Control Project (SEQC)]]
   - ENCODE RNA-Seq guidelines
-********* Comprehensive guides
+****** Comprehensive guides
 :PROPERTIES:
 :ID:       d5ae15c1-9f7c-4bf0-b5d2-c8ed663d0889
 :END:
@@ -2107,13 +2433,13 @@ CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
       - chance of random duplication is 1/(4^(read length *2)), so still slim up to depth of 100s of millions
 - https://rnaseq.uoregon.edu/
 - https://www.labome.com/method/RNA-seq.html
-********* Historical papers
+****** Historical papers
 :PROPERTIES:
 :ID:       d5e399f8-4845-4803-bc49-21a55fafb830
 :END:
   - cite:wilhelm2009
   - [[https://blog.sbgenomics.com/rna-seq-the-first-wave/][RNA-seq: The first wave of papers]]    
-********* Griffith AWS RNA-seq Tutorial
+****** Griffith AWS RNA-seq Tutorial
 :PROPERTIES:
 :ID:       520695E3-F98F-4195-8336-0A0E9589FB14
 :END:
@@ -2291,7 +2617,7 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
     - Integrated Assignment
     - Proposed Improvements
     - AWS Setup
-******** Experimental design
+***** Experimental design
 :PROPERTIES:
 :ID:       19780d7c-afa7-4195-b1f9-df9c563de303
 :END:
@@ -2358,15 +2684,15 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
   - Strandedness
     - cite:Zhao_2015
 - [[*testing, modeling, and read simulation][testing, modeling, and read simulation]]
-******** [[id:7BF989EC-4DA7-4B0C-AAA9-0175156447FF][LINK TO RNA extraction, solubilization, and isolation]]
+***** [[id:7BF989EC-4DA7-4B0C-AAA9-0175156447FF][LINK TO RNA extraction, solubilization, and isolation]]
 :PROPERTIES:
 :ID:       b477ff77-85e8-4613-9bea-a703de899817
 :END:
-******** [[id:4E23127E-4ED6-4802-A03C-4103AA8CAF29][LINK TO RNA Quality and Quantification]]
+***** [[id:4E23127E-4ED6-4802-A03C-4103AA8CAF29][LINK TO RNA Quality and Quantification]]
 :PROPERTIES:
 :ID:       f8fb2eb4-e4dd-40f4-9ca6-f0582f4a3aac
 :END:
-******** Library preparation
+***** Library preparation
 :PROPERTIES:
 :ID:       2111e30d-9183-40de-948e-3f76b70905d8
 :END:
@@ -2408,11 +2734,11 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
 - cite:oneil2013
 - stranded
   - https://www.ecseq.com/support/ngs/how-do-strand-specific-sequencing-protocols-work  
-******** [[id:3BC41E6A-00D3-4498-A48C-463F68CFD76B][LINK TO massively parallel sequencing]]
+***** [[id:3BC41E6A-00D3-4498-A48C-463F68CFD76B][LINK TO massively parallel sequencing]]
 :PROPERTIES:
 :ID:       68056b25-1413-4bda-a1f2-6610e92c6765
 :END:
-******** [[*workflow][LINK TO workflow]]
+***** [[*workflow][LINK TO workflow]]
 :PROPERTIES:
 :ID:       af099dea-affd-4fdf-8745-aaa9b22bc505
 :END:
@@ -2421,11 +2747,11 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
   - [[https://hub.docker.com/r/mgibio/rnaseq/dockerfile][mgi rna-seq dockerfile]]
 - cite:griffith2015
 - http://bioinformatics.sdstate.edu/idep/
-******** [[id:1EE731A3-83DD-46AF-B988-2311307C335F][LINK TO raw sequence quality control]]
+***** [[id:1EE731A3-83DD-46AF-B988-2311307C335F][LINK TO raw sequence quality control]]
 :PROPERTIES:
 :ID:       7cc53256-8b7b-4c93-aaa5-2a35e41b7319
 :END:
-******** RNA-seq quality control
+***** RNA-seq quality control
 :PROPERTIES:
 :ID:       e6cbde1b-22c3-4a23-b99e-d9d4fe0a6b95
 :END:
@@ -2443,7 +2769,7 @@ CLOCK: [2017-02-28 Tue 11:44]--[2017-02-28 Tue 11:54] =>  0:10
 
 - samtools sort (to postion) 
 
-********** [[http://www-huber.embl.de/HTSeq/doc/count.html#count][website]]
+******* [[http://www-huber.embl.de/HTSeq/doc/count.html#count][website]]
 :PROPERTIES:
 :ID:       6B7F3881-DA7D-4700-BC30-9EF83150D916
 :END:
@@ -2468,7 +2794,7 @@ Important options
 
   [[http://www-huber.embl.de/HTSeq/doc/counting.html][algorithm details]]
 
-********* Basic counting script
+****** Basic counting script
 :PROPERTIES:
 :ID:       AE616985-EA77-4CF0-8FEA-60FF56A04AC3
 :END:
@@ -2476,17 +2802,17 @@ Important options
 counting is computationally intensive- script HTseq and
 summarizeOverlaps on the cluster 
 variabilize RNA seq workflow- make into function 
-******** [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][LINK TO Nucleic acid sequence alignment]]
+***** [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][LINK TO Nucleic acid sequence alignment]]
 :PROPERTIES:
 :ID:       542988fa-307f-454e-927e-ee6a17187265
 :END:
-******** Read annotation
+***** Read annotation
 :PROPERTIES:
 :ID:       8e435b88-6895-4e75-a728-cfdaa272bddb
 :END:
 https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-015-1308-8
 - https://github.com/griffithlab/rnaseq_tutorial/wiki/Annotation
-******** Quantification and normalization
+***** Quantification and normalization
 :PROPERTIES:
 :ID:       853dd34c-27be-4be8-9794-19f04a1e22b0
 :END:
@@ -2551,19 +2877,19 @@ by spike-in  Jiang,L., Schlesinger,F., Davis,C.A., Zhang,Y., Li,R., Salit,M., Gi
 - https://htseq.readthedocs.io/en/release_0.11.1/tour.html#counting-reads-by-genes
 - RSEM
   - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323
-********* featureCounts in Rsubread
+****** featureCounts in Rsubread
 :PROPERTIES:
 :ID:       0FB3EE5E-DD17-4438-BF35-011555A41DF9
 :END:
 
 [[http://www.rdocumentation.org/packages/Rsubread/functions/featureCounts][nice featureCounts manual]]
 
-********* [#Y] summarizeOverlaps in GenomicAlignments
+****** [#Y] summarizeOverlaps in GenomicAlignments
 :PROPERTIES:
 :ID:       16408005-913F-4675-BA61-B7594A3FB4EC
 :END:
 
-********* HTseq-count
+****** HTseq-count
 :PROPERTIES:
 :ID:       E2262D77-424F-4943-8DA4-5649B2F0B4B2
 :END:
@@ -2576,14 +2902,14 @@ Not on cluster
 - % no feature, ambiguous, too low qual, not aligned, alignment not
   unique 
 
-********** Prerequisites
+******* Prerequisites
 :PROPERTIES:
 :ID:       D5102869-0833-4513-A716-69D44892FDDF
 :END:
 
 - samtools sort (to postion) 
 
-********** [[http://www-huber.embl.de/HTSeq/doc/count.html#count][website]]
+******* [[http://www-huber.embl.de/HTSeq/doc/count.html#count][website]]
 :PROPERTIES:
 :ID:       6B7F3881-DA7D-4700-BC30-9EF83150D916
 :END:
@@ -2609,19 +2935,19 @@ Important options
   [[http://www-huber.embl.de/HTSeq/doc/counting.html][algorithm details]]
 
 
-********* Expression Level Abundance, Normalization Units
+****** Expression Level Abundance, Normalization Units
 :PROPERTIES:
 :ID:       D4BFCCCA-8BBC-4D23-B71B-F8C2ED6287E3
 :END:
 https://ro-che.info/articles/2016-11-28-rna-seq-normalization
 R/FPKM and C/TPM are "local" to the sample while TMM must be recalculated with different sample set
 
-********** Raw- required input for DE analyses
+******* Raw- required input for DE analyses
 :PROPERTIES:
 :ID:       82A81565-9333-4E40-806E-474399BD73C4
 :END:
 
-********** R/FPKM
+******* R/FPKM
 :PROPERTIES:
 :ID:       9D6324B7-D9A2-44ED-A54F-B0C0C8DCECE2
 :END:
@@ -2635,7 +2961,7 @@ https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-e
   - “For example, if a 2 kb transcript has 1000 reads and the total number of reads is 25 million, then RPKM = (1000/2)/25 = 20”
 - FPKM (fragments per thousand nucleotides per million mapped reads)- equivalent of RPKM for paired-end (two reads per fragment)
 
-********** CPM (counts per million) / TPM
+******* CPM (counts per million) / TPM
 :PROPERTIES:
 :ID:       8C3481E5-B350-4D9D-A44C-DAB17FAEE1C6
 :END:
@@ -2647,7 +2973,7 @@ https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-e
     i.e. normalizes to transcripts as opposed to reads
     useful if average transcript length differs b/w samples 
 
-********** TMM (trimmed mean of M values)
+******* TMM (trimmed mean of M values)
 :PROPERTIES:
 :ID:       544B0EAB-4594-404B-9C83-B951E2244CFE
 :END:
@@ -2657,7 +2983,7 @@ https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-e
 - corrects for less "sequencing real estate" due to high expression per tissue 
 
 
-******** Exploratory data analysis
+***** Exploratory data analysis
 :PROPERTIES:
 :ID:       77d2a559-9858-453a-83c5-a646bbf473a3
 :END:
@@ -2689,7 +3015,7 @@ phenotypes with genetic marker data. Genet. Epidemiol., 31(Suppl.
   - PCA
     - add scores and loadings for initial variable
 - [[id:588f6536-9db9-4279-9e67-800890c2de23][LINK TO High dimension data transformation]]
-********* Clustering
+****** Clustering
 :PROPERTIES:
 :ID:       22a6e4a4-60c2-44cf-8e5a-3ff351a02aa3
 :END:
@@ -2704,7 +3030,7 @@ https://www.biostars.org/p/287512/
 - https://www.datanovia.com/en/blog/types-of-clustering-methods-overview-and-quick-start-r-code/
 
 - cite:vidman2019
-******** Differential expression
+***** Differential expression
 :PROPERTIES:
 :ID:       ee030cef-74d4-435d-8228-b85f0e6203db
 :END:
@@ -2725,7 +3051,7 @@ https://github.com/hbctraining/DGE_workshop_salmon_online
 https://f1000research.com/articles/5-1438/v2
 https://www.nature.com/articles/s41598-020-74567-y#Abs1
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6954399/
-********* time course
+****** time course
 :PROPERTIES:
 :ID:       43f1772e-f8ce-4f6b-a4bd-d35d381b89c9
 :END:
@@ -2736,13 +3062,13 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6954399/
   - https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
   - http://seqanswers.com/forums/showthread.php?t=64039
   - https://www.sciencedirect.com/science/article/pii/S2001037015000392
-********* experimental design
+****** experimental design
 :PROPERTIES:
 :ID:       4b9eee0d-4dd2-4b31-a5c2-873663443671
 :END:
   - cite:mccarthy2012
   - https://angus.readthedocs.io/en/2016/_static/DifferentialExpressionBasics_NGS2016_ID.pdf
-********* specialized DE datasets
+****** specialized DE datasets
 :PROPERTIES:
 :ID:       722cd834-2504-4ae0-84ef-58554fa4da32
 :END:
@@ -2751,7 +3077,7 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6954399/
   - https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
   - sleuth https://www.nature.com/articles/nmeth.4324 cite:pachter2015
   - CuffDiff- isoform count-based
-********* tutorials
+****** tutorials
 :PROPERTIES:
 :ID:       9bd06c29-45ba-42b8-b048-27b83a0fa47d
 :END:
@@ -2759,7 +3085,7 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6954399/
 - https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
 - https://bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html#useful-graphical-representations-of-differential-expression-results
 - [[https://github.com/griffithlab/rnaseq_tutorial/wiki/Citation][Griffith RNA-seq tutorial]]
-********* statistical models
+****** statistical models
 :PROPERTIES:
 :ID:       8a788e6c-3899-4e6f-bf09-9c96d110aeaa
 :END:
@@ -2791,7 +3117,7 @@ doi:10.2202/1544-6115.1637.
     - negative binomial (overdispersed Poisson), variance = mean + (1/r)*u^2, used by
       - DESeq2 (can also do continuous values like limma)
       - EdgeR
-********* Methods and tools
+****** Methods and tools
 :PROPERTIES:
 :ID:       68BB9D3D-5879-4F2E-904B-54F70EAD2B5A
 :END:
@@ -2818,7 +3144,7 @@ doi:10.2202/1544-6115.1637.
     - https://academic.oup.com/bib/article/16/1/59/240754#26957696
 - de novo
   - https://informatics.fas.harvard.edu/best-practices-for-de-novo-transcriptome-assembly-with-trinity.html
-********* outputs
+****** outputs
 :PROPERTIES:
 :ID:       48db2c9c-5d17-4438-aa40-43816245c490
 :END:
@@ -2826,7 +3152,7 @@ doi:10.2202/1544-6115.1637.
     - https://www.biostars.org/p/101727/
 
 
-********* Notes
+****** Notes
 :PROPERTIES:
 :ID:       558011C7-FB50-435E-B130-E3485CC25B90
 :END:
@@ -2834,12 +3160,12 @@ doi:10.2202/1544-6115.1637.
 - https://pubmed.ncbi.nlm.nih.gov/22931062/
 - bench methods
   - cite:parekh2016
-******** RNA-based variant discovery
+***** RNA-based variant discovery
 :PROPERTIES:
 :ID:       4049cae9-7479-4017-b42a-e397f7c761d0
 :END:
 - [[http://gatkforums.broadinstitute.org/gatk/discussion/4067/best-practices-for-variant-discovery-in-rnaseq][Broad best practices for variant discovery in RNA Seq]]
-******** RNA-seq visualization
+***** RNA-seq visualization
 :PROPERTIES:
 :ID:       b1351d51-3ac1-4193-b944-850c44a903fd
 :END:
@@ -2853,7 +3179,7 @@ doi:10.2202/1544-6115.1637.
   - https://www.rdocumentation.org/packages/gplots/versions/3.0.3/topics/heatmap.2 
 - mapped reads were visualized by SeqMonk[[file:org.org_imgs/20161220_180037_4849srR.png]]
 
-******** Methods by tissue source or isolation 
+***** Methods by tissue source or isolation 
 :PROPERTIES:
 :ID:       4d4a89d1-e039-4a89-b968-81c80f38d884
 :END:
@@ -2908,7 +3234,7 @@ doi:10.2202/1544-6115.1637.
     - no fusion
     - "RNA-seq provides much more detailed information on specific transcript expression patterns in clinico-genetic neuroblastoma subgroups than microarrays. " cite:zhang2015comparison
 
-********* Extracellular RNA (exRNA)
+****** Extracellular RNA (exRNA)
 :PROPERTIES:
 :ID:       76718cf1-9fdf-4955-8733-3f8423915844
 :END:
@@ -2918,7 +3244,7 @@ doi:10.2202/1544-6115.1637.
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5426982/
 - [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO circulating rna]]
 - - cell of origin -- https://www.biorxiv.org/content/10.1101/2021.05.05.441859v1.full
-******** Integrated miRNA-mRNA analysis
+***** Integrated miRNA-mRNA analysis
 :PROPERTIES:
 :ID:       82aafb6f-63a8-4ab7-867a-9add0e0c224a
 :END:
@@ -2927,16 +3253,16 @@ doi:10.2202/1544-6115.1637.
   - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-5983-8#Sec2
   - https://www.oncotarget.com/article/8713/text/
   - cite:li2017mirna
-******** Methods by RNA population
+***** Methods by RNA population
 :PROPERTIES:
 :ID:       33823415-f2e4-4cdf-b3aa-a01000b35249
 :END:
 - https://academic.oup.com/bib/article/22/2/1706/5758193
-********* Bulk RNA
+****** Bulk RNA
 :PROPERTIES:
 :ID:       933724d3-ef49-46f9-9b60-63372c236a98
 :END:
-********** Applications for bulk RNA-seq
+******* Applications for bulk RNA-seq
 :PROPERTIES:
 :ID:       a9e9bbf7-8012-456a-9b45-0c86aacd84c7
 :END:
@@ -2951,12 +3277,12 @@ doi:10.2202/1544-6115.1637.
   - cite:byron2016translating
   - cite:Kalari_2014
   - cite:Van_Keuren_Jensen_2014
-*********** QTL mapping
+******** QTL mapping
 :PROPERTIES:
 :ID:       2CA85A6B-7B1E-4A38-96AA-717847A59168
 :END:
 https://www.nature.com/articles/s41588-018-0091-2
-************ Chemical- NextBio, see Webster,15ref Kupershmidt,10
+********* Chemical- NextBio, see Webster,15ref Kupershmidt,10
 :PROPERTIES:
 :ID:       f9f486c9-cd9b-401a-a3c0-523a5d09d92b
 :END:
@@ -3063,13 +3389,13 @@ https://www.nature.com/articles/s41588-018-0091-2
 
 
 - [[*omics integration][omics integration]]
-************ Allele-specific Expression
+********* Allele-specific Expression
 :PROPERTIES:
 :ID:       96C367A3-FEEB-4F6F-975A-A08A172FD277
 :END:
 
 
-************ RNA-fusion                                             :biopipe:
+********* RNA-fusion                                                :biopipe:
 :PROPERTIES:
 :CREATED:  [2019-06-25 Tue 09:05]
 :ID:       96634f32-b19a-4390-8e50-e942abd35f90
@@ -3096,14 +3422,14 @@ http://bcb.dfci.harvard.edu/~aedin/courses/Bioconductor/
 
 https://www.bioconductor.org/packages/devel/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html
 
-*********** Gene Set Enrichment
+******** Gene Set Enrichment
 :PROPERTIES:
 :ID:       87734999-3139-4343-A323-925416811B12
 :END:
 https://www.pathwaycommons.org/guide/primers/data_analysis/gsea/#:~:text=The%20GSEA%20enrichment%20score%20(S,sets%20one%20at%20a%20time.
 - https://www.reddit.com/r/bioinformatics/comments/66374x/gsea_vs_go_enrichment/
 
-************ [[http://www.bioconductor.org/packages/release/bioc/html/gage.html][GAGE]] (generally applicable gene-set enrichment for pathway analysis)
+********* [[http://www.bioconductor.org/packages/release/bioc/html/gage.html][GAGE]] (generally applicable gene-set enrichment for pathway analysis)
 :PROPERTIES:
 :ID:       441F7686-9969-4F8D-8092-C4429377214C
 :END:
@@ -3112,7 +3438,7 @@ https://www.pathwaycommons.org/guide/primers/data_analysis/gsea/#:~:text=The%20G
 [[file:~/Box%20Sync/comp_bio/gsea_template/gage.pdf][Manual]]
 [[file:~/Box%20Sync/comp_bio/gsea_template/gsea_template.R][Rscript]]
 
-************* RNA-Seq Workflow Example
+********** RNA-Seq Workflow Example
 :PROPERTIES:
 :ID:       B687F931-3A5E-4CD0-B2B7-30DF026E0AB9
 :END:
@@ -3121,7 +3447,7 @@ https://www.pathwaycommons.org/guide/primers/data_analysis/gsea/#:~:text=The%20G
 [[file:~/Box%20Sync/comp_bio/gsea_template/RNA-seqWorkflow.pdf][pdf]]
 
 
-************* RNA-Seq Workflow Example
+********** RNA-Seq Workflow Example
 :PROPERTIES:
 :ID:       B687F931-3A5E-4CD0-B2B7-30DF026E0AB9
 :END:
@@ -3129,7 +3455,7 @@ https://www.pathwaycommons.org/guide/primers/data_analysis/gsea/#:~:text=The%20G
 [[file:~/Box%20Sync/comp_bio/gsea_template/][Folder]]
 [[file:~/Box%20Sync/comp_bio/gsea_template/RNA-seqWorkflow.pdf][pdf]]
 
-************ Commercial
+********* Commercial
 :PROPERTIES:
 :ID:       417416B5-0169-41CA-8FCE-4D6E440C7E3A
 :END:
@@ -3139,7 +3465,7 @@ http://www.ingenuity.com/
 [[http://bedops.readthedocs.io/en/latest/index.html][BEDOPS]]
 https://www.datacamp.com/
 
-*********** Genotype-Phenotype Associations
+******** Genotype-Phenotype Associations
 :PROPERTIES:
 :ID:       69F82D91-6DE6-4332-AD0A-7ADF25263858
 :END:
@@ -3148,18 +3474,18 @@ https://www.datacamp.com/
 - cite:Kho_2011
 
 
-*********** variant calling
+******** variant calling
 :PROPERTIES:
 :CREATED:  [2020-06-22 Mon 12:27]
 :ID:       a5b408eb-77e2-4634-a5bb-950cefaafe18
 :END:
 - [[id:57E81A44-3233-479B-8264-2CD5F1904A60][Sequence variation and variant calling]]
-************ fusions
+********* fusions
 :PROPERTIES:
 :ID:       0ea6c74e-bcf8-44c2-b4c3-e725d930d4a3
 :END:
   - cite:melsted2017  
-************* Gene Fusion Detection
+********** Gene Fusion Detection
 :PROPERTIES:
 :ID:       492e0fad-ced4-407b-8913-80f3a0ac1202
 :END:
@@ -3177,7 +3503,7 @@ https://www.datacamp.com/
   - https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/Dockerfile
 
 
-**************** NEXT INTEGRATE RNA aligners
+************* NEXT INTEGRATE RNA aligners
 :PROPERTIES:
 :CREATED:  [2019-02-25 Mon 13:16]
 :ID:       951F10BC-E844-45C5-8CB4-4FA8756D9F85
@@ -3195,7 +3521,7 @@ https://www.datacamp.com/
   - [ ] hisat2 https://ccb.jhu.edu/software/hisat2/manual.shtml see hista2-build
   - 
 
-*************** NEXT HCC1395 straight align and integrate and compare to published
+************ NEXT HCC1395 straight align and integrate and compare to published
 :PROPERTIES:
 :CREATED:  [2019-03-13 Wed 10:11]
 :ID:       58F7BED2-DED1-4911-9E8C-104E12126A73
@@ -3233,13 +3559,13 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
     - Integrate fusion /gscmnt/gc2555/spencer/jeff/data/reference/Homo_sapiens.GRCh38.dna.primary_assembly.fa /gscmnt/gc2555/spencer/jeff/data/reference/annot-hg38-refeseq.txt /gscmnt/gc2555/spencer/jeff/data/reference/Integrate/bwts /gscmnt/gc2555/spencer/jeff/dev/starhcc/Aligned.out.sorted.bam /gscmnt/gc2555/spencer/jeff/dev/starhcc/Aligned.out.sorted.bam
       - 
 
-************ Broad Calling variants in RNAseq
+********* Broad Calling variants in RNAseq
 :PROPERTIES:
 :ID:       DA64BC88-8BD6-40DF-9D80-5596BFA4D643
 :END:
 
 https://software.broadinstitute.org/gatk/documentation/article?id=3891
-************ RNA-fusion                                             :biopipe:
+********* RNA-fusion                                                :biopipe:
 :PROPERTIES:
 :CREATED:  [2019-06-25 Tue 09:05]
 :ID:       96634f32-b19a-4390-8e50-e942abd35f90
@@ -3260,7 +3586,7 @@ CLOCK: [2019-06-26 Wed 13:35]--[2019-06-26 Wed 13:59] =>  0:24
   - https://github.com/genepattern/docker-tophat/blob/master/Dockerfile
   - https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/Dockerfile
 
-**************** NEXT INTEGRATE RNA aligners
+************* NEXT INTEGRATE RNA aligners
 :PROPERTIES:
 :CREATED:  [2019-02-25 Mon 13:16]
 :ID:       951F10BC-E844-45C5-8CB4-4FA8756D9F85
@@ -3278,7 +3604,7 @@ CLOCK: [2019-06-26 Wed 13:35]--[2019-06-26 Wed 13:59] =>  0:24
   - [ ] hisat2 https://ccb.jhu.edu/software/hisat2/manual.shtml see hista2-build
   - 
 
-*************** NEXT HCC1395 straight align and integrate and compare to published
+************ NEXT HCC1395 straight align and integrate and compare to published
 :PROPERTIES:
 :CREATED:  [2019-03-13 Wed 10:11]
 :ID:       58F7BED2-DED1-4911-9E8C-104E12126A73
@@ -3316,7 +3642,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
     - Integrate fusion /gscmnt/gc2555/spencer/jeff/data/reference/Homo_sapiens.GRCh38.dna.primary_assembly.fa /gscmnt/gc2555/spencer/jeff/data/reference/annot-hg38-refeseq.txt /gscmnt/gc2555/spencer/jeff/data/reference/Integrate/bwts /gscmnt/gc2555/spencer/jeff/dev/starhcc/Aligned.out.sorted.bam /gscmnt/gc2555/spencer/jeff/dev/starhcc/Aligned.out.sorted.bam
       - 
 
-*********** time course
+******** time course
 :PROPERTIES:
 :ID:       43f1772e-f8ce-4f6b-a4bd-d35d381b89c9
 :END:
@@ -3327,11 +3653,11 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
   - https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
   - http://seqanswers.com/forums/showthread.php?t=64039
   - https://www.sciencedirect.com/science/article/pii/S2001037015000392
-*********** [[*omics integration][omics integration]]
+******** [[*omics integration][omics integration]]
 :PROPERTIES:
 :ID:       db8191ed-937d-456b-90d6-63c39fa90758
 :END:
-********* single-cell RNA sequencing (scRNA-seq)
+****** single-cell RNA sequencing (scRNA-seq)
 :PROPERTIES:
 :ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
 :END:
@@ -3409,12 +3735,12 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
   - Slingshot
   - TSCAN
   - Wishbone
-********* single-nucleus RNA-seq
+****** single-nucleus RNA-seq
 :PROPERTIES:
 :ID:       1149b091-eabe-4137-a3e9-222f21bfdd57
 :END:
 - https://www.nature.com/articles/s41591-020-0844-1
-********* small RNA sequencing 
+****** small RNA sequencing 
 :PROPERTIES:
 :ID:       fd462ab0-6aaf-4732-953b-141ad5e2ee72
 :END:
@@ -3425,11 +3751,11 @@ CLOCK: [2021-02-17 Wed 09:23]--[2021-02-17 Wed 09:35] =>  0:12
 CLOCK: [2021-02-17 Wed 09:08]--[2021-02-17 Wed 09:18] =>  0:10
 CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 :END:
-********** [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO Extracellular RNA biology]]
+******* [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO Extracellular RNA biology]]
 :PROPERTIES:
 :ID:       49a0e52b-0bda-4237-8bab-ff2db54cf26d
 :END:
-********** Design
+******* Design
 :PROPERTIES:
 :ID:       4e8a8446-e84d-4c4f-8bd8-45ee611337b5
 :END:
@@ -3442,29 +3768,29 @@ CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
 - what depth? https://www.researchgate.net/post/how_many_million_reads_for_miRNA_discovery
 - reads per sample
   - https://www.qiagen.com/us/resources/faq?id=a119d5f0-0a2a-4612-828e-d8fa3cc37891&lang=en
-********** [[id:b2873d1a-837b-4927-b8cf-8a27e42d7bea][LINK TO small RNA extraction]]
+******* [[id:b2873d1a-837b-4927-b8cf-8a27e42d7bea][LINK TO small RNA extraction]]
 :PROPERTIES:
 :ID:       dfc3a8a2-e4c4-4043-af71-2db93128c18e
 :END:
-********** [[id:4E23127E-4ED6-4802-A03C-4103AA8CAF29][LINK TO RNA Quality and Quantification]]
+******* [[id:4E23127E-4ED6-4802-A03C-4103AA8CAF29][LINK TO RNA Quality and Quantification]]
 :PROPERTIES:
 :ID:       4df90313-39e4-44ed-83cd-b98453e18358
 :END:
-********** [[id:71289eeb-a929-44bd-a46e-a0c3dcd7a8f4][LINK TO small RNA library preparation]]
+******* [[id:71289eeb-a929-44bd-a46e-a0c3dcd7a8f4][LINK TO small RNA library preparation]]
 :PROPERTIES:
 :ID:       a65f74ea-8211-4a51-97a3-a03f5bebb31b
 :END:
-********** [[id:3BC41E6A-00D3-4498-A48C-463F68CFD76B][LINK TO Massively parallel sequencing]]
+******* [[id:3BC41E6A-00D3-4498-A48C-463F68CFD76B][LINK TO Massively parallel sequencing]]
 :PROPERTIES:
 :ID:       6584c294-78b9-42e5-a25b-28a069e112d8
 :END:
-********** Bioinformatics
+******* Bioinformatics
 :PROPERTIES:
 :ID:       f46e278c-dd38-4603-9fa2-a973823e1333
 :END:
 - cite:buschmann2016
 - https://link.springer.com/protocol/10.1007%2F978-1-4939-9042-9_4
-*********** Pre-processing
+******** Pre-processing
 :PROPERTIES:
 :ID:       0c7d62b9-6ef4-43d1-8e21-c3aa536125bd
 :END:
@@ -3478,21 +3804,21 @@ CLOCK: [2021-02-05 Fri 15:43]--[2021-02-05 Fri 16:10] =>  0:27
   - filtered reads should have miRNA 21-23 nt peak and piRNA 30-32 nt peak 
   - overrepresented sequence- k-mer distribution- see cite:buschmann2016 pg 6007
 - [[id:1EE731A3-83DD-46AF-B988-2311307C335F][LINK TO Raw sequence QC and processing]]    
-*********** Alignment
+******** Alignment
 :PROPERTIES:
 :ID:       d657a691-e338-44ad-96e4-47b4b18a03d2
 :END:
 - alignment to miRbase needs to be more conservative to avoid mismatches
-*********** QC
+******** QC
 :PROPERTIES:
 :ID:       fc7aeeb1-d387-4379-be37-46ebf1244cd7
 :END:
 https://exrna.org/resources/data/data-quality-control-standards/
-*********** [[id:853dd34c-27be-4be8-9794-19f04a1e22b0][LINK TO Quantification and normalization]]
+******** [[id:853dd34c-27be-4be8-9794-19f04a1e22b0][LINK TO Quantification and normalization]]
 :PROPERTIES:
 :ID:       9a349ccd-3d29-46b7-b4fa-71693d32c674
 :END:
-*********** [[id:ee030cef-74d4-435d-8228-b85f0e6203db][LINK TO Differential expression]]
+******** [[id:ee030cef-74d4-435d-8228-b85f0e6203db][LINK TO Differential expression]]
 :PROPERTIES:
 :ID:       56d53b46-2a62-4777-b5c7-eedbc306d4b4
 :END:
@@ -3520,12 +3846,12 @@ for datasets with sufficient sample sizes of 10 or more. For
 smaller datasets, edgeR and especially the more conserva-
 tive DESeq (or DESeq2) are found to be the methods of
 choice. On"
-*********** Functional analysis
+******** Functional analysis
 :PROPERTIES:
 :ID:       e597d527-5538-4f69-bd28-a24a70969317
 :END:
 cite:buschmann2016 pg6011
-*********** Integrated tools
+******** Integrated tools
 :PROPERTIES:
 :ID:       07055c47-6e24-4f59-bce4-0ab91a7f5377
 :END:
@@ -3549,15 +3875,14 @@ cite:buschmann2016 pg6011
   - sRNAtoolbox
     - https://arn.ugr.es/srnatoolbox/srnabench/
     - https://arn.ugr.es/srnatoolbox/static/sRNAtoolbox_manual.pdf
-********** Applications
+******* Applications
 :PROPERTIES:
 :ID:       55212621-170f-41aa-b9b5-b1c00385ffe6
 :END:
-*********** Extracellular RNA bioinformatics
+******** Extracellular RNA bioinformatics
 :PROPERTIES:
 :ID:       cbf67ef7-39ec-45ec-b599-cdc0e8590cf7
 :END:
-https://www.nature.com/articles/s41587-021-01188-9
 - cite:srinivasan2019
 - by fluid
   - https://pubmed.ncbi.nlm.nih.gov/30380423/
@@ -3589,7 +3914,7 @@ https://www.nature.com/articles/s41587-021-01188-9
 - plasma transcriptome RNA
   - cite:zhao2018
   - cite:chen2019exrna
-*********** miRNA-seq
+******** miRNA-seq
 :PROPERTIES:
 :ID:       903f32d8-bd13-496c-8d5c-26a63455936a
 :END:
@@ -3599,13 +3924,13 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 - https://www.nature.com/articles/srep05150#Sec11
 - http://www.mircode.org/faq.php
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4652620/
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
-- [[id:5d9593fd-f083-450f-a510-449aa15ae670][LINK TO miRNA biology]]
-- [[id:95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88][LINK TO miRNA data]]
 - spike-ins
   - cite:qiagen2018mirnaspike cite:exiqon2016exiseq 
   - cite:locati2015
   - https://genome.cshlp.org/content/21/9/1543.long
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6161688/
+- [[id:5d9593fd-f083-450f-a510-449aa15ae670][LINK TO miRNA biology]]
+- [[id:95b3c7f3-3b84-45b1-b8bf-5e2e6e2a6f88][LINK TO miRNA data]]
 - processes
   - preprocessing
     - read collapse just speads up downstream
@@ -3638,7 +3963,7 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 - protocols
   - cite:fu2018mirna 
   - https://www.sciencedirect.com/science/article/pii/S266591312030131X#sec3
-********** General reference
+******* General reference
 :PROPERTIES:
 :ID:       65a85f59-afd5-4c6b-a785-9b6269cc7a51
 :END:
@@ -3650,7 +3975,7 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
   - https://www.encodeproject.org/data-standards/rna-seq/small-rnas/
 
 
-******** reference
+***** reference
 :PROPERTIES:
 :ID:       70491293-d832-4947-b1bd-a0f4ae066c17
 :END:
@@ -3674,7 +3999,7 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 - [[http://rnaseq.uoregon.edu/][RNAcyclopedia]]
 - https://en.wikipedia.org/wiki/List_of_RNA-Seq_bioinformatics_tools
 - [[id:386d899a-9208-4d5c-93d8-3750b22d9748][RNA methods]]
-******** Ideas
+***** Ideas
 :PROPERTIES:
 :ID:       B5E9166C-CB80-4578-BD90-1E694B46F192
 :END:
@@ -3684,7 +4009,7 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 
 see Love,16 section "Rich visualization and reporting of results"
 
-********* Pipeline Comparisons
+****** Pipeline Comparisons
 :PROPERTIES:
 :ID:       7B9AD35F-1511-4CB2-BB5A-0989EFEAADF3
 :END:
@@ -3692,12 +4017,12 @@ see Love,16 section "Rich visualization and reporting of results"
 
 [[file:~/Box%20Sync/library/Fonseca,14%20RNA%20seq%20gene%20profiling%20a%20systematic%20empirical%20comparison.PDF][Fonseca,14 RNA seq gene profiling a systematic empirical comparison]]
 [[file:~/Box%20Sync/library/Sigurgeirsson,14%20Analysis%20of%20stranded%20information%20using%20an%20automated%20procedure%20for%20strand%20specific%20RNA%20sequencing.pdf][Sigurgeirsson,14 Analysis of stranded information using an automated procedure for strand specific RNA sequencing]]
-******** cell enumeration through bulk RNA-seq
+***** cell enumeration through bulk RNA-seq
 :PROPERTIES:
 :CREATED:  [2020-08-05 Wed 08:36]
 :ID:       1a1d5b73-8070-402a-9f26-e147d66ca081
 :END:
-********* CIBERSORTx
+****** CIBERSORTx
 :PROPERTIES:
 :ID:       bb55c105-5977-4a01-802e-4bc1838f58bb
 :END:
@@ -3709,7 +4034,7 @@ https://www.biostars.org/p/428905/
   - [[mu4e:msgid:BYAPR02MB5592ACF7A79C1137A6F0A974B77B0@BYAPR02MB5592.namprd02.prod.outlook.com][Re: cibersortx from docker]]
   - docker pull lyronctk/cibersortxfractions
 - have access token for docker: https://cibersortx.stanford.edu/getoken.php
-******* Co-expression 
+**** Co-expression 
 :PROPERTIES:
 :ID:       91d46e60-eec3-48c7-97f1-b53eb1559b3f
 :END:
@@ -3717,12 +4042,11 @@ https://www.biostars.org/p/428905/
 CLOCK: [2021-07-29 Thu 12:04]--[2021-07-29 Thu 12:24] =>  0:20
 CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :END:
-https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rfea/rfea/
 https://bioinformaticsbreakdown.com/how-to-gsea/
 https://metascape.org/gp/index.html#/main/step1
 https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
-******** General reference
+***** General reference
 :PROPERTIES:
 :ID:       98048a64-6bd5-4107-ab7e-573b57758f12
 :END:
@@ -3737,7 +4061,7 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 - https://www.sciencedirect.com/science/article/pii/S0022519314001969?via%3Dihub
 - cite:creixell2015 
 - cite:rahmatallah2016
-******** Methods and associated tools 
+***** Methods and associated tools 
 :PROPERTIES:
 :ID:       d11cda99-d3a3-4549-a828-d065c6979c5d
 :END:
@@ -3838,7 +4162,7 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
   #
   lnames
     #+end_src
-******** Co-expression visualizations
+***** Co-expression visualizations
 :PROPERTIES:
 :ID:       fe3baa6c-d28e-48c4-91b1-0539e01a4cb1
 :END:
@@ -3857,12 +4181,12 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 - https://github.com/PathwayCommons/chibe
 - https://github.com/Adrienrougny/sbgntikz/
 
-******** Ideas
+***** Ideas
 :PROPERTIES:
 :ID:       a04c9e3a-8dd1-427d-a9cd-72aa7caf7ca5
 :END:
 - molecular disease signatures
-******* Spatial transcriptomics
+**** Spatial transcriptomics
 :PROPERTIES:
 :ID:       053daf71-9f9f-4b5e-b400-222c4d24afea
 :END:
@@ -3872,643 +4196,229 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgxwLtGthWWRrdltpWVLTXhQKnZDs
 http://labs.pathology.jhu.edu/halushka/science/
 https://science.sciencemag.org/content/360/6389/660
 - https://support.10xgenomics.com/spatial-gene-expression/sequencing/doc/specifications-sequencing-requirements-for-visium-spatial-gene-expression
-******* Reference
+**** Reference
 :PROPERTIES:
 :ID:       45a1d8fe-cdfb-4dce-8cf7-c7325c83e2d3
 :END:
 - http://gepia.cancer-pku.cn/
-****** Sequence similarity and patterns
+*** Epigenetics
 :PROPERTIES:
-:ID:       508ac0df-9d93-4455-a451-cb876f83498d
+:CREATED:  [2019-10-30 Wed 10:52]
+:ID:       079e398f-e3b0-49c4-92da-9b4f6a73684c
 :END:
-- https://www.nature.com/articles/nature12477
-
-****** Sequence variation and variant calling
+https://www.illumina.com/destination/epigenetics-webinar-series.html
+- methylation
+  - https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/medip-seq-dip-seq.html
+  - cite:shen2018
+- epigenetics
+    - ATAC-seq for chromatin accessiblity
+    - ChIP-seq
+    - differential peak analysis-
+      - epigen-specific tools DiffBind, MAnorm
+      - uses RNA-seq tools for differential expression 
+    - peak-calling: identifying enriched signal from ATAC-seq and ChIP-seq, see cite:liu2019a ref 40
+      - MACS/MACS2
+      - measures of signal-to-noise by ENCODE
+        - FRiP fraction of reads in peaks
+        - cross-correlation profiles
+    - methylation profiling
+      - BSmooth
+      - Merman
+      - single cell
+        - Minifi
+      - bisulfite- unmethylated cytosines converted to uralcil, uracil converted to thyamine during amp- ratio T to C
+      - methylcap-seq
+      - differential peak
+        - DiffBind
+        - MAnorm
+        - DBChIP
+        - DAStk
+      - Minfi
+      - BSmooth
+      - methylKit
+      - mehtySig
+      - metilene
+**** ATAC-seq
 :PROPERTIES:
-:ID:       57E81A44-3233-479B-8264-2CD5F1904A60
+:ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
 :END:
 :LOGBOOK:
-CLOCK: [2020-07-07 Tue 12:17]--[2020-07-07 Tue 12:52] =>  0:35
-CLOCK: [2019-04-26 Fri 11:28]--[2019-04-26 Fri 11:44] =>  0:16
-CLOCK: [2019-04-26 Fri 11:03]--[2019-04-26 Fri 11:13] =>  0:10
-CLOCK: [2019-04-26 Fri 10:43]--[2019-04-26 Fri 10:57] =>  0:14
+CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 :END:
-- https://pubmed.ncbi.nlm.nih.gov/33580225/
-- https://www.nature.com/articles/s41598-020-60559-5c
-- https://github.com/nickhir/GermlineMutationCalling
-- cite:kocakavuk2021 
-- https://www.bioconductor.org/packages/devel/bioc/vignettes/TCGAbiolinks/inst/doc/index.html
-- https://github.com/raerose01/deconstructSigs
-- https://github.com/google/deepvariant 
-- variant calling
-  - fusion
-    - - https://www.biorxiv.org/content/biorxiv/early/2019/01/16/521039.full.pdf
-- cite:kulkarni2014 
-- [ ] cite:leonard2016 chapter 60 
-- https://www.broadinstitute.org/partnerships/education/broade/best-practices-variant-calling-gatk-1
-- BreakDancer
-  - cite:chen2009
-  - [[http://gmt.genome.wustl.edu/packages/breakdancer/][MGI website]]
-  - cite:chen2009
-- by input
-  - wgs
-    - [[http://zzz.bwh.harvard.edu/plink/profile.shtml#dose][plink]]
-- by variant class
-  - structural 
-  - indel
-  - SNP / SNV
-    - cite:nielsen2011 
-  - cna
-    - - for CNV method see prichard paper- cite:armenia2018
-    - [ ] ("copy number variation" OR "copy number alteration") AND (ctDNA or "circulating tumor DNA" ) SEARCH TERMS ([[https://www.ncbi.nlm.nih.gov/pubmed/?term=(%22copy+number+variation%22+OR+%22copy+number+alteration%22)+AND+(ctDNA+or+%22circulating+tumor+DNA%22+)][PubMed]]) 21 hits on 2019-04-17
-      - https://www.ncbi.nlm.nih.gov/pubmed/30371735       
-      - irrelevant
-        - AR-specific gain https://www.ncbi.nlm.nih.gov/pubmed/27191887
-        - CTCs https://www.pnas.org/content/110/52/21083.long
-        - mlpa https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5593570/
-        - https://www.ncbi.nlm.nih.gov/pubmed/28448765
-        - partek software w/ normalizer pop https://febs.onlinelibrary.wiley.com/doi/full/10.1002/1878-0261.12077
-        - ddpcr https://www.ncbi.nlm.nih.gov/pubmed/29717451
-        - uses guardant CNA https://ascopubs.org/doi/full/10.1200/JCO.18.00328?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%3dpubmed
-        - https://www.liebertpub.com/doi/full/10.1089/dna.2017.4112?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub%3Dpubmed&
-        - heme malig https://www.ncbi.nlm.nih.gov/pubmed/30371735
-        - casadio- uses MLPA
-    - comparitor
-      - single normal
-      - none- assumed 0 across bins
-      - copycat uses paired tumor/normal PER sample 
-    - tools
-      - https://cnvkit.readthedocs.io/en/stable/pipeline.html#reference
-        - cite:talevich2016 
-        - cite:mansukhani2018
-        - cite:mayrhofer2018
-        - https://www.biostars.org/p/265951/
-      - used in cite:quigley2018
-        - https://github.com/chrisamiller/copyCat/commits?author=chrisamiller
-        - canvas
-          - https://github.com/Illumina/canvas
-          - https://academic.oup.com/bioinformatics/article/32/15/2375/1743834
-        - circular binary segmentation? 
-      - other 
-        - https://github.com/bcbio/bcbio-nextgen/issues/2254
-        - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5870863/pdf/btx284.pdf
-        - https://academic.oup.com/bioinformatics/article/30/17/i639/201399
-        - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0617-1
-        - EXCAVATOR2- https://www.ncbi.nlm.nih.gov/pubmed/27507884
-    - seq - depth? cite:mansukhani2018
-    - cite:rieber2017
-    - cite:miller2011a
-- [[https://gatkforums.broadinstitute.org/gatk/discussion/39/variant-quality-score-recalibration][gatk: variant quality score recalibration]]
-- http://www.nature.com/nrg/journal/v12/n6/full/nrg2986.html
-- Splice site prediction
-  - cite:jian2014
-- Variant Effect Predictor (VEP)
-  - [[https://useast.ensembl.org/info/docs/tools/vep/index.html][website]]
-  - cite:mclaren2016
-******* By variant type
-:PROPERTIES:
-:ID:       ad551ebe-d082-4dc7-bbcd-5b921c143168
-:END:
-******* By sequencing modality
-:PROPERTIES:
-:ID:       55cd7600-4999-453f-8d50-4d76558055fc
-:END:
-- wes
-  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2928-9
-******* structural variation 
-:PROPERTIES:
-:ID:       0f679231-b782-4001-b7c3-91ec3a8816d2
-:END:
-https://www.nature.com/articles/s41598-020-71168-7
-******** sv
-:PROPERTIES:
-:CREATED:  [2019-08-15 Thu 15:43]
-:ID:       5ff1bbbb-3471-4f2a-b9eb-43b293eee807
-:END:
-:LOGBOOK:
-CLOCK: [2019-10-11 Fri 11:03]--[2019-10-11 Fri 11:38] =>  0:35
-CLOCK: [2019-10-10 Thu 17:16]--[2019-10-10 Thu 18:16] =>  1:00
-CLOCK: [2019-10-10 Thu 15:53]--[2019-10-10 Thu 16:54] =>  1:01
-CLOCK: [2019-10-07 Mon 17:34]--[2019-10-07 Mon 17:43] =>  0:09
-:END:
-[[file:~/repos/sv/sv.org]]
-[[file:~/repos/sv/Dockerfile]]
-- sv
-  - https://github.com/stat-lab/EvalSVcallers/tree/master/scripts
-  - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1720-5
-- [-] build docker image into fat bioinformatics-toolkit container 
-- [ ] build slim docker image 
-- reference
-  - [[~/repos/.emacs.d/snippets/org-mode/biopipe][YAS]] 
-  - [[id:333E498B-E0EA-460C-95EC-1931ACE19473][mod]]
-    - attributes
-      | isa | module                     |
-      | isa | work module                |
-      | isa | engineering module         |
-      | isa | code module                |
-      | isa | process development module |
-  - principles and philosophy
-    - antifragility
-    - minimization
-    - transparency
-    - reproducibility
-    - efficiency
-    - ?intpretabilty? - code logging, etc 
-  - best practices
-    - each tool install as standalone
-    - Version control - git / github
-    - File organization
-      - https://libraries.mit.edu/data-management/
-      - See [[file:~/maintenance.org::Information Maintenance][information maintenance]] Organization -> File tree structure
-    - https://github.com/kylelobo/The-Documentation-Compendium/
-    - http://www.broadinstitute.org/gatk/guide/best-practices
-      best practices include recording everything
-      record of all commands
-      record of all software versions
-      see Emacs, rpubs.com, sessionInfo and knitR
-    - [[http://www.nature.com/sdata/for-authors/submission-guidelines][Nature data submission guidelines]]
-    - https://kieranhealy.org/resources/
-    - http://kieranhealy.org/files/misc/workflow-apps.pdf
-    - see Anders,13
-    - no docker in docker for dev- confuses vols, etc. instead add emacs to each container and have local repos of .emacs and org
-    - prefer binaries over source- only real advantage to source is custom build
-  - stack
-    - [[id:c28ef36f-5b5c-4789-90da-270e56fc4898][ubuntu]]
-    - [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][git and github]]
-    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
-      - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]] 
-        - dockerfile - include current build status in comments
-        - sequencing dockerfile repos
-          - https://github.com/broadinstitte/gtex-pipeline.git
-          - https://hub.docker.com/u/mgibio/
-          - https://hub.docker.com/u/biocontainers
-    - nextflow
-      - https://www.youtube.com/watch?v=jsxTC8pNPUc&t=579s
-      - https://github.com/cbcrg/lncrna-annotation-nf
-      - https://www.nextflow.io/example1.html
-      - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
-      - commands
-        |----------+---------|
-        | function | command |
-        |----------+---------|
-        | <35>     | <35>    |
-        |          |         |
-      - processes
-      - documentation
-    - compendia
-      - [[file:~/Box%20Sync/org/compend.org::*UNIX][UNIX]]
-      - [[file:~/.emacs.d/settings.org::*Emacs][Emacs]]
-      - git
-    - set alias https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
-    - https://github.com/cbcrg/lncrna-annotation-nf
-    - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
-    - https://github.com/bioinformatics-core-shared-training/docker-4-bioinformatics
-    - https://gatkforums.broadinstitute.org/firecloud/discussion/6886/guidelines-for-working-with-docker-images-and-dockerfiles-broadies-only
-    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker]]
-      - https://www.boynux.com/containers-fat-thin/
-  - examples 
-    - https://wiki.cyverse.org/wiki/display/TUT/Biocontainers+for+the+Discovery+Environment
-    - https://blog.bananacoding.com/2016/08/29/how-to-build-bioinformatic-tools-image-for-docker/#.XSvInN-YW02
-  - package managers
-    - bioconda-
-      - EZ to add to dockerfile,
-      - source difficult to understand, but can see sh and yaml- e.g. https://github.com/bioconda/bioconda-recipes/tree/master/recipes/samtools
-      - https://www.nature.com/articles/s41592-018-0046-7
-  - modules
-  - https://www.reddit.com/r/bioinformatics/comments/d260ok/no_your_ten_rules_arent_simple_and_they_wont_fix/
-  - [X] module instance startup- upon initial entry into work heading of a module
-    - identify and invoke most specific applicable module 
-    - invoke module hierarchy
-  - [X] setup repository artifact
-    - github and local 
-    - Dockerfile
-    - org file 
-  - https://pmbio.org/module-05-somatic/0005/03/02/Somatic_SV_FilteringAnnotationReview/
-- ideas
-  - module improvement
-    - work module
-      - focus on minimal work to closeout this objective
-        - move unnecessary work to ideas
-  - https://nextflow-io.github.io/nf-hack18/training.html
-  - Consider more emacs shell work: 
-  - add to gatk docker
-    - https://hub.docker.com/u/broadinstitute
-    - https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_cancer_m2_MuTect2.php
-  - optimization
-    - Lock pipe
-    - [[https://www.biostars.org/p/241437/][bioinformatics software distribution]] 
-  - extend    
-  - [ ] information management- see cite:griffith2015b           
-    - https://github.com/genome/gms
-  - https://stackoverflow.com/questions/31578446/running-a-script-inside-a-docker-container-using-shell-script
-  - https://software.broadinstitute.org/gatk/documentation/article?id=11101
-- [ ] closeout
-  - [ ] update mod- consolidate and functionalize common tasks
-  - [ ] export
-
-
-:PROPERTIES:
-:ID:       2D39899E-F415-4B16-B5ED-4A36465F4CB4
-:END:
-https://lbgi.fr/AnnotSV/
-- cite:kumar2016
-  [[http://svviz.readthedocs.io/en/latest/install.html][documentation]]
-  [[http://breakdancer.sourceforge.net/][Breakdancer]]
-
-******** Fusion Proteins
-:PROPERTIES:
-:ID:       C3E4A442-77C6-4A0C-8A9A-3FAA04DAF632
-:END:
-
-- [ ] cite:newman2014a 
-http://ignyta.com/providers/dx-molecular-diagnostic-cancer-testing/
-- cite:beadling16_multip_amplic_approac_detec_gene
-- cite:zhao2014detecting
-- cite:zheng2013oncogenic
-- cite:bunting2013end
-- cite:maher2009transcriptome
-- cite:scolnick2015efficient
-
-
-- cite:kumar2016comparative
-- cite:korla2015fare
-- cite:wang2015fusioncancer
-- cite:webster2015mining
-- cite:pekar2015fluorescence
-- cite:alves14_next_gener_sequen_reveal_novel
-- cite:qadir2014childseq
-- cite:greaves14_janet_rowley
-- cite:heydt2014comparison
-- cite:yoshihara2014landscape
-
-- cite:smallridge2013rna
-
-- cite:duncavage2012targeted
-- cite:edgren2011identification
-
-
-
-- [[file:~/Box%20Sync/clin_research/fishseq/Fusion_Gene_Detection.pdf][Partek fusion detection book]]
-
-********* Low Yield
-:PROPERTIES:
-:ID:       65A89F9B-9FCE-420F-906A-BD7EC0C23919
-:END:
-
-- cite:wheeler2013human
-- cite:wilhelm2009rna
-- purple book
-
-********* Alignment
-:PROPERTIES:
-:ID:       CDEC529A-B11D-4890-B75D-9B9470D8F856
-:END:
-
-cite:williams2014rna
-
-https://www.biostars.org/p/45986/#144082
-[[https://www.biostars.org/p/158039/][visualization tools]]
-[[https://sourceforge.net/p/samtools/mailman/message/30210230/][Dobin on SAM handling of chimerica alignment]]
-https://igor.sbgenomics.com/public/pipelines/540dd2fad79f00766c174eb0/
-
-cite:yoshihara2014landscape
-
-cite:dobin12_star
-
-********** Aligners, unranked
-:PROPERTIES:
-:ID:       5DE5AD4D-7634-46D7-86F4-6111B2A3A3B5
-:END:
-
-  - [[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3691734/][FusionQ, 2013]] https://sites.google.com/site/fusionq1/home/
-  - [[http://genome.cshlp.org/content/early/2015/11/10/gr.186114.114?top=1][using both DNA and RNA-seq]]
-  - [[https://github.com/ndaniel/fusioncatcher/blob/master/doc/manual.md#2---hardware-requirements-and-dependencies][FusionCatcher]]
-  - [[https://github.com/Oshlack/JAFFA/wiki][JAFFA]]
-  - SOAPfuse
-    - https://www.biostars.org/p/144077/
-    - vs star https://www.biostars.org/p/171531/#171544
-
-    comparisons
-    cite:kumar2016comparative
-
-*********** Chimerascan
-:PROPERTIES:
-:ID:       A6FFE9F2-4004-429D-8057-30D663E4069C
-:END:
-
-https://code.google.com/archive/p/chimerascan/wikis/Installation.wiki
-
-*********** Ericscript
-:PROPERTIES:
-:ID:       5B8010B9-93DB-4CC2-9321-210E7CB045F8
-:END:
-
-    - NOTE- the ericscript samtools version wasn't going b/c I was asking for samtools, not ./samtools !
-      - [[https://sites.google.com/site/bioericscript/home][website]]
-      - [[https://groups.google.com/forum/#!forum/ericscript][google group]]
-      - 
-        cite:Benelli01122012
-
-********* Reviews
-:PROPERTIES:
-:ID:       EE65AF13-DB95-4F64-8640-4FC890197DCD
-:END:
-
-cite:Latysheva02062016
-cite:stransky2014landscape
-
-
-
-
-http://bib.oxfordjournals.org/content/early/2012/08/09/bib.bbs044.short?rss=1
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3595110/
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3713712/
-https://nar.oxfordjournals.org/content/early/2015/11/17/nar.gkv1234.full
-
-********** Clinical
-:PROPERTIES:
-:ID:       9D02E90C-AE0B-4805-8F78-7FF6787B4606
-:END:
-
-cite:maher2009transcriptome
-
-cite:mitelman2007impact
-
-cite:lieber2016mechanisms
-
-********* Human Pathological Translocations
-:PROPERTIES:
-:ID:       92C7145A-9535-4E74-B4FF-88A90EE6A78F
-:END:
-
-cite:lipson2012identification 
-
-cite:bunting2013end
-
-cite:zheng2013oncogenic
-
-cite:greaves14_janet_rowley
-
-cite:wheeler2013human
-
-********* [[Clinical Fusion Protein Databases]]
-:PROPERTIES:
-:ID:       4AE77A12-C491-4590-9F8B-6C6EC4077242
-:END:
-
-********* Clinical RNA-seq Assays to Detect Fusion Proteins
-:PROPERTIES:
-:ID:       9786E312-B8BC-4F14-BAF2-C9B682703FB7
-:END:
-
-cite:beadling16_multip_amplic_approac_detec_gene
-
-cite:qadir2014childseq
-
-
-cite:scolnick2015efficient
-
-********** Specific Cancers
-:PROPERTIES:
-:ID:       E44CCF9D-6D9A-4F01-B90F-929D038CF4F4
-:END:
-
-cite:alves2015next
-
-cite:smallridge2013rna
-
-cite:edgren2011identification
-
-cite:pekar2015fluorescence
-
-cite:duncavage2012targeted
-
-********* [[FISH]]
-:PROPERTIES:
-:ID:       F54BB35F-3BAA-4AA9-928C-18FAB543D7C6
-:END:
-
-
-********* Post-Alignment Analysis Programs
-:PROPERTIES:
-:ID:       EC14669D-1B71-45FD-9D4D-62E405CE6917
-:END:
-
-https://rdrr.io/bioc/chimera/man/starReads.html
-http://www.bioconductor.org/packages/release/bioc/vignettes/chimera/inst/doc/chimera.pdf
-https://github.com/STAR-Fusion/STAR-Fusion/wiki
-
-cite:chimera_r
-
-******* Variant Calling
-:PROPERTIES:
-:ID:       E3637686-6560-4088-9784-0A601F39C34D
-:END:
-- tumor evolution
-  - fishplot https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-016-3195-z
-- incidental acquired variant detection in germline https://www.nature.com/articles/s41436-021-01138-5?proof=t+target%3D#Sec3
-- clonal evolution- https://cancerdiscovery.aacrjournals.org/content/8/11/1390.long
-- HRDtools for homologous recombination index 
-  - https://github.com/eyzhao/hrdtools
-- cite:ainscough2018  
-- - cite:barnell2018  
-- [[https://software.broadinstitute.org/gatk/best-practices/bp_3step.php?case=GermShortWGS][GATK Best Practices Germline SNP and Indel]]
-- [[http://www.htslib.org/workflow/][WGS/WES Mapping to Variant Calls - Version 1.0]]
-- [[https://software.broadinstitute.org/gatk/documentation/tooldocs/org_broadinstitute_gatk_tools_walkers_genotyper_UnifiedGenotyper.php][Broad UnifiedGenotyper]]
-- [[https://software.broadinstitute.org/gatk/documentation/article?id=3238][Broad best practices DNAseq variant]]
-- cite:vcf
-http://swog.org/Visitors/Fall13GpMtg/plenary/03-Corless-SWOG-Genomics-TM-ver1.pdf
-
-******** GATK Tool Set
-:PROPERTIES:
-:ID:       B4100085-BD16-442F-9AB8-586241CD897A
-:END:
-
-********* GATK UnifiedGenotyper
-:PROPERTIES:
-:ID:       0D7356A4-E139-4BDF-BD6B-4170C15531F9
-:END:
-
-- one of several GATK variant discovery tools 
-
-********* DONE Setup GATK
-CLOSED: [2016-12-05 Mon 14:22]
-:PROPERTIES:
-:ID:       E38AAAE9-DB89-42C8-9CE3-C18003F720D3
-:END:
-
-- resuem here https://software.broadinstitute.org/gatk/documentation/quickstart.php
-
-- [[https://software.broadinstitute.org/gatk/documentation/quickstart.php][Getting Started]]
-  - "Unlike C-compiled programs such as Samtools, GATK cannot simply be added to your PATH, so we recommend setting up an environment variable to act as a shortcut."
-
-******* sequence variation
-:PROPERTIES:
-:ID:       ec437673-e697-4c0d-a65f-46aec2641ed2
-:END:
-- https://ai.googleblog.com/2020/09/improving-accuracy-of-genomic-analysis.html?m=1
-******** variant calling
-:PROPERTIES:
-:ID:       743b5990-53e6-4cce-8adc-a9d766d1c5e2
-:END:
-********* SCNA variants 
-:PROPERTIES:
-:ID:       179ce37c-f8cf-44b3-872b-e32677bcb49c
-:END:
-- SCNAs
-  - https://pmbio.org/module-05-somatic/0005/04/02/Somatic_CNV_FilteringAnnotationReview/
-  - https://www.annualreviews.org/doi/full/10.1146/annurev-genom-082410-101404?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub%3Dpubmed
-  - cite:quigley2018
-  - https://bioconductor.org/packages/release/bioc/html/DNAcopy.html
-  - cite:talevich2016
-  - [[file:~/repos/copy-number/]]
-  - [[file:~/repos/copy-number/copy-number.org]]
-  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-S11-S1
-  - https://www.youtube.com/watch?v=m9XPWJrMThY&t=8s
-  - https://deeptools.readthedocs.io/en/latest/content/installation.html
-  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5737511/
-- WGS callers
-  - https://github.com/GavinHaLab
-******* copy-number                                                 :biopipe:
+- https://www.sciencedirect.com/science/article/pii/S0888754321001531?via%3Dihub
+- https://www.sciencedirect.com/science/article/pii/S1535610817302040?via%3Dihub
+- https://www.nature.com/articles/nbt.1630
+- cite:sun2019atac
+- https://www.annualreviews.org/doi/10.1146/annurev-genom-090413-025448#_i21
+- https://support.bioconductor.org/p/61604/
+- https://tobiasrausch.com/courses/atac/atac-seq-data-analysis.html
+- https://nf-co.re/atacseq/1.1.0/output
+- https://www.rna.uzh.ch/dam/jcr:87c1ca13-58e5-4be8-82cc-e7807809b63e/20180522_CMueller.pdf
+- https://training.galaxyproject.org/training-material/topics/epigenetics/tutorials/atac-seq/tutorial.html
+- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1642-2
+- https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
+- [[https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sid=1b5013f3a0a4db522d602fa164281aa0&sot=a&sdt=a&cluster=scopubyr%2c%222021%22%2ct%2c%222020%22%2ct%2c%222019%22%2ct%2c%222018%22%2ct%2c%222017%22%2ct%2c%222016%22%2ct&sl=262&s=TITLE-ABS-KEY%28atac-seq%29+AND+NOT+TITLE-ABS-KEY%28chip%29+AND+NOT+DOI%2810.1016%2fj.cell.2017.12.014%29+AND+NOT+DOI%2810.1016%2fj.molmet.2016.01.002%29+AND+NOT+DOI%2810.1038%2fnature23283%29+AND+NOT+DOI%2810.1038%2fnature18606%29+AND+NOT+TITLE-ABS-KEY%28single-cell%29+AND+NOT+TITLE-ABS-KEY%28Hi-C%29&origin=searchadvanced&editSaveSearch=&txGid=38c8cceffee3c655f632c5736cf123cd][top atac-seq cites w/ good methods writeup]]
+  - https://www.pnas.org/content/114/13/E2776
+  - https://science.sciencemag.org/content/sci/suppl/2018/10/24/362.6413.eaav1898.DC1/aav1898_Corces_SM.pdf
+  - https://ars.els-cdn.com/content/image/1-s2.0-S1074761316304393-mmc1.pdf
+- QC
+  - [[id:a5b73c70-3f1f-4018-92b2-bfdcaed53cf5][ATACseqQC]]
+    - 
+- Encode
+  - https://github.com/kundajelab/atac_dnase_pipelines/issues/143
+  - https://www.encodeproject.org/data-standards/reference-sequences/
+  - https://www.encodeproject.org/search/?type=Pipeline&accession=ENCPL787FUN&accession=ENCPL344QWT
+- Design
+  - Read length
+    - https://www.biostars.org/p/418363/
+- Method-establishing papers
+  - cite:buenrostro2013
+  - cite:buenrostro2015
+- Bench
+  - cite:corces2017 
+  - cite:buenrostro2015
+  - cite:buenrostro2015
+  - for tissue
+    - cite:corces2017 
+- Bioinformatics
+  - General method guides    
+    - cite:yan2020atac
+    - cite:corces2017 
+    - [[https://informatics.fas.harvard.edu/atac-seq-guidelines.html][Harvard FAS]]
+    - ENCODE pipeline
+      - https://docs.google.com/document/d/1f0Cm4vRyDQDu0bMehHD7P7KOMxTOP-HiNoIvL1VcBt8/edit
+      - https://github.com/ENCODE-DCC/atac-seq-pipeline
+      - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5170597/
+    - [[https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&nlo=&nlr=&nls=&sid=e3c13d36864e217e2edcf12df7a64b0a&sot=b&sdt=b&sl=59&s=%28TITLE-ABS-KEY%28atac-seq%29+AND+TITLE-ABS-KEY%28bioinformatics%29%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist][scopus atac-seq bioinformatics (42)]]
+    - https://github.com/reskejak/ATAC-seq
+    - https://snakepipes.readthedocs.io/en/latest/content/workflows/ATAC-seq.html
+    - https://bcbio-nextgen.readthedocs.io/en/latest/contents/atac.html
+    - https://rockefelleruniversity.github.io/RU_ATAC_Workshop.html
+    - https://www.illumina.com/techniques/popular-applications/epigenetics/atac-seq-chromatin-accessibility.html
+    - http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/ATACseqQCWorkshop__ATACseqQC_workshop/
+  - Alignment parameters
+    - https://www.nature.com/articles/ng.3844#Sec14https://www.sciencedirect.com/science/article/pii/S1074761316304393?via%3Dihub#mmc1
+    - https://www.pnas.org/content/114/13/E2776
+    - https://informatics.fas.harvard.edu/atac-seq-guidelines.html#alignments
+    - https://ars.els-cdn.com/content/image/1-s2.0-S1074761316304393-mmc1.pdf
+  - QC
+    - https://www.cell.com/cell-systems/pdfExtended/S2405-4712(20)30079-X
+    - https://bioconductor.org/packages/release/bioc/vignettes/ATACseqQC/inst/doc/ATACseqQC.html
+    - https://bioconductor.org/packages/release/bioc/html/soGGi.html
+  - Differential accessibility
+    - Homer
+      - http://homer.ucsd.edu/homer/ngs/mergePeaks.html
+    - Diffbind
+      - https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/software/diffbind-tool-for-chip-seq-and-atac-seq-analysis
+      - https://bioinformatics-core-shared-training.github.io/Quantitative-ChIPseq-Workshop/articles/Quantitative-ChIPseq-Workshop.html#loading-an-experiment-into-diffbind-1
+    - csaw
+      - http://bioconductor.org/books/3.14/csawBook/counting-reads-into-windows.html#
+      - https://www.biostars.org/p/320394/
+    - https://rdrr.io/bioc/DiffBind/f/inst/doc/DiffBind.pdf
+    - https://bioconductor.org/packages/release/bioc/vignettes/DiffBind/inst/doc/DiffBind.pdf
+  - Transcription factor binding sites- cite:li2019atac
+  - Integration
+    - atac-seq and mirna-seq https://www.sciencedirect.com/science/article/pii/S193459091730320X?via%3Dihub
+    - ATAC-seq and miRNA-seq cite:abernathy2017 
+  - cite:reske2020 
+  - https://bioconductor.org/packages/release/BiocViews.html#___ATACSeq
+  - https://github.com/nf-core/atacseq/blob/master/main.nf
+  - homer
+    - some basic homer commands
+      To identify Tn5 hypersensitive sites (THSs), peak calling was performed by findPeak in HOMER software (v4.9) with “-localSize 50000 -size 100 -minDist 50 -fragLength 0 -o auto.” ΔTHS score was calculated with all pairwise comparison of ESC, hCO and hMGEO by dnase_ddhs_scorer.py script with “-A” option in pyDNase library (v0.2.4) (Figure S2)   
+**** methylation                                                    :biopipe:
 :PROPERTIES:
 :CREATED:  [2019-05-29 Wed 14:46]
-:ID:       0206fb96-8785-47fb-87ca-1f597de0ee85
+:ID:       b8db46d3-8329-4fef-82b1-4d99c2c9312b
 :END:
 :LOGBOOK:
-CLOCK: [2019-10-10 Thu 15:45]--[2019-10-10 Thu 15:53] =>  0:08
-CLOCK: [2019-05-15 Wed 13:09]--[2019-05-15 Wed 13:24] =>  0:15
-CLOCK: [2019-06-25 Tue 07:51]--[2019-06-25 Tue 08:00] =>  0:09
-CLOCK: [2019-06-23 Sun 07:49]--[2019-06-23 Sun 07:53] =>  0:04
-CLOCK: [2019-06-19 Wed 14:28]--[2019-06-19 Wed 14:49] =>  0:21
-CLOCK: [2019-06-19 Wed 12:38]--[2019-06-19 Wed 13:33] =>  0:55
-CLOCK: [2019-06-12 Wed 14:40]--[2019-06-12 Wed 14:58] =>  0:18
-CLOCK: [2019-05-29 Wed 15:23]--[2019-05-29 Wed 15:34] =>  0:11
-CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
+CLOCK: [2019-06-26 Wed 14:06]--[2019-06-26 Wed 14:45] =>  0:39
 :END:
-- https://bioinformaticsdotca.github.io/bicg_2017_module4_lab
-- cite:hehir-kwa2015 
-- https://www.nature.com/scitable/topicpage/copy-number-variation-and-human-disease-741737/
-- https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
-- [[id:8c535c38-9310-4fd0-a8fe-c300639493da][ichorcna]]
-- copy number classifiers
-  - https://www.sciencedirect.com/science/article/pii/S0016508521002778?via%3Dihub
-- https://www.sciencedirect.com/science/article/pii/S1535610818301119?via%3Dihub
-- allele-specific copy number: the number of copies of each inherited allele, allows for the detection of copy-neutral loss of heterozygosity https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5627665/
-- [[https://www.bioconductor.org/packages/devel/bioc/vignettes/TitanCNA/inst/doc/TitanCNA.pdf][see ploidy purity correction math]]
-- [[https://www.biostars.org/p/383522/][good CN,purity,ploid discussion]]
-******* [[id:5738AF1F-8621-40C3-AF80-0C396CDC889B][LINK TO Clinical NGS]]
+cite:giacopelli2021prostate
+- Bisulfite sequencing
+  - methylation protects/blocks cytosine conversion to uracil
+  - PCR amp can produce forward/reverse with and without bisulfite block
+  - BSMAP, Bismark, BWA-meth, biscuit
+  - VCF > bedgraph > bigwig > IGV
+  - metilene segments methylation
+  - visualization
+    - heatmap
+    - canyon plot- methylation proportion vs distance from target locus
+- cite:liu2020 
+- https://www.nature.com/articles/s41591-020-0933-1
+- https://www.nature.com/articles/nm.4045
+- [[id:6ad7cfcb-1e8b-4d72-b18a-40f80a00f242][nih liq biopsy]] see [2021-01-26 Tue]
+- "All the cell line datasets generated during and/or analysed during the current study are available in the GEO repository under accession code GSE79838. The
+cfMeDIP-seq NGS data for patient samples that support the findings of this study are available upon request from the corresponding author (D.D.C) to comply with
+institutional ethics regulation. Source data for Fig. 1d and e are provided in Supplementary Table 9, and for Figure 1G are provided in Supplementary Table 10.
+Additional source data can be found on Zenodo (Supplementary Table 13)."
+- to add
+  - R
+    - MethylKit
+    - DESeq2
+    - caret
+    - minfi
+    - Rtsne
+  - SAMtools
+  - Bowtie
+  - MEDIPS
+  - BWA
+  - GATK IndelRealigner
+  - MuTect
+  - TrimGalore
+  - Bismark6
+  - Bowtie
+  - 
+- from cite:shen2018
+  - "The generated SAM files from hg19 alignment were converted to BAM format, ensuring the removal of duplicate reads, and the reads were then sorted and indexed using SAMtools21 before subsequent analysis with the R package MEDIPS22. The CpG enrichment score, as a quality control measure for the immunoprecipitation reaction, was calculated as part of the MEDIPS package."
+  - Shell scripts were used to process MeDIP sequencing data to produce RPKM estimates for downstream analysis. Custom R scripts with a collection of R/Bioconductor packages were used to analyse the resulting dataset. The code used for analysis is available in the form of R markdowns deposited onto Zenodo as detailed in Supplementary Table 13.
+  - 
+| Description                                                                                    | Zenodo DOI for Data    | Zenodo DOI for Code    |
+| <25>                                                                                           | <25>                   | <25>                   |
+| IHEC Figure                                                                                    | 10.5281/zenodo.1205714 |                        |
+| Simulations                                                                                    | 10.5281/zenodo.1205730 | 10.5281/zenodo.1205728 |
+| Extended Data Fig. 6 violin plots                                                              | 10.5281/zenodo.1205744 | 10.5281/zenodo.1205735 |
+| Bed file of genomic windows that contain CpGs                                                  | 10.5281/zenodo.1205752 |                        |
+| TCGA and COSMIC tSNEs                                                                          | 10.5281/zenodo.1205754 |                        |
+| Machine learning                                                                               |                        | 10.5281/zenodo.1242697 |
+| Markdown with ensemble of non-machine learning scripts including Extended Data Fig. 6 heatmaps |                        | 10.5281/zenodo.1205756 |
+| Stand alone scripts called by non-machine learning markdown                                    |                        | 10.5281/zenodo.1205746 |
+
+- Open source code/packages used for data analysis: R, SAMtools (v. 1.3.1), Bowtie (v. 0.12.9), MEDIPS (v. 1.22.0), BWA (v. 0.7.1220),
+- Genome Analysis ToolKit (GATK) IndelRealigner, MuTect (v.1.1.5) , Trim Galore! (v. 0.4.4), Bismark (v. 0.10.1), Bowtie2 (v. 2.0.5),
+- MethylKit (v 0.99.2), DESeq2 (v. 1.4.5), caret R package, minfi bioconductor package, Rtsne
+- Commercial software used for data analysis: Microsoft Excel for Mac (v. 16.16.1)
+=======
 :PROPERTIES:
 :ID:       413414a5-651d-4d43-82c8-a6bb13de8ca3
 :END:
-******* DNA break mapping
+**** protein-DNA interactions
 :PROPERTIES:
-:ID:       8a2ff484-d234-48fa-88c9-c4994f2e0d14
+:CREATED:  [2021-01-18 Mon 09:45]
+:ID:       b612a1b1-2c01-49c3-a20c-5a890fa1a6e5
 :END:
-https://febs.onlinelibrary.wiley.com/doi/10.1111/febs.15568
-https://www.nature.com/articles/s41467-019-10332-8#Sec13
-
-****** Analysis of cell-free nucleic acids
+- cut and run - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302505/
+  - cite:bakhoum2021  
+**** transcription factor enrichment
 :PROPERTIES:
-:ID:       906150c9-910e-464c-9d7f-d8608abf6c07
+:ID:       809e1a39-2a8e-46ec-863c-d7b03511fcfb
 :END:
-******* Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
-:PROPERTIES:
-:ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
-:END:
-https://www.nature.com/articles/s41551-021-00837-3
-******** [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling]]
-******** [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
-******** [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
-******** [[*cfDNA methylation][cfDNA methylation]]
-******** [[*cfDNA fragmentomics][cfDNA fragmentomics]]
-******** [[*cfDNA small variant calling][cfDNA small variant calling]]
-******** Tumor-informed methods
-- phylogenic for cancer evolution cite:abbosh2017 
-******** WGS cfDNA methods
-- https://www.biorxiv.org/content/10.1101/2022.01.17.476508v1.full.pdf
-- cite:zviran2020
-******** cfDNA and ctDNA-specific visualizations
-  - cite:moding2020 
-  - cite:everett2020
-  - - https://d0dd8a80-1a24-4cc5-a00a-3f42615181d7.filesusr.com/ugd/ad98ab_846561db683443d3af0664c558849464.pdf
-
-******** cfDNA from nonterminal mouse blood draws
-  - https://www.frontiersin.org/articles/10.3389/fgene.2018.00006/full#T3
-  - https://www.nature.com/articles/cr2017121.pdf?origin=ppub
-  - https://clincancerres.aacrjournals.org/content/23/20/6305?ijkey=46368653e37c96739922e66f2f6ae51379b550f3&keytype2=tf_ipsecsha
-******** General reference
-- https://www.mdpi.com/2072-6694/13/14/3460/htm
-- https://www.nature.com/articles/s41416-021-01696-0
-- https://royalsocietypublishing.org/doi/10.1098/rsob.200119
-- cfDNA datasets-  https://generegulation.org/cfdna/
-- see  [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDNNMGQwVvHMjSKjBHhrkMLrS][jake's ulpwgs cfdna preprocessing]]
-- cite:heberts2021
-******* cfRNA
-:PROPERTIES:
-:ID:       f4d64349-0202-41e5-9143-39de3dd63d90
-:END:
-cite:rozowsky2019
-https://www.nature.com/articles/d41586-021-03801-y
-https://mail.google.com/mail/u/0/#inbox/FMfcgzGlksDcrLMrdlPVPsVnzpdCNTsx
- [[#larson2021][larson2021]]
-https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
-****** Allele-specific expression
-:PROPERTIES:
-:ID:       a52b4ca3-c3ca-4aec-b68a-01c1de39fc8a
-:END:
-
-- https://github.com/secastel/allelecounter
-- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0762-6#Sec11
-****** Alternative splicing
-:PROPERTIES:
-:ID:       eba855e5-ce0e-4318-894d-4942f7e2fe45
-:END:
-- w/ RNA-seq via splAdder
-  - https://github.com/ratschlab/spladder
-  - https://academic.oup.com/bioinformatics/article/32/12/1840/1744052?login=true
-***** Single-cell methods
-:PROPERTIES:
-:ID:       2597b54c-972a-43c3-9630-0e542ba90eeb
-:END:
-- https://www.sciencedirect.com/science/article/pii/S1097276516301861?via%3Dihub
-**** Database downloads
-- https://www.google.com/search?q=download+genbank+fasta 
-**** Common bioinformatics file manipulation
-:PROPERTIES:
-:ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
-:END:
-- https://bioinf.shenwei.me/seqkit/usage/#pair
-- Subsetting and splitting 
-  - Fastas
-    - https://www.biostars.org/p/13270/
-  - Fastqs
-    - [[Question: Selecting Random Pairs From Fastq?]]  
-    - [[https://www.biostars.org/p/6544/][look at all the ways to split a fastq file!]]
-  - Bams
-    - https://www.google.com/search?q=subset+bam+file
-    - samtools view -bo subset.bam -s 123.4 alignments.bam chr1 chr2
-- https://www.google.com/search?q=annotate+bed+file+with+gene+names 
-- https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
-- [[https://www.biostars.org/p/68283/][count total length of regions in bed file]]
-- https://gatkforums.broadinstitute.org/gatk/discussion/6484/how-to-generate-an-unmapped-bam-from-fastq-or-aligned-bam
-- https://www.biostars.org/p/247903/
-- https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
-- [[https://github.com/lh3/seqtk][seqtk]] 
-- https://gist.github.com/davfre/8596159
-**** QC 
-***** [[*Batch effect][Batch effect]]
-**** Cytometry
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4009616/
+- https://science.sciencemag.org/content/352/6288/aad3018
+- motif-based- high false pos
+- benchtop with ChIP-seq 
+*** Cytometry
 :PROPERTIES:
 :ID:       b7b36cba-0d4d-41b0-ae5d-79b0f0f67d2e
 :END:
-***** CyTOF
+**** CyTOF
 :PROPERTIES:
 :ID:       881d23a0-c943-47ac-9bf5-ef965f8a80e3
 :END:
 - CATALYST
   - https://www.bioconductor.org/packages/release/bioc/html/CATALYST.html
   - https://www.bioconductor.org/packages/release/bioc/vignettes/CATALYST/inst/doc/differential.html
-**** immunoprofiling
+*** immunoprofiling
 :PROPERTIES:
 :ID:       7bb87c84-6b06-44ef-9a1d-1bb9b9e57295
 :END:
@@ -4517,7 +4427,7 @@ https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
   - [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
 - cite:saloura2019 
 - https://en.wikipedia.org/wiki/Immunological_Genome_Project#Gene-expression_compendium
-***** immunoprofiling/ immunophenotyping, cell type ennumeriation with rnaseq
+**** immunoprofiling/ immunophenotyping, cell type ennumeriation with rnaseq
 :PROPERTIES:
 :CREATED:  [2019-10-03 Thu 10:22]
 :ID:       e07fee1b-d7fd-42ce-9639-ff803cfc9c8e
@@ -4562,7 +4472,7 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - cell type enumeration with RNA-seq
   - https://www.nature.com/articles/s41586-019-1773-3
 
-****** immunoprofiling / immunophenotyping
+***** immunoprofiling / immunophenotyping
 :PROPERTIES:
 :CREATED:  [2019-10-30 Wed 10:52]
 :ID:       a143e3d0-35b3-4579-8831-9710791e0a6a
@@ -4570,7 +4480,7 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - cite:liu2019a
 - cite:papalexi2018 - immune cell heterogeneity by scRNAseq  
 
-**** Proteomics
+*** Proteomics
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
 :END:
@@ -4615,7 +4525,7 @@ Mass Spectrometry
     - Perseus
       - https://link.springer.com/protocol/10.1007/978-1-4939-7493-1_7
       - http://coxdocs.org/doku.php?id=perseus:start
-***** SOMAscan
+**** SOMAscan
 :PROPERTIES:
 :ID:       89b4ec6d-992d-4551-81da-19011597732a
 :END:
@@ -4636,7 +4546,7 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 - https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd
 - https://www.sciencedirect.com/science/article/pii/S1874391916304006
 - For protein, SOMAscan has a higher dynamic range and lower limit of detection than comparable Luminex antibody-based assays (cite doi.org/10.1038/s41591-019-0665-2). Moreover, SOMAscan includes targets such as Jagged-1 and -2 not available for multiplexed antibody assays.
-**** Metabolomics
+*** Metabolomics
 :PROPERTIES:
 :CREATED:  [2020-10-08 Thu 09:15]
 :ID:       fce92cb5-cf68-4944-b2f4-eff55996ec5f
@@ -4644,7 +4554,12 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 https://www.sciencedirect.com/science/article/pii/S1097276515003032
 https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 - http://www.visantnet.org/visantnet.html
-**** Systems biology
+*** Single-cell methods
+:PROPERTIES:
+:ID:       2597b54c-972a-43c3-9630-0e542ba90eeb
+:END:
+- https://www.sciencedirect.com/science/article/pii/S1097276516301861?via%3Dihub
+*** Systems biology
 :PROPERTIES:
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
 :END:
@@ -4690,11 +4605,11 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 - Kitano H (2002) Systems biology: A brief overview. Science 295: 1662–1664.
 - Ehrenberg M, Elf J, Aurell E, Sandberg R, Tegner J (2003) Systems biology is taking off. Genome Res 13: 2377–2380.
 - http://www.springer.com/us/book/9780387989921
-***** LINK TO [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][Co-expression]]
+**** LINK TO [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][Co-expression]]
 :PROPERTIES:
 :ID:       632d1c7d-aecc-4ad5-85ad-0f26571e454d
 :END:
-***** [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
+**** [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
 :PROPERTIES:
 :ID:       34a99004-090f-44c6-a721-f5f1054e5b1f
 :END:
@@ -4711,7 +4626,10 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
         - roemer2016.pdf
         - fribbens2016.pdf
         - rizvi2018.pdf
-**** Omics integration
+- REMARK biomarker guidelines
+  - https://ascopubs.org/doi/full/10.1200/jco.2005.04.3778
+  - https://ascopubs.org/doi/full/10.1200/jco.2004.01.0454
+*** Omics integration
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
 :END:
@@ -4737,7 +4655,10 @@ https://www.nature.com/articles/d41586-021-01994-w
 - cite:wu2019
 - https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
 
-**** Bioinformatics visualization 
+*** Machine learning in genomics and bioinformatics
+https://www.nature.com/articles/s41568-021-00408-3
+https://www.nature.com/articles/s41576-021-00434-9
+*** Bioinformatics visualization 
 :PROPERTIES:
 :ID:       DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
 :END:
@@ -4768,19 +4689,18 @@ CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
     - https://cmdcolin.github.io/awesome-genome-visualization/
   - https://bioinfogp.cnb.csic.es/tools/venny/
 
-***** Heatmaps
+**** Heatmaps
 :PROPERTIES:
 :ID:       a259c668-737b-4ca3-9994-a9ce8afa01db
 :END:
-- https://slowkow.com/notes/pheatmap-tutorial/#quantile-breaks
-- https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
+https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
 - https://slowkow.com/notes/pheatmap-tutorial/
 - heatmaps
   - https://www.biostars.org/p/287512/
   - https://support.bioconductor.org/p/93424/
 - https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
 - cite:lucas2020 fig3c
-***** <<<Integrated Genomics Viewer>>> (<<<IGV>>>)
+**** <<<Integrated Genomics Viewer>>> (<<<IGV>>>)
 :PROPERTIES:
 :ID:       917062AC-32E8-41F5-A511-84AA7B1504B0
 :END:
@@ -4836,8 +4756,7 @@ cite:consortium2020
 - see mirbase in [[id:FCBA0863-010A-448C-A33C-941D2AA45AD5][databases, data sets, and database browsers]]
 - Human miRNA tissue atlas
   - cite:fehlmann2016
-  - https://ccb-web.cs.uni-saarland.de/tissueatlas/
-*** Adapter sequences
+  - https://ccb-web.cs.uni-saarland.de/tissueatlas/*** Adapter sequences
 :PROPERTIES:
 :ID:       cf2ea58e-8751-4d90-ab08-a63445925c89
 :END:
@@ -4996,7 +4915,6 @@ cite:consortium2020
 :PROPERTIES:
 :ID:       333ebad6-9ed4-4d5b-a50e-f9fe9a8c3a92
 :END:
-https://www.nature.com/articles/s41598-020-72664-6
 - https://github.com/czbiohub/tabula-muris
 - [[http://firebrowse.org/?cohort=ACC&download_dialog=true][firehose]]
 - [[https://gtexportal.org/home/datasets][GTEx]]
@@ -5433,12 +5351,6 @@ CLOCK: [2021-09-13 Mon 07:27]--[2021-09-13 Mon 07:46] =>  0:19
 | tophat2        |                   |           |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                        |
 | tximport       |                   |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
 | WGCNA          |                   |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] |                        |
-**** preseq :biotool:
-:PROPERTIES:
-:ID:       6d8cbcc0-2651-4c51-991e-639dbc81ea66
-:END:
-- http://smithlabresearch.org/manuals/preseqmanual.pdf
-- library complexity- preseqr http://smithlabresearch.org/manuals/preseqmanual.pdf
 **** ATACseqQC                                                      :biotool:
 :PROPERTIES:
 :ID:       a5b73c70-3f1f-4018-92b2-bfdcaed53cf5
@@ -5591,13 +5503,13 @@ cnvkit.py batch /duo4/mpnst/downsample-bam/pn*.sorted.bam /duo4/mpnst/downsample
 :LOGBOOK:
 CLOCK: [2021-01-26 Tue 11:53]--[2021-01-26 Tue 13:00] =>  1:07
 :END:
-- [[https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html][documentation]]
-- Processes
-  - reset design https://support.bioconductor.org/p/9135927/
-  - Subset https://www.google.com/search?q=subset+deseqdataset
-    - https://www.biostars.org/p/442188/
-- Notes
-  - a negative binomial GLM 
+- DESeq2 methods writeup
+  - LRT is evaluated akin to ANOVA with Wald tests serving as post-hoc significance of specific group comparisons. 
+- design
+  - https://support.bioconductor.org/p/110163/
+  - handling nested designs https://support.bioconductor.org/p/64480/
+- a negative binomial GLM 
+- [[file:~/Box%20Sync/library/Love,16%20DESeq2%20manual.pdf][documentation]]
 - vignettes
   - [[https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#exploratory-analysis-and-visualization][gene workflow 19]]
   - [[http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#using-parallelization][package vignette]]
@@ -5611,13 +5523,6 @@ CLOCK: [2021-01-26 Tue 11:53]--[2021-01-26 Tue 13:00] =>  1:07
   | featureCounts     | Rsubread          | R         | matrix               | DESeqDataSetFromMatrix   |
   | tximport          | tximport          | R         | list of matrices     | DESeqDataSetFromTximport |
   | htseq-count       | HTSeq             | Python    | files                | DESeqDataSetFromHTSeq    |
-- Statistical design
-  - https://support.bioconductor.org/p/110163/
-  - handling nested designs https://support.bioconductor.org/p/64480/
-  - LRT
-    - https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
-  - Methods writeup
-    - LRT is evaluated akin to ANOVA with Wald tests serving as post-hoc significance of specific group comparisons. 
 ***** Examples- see [[file:~/Box%20Sync/comp_bio/deseq2_template/][deseq2_template]] 
 :PROPERTIES:
 :ID:       5C8E2A3B-2C16-4FB3-9F86-5A1D8AD4802F
@@ -6154,8 +6059,11 @@ CLOCK: [2020-11-17 Tue 09:56]--[2020-11-17 Tue 12:07] =>  2:11
 CLOCK: [2020-10-26 Mon 13:01]--[2020-10-26 Mon 13:55] =>  0:54
 CLOCK: [2020-10-26 Mon 12:09]--[2020-10-26 Mon 12:59] =>  0:50
 :END:
-- https://bioinformatics.stackexchange.com/questions/13443/ranking-metric-in-gsea
-- https://www.biostars.org/p/375584/
+- https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideFrame.html
+- https://academic.oup.com/bib/article/22/1/545/5722384#225532980
+- https://bioconductor.org/packages/3.14/bioc/html/EnrichmentBrowser.html
+- http://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideFrame.html?_Interpreting_GSEA_Results
+- https://bioconductor.org/packages/devel/bioc/vignettes/EnrichmentBrowser/inst/doc/EnrichmentBrowser.pdf
 - https://www.nature.com/articles/s41598-019-46059-1
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6607905/
 - leading edge https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5066188/
@@ -6363,7 +6271,6 @@ chr1 3120443 3120560 118 3120499 6.00 7.58942 5.43209 5.03290 ct01_aut_blk_ddp_o
 :ID:       066d50fc-5407-4c80-a6ca-2534f37ae043
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
-https://cran.r-project.org/web/packages/TidyMultiqc/index.html
 **** nextflow                                                       :biotool:
 :PROPERTIES:
 :CREATED:  [2019-12-27 Fri 14:48]
@@ -7108,10 +7015,7 @@ Gene set
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
-- https://github.com/genome/bfx-workshop
-- https://www.biostars.org/p/190366/
-- https://wustl.app.box.com/s/00qniw32ng670650r1cz5bljq2uja4q1
-- https://pubmed.ncbi.nlm.nih.gov/34935906/
+https://pubmed.ncbi.nlm.nih.gov/34935906/
 - https://www.cancergenomicscloud.org/
 - https://www.reddit.com/r/bioinformatics/comments/rkqci9/whats_something_cool_and_exiting_going_on_in/
 - https://med.stanford.edu/dbds/education/workshops-in-biostatistics/workshop-archives.html
