@@ -32,6 +32,445 @@ mkdir -p "${repo}/docker"
 :PROPERTIES:
 :ID:       03d2e84c-f016-4e3b-ba9c-9afe7d0656cc
 :END:
+**** R bioinformatics setup
+:PROPERTIES:
+:ID:       87b498a6-e553-4682-8038-96bbb21fda14
+:END:
+#+name: biotools_r_setup
+#+begin_src R :noweb yes
+#
+# Check Packages
+##
+## Bioconductor
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+##
+packages = c(
+  "AnnotationDbi",
+  "biomaRt",
+  "circlize",
+  "ComplexHeatmap",
+  "copynumber",
+  "DESeq2",
+  "DRIMSeq",
+  "edgeR",
+  "fgsea",
+  "gage",
+  "gageData",  
+  "GenomicFeatures",
+  "gplots",
+  "limma",
+  "pathview",
+  "pheatmap",
+  "PoiClaClu",
+  "SummarizedExperiment",
+  "tximport"
+)
+##
+##NOTE requires libcurl4-openssl-dev https://stackoverflow.com/questions/11471690/curl-h-no-such-file-or-directory/11471743
+package.check = lapply(
+  packages,
+  FUN = function(x) {
+    if (!require (x, character.only = T)) {      
+      BiocManager::install(x, quietly =T, ask=F)
+      library(x, character.only = T)
+    }
+  }
+)
+#
+
+#+end_src
+
+#+name: biotools_r_setup_wrapper
+#+begin_src org :noweb yes
+<<biotools_r_setup>>
+#+end_src
+
+**** Biotools bash setup
+:PROPERTIES:
+:ID:       f6594b8e-eb30-4789-b8fe-5baf42b88ac6
+:END:
+#+name: biotools_bash_setup_wrapper
+#+begin_src bash :noweb yes
+<<docker_interactive>>
+
+#+end_src
+**** Setup common reference files
+:PROPERTIES:
+:ID:       813ed980-1c55-44d7-84d8-67afdad2e5bc
+:END:
+  #+name: setup_common_references
+  #+begin_src bash
+#
+# Setup
+/bin/bash
+alias wget_common=wget --noclobber
+refdata=
+#
+# Download reference genomes
+## Human
+### UCSC Hg38
+wget_common https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz -O $refdata/hg38.fa.gz
+### Ensembl
+#### TopLevel
+wget_common ftp://ftp.ensembl.org/pub/release-102/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz -O $refdata/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
+#### Primary assembly
+wget --no-clobber ftp://ftp.ensembl.org/pub/release-102/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz -O $refdata/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+##
+## Rattus norvegicus
+### UCSC
+wget_common ftp://hgdownload.cse.ucsc.edu/goldenPath/rn6/bigZips/rn6.fa.gz -O $refdata/rn6.fa.gz
+### Ensembl
+#### TopLevel
+wget_common ftp://ftp.ensembl.org/pub/release-102/fasta/rattus_norvegicus/dna/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.gz -O $refdata/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.gz
+#### NOTE: No Rattus primary assembly
+#### cDNA
+wget_common ftp://ftp.ensembl.org/pub/release-102/fasta/rattus_norvegicus/cdna/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz -O /home/jeszyman/data/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz
+gunzip /home/jeszyman/data/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz
+#### GTF
+wget_common ftp://ftp.ensembl.org/pub/release-102/gtf/rattus_norvegicus/Rattus_norvegicus.Rnor_6.0.102.gtf.gz -O /home/jeszyman/data/Rattus_norvegicus.Rnor_6.0.102.gtf.gz
+#
+# Unzip
+for file in $refdata/*.fa.gz $refdata/*.gtf.gz;
+do
+    gunzip_common $file
+done
+#
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+# ideas
+#in/out from csv
+# get readmes
+#########1#########2#########3#########4#########5#########6#########7#########8
+#+end_src
+** Processes
+:PROPERTIES:
+:CREATED:  [2020-04-23 Thu 08:54]
+:ID:       eaac4fb0-ebc3-43c3-9b27-d0633f728fc9
+:END:
+:LOGBOOK:
+CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
+:END:
+*** Flat list
+**** Nucleic acid sequence alignment
+:PROPERTIES:
+:ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
+:END:
+https://www.biostars.org/p/342482/
+
+https://mail.google.com/mail/u/0/#inbox/FMfcgzGmvfcqZVjmjRkGBncgDNclkfTm
+
+https://www.biostars.org/p/388935/
+
+https://www.illumina.com/science/genomics-research/articles/dragen-demystifying-reference-genomes.html
+
+https://gatk.broadinstitute.org/hc/en-us/articles/360041155232-Reference-Genome-Components
+
+73. Li,H. and Homer,N. (2010) A survey of sequence alignment
+algorithms for next-generation sequencing. Brief. Bioinform., 11,
+473–483.
+174. Bao,S., Jiang,R., Kwan,W., Wang,B., Ma,X. and Song,Y.-Q. (2011)
+Evaluation of next-generation sequencing software in mapping and
+assembly. J. Hum. Genet., 56, 406–414.
+
+- hash table like BLAST or suffic/prefix like Burrows-Wheeler Transform
+- https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
+- prerequisites
+  - adaptor identification and trimming
+- pseudoaligner
+  - kallisto
+  - Salmon
+- Aligners
+  - TopHat2
+  - Specialized aligners
+    - Fusions
+      - TopHat Fusion
+        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html 
+      - STAR for chimeric reads / STAR-Fusion
+        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
+        - From cite:star_2.5_dobin Chapter 5
+        - From cite:dobin2015mapping Alternate Protocol 6
+          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
+        - additional outputs are
+          - Chimeric.out.sam
+          - Chimeric.out.junction- a STAR-specific format
+    - To transcriptome
+      - 
+  - [[*STAR][STAR]]
+- HISAT2
+***** Mappability 
+:PROPERTIES:
+:ID:       347d4cc0-a25d-4636-96d4-65e6319022df
+:END:
+- http://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig
+- cite:derrien2012
+**** Copy-neutral loss of heterozygosity
+https://www.biostars.org/p/254848/#:~:text=%22The%20B%2DAllele%20Frequency%20is,alleles%20(e.g.%20AB).%22
+**** ATAC-seq
+:PROPERTIES:
+:ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
+:END:
+:LOGBOOK:
+CLOCK: [2022-03-24 Thu 13:30]--[2022-03-24 Thu 14:17] =>  0:47
+CLOCK: [2022-03-24 Thu 11:43]--[2022-03-24 Thu 11:57] =>  0:14
+CLOCK: [2022-03-24 Thu 10:55]--[2022-03-24 Thu 11:03] =>  0:08
+CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
+:END:
+***** Experimental Design
+- Read length
+  - https://www.biostars.org/p/418363/
+***** Bench DNA prep
+- cite:corces2017 
+- cite:buenrostro2015
+- cite:buenrostro2015
+- for tissue
+  - cite:corces2017 
+***** Bioinformatics
+- QC
+  - [[id:a5b73c70-3f1f-4018-92b2-bfdcaed53cf5][ATACseqQC]]
+  - QC
+    - https://www.cell.com/cell-systems/pdfExtended/S2405-4712(20)30079-X
+    - https://bioconductor.org/packages/release/bioc/vignettes/ATACseqQC/inst/doc/ATACseqQC.html
+    - https://bioconductor.org/packages/release/bioc/html/soGGi.html
+- Alignment parameters
+  - https://www.nature.com/articles/ng.3844#Sec14https://www.sciencedirect.com/science/article/pii/S1074761316304393?via%3Dihub#mmc1
+  - https://www.pnas.org/content/114/13/E2776
+  - https://informatics.fas.harvard.edu/atac-seq-guidelines.html#alignments
+  - https://ars.els-cdn.com/content/image/1-s2.0-S1074761316304393-mmc1.pdf
+- Peak calling
+  - homer
+    - some basic homer commands
+      To identify Tn5 hypersensitive sites (THSs), peak calling was performed by findPeak in HOMER software (v4.9) with “-localSize 50000 -size 100 -minDist 50 -fragLength 0 -o auto.” ΔTHS score was calculated with all pairwise comparison of ESC, hCO and hMGEO by dnase_ddhs_scorer.py script with “-A” option in pyDNase library (v0.2.4) (Figure S2)   
+- Differential chromatin accessibility
+  - cite:gontarz2020
+  - https://support.bioconductor.org/p/61604/
+  - cite:reske2020 
+  - Differential accessibility
+    - Homer
+      - http://homer.ucsd.edu/homer/ngs/mergePeaks.html
+    - Diffbind
+      - https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/software/diffbind-tool-for-chip-seq-and-atac-seq-analysis
+      - https://bioinformatics-core-shared-training.github.io/Quantitative-ChIPseq-Workshop/articles/Quantitative-ChIPseq-Workshop.html#loading-an-experiment-into-diffbind-1
+    - csaw
+      - http://bioconductor.org/books/3.14/csawBook/counting-reads-into-windows.html#
+      - https://www.biostars.org/p/320394/
+    - https://rdrr.io/bioc/DiffBind/f/inst/doc/DiffBind.pdf
+    - https://bioconductor.org/packages/release/bioc/vignettes/DiffBind/inst/doc/DiffBind.pdf
+- Motif analysis
+  - cite:minnoye2021
+  - homer
+    - https://www.biostars.org/p/493498/
+  - https://rockefelleruniversity.github.io/RU_ATACseq/
+    - https://rockefelleruniversity.github.io/RU_ATACseq/presentations/singlepage/RU_ATAC_part3.html
+  - cite:yan2020atac
+  - https://ccg.epfl.ch/pwmtools/pwmscan.php
+  - https://meme-suite.org/meme/
+  - example of homer-jaspar method https://www.sciencedirect.com/science/article/pii/S1535610817302040?via%3Dihub
+  - cite:sun2019atac
+- Integration
+  - atac-seq and mirna-seq https://www.sciencedirect.com/science/article/pii/S193459091730320X?via%3Dihub
+  - ATAC-seq and miRNA-seq cite:abernathy2017 
+- Visualizations
+  - global accessibility change
+    - cite:wang2018amd fig2b
+  - accessibility difference at gene
+    - cite:wang2018amd fig2a
+  - peak heatmaps
+    - cite:wang2018amd fig1c
+- General reference
+  - https://tobiasrausch.com/courses/atac/atac-seq-data-analysis.html#data-exploration
+  - https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
+  - https://rockefelleruniversity.github.io/RU_ATACseq/
+  - cite:sun2019atac  
+  - https://tobiasrausch.com/courses/atac/atac-seq-data-analysis.html
+  - https://nf-co.re/atacseq/1.1.0/output
+  - [[id:585e27b3-3c79-46d5-aeab-9430251d4318][ENCODE]]
+  - See for T5 shift visualization https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1642-2#Sec13
+  - https://training.galaxyproject.org/training-material/topics/epigenetics/tutorials/atac-seq/tutorial.html
+  - https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
+  - General method guides    
+    - cite:yan2020atac
+    - cite:corces2017 
+    - [[https://informatics.fas.harvard.edu/atac-seq-guidelines.html][Harvard FAS]]
+    - ENCODE pipeline
+      - https://docs.google.com/document/d/1f0Cm4vRyDQDu0bMehHD7P7KOMxTOP-HiNoIvL1VcBt8/edit
+      - https://github.com/ENCODE-DCC/atac-seq-pipeline
+      - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5170597/
+    - [[https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&nlo=&nlr=&nls=&sid=e3c13d36864e217e2edcf12df7a64b0a&sot=b&sdt=b&sl=59&s=%28TITLE-ABS-KEY%28atac-seq%29+AND+TITLE-ABS-KEY%28bioinformatics%29%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist][scopus atac-seq bioinformatics (42)]]
+    - https://github.com/reskejak/ATAC-seq
+    - https://snakepipes.readthedocs.io/en/latest/content/workflows/ATAC-seq.html
+    - https://bcbio-nextgen.readthedocs.io/en/latest/contents/atac.html
+    - https://rockefelleruniversity.github.io/RU_ATAC_Workshop.html
+    - https://www.illumina.com/techniques/popular-applications/epigenetics/atac-seq-chromatin-accessibility.html
+    - http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/ATACseqQCWorkshop__ATACseqQC_workshop/
+    - cite:minnoye2021
+  - https://github.com/nf-core/atacseq/blob/master/main.nf
+  - https://bioconductor.org/packages/release/BiocViews.html#___ATACSeq
+***** General reference
+- cite:sun2019atac  
+- cite:minnoye2021  
+- Method-establishing papers
+  - cite:buenrostro2013
+  - cite:buenrostro2015
+- Encode
+  - https://github.com/kundajelab/atac_dnase_pipelines/issues/143
+  - https://www.encodeproject.org/data-standards/reference-sequences/
+  - https://www.encodeproject.org/search/?type=Pipeline&accession=ENCPL787FUN&accession=ENCPL344QWT
+- [[https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sid=1b5013f3a0a4db522d602fa164281aa0&sot=a&sdt=a&cluster=scopubyr%2c%222021%22%2ct%2c%222020%22%2ct%2c%222019%22%2ct%2c%222018%22%2ct%2c%222017%22%2ct%2c%222016%22%2ct&sl=262&s=TITLE-ABS-KEY%28atac-seq%29+AND+NOT+TITLE-ABS-KEY%28chip%29+AND+NOT+DOI%2810.1016%2fj.cell.2017.12.014%29+AND+NOT+DOI%2810.1016%2fj.molmet.2016.01.002%29+AND+NOT+DOI%2810.1038%2fnature23283%29+AND+NOT+DOI%2810.1038%2fnature18606%29+AND+NOT+TITLE-ABS-KEY%28single-cell%29+AND+NOT+TITLE-ABS-KEY%28Hi-C%29&origin=searchadvanced&editSaveSearch=&txGid=38c8cceffee3c655f632c5736cf123cd][top atac-seq cites w/ good methods writeup]]
+  - https://www.pnas.org/content/114/13/E2776
+  - https://science.sciencemag.org/content/sci/suppl/2018/10/24/362.6413.eaav1898.DC1/aav1898_Corces_SM.pdf
+  - https://ars.els-cdn.com/content/image/1-s2.0-S1074761316304393-mmc1.pdf
+- https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/atac-seq.html
+**** Pathway encoding and diagramming
+:PROPERTIES:
+:ID:       d84cf649-32f4-46e6-b041-4a8a76b31ffc
+:END:
+:LOGBOOK:
+CLOCK: [2022-02-22 Tue 10:11]--[2022-02-22 Tue 11:59] =>  1:48
+CLOCK: [2022-02-22 Tue 08:00]--[2022-02-22 Tue 09:45] =>  1:45
+:END:
+- https://www.nature.com/articles/nrg3885
+- SBGN
+  - https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005740
+  - https://sbgn.github.io/
+  - https://www.cls.uni-konstanz.de/software/vanted/
+- https://new.wikipathways.org/academy/
+- https://github.com/gladstone-institutes/Bioinformatics-Workshops/wiki/Introduction-to-Pathway-Modeling
+- 25 years of pathways
+  - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02181-2#:~:text=In%20the%20end%2C%2065k%20pathway,in%20WikiPathways%20or%20Reactome%20databases.
+  - https://gladstone-bioinformatics.shinyapps.io/shiny-25years/
+- [[id:784895e5-0c94-4458-9cfb-f52759718ab3][NDEx]]
+- cite:wikipathways
+- [[id:69bfa728-e149-4b8a-9863-347630f86bc4][wikipathways biotool]]
+- [[id:17c865dc-765c-496d-b5c7-60d3d3439de3][pathvisio biotool]]
+**** Transcription factor binding site prediciton 
+https://www.nature.com/articles/s41592-019-0511-y
+**** cdDNA 5' motif analysis 
+:PROPERTIES:
+:ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
+:END:
+- [[file:~/data/career/golkaram2022.pdf]]
+**** cfDNA window protection score
+:PROPERTIES:
+:ID:       2b5a4f91-873a-4c79-a265-f528c52f06bc
+:END:
+- [[file:~/data/career/golkaram2022.pdf]]
+**** cfDNA tissue of origin discovery
+:PROPERTIES:
+:ID:       47c4ed56-1dea-48dc-bb25-ddbb0a4cd359
+:END:
+- https://www.frontiersin.org/articles/10.3389/fgene.2021.671057/full
+- https://onlinelibrary.wiley.com/doi/10.1002/ctm2.177
+- https://insight.jci.org/articles/view/153559#SEC4
+**** cfDNA small variant calling
+- PhasED-seq- https://www.nature.com/articles/s41587-021-00981-w
+  - - phased seq https://www.sciencedirect.com/science/article/pii/S2666634021003202
+- cite:cohen2021
+- cfDNA and ctDNA sequence variant calling
+  - cite:razavi2019
+  - cite:chabon2020
+    - https://www.theguardian.com/society/2020/mar/25/ai-program-could-check-blood-for-signs-of-lung-cancer
+  - tumor mutational burden
+    - https://ascopubs.org/doi/full/10.1200/PO.19.00204
+**** cfDNA fragmentomics
+:LOGBOOK:
+CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
+:END:
+- http://m.genome.cshlp.org/content/early/2021/12/20/gr.275691.121.full.pdf#page=1&view=FitH
+- fragments for open chromatin and tissue of origin
+- footprinting
+  - https://www.nature.com/articles/s41523-021-00237-5
+  - for nucleosome footprinting cite:snyder2016
+- fragment size
+  - https://www.nature.com/articles/s41586-020-2140-0
+  - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
+- DELFI (DNA evaluation of fragments for early interception)
+  - short-to-long ratio by genomic bin cite:mathios2021
+    - https://github.com/cancer-genomics/reproduce_lucas_wflow
+  - cite:cristiano2019 Delphi
+  - https://github.com/Cancer-Genomics/delfi_scripts
+- cite:mouliere2018
+  - cite:mouliere2018a
+- cite:chabon2020 - per individual mutant molecules- see "ctDNA fragment size analysis", R zoo for sliding window, relative enrichment per frag size   
+- cite:peneder2021     
+  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
+**** cfDNA methylation
+- [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
+- cfDNA methylation
+  - cite:liu2020
+    - https://www.dana-farber.org/newsroom/news-releases/2020/new-blood-test-can-detect-wide-range-of-cancers--now-available-to-at-risk-individuals-in-clinical-study-at-dana-farber/ 
+  - ct methylation
+    - cite:widschwendter2017
+    - cite:xu2017a
+    - cite:heitzer2017
+  - cite:guo2017
+  - meth for early detection
+    - https://www.biorxiv.org/content/10.1101/422675v1
+    - https://www.pnas.org/content/113/16/4338.long
+    - https://www.nature.com/articles/cr2017106
+- https://www.jci.org/articles/view/145973
+**** cfDNA copy number calling
+:PROPERTIES:
+:ID:       21d876e8-8646-4773-91c1-c4385c3218c7
+:END:
+- https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-020-00735-4#Sec12
+- snv based with ABSOLUTE https://www.nature.com/articles/nbt.2203#Sec12
+  - https://bioconductor.org/packages/devel/bioc/vignettes/PureCN/inst/doc/PureCN.pdf
+- post-CN call processessing and denoising
+  - cite:zviran2020
+- BIC-seq
+  - cite:zviran2020
+- Proprietary method
+  - cite:chen2019cna
+- CNVkit on duplex hybrid capture reads
+  - cite:mansukhani2018
+- optimal read pre-processing for cfDNA CNV
+  - cite:molparia2018
+- arm-level by z-score
+  - cite:xu2018crc
+- review articles
+  - cite:cristofanilli2017
+    - (p. 119)"In addition, although copy number assessments can be challenging in ptDNA, there are studies that suggest that this is feasible. For example, HER2 amplification for breast and possibly other cancers may one day be assayed through the use of blood [49],"
+    - (p. 119)"Wyatt et  al. serially profiled ptDNA in men with castration-resistant metastatic prostate cancer to assess for copy number and mutations in androgen receptor (AR) along with targeted sequencing of 19 genes through subsequent therapies [51]."
+  - cite:huang2019 
+- simulation and power calculation 
+  - cite:molparia2017 
+- GISTIC2
+  - cite:bujak2020
+  - cite:hemming2019 
+- ichorCNA
+  - cite:hemming2019 
+  - ichorCNA on off-target reads - cite:shah2021
+  - Other papers applying ichorCNA
+    - cite:bujak2020
+    - cite:ge2020
+      - tumor vs cfDNA CN see cite:ge2020 fig2C
+    - cite:stover2018 
+    - cite:adalsteinsson2017
+    - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
+- instability score
+  - cite:li2017a  
+  - cite:feng2020 
+- by PCR
+  - https://www.pnas.org/content/117/9/4858
+**** cfDNA nucleosome profiling
+:PROPERTIES:
+:ID:       c4dde8d6-1a02-42c7-a6b6-786b757fcad1
+:END:
+- inferred gene expression
+  - cite:ulz2016
+- https://github.com/alexcpan/Griffin
+- nucleosome profiling with griffin 
+  - https://github.com/adoebley/Griffin/wiki
+  - https://www.medrxiv.org/content/10.1101/2021.08.31.21262867v1.full-text
+  - https://github.com/alexcpan/Griffin
+**** Fusion calling
+- https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-021-08094-z
+**** Assess library complexity
+[[id:6d8cbcc0-2651-4c51-991e-639dbc81ea66][preseq]]
+**** Batch effect
+- batch effect https://evayiwenwang.github.io/Managing_batch_effects/detect.html
+https://www.reddit.com/r/bioinformatics/comments/s3twgh/working_with_batch_effects/
 **** Biotools docker 
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
@@ -39,23 +478,33 @@ mkdir -p "${repo}/docker"
 :LOGBOOK:
 CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
 :END:
-***** Write [[file:docker/biotools_Dockerfile]]
+***** [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
+***** Write [[file:docker/biotools_Dockerfile][dockerfile]]
 :PROPERTIES:
 :ID:       400562f2-e750-46b3-98ef-84ea59d447c9
 :END:
 :LOGBOOK:
+<<<<<<< HEAD
+<<<<<<< HEAD
+CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:19] =>  1:00
+=======
+=======
 CLOCK: [2022-01-04 Tue 09:15]--[2022-01-04 Tue 09:16] =>  0:01
+>>>>>>> c7cf2572c54fd42def640fdf5cb9c8b5c6722ee9
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
+>>>>>>> 881cc173bd0cb9c758b9417edcb1cfb47a45d75a
 :END:
 #+begin_src bash :tangle ./docker/biotools_Dockerfile
 FROM jeszyman/basecamp
 #########1#########2#########3#########4#########5#########6#########7#########8
 
-###################################################################
-###################################################################
-###   Dockerfile to build a basic bioinformatics docker image   ###
-###################################################################
-###################################################################
+################################################################################
+################################################################################
+###                                                                          ###
+###         Dockerfile to build a basic bioinformatics docker image          ###
+###                                                                          ###
+################################################################################
+################################################################################
 
 #############
 ### Notes ###
@@ -70,6 +519,12 @@ FROM jeszyman/basecamp
 ###########
 ### APT ###
 ###########
+
+# Most apt managed installs occured in jeszyman/basecamp (the FROM container). 
+# These apt installs are to allow specific function of a few key bioinformatics
+# tools.
+
+RUN apt-get update
 
 # Required for bioconda flexbar
 RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
@@ -96,16 +551,14 @@ RUN conda install -c bioconda cutadapt
 RUN conda install -c bioconda deeptools
 RUN conda install -c bioconda fastp
 RUN conda install -c bioconda fastqc
-RUN conda install -c bioconda flexbar
 RUN conda install -c bioconda gatk
 RUN conda install -c bioconda goleft
 RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda mosdepth
-RUN conda install -c bioconda multiqc
 RUN conda install -c bioconda picard
 RUN conda install -c bioconda preseq
-RUN conda install -c bioconda qualimap
 RUN conda install -c bioconda pysam
+RUN conda install -c bioconda qualimap
 RUN conda install -c bioconda rsem 
 RUN conda install -c bioconda salmon
 RUN conda install -c bioconda sambamba
@@ -126,6 +579,10 @@ RUN conda uninstall r-base
 ###   R Bioconductor   ###
 ##########################
 
+RUN R -e "install.packages('BiocManager', repos='http://cran.rstudio.com/')"
+
+RUN R -e "BiocManager::install(version='3.14', update=TRUE, ask=FALSE)"
+
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
           BiocManager::install(c("BSgenome.Hsapiens.UCSC.hg19", \
@@ -136,6 +593,15 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "Rsamtools", \
                                  "TxDb.Mmusculus.UCSC.mm10.ensGene", \
                                  "tximport"));'
+
+#######################
+### Custom Installs ###
+#######################
+
+RUN pip install multiqc
+
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated \
+    flexbar
 
 #+end_src
 #+begin_src bash :tangle ./docker/biotools_Dockerfile
@@ -790,445 +1256,6 @@ docker_interactive() {
 }
 #+end_src
 
-**** R bioinformatics setup
-:PROPERTIES:
-:ID:       87b498a6-e553-4682-8038-96bbb21fda14
-:END:
-#+name: biotools_r_setup
-#+begin_src R :noweb yes
-#
-# Check Packages
-##
-## Bioconductor
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-##
-packages = c(
-  "AnnotationDbi",
-  "biomaRt",
-  "circlize",
-  "ComplexHeatmap",
-  "copynumber",
-  "DESeq2",
-  "DRIMSeq",
-  "edgeR",
-  "fgsea",
-  "gage",
-  "gageData",  
-  "GenomicFeatures",
-  "gplots",
-  "limma",
-  "pathview",
-  "pheatmap",
-  "PoiClaClu",
-  "SummarizedExperiment",
-  "tximport"
-)
-##
-##NOTE requires libcurl4-openssl-dev https://stackoverflow.com/questions/11471690/curl-h-no-such-file-or-directory/11471743
-package.check = lapply(
-  packages,
-  FUN = function(x) {
-    if (!require (x, character.only = T)) {      
-      BiocManager::install(x, quietly =T, ask=F)
-      library(x, character.only = T)
-    }
-  }
-)
-#
-
-#+end_src
-
-#+name: biotools_r_setup_wrapper
-#+begin_src org :noweb yes
-<<biotools_r_setup>>
-#+end_src
-
-**** Biotools bash setup
-:PROPERTIES:
-:ID:       f6594b8e-eb30-4789-b8fe-5baf42b88ac6
-:END:
-#+name: biotools_bash_setup_wrapper
-#+begin_src bash :noweb yes
-<<docker_interactive>>
-
-#+end_src
-**** Setup common reference files
-:PROPERTIES:
-:ID:       813ed980-1c55-44d7-84d8-67afdad2e5bc
-:END:
-  #+name: setup_common_references
-  #+begin_src bash
-#
-# Setup
-/bin/bash
-alias wget_common=wget --noclobber
-refdata=
-#
-# Download reference genomes
-## Human
-### UCSC Hg38
-wget_common https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz -O $refdata/hg38.fa.gz
-### Ensembl
-#### TopLevel
-wget_common ftp://ftp.ensembl.org/pub/release-102/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz -O $refdata/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
-#### Primary assembly
-wget --no-clobber ftp://ftp.ensembl.org/pub/release-102/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz -O $refdata/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
-##
-## Rattus norvegicus
-### UCSC
-wget_common ftp://hgdownload.cse.ucsc.edu/goldenPath/rn6/bigZips/rn6.fa.gz -O $refdata/rn6.fa.gz
-### Ensembl
-#### TopLevel
-wget_common ftp://ftp.ensembl.org/pub/release-102/fasta/rattus_norvegicus/dna/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.gz -O $refdata/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.gz
-#### NOTE: No Rattus primary assembly
-#### cDNA
-wget_common ftp://ftp.ensembl.org/pub/release-102/fasta/rattus_norvegicus/cdna/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz -O /home/jeszyman/data/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz
-gunzip /home/jeszyman/data/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz
-#### GTF
-wget_common ftp://ftp.ensembl.org/pub/release-102/gtf/rattus_norvegicus/Rattus_norvegicus.Rnor_6.0.102.gtf.gz -O /home/jeszyman/data/Rattus_norvegicus.Rnor_6.0.102.gtf.gz
-#
-# Unzip
-for file in $refdata/*.fa.gz $refdata/*.gtf.gz;
-do
-    gunzip_common $file
-done
-#
-
-#########1#########2#########3#########4#########5#########6#########7#########8
-# ideas
-#in/out from csv
-# get readmes
-#########1#########2#########3#########4#########5#########6#########7#########8
-#+end_src
-** Processes
-:PROPERTIES:
-:CREATED:  [2020-04-23 Thu 08:54]
-:ID:       eaac4fb0-ebc3-43c3-9b27-d0633f728fc9
-:END:
-:LOGBOOK:
-CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
-:END:
-*** Flat list
-**** Nucleic acid sequence alignment
-:PROPERTIES:
-:ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
-:END:
-https://www.biostars.org/p/342482/
-
-https://mail.google.com/mail/u/0/#inbox/FMfcgzGmvfcqZVjmjRkGBncgDNclkfTm
-
-https://www.biostars.org/p/388935/
-
-https://www.illumina.com/science/genomics-research/articles/dragen-demystifying-reference-genomes.html
-
-https://gatk.broadinstitute.org/hc/en-us/articles/360041155232-Reference-Genome-Components
-
-73. Li,H. and Homer,N. (2010) A survey of sequence alignment
-algorithms for next-generation sequencing. Brief. Bioinform., 11,
-473–483.
-174. Bao,S., Jiang,R., Kwan,W., Wang,B., Ma,X. and Song,Y.-Q. (2011)
-Evaluation of next-generation sequencing software in mapping and
-assembly. J. Hum. Genet., 56, 406–414.
-
-- hash table like BLAST or suffic/prefix like Burrows-Wheeler Transform
-- https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
-- prerequisites
-  - adaptor identification and trimming
-- pseudoaligner
-  - kallisto
-  - Salmon
-- Aligners
-  - TopHat2
-  - Specialized aligners
-    - Fusions
-      - TopHat Fusion
-        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html 
-      - STAR for chimeric reads / STAR-Fusion
-        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
-        - From cite:star_2.5_dobin Chapter 5
-        - From cite:dobin2015mapping Alternate Protocol 6
-          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
-        - additional outputs are
-          - Chimeric.out.sam
-          - Chimeric.out.junction- a STAR-specific format
-    - To transcriptome
-      - 
-  - [[*STAR][STAR]]
-- HISAT2
-***** Mappability 
-:PROPERTIES:
-:ID:       347d4cc0-a25d-4636-96d4-65e6319022df
-:END:
-- http://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig
-- cite:derrien2012
-**** Copy-neutral loss of heterozygosity
-https://www.biostars.org/p/254848/#:~:text=%22The%20B%2DAllele%20Frequency%20is,alleles%20(e.g.%20AB).%22
-**** ATAC-seq
-:PROPERTIES:
-:ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
-:END:
-:LOGBOOK:
-CLOCK: [2022-03-24 Thu 13:30]--[2022-03-24 Thu 14:17] =>  0:47
-CLOCK: [2022-03-24 Thu 11:43]--[2022-03-24 Thu 11:57] =>  0:14
-CLOCK: [2022-03-24 Thu 10:55]--[2022-03-24 Thu 11:03] =>  0:08
-CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
-:END:
-***** Experimental Design
-- Read length
-  - https://www.biostars.org/p/418363/
-***** Bench DNA prep
-- cite:corces2017 
-- cite:buenrostro2015
-- cite:buenrostro2015
-- for tissue
-  - cite:corces2017 
-***** Bioinformatics
-- QC
-  - [[id:a5b73c70-3f1f-4018-92b2-bfdcaed53cf5][ATACseqQC]]
-  - QC
-    - https://www.cell.com/cell-systems/pdfExtended/S2405-4712(20)30079-X
-    - https://bioconductor.org/packages/release/bioc/vignettes/ATACseqQC/inst/doc/ATACseqQC.html
-    - https://bioconductor.org/packages/release/bioc/html/soGGi.html
-- Alignment parameters
-  - https://www.nature.com/articles/ng.3844#Sec14https://www.sciencedirect.com/science/article/pii/S1074761316304393?via%3Dihub#mmc1
-  - https://www.pnas.org/content/114/13/E2776
-  - https://informatics.fas.harvard.edu/atac-seq-guidelines.html#alignments
-  - https://ars.els-cdn.com/content/image/1-s2.0-S1074761316304393-mmc1.pdf
-- Peak calling
-  - homer
-    - some basic homer commands
-      To identify Tn5 hypersensitive sites (THSs), peak calling was performed by findPeak in HOMER software (v4.9) with “-localSize 50000 -size 100 -minDist 50 -fragLength 0 -o auto.” ΔTHS score was calculated with all pairwise comparison of ESC, hCO and hMGEO by dnase_ddhs_scorer.py script with “-A” option in pyDNase library (v0.2.4) (Figure S2)   
-- Differential chromatin accessibility
-  - cite:gontarz2020
-  - https://support.bioconductor.org/p/61604/
-  - cite:reske2020 
-  - Differential accessibility
-    - Homer
-      - http://homer.ucsd.edu/homer/ngs/mergePeaks.html
-    - Diffbind
-      - https://www.cruk.cam.ac.uk/core-facilities/bioinformatics-core/software/diffbind-tool-for-chip-seq-and-atac-seq-analysis
-      - https://bioinformatics-core-shared-training.github.io/Quantitative-ChIPseq-Workshop/articles/Quantitative-ChIPseq-Workshop.html#loading-an-experiment-into-diffbind-1
-    - csaw
-      - http://bioconductor.org/books/3.14/csawBook/counting-reads-into-windows.html#
-      - https://www.biostars.org/p/320394/
-    - https://rdrr.io/bioc/DiffBind/f/inst/doc/DiffBind.pdf
-    - https://bioconductor.org/packages/release/bioc/vignettes/DiffBind/inst/doc/DiffBind.pdf
-- Motif analysis
-  - cite:minnoye2021
-  - homer
-    - https://www.biostars.org/p/493498/
-  - https://rockefelleruniversity.github.io/RU_ATACseq/
-    - https://rockefelleruniversity.github.io/RU_ATACseq/presentations/singlepage/RU_ATAC_part3.html
-  - cite:yan2020atac
-  - https://ccg.epfl.ch/pwmtools/pwmscan.php
-  - https://meme-suite.org/meme/
-  - example of homer-jaspar method https://www.sciencedirect.com/science/article/pii/S1535610817302040?via%3Dihub
-  - cite:sun2019atac
-- Integration
-  - atac-seq and mirna-seq https://www.sciencedirect.com/science/article/pii/S193459091730320X?via%3Dihub
-  - ATAC-seq and miRNA-seq cite:abernathy2017 
-- Visualizations
-  - global accessibility change
-    - cite:wang2018amd fig2b
-  - accessibility difference at gene
-    - cite:wang2018amd fig2a
-  - peak heatmaps
-    - cite:wang2018amd fig1c
-- General reference
-  - https://tobiasrausch.com/courses/atac/atac-seq-data-analysis.html#data-exploration
-  - https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
-  - https://rockefelleruniversity.github.io/RU_ATACseq/
-  - cite:sun2019atac  
-  - https://tobiasrausch.com/courses/atac/atac-seq-data-analysis.html
-  - https://nf-co.re/atacseq/1.1.0/output
-  - [[id:585e27b3-3c79-46d5-aeab-9430251d4318][ENCODE]]
-  - See for T5 shift visualization https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1642-2#Sec13
-  - https://training.galaxyproject.org/training-material/topics/epigenetics/tutorials/atac-seq/tutorial.html
-  - https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
-  - General method guides    
-    - cite:yan2020atac
-    - cite:corces2017 
-    - [[https://informatics.fas.harvard.edu/atac-seq-guidelines.html][Harvard FAS]]
-    - ENCODE pipeline
-      - https://docs.google.com/document/d/1f0Cm4vRyDQDu0bMehHD7P7KOMxTOP-HiNoIvL1VcBt8/edit
-      - https://github.com/ENCODE-DCC/atac-seq-pipeline
-      - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5170597/
-    - [[https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&nlo=&nlr=&nls=&sid=e3c13d36864e217e2edcf12df7a64b0a&sot=b&sdt=b&sl=59&s=%28TITLE-ABS-KEY%28atac-seq%29+AND+TITLE-ABS-KEY%28bioinformatics%29%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist][scopus atac-seq bioinformatics (42)]]
-    - https://github.com/reskejak/ATAC-seq
-    - https://snakepipes.readthedocs.io/en/latest/content/workflows/ATAC-seq.html
-    - https://bcbio-nextgen.readthedocs.io/en/latest/contents/atac.html
-    - https://rockefelleruniversity.github.io/RU_ATAC_Workshop.html
-    - https://www.illumina.com/techniques/popular-applications/epigenetics/atac-seq-chromatin-accessibility.html
-    - http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/ATACseqQCWorkshop__ATACseqQC_workshop/
-    - cite:minnoye2021
-  - https://github.com/nf-core/atacseq/blob/master/main.nf
-  - https://bioconductor.org/packages/release/BiocViews.html#___ATACSeq
-***** General reference
-- cite:sun2019atac  
-- cite:minnoye2021  
-- Method-establishing papers
-  - cite:buenrostro2013
-  - cite:buenrostro2015
-- Encode
-  - https://github.com/kundajelab/atac_dnase_pipelines/issues/143
-  - https://www.encodeproject.org/data-standards/reference-sequences/
-  - https://www.encodeproject.org/search/?type=Pipeline&accession=ENCPL787FUN&accession=ENCPL344QWT
-- [[https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sid=1b5013f3a0a4db522d602fa164281aa0&sot=a&sdt=a&cluster=scopubyr%2c%222021%22%2ct%2c%222020%22%2ct%2c%222019%22%2ct%2c%222018%22%2ct%2c%222017%22%2ct%2c%222016%22%2ct&sl=262&s=TITLE-ABS-KEY%28atac-seq%29+AND+NOT+TITLE-ABS-KEY%28chip%29+AND+NOT+DOI%2810.1016%2fj.cell.2017.12.014%29+AND+NOT+DOI%2810.1016%2fj.molmet.2016.01.002%29+AND+NOT+DOI%2810.1038%2fnature23283%29+AND+NOT+DOI%2810.1038%2fnature18606%29+AND+NOT+TITLE-ABS-KEY%28single-cell%29+AND+NOT+TITLE-ABS-KEY%28Hi-C%29&origin=searchadvanced&editSaveSearch=&txGid=38c8cceffee3c655f632c5736cf123cd][top atac-seq cites w/ good methods writeup]]
-  - https://www.pnas.org/content/114/13/E2776
-  - https://science.sciencemag.org/content/sci/suppl/2018/10/24/362.6413.eaav1898.DC1/aav1898_Corces_SM.pdf
-  - https://ars.els-cdn.com/content/image/1-s2.0-S1074761316304393-mmc1.pdf
-- https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/atac-seq.html
-**** Pathway encoding and diagramming
-:PROPERTIES:
-:ID:       d84cf649-32f4-46e6-b041-4a8a76b31ffc
-:END:
-:LOGBOOK:
-CLOCK: [2022-02-22 Tue 10:11]--[2022-02-22 Tue 11:59] =>  1:48
-CLOCK: [2022-02-22 Tue 08:00]--[2022-02-22 Tue 09:45] =>  1:45
-:END:
-- https://www.nature.com/articles/nrg3885
-- SBGN
-  - https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005740
-  - https://sbgn.github.io/
-  - https://www.cls.uni-konstanz.de/software/vanted/
-- https://new.wikipathways.org/academy/
-- https://github.com/gladstone-institutes/Bioinformatics-Workshops/wiki/Introduction-to-Pathway-Modeling
-- 25 years of pathways
-  - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02181-2#:~:text=In%20the%20end%2C%2065k%20pathway,in%20WikiPathways%20or%20Reactome%20databases.
-  - https://gladstone-bioinformatics.shinyapps.io/shiny-25years/
-- [[id:784895e5-0c94-4458-9cfb-f52759718ab3][NDEx]]
-- cite:wikipathways
-- [[id:69bfa728-e149-4b8a-9863-347630f86bc4][wikipathways biotool]]
-- [[id:17c865dc-765c-496d-b5c7-60d3d3439de3][pathvisio biotool]]
-**** Transcription factor binding site prediciton 
-https://www.nature.com/articles/s41592-019-0511-y
-**** cdDNA 5' motif analysis 
-:PROPERTIES:
-:ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
-:END:
-- [[file:~/data/career/golkaram2022.pdf]]
-**** cfDNA window protection score
-:PROPERTIES:
-:ID:       2b5a4f91-873a-4c79-a265-f528c52f06bc
-:END:
-- [[file:~/data/career/golkaram2022.pdf]]
-**** cfDNA tissue of origin discovery
-:PROPERTIES:
-:ID:       47c4ed56-1dea-48dc-bb25-ddbb0a4cd359
-:END:
-- https://www.frontiersin.org/articles/10.3389/fgene.2021.671057/full
-- https://onlinelibrary.wiley.com/doi/10.1002/ctm2.177
-- https://insight.jci.org/articles/view/153559#SEC4
-**** cfDNA small variant calling
-- PhasED-seq- https://www.nature.com/articles/s41587-021-00981-w
-  - - phased seq https://www.sciencedirect.com/science/article/pii/S2666634021003202
-- cite:cohen2021
-- cfDNA and ctDNA sequence variant calling
-  - cite:razavi2019
-  - cite:chabon2020
-    - https://www.theguardian.com/society/2020/mar/25/ai-program-could-check-blood-for-signs-of-lung-cancer
-  - tumor mutational burden
-    - https://ascopubs.org/doi/full/10.1200/PO.19.00204
-**** cfDNA fragmentomics
-:LOGBOOK:
-CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
-:END:
-- http://m.genome.cshlp.org/content/early/2021/12/20/gr.275691.121.full.pdf#page=1&view=FitH
-- fragments for open chromatin and tissue of origin
-- footprinting
-  - https://www.nature.com/articles/s41523-021-00237-5
-  - for nucleosome footprinting cite:snyder2016
-- fragment size
-  - https://www.nature.com/articles/s41586-020-2140-0
-  - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
-- DELFI (DNA evaluation of fragments for early interception)
-  - short-to-long ratio by genomic bin cite:mathios2021
-    - https://github.com/cancer-genomics/reproduce_lucas_wflow
-  - cite:cristiano2019 Delphi
-  - https://github.com/Cancer-Genomics/delfi_scripts
-- cite:mouliere2018
-  - cite:mouliere2018a
-- cite:chabon2020 - per individual mutant molecules- see "ctDNA fragment size analysis", R zoo for sliding window, relative enrichment per frag size   
-- cite:peneder2021     
-  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
-**** cfDNA methylation
-- [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
-- cfDNA methylation
-  - cite:liu2020
-    - https://www.dana-farber.org/newsroom/news-releases/2020/new-blood-test-can-detect-wide-range-of-cancers--now-available-to-at-risk-individuals-in-clinical-study-at-dana-farber/ 
-  - ct methylation
-    - cite:widschwendter2017
-    - cite:xu2017a
-    - cite:heitzer2017
-  - cite:guo2017
-  - meth for early detection
-    - https://www.biorxiv.org/content/10.1101/422675v1
-    - https://www.pnas.org/content/113/16/4338.long
-    - https://www.nature.com/articles/cr2017106
-- https://www.jci.org/articles/view/145973
-**** cfDNA copy number calling
-:PROPERTIES:
-:ID:       21d876e8-8646-4773-91c1-c4385c3218c7
-:END:
-- https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-020-00735-4#Sec12
-- snv based with ABSOLUTE https://www.nature.com/articles/nbt.2203#Sec12
-  - https://bioconductor.org/packages/devel/bioc/vignettes/PureCN/inst/doc/PureCN.pdf
-- post-CN call processessing and denoising
-  - cite:zviran2020
-- BIC-seq
-  - cite:zviran2020
-- Proprietary method
-  - cite:chen2019cna
-- CNVkit on duplex hybrid capture reads
-  - cite:mansukhani2018
-- optimal read pre-processing for cfDNA CNV
-  - cite:molparia2018
-- arm-level by z-score
-  - cite:xu2018crc
-- review articles
-  - cite:cristofanilli2017
-    - (p. 119)"In addition, although copy number assessments can be challenging in ptDNA, there are studies that suggest that this is feasible. For example, HER2 amplification for breast and possibly other cancers may one day be assayed through the use of blood [49],"
-    - (p. 119)"Wyatt et  al. serially profiled ptDNA in men with castration-resistant metastatic prostate cancer to assess for copy number and mutations in androgen receptor (AR) along with targeted sequencing of 19 genes through subsequent therapies [51]."
-  - cite:huang2019 
-- simulation and power calculation 
-  - cite:molparia2017 
-- GISTIC2
-  - cite:bujak2020
-  - cite:hemming2019 
-- ichorCNA
-  - cite:hemming2019 
-  - ichorCNA on off-target reads - cite:shah2021
-  - Other papers applying ichorCNA
-    - cite:bujak2020
-    - cite:ge2020
-      - tumor vs cfDNA CN see cite:ge2020 fig2C
-    - cite:stover2018 
-    - cite:adalsteinsson2017
-    - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
-- instability score
-  - cite:li2017a  
-  - cite:feng2020 
-- by PCR
-  - https://www.pnas.org/content/117/9/4858
-**** cfDNA nucleosome profiling
-:PROPERTIES:
-:ID:       c4dde8d6-1a02-42c7-a6b6-786b757fcad1
-:END:
-- inferred gene expression
-  - cite:ulz2016
-- https://github.com/alexcpan/Griffin
-- nucleosome profiling with griffin 
-  - https://github.com/adoebley/Griffin/wiki
-  - https://www.medrxiv.org/content/10.1101/2021.08.31.21262867v1.full-text
-  - https://github.com/alexcpan/Griffin
-**** Fusion calling
-- https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-021-08094-z
-**** Assess library complexity
-[[id:6d8cbcc0-2651-4c51-991e-639dbc81ea66][preseq]]
-**** Batch effect
-- batch effect https://evayiwenwang.github.io/Managing_batch_effects/detect.html
-https://www.reddit.com/r/bioinformatics/comments/s3twgh/working_with_batch_effects/
 *** Hierarchies
 **** Common bioinformatics file manipulation
 :PROPERTIES:

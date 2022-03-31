@@ -1,11 +1,13 @@
 FROM jeszyman/basecamp
 #########1#########2#########3#########4#########5#########6#########7#########8
 
-###################################################################
-###################################################################
-###   Dockerfile to build a basic bioinformatics docker image   ###
-###################################################################
-###################################################################
+################################################################################
+################################################################################
+###                                                                          ###
+###         Dockerfile to build a basic bioinformatics docker image          ###
+###                                                                          ###
+################################################################################
+################################################################################
 
 #############
 ### Notes ###
@@ -20,6 +22,12 @@ FROM jeszyman/basecamp
 ###########
 ### APT ###
 ###########
+
+# Most apt managed installs occured in jeszyman/basecamp (the FROM container). 
+# These apt installs are to allow specific function of a few key bioinformatics
+# tools.
+
+RUN apt-get update
 
 # Required for bioconda flexbar
 RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
@@ -46,16 +54,14 @@ RUN conda install -c bioconda cutadapt
 RUN conda install -c bioconda deeptools
 RUN conda install -c bioconda fastp
 RUN conda install -c bioconda fastqc
-RUN conda install -c bioconda flexbar
 RUN conda install -c bioconda gatk
 RUN conda install -c bioconda goleft
 RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda mosdepth
-RUN conda install -c bioconda multiqc
 RUN conda install -c bioconda picard
 RUN conda install -c bioconda preseq
-RUN conda install -c bioconda qualimap
 RUN conda install -c bioconda pysam
+RUN conda install -c bioconda qualimap
 RUN conda install -c bioconda rsem 
 RUN conda install -c bioconda salmon
 RUN conda install -c bioconda sambamba
@@ -76,6 +82,10 @@ RUN conda uninstall r-base
 ###   R Bioconductor   ###
 ##########################
 
+RUN R -e "install.packages('BiocManager', repos='http://cran.rstudio.com/')"
+
+RUN R -e "BiocManager::install(version='3.14', update=TRUE, ask=FALSE)"
+
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
           BiocManager::install(c("BSgenome.Hsapiens.UCSC.hg19", \
@@ -86,6 +96,15 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "Rsamtools", \
                                  "TxDb.Mmusculus.UCSC.mm10.ensGene", \
                                  "tximport"));'
+
+#######################
+### Custom Installs ###
+#######################
+
+RUN pip install multiqc
+
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated \
+    flexbar
 
 RUN R -e 'install.packages("BiocManager"); \
     BiocManager::install(); \
