@@ -1,11 +1,13 @@
 FROM jeszyman/basecamp
 #########1#########2#########3#########4#########5#########6#########7#########8
 
-###################################################################
-###################################################################
-###   Dockerfile to build a basic bioinformatics docker image   ###
-###################################################################
-###################################################################
+################################################################################
+################################################################################
+###                                                                          ###
+###         Dockerfile to build a basic bioinformatics docker image          ###
+###                                                                          ###
+################################################################################
+################################################################################
 
 #############
 ### Notes ###
@@ -17,11 +19,15 @@ FROM jeszyman/basecamp
 #
 # See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 
-<<<<<<< HEAD
-=======
 ###########
 ### APT ###
 ###########
+
+# Most apt managed installs occured in jeszyman/basecamp (the FROM container). 
+# These apt installs are to allow specific function of a few key bioinformatics
+# tools.
+
+RUN apt-get update
 
 # Required for bioconda flexbar
 RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
@@ -33,7 +39,6 @@ RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-mi
     libssl1.0.0 \
     libssl-dev
 
->>>>>>> c7cf2572c54fd42def640fdf5cb9c8b5c6722ee9
 #############
 ### Conda ###
 #############
@@ -49,21 +54,19 @@ RUN conda install -c bioconda cutadapt
 RUN conda install -c bioconda deeptools
 RUN conda install -c bioconda fastp
 RUN conda install -c bioconda fastqc
-RUN conda install -c bioconda flexbar
 RUN conda install -c bioconda gatk
 RUN conda install -c bioconda goleft
 RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda mosdepth
-RUN conda install -c bioconda multiqc
 RUN conda install -c bioconda picard
 RUN conda install -c bioconda preseq
-RUN conda install -c bioconda qualimap
 RUN conda install -c bioconda pysam
+RUN conda install -c bioconda qualimap
 RUN conda install -c bioconda rsem 
 RUN conda install -c bioconda salmon
 RUN conda install -c bioconda sambamba
 RUN conda install -c bioconda samblaster
-RUN conda install -c bioconda samtools=1.9 --force-reinstall
+RUN conda install -c bioconda samtools
 RUN conda install -c bioconda seqkit
 RUN conda install -c bioconda seqtk
 RUN conda install -c bioconda skewer
@@ -78,7 +81,10 @@ RUN conda uninstall r-base
 ##########################
 ###   R Bioconductor   ###
 ##########################
-<<<<<<< HEAD
+
+RUN R -e "install.packages('BiocManager', repos='http://cran.rstudio.com/')"
+
+RUN R -e "BiocManager::install(version='3.14', update=TRUE, ask=FALSE)"
 
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
@@ -99,20 +105,6 @@ RUN pip install multiqc
 
 RUN apt-get install -yq --no-install-recommends --allow-unauthenticated \
     flexbar
-
-#RUN conda install -c bioconda flexbar
-=======
-
-RUN R -e 'install.packages("BiocManager"); \
-          BiocManager::install(); \
-          BiocManager::install(c("BSgenome.Hsapiens.UCSC.hg19", \
-                                 "DESeq2", \
-                                 "EnsDb.Mmusculus.v79", \
-                                 "org.Mm.eg.db", \
-                                 "readr", \
-                                 "Rsamtools", \
-                                 "TxDb.Mmusculus.UCSC.mm10.ensGene", \
-                                 "tximport"));'
 
 RUN R -e 'install.packages("BiocManager"); \
     BiocManager::install(); \
@@ -135,4 +127,3 @@ RUN R -e 'install.packages("BiocManager"); \
                            "PoiClaClu", \
                            "SummarizedExperiment", \
                            "tximport"));'
->>>>>>> c7cf2572c54fd42def640fdf5cb9c8b5c6722ee9
