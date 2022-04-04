@@ -376,6 +376,7 @@ https://www.nature.com/articles/s41592-019-0511-y
 :LOGBOOK:
 CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
 :END:
+- cite:esfahani2022
 - http://m.genome.cshlp.org/content/early/2021/12/20/gr.275691.121.full.pdf#page=1&view=FitH
 - fragments for open chromatin and tissue of origin
 - footprinting
@@ -4630,6 +4631,8 @@ https://science.sciencemag.org/content/360/6389/660
 :ID:       45a1d8fe-cdfb-4dce-8cf7-c7325c83e2d3
 :END:
 - http://gepia.cancer-pku.cn/
+**** DNA variants
+https://pubmed.ncbi.nlm.nih.gov/35311178/
 **** Proteomics
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
@@ -7256,6 +7259,7 @@ Gene set
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://www.reddit.com/r/ProgrammerHumor/comments/tpo157/after_every_scrum_meeting/
 - https://www.nature.com/articles/s41592-022-01412-7
 - [[https://bioinformaticsresourceportal.wustl.edu/][Washington University Computational Biology & Bioinformatics Resource Portal]]
 - https://www.reddit.com/r/bioinformatics/comments/skiod8/whats_your_setup_like_to_make_your_life_easier/
