@@ -4471,6 +4471,7 @@ https://www.biostars.org/p/428905/
 CLOCK: [2021-07-29 Thu 12:04]--[2021-07-29 Thu 12:24] =>  0:20
 CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :END:
+https://www.reddit.com/r/bioinformatics/comments/tu61pw/doubt_over_pathway_analysis_approach/
 https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rfea/rfea/
 https://bioinformaticsbreakdown.com/how-to-gsea/
@@ -4620,13 +4621,25 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 :PROPERTIES:
 :ID:       053daf71-9f9f-4b5e-b400-222c4d24afea
 :END:
-https://www.sciencedirect.com/science/article/pii/S2666379122000258?via%3Dihub
-https://mail.google.com/mail/u/0/#inbox/FMfcgxwLtQMfThxFrGwWlHQFgpTTDrJJ
-https://mail.google.com/mail/u/0/#inbox/FMfcgxwLtGthWWRrdltpWVLTXhQKnZDs
-https://mail.google.com/mail/u/0/#inbox/FMfcgxwLtGthWWRrdltpWVLTXhQKnZDs
-http://labs.pathology.jhu.edu/halushka/science/
-https://science.sciencemag.org/content/360/6389/660
-- https://support.10xgenomics.com/spatial-gene-expression/sequencing/doc/specifications-sequencing-requirements-for-visium-spatial-gene-expression
+- Platforms
+  | Platform   | Areas per slide | Barcodes per area | Detection                     |
+  |------------+-----------------+-------------------+-------------------------------|
+  | 10x Visium |               4 |              5000 | in situ capture, seq by synth |
+  | GeoMx      |                 |                   | in situ hyb w/ oligo detect   |
+  | ish        |                 |                   | in sity hyb                   |
+  - Visium
+    - https://mail.google.com/mail/u/0/#inbox/FMfcgxwLtQMfThxFrGwWlHQFgpTTDrJJ
+    - https://mail.google.com/mail/u/0/#inbox/FMfcgxwLtGthWWRrdltpWVLTXhQKnZDs https://support.10xgenomics.com/spatial-gene-expression/sequencing/doc/specifications-sequencing-requirements-for-visium-spatial-gene-expression
+  - GeoMx
+    - https://www.scopus.com/results/results.uri?sort=plf-f&src=s&st1=geomx&sid=cceac18bcbdba4f776ce2a6635ba19bc&sot=b&sdt=b&sl=20&s=TITLE-ABS-KEY%28geomx%29&origin=searchbasic&editSaveSearch=&yearFrom=Before+1960&yearTo=Present
+      - Only covers protein- cite:van2019
+      - cite:nielsen2020
+  - Ish https://science.sciencemag.org/content/360/6389/660
+- Reference
+  - https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&st1=%22spatial+transcriptomics%22&nlo=&nlr=&nls=&sid=f8602d6245cf86196aeef7c88b5ab0dd&sot=b&sdt=cl&cluster=scosubtype%2c%22re%22%2ct&sl=40&s=TITLE-ABS-KEY%28%22spatial+transcriptomics%22%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist
+    - https://www.sciencedirect.com/science/article/pii/S0958166916302397?via%3Dihub
+    - Proof of concept https://www.science.org/doi/10.1126/science.aaf2403
+  - [[file:~/repos/org/career.org::*Zander spatial transcriptomics zoom][Zander spatial transcriptomics zoom]]
 ****** Reference
 :PROPERTIES:
 :ID:       45a1d8fe-cdfb-4dce-8cf7-c7325c83e2d3
@@ -4789,8 +4802,6 @@ https://www.nature.com/articles/d41586-021-01994-w
 - cite:tarazona2020
 - https://www.sciencedirect.com/science/article/pii/S2001037020302816#s0030
 - https://workflows.omnipathdb.org/
-- example papers
-  - https://academic.oup.com/nar/article/47/19/10010/5573547
 - https://academic.oup.com/bioinformatics/article/36/8/2632/5689817
 - cite:higdon2015 
 - https://jme.bioscientifica.com/view/journals/jme/62/1/JME-18-0055.xml
@@ -4802,6 +4813,9 @@ https://www.nature.com/articles/d41586-021-01994-w
 - cite:subramanian2020
 - cite:wu2019
 - https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
+***** example papers
+- https://www.sciencedirect.com/science/article/pii/S2666379122000258?via%3Dihub
+- https://academic.oup.com/nar/article/47/19/10010/5573547
 
 **** Bioinformatics visualization 
 :PROPERTIES:
@@ -5533,6 +5547,9 @@ CLOCK: [2021-09-13 Mon 07:27]--[2021-09-13 Mon 07:46] =>  0:19
 | tophat2        |                   |           |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                        |
 | tximport       |                   |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
 | WGCNA          |                   |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] |                        |
+**** trimmomatic :biotool:
+http://www.usadellab.org/cms/?page=trimmomatic
+https://www.biostars.org/p/478810/
 **** preseq :biotool:
 :PROPERTIES:
 :ID:       6d8cbcc0-2651-4c51-991e-639dbc81ea66
@@ -7255,11 +7272,14 @@ Gene set
              $repo/data/test \
              demulti_TCCT_R1.fastq
   #+end_src
-** Reference 
+** General reference 
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://www.reddit.com/r/bioinformatics/comments/u0ppfq/can_you_recommend_a_textbook_that_gives_a/
+- https://bioinformatics.chat/
+- http://labs.pathology.jhu.edu/halushka/science/
 - https://www.reddit.com/r/ProgrammerHumor/comments/tpo157/after_every_scrum_meeting/
 - https://www.nature.com/articles/s41592-022-01412-7
 - [[https://bioinformaticsresourceportal.wustl.edu/][Washington University Computational Biology & Bioinformatics Resource Portal]]
