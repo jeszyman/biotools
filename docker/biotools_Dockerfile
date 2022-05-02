@@ -73,6 +73,7 @@ RUN conda install -c bioconda skewer
 RUN conda install -c bioconda snakemake
 RUN conda install -c bioconda star
 RUN conda install -c bioconda subread
+RUN conda install -c bioconda trimmomatic=0.39
 RUN conda install -c bioconda vcftools
 
 # To avoid conflict with jeszyman/basecamp R install
