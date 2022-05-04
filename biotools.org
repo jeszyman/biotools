@@ -14,6 +14,7 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+- cite:storrs2022
 - cite:sanchez-vega2018
 - cite:bentham2021
 - https://github.com/pfields8/Fields_et_al_2018
@@ -7194,6 +7195,13 @@ https://www.reddit.com/r/MachineLearning/comments/s65icb/discussion_how_do_you_o
 :ID:       b1c8d0f3-42aa-4427-93e0-5e97261343d5
 :END:
 #+begin_src bash :tangle ./src/add_biorepo_dirs.sh
+# Check for parameters, return usage if empty
+if [[ $# -eq 0 ]] || [[ add_biorepo_dirs.sh == "h" ]] ; then
+    printf "\n usage: add_biorepo_dirs.sh repo  
+           \n Creates common repository directories for a biopipe as needed
+           \n repo: Path to local repository base directory
+           \n "
+else
 repo_dirs=("config"
            "resources"
            "src"
@@ -7203,7 +7211,8 @@ repo_dirs=("config"
 for dir in "${repo_dirs[@]}"; 
 do 
    mkdir -p $1/$dir
-done             
+done
+fi             
 #+end_src
 **** Best practice
 - Document
