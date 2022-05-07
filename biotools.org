@@ -2,6 +2,7 @@
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:14]
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
+:header-args:bash: :tangle-mode (identity #o555)
 :END:
 :LOGBOOK:
 CLOCK: [2021-09-13 Mon 07:04]--[2021-09-13 Mon 07:27] =>  0:23
@@ -13,7 +14,16 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
-
+- cite:storrs2022
+- cite:sanchez-vega2018
+- cite:bentham2021
+- https://github.com/pfields8/Fields_et_al_2018
+- https://community.rstudio.com/t/during-startup-warning-message-setting-lc-ctype-failed-on-windows/21451
+** ATAC-seq biopipe
+:LOGBOOK:
+CLOCK: [2022-05-01 Sun 12:17]--[2022-05-01 Sun 13:47] =>  1:30
+CLOCK: [2021-12-09 Thu 12:47]--[2022-05-01 Sun 13:57] => 3432:10
+:END:
 ** ENCODE
 :PROPERTIES:
 :ID:       585e27b3-3c79-46d5-aeab-9430251d4318
@@ -152,10 +162,15 @@ done
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
 *** Flat list
+**** cfDNA clonal evolution
+https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
+**** Mutation signatures
+https://www.nature.com/articles/nature12477
 **** Nucleic acid sequence alignment
 :PROPERTIES:
 :ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
 :END:
+https://www.biostars.org/p/352354/
 https://www.biostars.org/p/342482/
 
 https://mail.google.com/mail/u/0/#inbox/FMfcgzGmvfcqZVjmjRkGBncgDNclkfTm
@@ -363,6 +378,7 @@ https://www.nature.com/articles/s41592-019-0511-y
 - https://onlinelibrary.wiley.com/doi/10.1002/ctm2.177
 - https://insight.jci.org/articles/view/153559#SEC4
 **** cfDNA small variant calling
+https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
 - PhasED-seq- https://www.nature.com/articles/s41587-021-00981-w
   - - phased seq https://www.sciencedirect.com/science/article/pii/S2666634021003202
 - cite:cohen2021
@@ -376,6 +392,8 @@ https://www.nature.com/articles/s41592-019-0511-y
 :LOGBOOK:
 CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
 :END:
+- cite:ding2022
+- cite:esfahani2022
 - http://m.genome.cshlp.org/content/early/2021/12/20/gr.275691.121.full.pdf#page=1&view=FitH
 - fragments for open chromatin and tissue of origin
 - footprinting
@@ -570,6 +588,7 @@ RUN conda install -c bioconda skewer
 RUN conda install -c bioconda snakemake
 RUN conda install -c bioconda star
 RUN conda install -c bioconda subread
+RUN conda install -c bioconda trimmomatic=0.39
 RUN conda install -c bioconda vcftools
 
 # To avoid conflict with jeszyman/basecamp R install
@@ -1256,21 +1275,12 @@ docker_interactive() {
 }
 #+end_src
 
-*** Hierarchies
+*** Biotools process hierarchies
 **** Common bioinformatics file manipulation
 :PROPERTIES:
 :ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
 :END:
 - https://bioinf.shenwei.me/seqkit/usage/#pair
-- Subsetting and splitting 
-  - Fastas
-    - https://www.biostars.org/p/13270/
-  - Fastqs
-    - [[Question: Selecting Random Pairs From Fastq?]]  
-    - [[https://www.biostars.org/p/6544/][look at all the ways to split a fastq file!]]
-  - Bams
-    - https://www.google.com/search?q=subset+bam+file
-    - samtools view -bo subset.bam -s 123.4 alignments.bam chr1 chr2
 - https://www.google.com/search?q=annotate+bed+file+with+gene+names 
 - https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
 - [[https://www.biostars.org/p/68283/][count total length of regions in bed file]]
@@ -1279,6 +1289,31 @@ docker_interactive() {
 - https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
 - [[https://github.com/lh3/seqtk][seqtk]] 
 - https://gist.github.com/davfre/8596159
+***** Subsetting and splitting 
+- Fastas
+  - https://www.biostars.org/p/13270/
+  - Fastqs
+    - [[Question: Selecting Random Pairs From Fastq?]]  
+    - [[https://www.biostars.org/p/6544/][look at all the ways to split a fastq file!]]
+- Bams
+  - https://bioinformatics.stackexchange.com/questions/402/how-can-i-downsample-a-bam-file-while-keeping-both-reads-in-pairs
+  - https://www.google.com/search?q=subset+bam+file
+  - samtools view -bo subset.bam -s 123.4 alignments.bam chr1 chr2
+  function SubSample {
+  #+begin_src bash :tangle ./src/subsample_bam.sh         
+function SubSample {
+## Calculate the sampling factor based on the intended number of reads:
+FACTOR=$(samtools idxstats $1 | cut -f3 | awk -v COUNT=$2 'BEGIN {total=0} {total += $1} END {print COUNT/total}')
+
+if [[ $FACTOR > 1 ]]
+  then 
+  echo '[ERROR]: Requested number of reads exceeds total read count in' $1 '-- exiting' && exit 1
+fi
+
+sambamba view -s $FACTOR -f bam -l 5 $1
+
+}
+#+end_src
 ***** Database downloads
 - https://www.google.com/search?q=download+genbank+fasta 
 **** Probability and statistics related to bioinformatics
@@ -1859,6 +1894,7 @@ https://software.broadinstitute.org/gatk/documentation/topic?name=methods
 :PROPERTIES:
 :ID:       675eba72-76e5-4b49-81e9-37bdc02cce9b
 :END:
+https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
 https://support.illumina.com/bulletins/2018/08/understanding-unique-dual-indexes--udi--and-associated-library-p.html
 https://www.illumina.com/content/dam/illumina-marketing/documents/products/whitepapers/index-hopping-white-paper-770-2017-004.pdf
 https://www.google.com/search?q=calculation+probability+of+sequence+mismatch&oq=calculation+probability+of+sequence+mismatch&aqs=chrome..69i57j33.12480j0j7&client=ubuntu&sourceid=chrome&ie=UTF-8
@@ -2395,6 +2431,7 @@ cite:chimera_r
 :PROPERTIES:
 :ID:       E3637686-6560-4088-9784-0A601F39C34D
 :END:
+https://pubmed.ncbi.nlm.nih.gov/33580225/
 - tumor evolution
   - fishplot https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-016-3195-z
 - incidental acquired variant detection in germline https://www.nature.com/articles/s41436-021-01138-5?proof=t+target%3D#Sec3
@@ -2541,6 +2578,7 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       f4d64349-0202-41e5-9143-39de3dd63d90
 :END:
+https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFgqmWTzSTxFbqlqjBLnzFsWT
 cite:rozowsky2019
 https://www.nature.com/articles/s41586-022-04410-z
 https://www.nature.com/articles/d41586-021-03801-y
@@ -2712,7 +2750,7 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
   - [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
 - cite:saloura2019 
 - https://en.wikipedia.org/wiki/Immunological_Genome_Project#Gene-expression_compendium
-***** immunoprofiling/ immunophenotyping, cell type ennumeriation with rnaseq
+***** Deconvolution, immunoprofiling/ immunophenotyping, cell type ennumeriation with rnaseq
 :PROPERTIES:
 :CREATED:  [2019-10-03 Thu 10:22]
 :ID:       e07fee1b-d7fd-42ce-9639-ff803cfc9c8e
@@ -2721,6 +2759,7 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 CLOCK: [2020-02-13 Thu 11:25]--[2020-02-13 Thu 11:33] =>  0:08
 CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :END:
+- https://www.nature.com/articles/s43018-022-00356-3#code-availability
 - https://www.ncbi.nlm.nih.gov/pubmed/32036085
 - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1257-4
 - cite:newman2015
@@ -2805,6 +2844,7 @@ CLOCK: [2017-07-08 Sat 12:26]--[2017-07-08 Sat 12:29] =>  0:03
 CLOCK: [2017-02-24 Fri 13:04]--[2017-02-24 Fri 14:09] =>  1:05
 CLOCK: [2017-02-24 Fri 12:13]--[2017-02-24 Fri 13:00] =>  0:47
 :END:
+https://www.reddit.com/r/bioinformatics/comments/u1hsjy/great_thread_on_the_importance_of_eda_and/
 http://www.nathalievialaneix.eu/doc/html/solution_edgeR-tomato.html#exploratory-analysis-of-degs
 - https://www.liebertpub.com/doi/10.1089/cmb.2015.0085
 - https://tavareshugo.github.io/data-carpentry-rnaseq/03_rnaseq_pca.html#Running_PCA_using_prcomp()
@@ -4469,6 +4509,8 @@ https://www.biostars.org/p/428905/
 CLOCK: [2021-07-29 Thu 12:04]--[2021-07-29 Thu 12:24] =>  0:20
 CLOCK: [2018-05-25 Fri 14:00]--[2018-05-25 Fri 15:00] =>  1:00
 :END:
+https://www.sciencedirect.com/science/article/pii/S2666166721004755
+https://www.reddit.com/r/bioinformatics/comments/tu61pw/doubt_over_pathway_analysis_approach/
 https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 https://girke.bioinformatics.ucr.edu/GEN242/tutorials/rfea/rfea/
 https://bioinformaticsbreakdown.com/how-to-gsea/
@@ -4618,18 +4660,32 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 :PROPERTIES:
 :ID:       053daf71-9f9f-4b5e-b400-222c4d24afea
 :END:
-https://www.sciencedirect.com/science/article/pii/S2666379122000258?via%3Dihub
-https://mail.google.com/mail/u/0/#inbox/FMfcgxwLtQMfThxFrGwWlHQFgpTTDrJJ
-https://mail.google.com/mail/u/0/#inbox/FMfcgxwLtGthWWRrdltpWVLTXhQKnZDs
-https://mail.google.com/mail/u/0/#inbox/FMfcgxwLtGthWWRrdltpWVLTXhQKnZDs
-http://labs.pathology.jhu.edu/halushka/science/
-https://science.sciencemag.org/content/360/6389/660
-- https://support.10xgenomics.com/spatial-gene-expression/sequencing/doc/specifications-sequencing-requirements-for-visium-spatial-gene-expression
+- Platforms
+  | Platform   | Areas per slide | Barcodes per area | Detection                     |
+  |------------+-----------------+-------------------+-------------------------------|
+  | 10x Visium |               4 |              5000 | in situ capture, seq by synth |
+  | GeoMx      |                 |                   | in situ hyb w/ oligo detect   |
+  | ish        |                 |                   | in sity hyb                   |
+  - Visium
+    - https://mail.google.com/mail/u/0/#inbox/FMfcgxwLtQMfThxFrGwWlHQFgpTTDrJJ
+    - https://mail.google.com/mail/u/0/#inbox/FMfcgxwLtGthWWRrdltpWVLTXhQKnZDs https://support.10xgenomics.com/spatial-gene-expression/sequencing/doc/specifications-sequencing-requirements-for-visium-spatial-gene-expression
+  - GeoMx
+    - https://www.scopus.com/results/results.uri?sort=plf-f&src=s&st1=geomx&sid=cceac18bcbdba4f776ce2a6635ba19bc&sot=b&sdt=b&sl=20&s=TITLE-ABS-KEY%28geomx%29&origin=searchbasic&editSaveSearch=&yearFrom=Before+1960&yearTo=Present
+      - Only covers protein- cite:van2019
+      - cite:nielsen2020
+  - Ish https://science.sciencemag.org/content/360/6389/660
+- Reference
+  - https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&st1=%22spatial+transcriptomics%22&nlo=&nlr=&nls=&sid=f8602d6245cf86196aeef7c88b5ab0dd&sot=b&sdt=cl&cluster=scosubtype%2c%22re%22%2ct&sl=40&s=TITLE-ABS-KEY%28%22spatial+transcriptomics%22%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist
+    - https://www.sciencedirect.com/science/article/pii/S0958166916302397?via%3Dihub
+    - Proof of concept https://www.science.org/doi/10.1126/science.aaf2403
+  - [[file:~/repos/org/career.org::*Zander spatial transcriptomics zoom][Zander spatial transcriptomics zoom]]
 ****** Reference
 :PROPERTIES:
 :ID:       45a1d8fe-cdfb-4dce-8cf7-c7325c83e2d3
 :END:
 - http://gepia.cancer-pku.cn/
+**** DNA variants
+https://pubmed.ncbi.nlm.nih.gov/35311178/
 **** Proteomics
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
@@ -4708,7 +4764,7 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 :PROPERTIES:
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
 :END:
-
+- cite:sanchez-vega2018
 - https://www.sciencedirect.com/science/article/pii/S2666166721004755
 - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3016-x
 - http://bioportal.bioontology.org/ontologies/GO/?p=classes&conceptid=root
@@ -4775,6 +4831,7 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
 :END:
+https://www-nature-com-s.caas.cn/articles/s41568-021-00408-3?error=cookies_not_supported&code=ad37411b-42f4-4689-9a3b-1605f1f40eaf
 https://www.sciencedirect.com/science/article/pii/S2666379122000258?via%3Dihub
 https://www.nature.com/articles/s41421-021-00366-y
 https://www.nature.com/articles/s41568-021-00408-3
@@ -4785,8 +4842,6 @@ https://www.nature.com/articles/d41586-021-01994-w
 - cite:tarazona2020
 - https://www.sciencedirect.com/science/article/pii/S2001037020302816#s0030
 - https://workflows.omnipathdb.org/
-- example papers
-  - https://academic.oup.com/nar/article/47/19/10010/5573547
 - https://academic.oup.com/bioinformatics/article/36/8/2632/5689817
 - cite:higdon2015 
 - https://jme.bioscientifica.com/view/journals/jme/62/1/JME-18-0055.xml
@@ -4798,6 +4853,9 @@ https://www.nature.com/articles/d41586-021-01994-w
 - cite:subramanian2020
 - cite:wu2019
 - https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
+***** example papers
+- https://www.sciencedirect.com/science/article/pii/S2666379122000258?via%3Dihub
+- https://academic.oup.com/nar/article/47/19/10010/5573547
 
 **** Bioinformatics visualization 
 :PROPERTIES:
@@ -4856,6 +4914,7 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 :PROPERTIES:
 :ID:       b7c65054-f648-4579-9c5f-7bedbe272b5c
 :END:
+https://hpc.nih.gov/apps/singularity.html
 http://byronjsmith.com/make-bml/
 https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424
 - https://github.com/ENCODE-DCC/caper
@@ -5529,6 +5588,9 @@ CLOCK: [2021-09-13 Mon 07:27]--[2021-09-13 Mon 07:46] =>  0:19
 | tophat2        |                   |           |        | [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]      |       |                        |
 | tximport       |                   |           |        | [[https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem][doc]]      | [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]] |                        |
 | WGCNA          |                   |           |        |          | [[https://doi.org/10.1186/1471-2105-9-559][paper]] |                        |
+**** trimmomatic :biotool:
+http://www.usadellab.org/cms/?page=trimmomatic
+https://www.biostars.org/p/478810/
 **** preseq :biotool:
 :PROPERTIES:
 :ID:       6d8cbcc0-2651-4c51-991e-639dbc81ea66
@@ -6169,6 +6231,8 @@ https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSe
 :ID:       846943FC-BA4B-4658-9B1E-85FBA536D9EE
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
+**** epicseq :biotools:
+https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFgtGDXpvjWgzHdQjhXHVlSvf
 **** exceRpt                                                        :biotool:
 :PROPERTIES:
 :ID:       1db0ffb6-25b7-4c97-9aa0-263b8c96373b
@@ -6363,7 +6427,8 @@ https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzE
     - - cite:zhang2014a
     - https://github.com/ChrisMaherLab/INTEGRATE-Vis/blob/master/README.md
     for integrate, see - cite:li2020
-  
+**** liftover :biotool:
+https://genome.ucsc.edu/cgi-bin/hgLiftOver
 **** limma                                                          :biotool:
 :PROPERTIES:
 :ID:       3283b8b2-fc42-4a71-a8e9-7dbdd7ab62ce
@@ -7104,6 +7169,902 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :PROPERTIES:
 :ID:       a976fa13-3fa8-41f0-b847-3322f2827c3e
 :END:
+*** Bioinformatics project                               :mod:biopipe:career:
+:PROPERTIES:
+:ID:       271b4d5f-727e-496e-b835-8fe9f8655655
+:END:
+:LOGBOOK:
+CLOCK: [2022-04-29 Fri 14:07]--[2022-04-29 Fri 14:11] =>  0:04
+CLOCK: [2022-01-14 Fri 08:43]--[2022-01-14 Fri 10:00] =>  1:17
+CLOCK: [2021-12-09 Thu 09:58]--[2021-12-09 Thu 11:43] =>  1:45
+CLOCK: [2021-12-09 Thu 08:55]--[2021-12-09 Thu 09:57] =>  1:02
+CLOCK: [2021-08-26 Thu 08:01]--[2021-08-26 Thu 08:45] =>  0:44
+CLOCK: [2021-08-25 Wed 09:13]--[2021-08-25 Wed 10:35] =>  1:22
+CLOCK: [2021-08-25 Wed 08:05]--[2021-08-25 Wed 08:33] =>  0:28
+CLOCK: [2021-08-17 Tue 16:00]--[2021-08-17 Tue 17:30] =>  1:30
+CLOCK: [2021-08-17 Tue 13:28]--[2021-08-17 Tue 14:17] =>  0:49
+:END:
+https://www.biostars.org/p/190366/
+
+For instance, themes and plugins for Wordpress, Magento, etc. are often de facto installed by their mere presence at conventional locations inside the project tree, and this is the only way to “install” them.
+https://help.osf.io/hc/en-us/articles/360019931133-Creating-a-data-management-plan-DMP-document
+https://www.reddit.com/r/MachineLearning/comments/s65icb/discussion_how_do_you_organize_a_data_science/
+**** Scripts
+***** Make bioinformatics project repository directory structure
+:PROPERTIES:
+:ID:       b1c8d0f3-42aa-4427-93e0-5e97261343d5
+:END:
+#+begin_src bash :tangle ./src/add_biorepo_dirs.sh
+# Check for parameters, return usage if empty
+if [[ $# -eq 0 ]] || [[ add_biorepo_dirs.sh == "h" ]] ; then
+    printf "\n usage: add_biorepo_dirs.sh repo  
+           \n Creates common repository directories for a biopipe as needed
+           \n repo: Path to local repository base directory
+           \n "
+else
+repo_dirs=("config"
+           "resources"
+           "src"
+           "test"
+           "workflow/scripts")
+
+for dir in "${repo_dirs[@]}"; 
+do 
+   mkdir -p $1/$dir
+done
+fi             
+#+end_src
+**** Best practice
+- Document
+  - Keep all project-specific information in a single org-mode file. Link to project-relevant but not project-specific information.
+- Use git version control and off-site repository, github.
+- Input data provenance- Record exact details of obtaining non-VC input data.
+- Backup in addition to and outside of off-site git
+- Add data validation and sanity checks
+- Consolidate methods to modules  
+- Do code review
+- Build reproducible version control environment
+- Setup an in-repository test environment to perform integration testing, preferably with known positive / negative samples
+- Use literate programming, annotate code
+- Build out alternative analysis for the same objective and compare as QC
+- Reference
+  - https://www.biostars.org/p/190366/
+**** Work tree
+
+- [ ] 
+
+**** Template
+:PROPERTIES:
+:ID:       2a6a5dac-151e-42e8-a80a-74f77ad0d4ca
+:END:
+
+***** Title
+****** Setup
+:PROPERTIES:
+:ID:       7fe36f7c-f577-4028-a3ad-ebac215c4eac
+:END:
+
+******* Repository and git
+:PROPERTIES:
+:ID:       de78348e-edce-43c8-9411-057fcc8ed7ba
+:END:
+
+- [ ] Create local repository and basic directory structure
+  ,#+begin_src bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+
+  # project_id =
+  # repo=
+
+  # Create repository            
+  if [ -d /home/jeszyman/repos ]; then
+      mkdir -p /home/jeszyman/repos/${project_id}; fi
+
+  # Initialize git
+  cd "${repo}"
+
+  # Create repository structure
+  # Create repository structure
+  repo=/home/jeszyman/repos/cardradbio-atac
+  mkdir -p "${repo}/config"
+  mkdir -p "${repo}/resources"
+  mkdir -p "${repo}/results"
+  mkdir -p "${repo}/src"
+  mkdir -p "${repo}/workflow/scripts"
+
+  ,#+end_src
+- [ ] Declare repo on github
+- [ ] Import size check hook (bash config will check this is readable)
+  ,#+begin_src bash :noweb yes :tangle ./config/precommit_git_hook
+  <<../basecamp/basecamp.org:git_size_check_hook_wrapper()>>            
+  ,#+end_src
+  ,#+begin_src bash
+  ln -s /home/jeszyman/repos/cardradbio-atac/config/precommit_git_hook /home/jeszyman/repos/cardradbio-atac/.git/hooks/precommit
+  ,#+end_src
+- [ ] Setup link to github
+  ,#+begin_src bash
+  if [ -d "${repo}" ]; then
+      cd "${repo}
+      git add -A
+      git commit -am "First commit"
+      git branch -M master
+      git remote add origin git@github.com:jeszyman/${project_id}.git
+      git push -u origin master
+  ,#+end_src
+
+******* WashU RIS storage and local data directory
+:PROPERTIES:
+:ID:       1de9257d-85ed-44ce-80b9-4d276a4a46dd
+:END:
+
+- Mount
+  ,#+begin_src bash :noweb yes :tangle ./src/mount_ris.sh
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  ### Mount RIS ###
+  #
+
+  # Setup
+  set -euxo pipefail
+
+  # Commands
+  ris_user="USER INPUT"
+  read -p "Enter RIS User: " ris_user
+
+  #
+  case $HOSTNAME in
+      (jeff-mac-book) mntpt=/mnt/ris/"${ris_user}";;
+      (jeszyman-work) mntpt=/mnt/ris/"${ris_user}";; 
+      (jeff-server) mntpt=/mnt/ris/"${ris_user}";;
+      (radonc-cancerbio) mntpt=/mnt/ris/"${ris_user}";;
+      (*) echo "Host not recognized; modify script";;
+  esac
+
+  #
+  auth=~/.auth
+  src="//storage1.ris.wustl.edu/${ris_user}/Active"
+  #
+  chmod 400 ~/.auth
+  sudo mkdir -p $mntpt
+
+  #
+  sudo umount -l $mntpt
+
+  #
+  sudo mount -t cifs -o vers=3.0,credentials=$auth,uid=$(id -u),gid=$(id -g),mfsymlinks "$src" $mntpt            
+  ,#+end_src
+
+******* Bash
+:PROPERTIES:
+:ID:       2089e0bc-ceb1-4847-b058-37e62ecea15c
+:END:
+
+******** Configurations (local by machine $HOSTNAME)
+
+- [[id:2cdacb39-2dd0-405d-a4fb-c1cdd4004344][bioinfo.config.host.sh YAS]]
+
+******** Preambles
+
+- Command line 
+  #+name: bash_cmdline_script_preamble
+  #+begin_src bash :noweb yes
+#!/usr/bin/env bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+# Notes:
+#  This script is tangled from source code in the PROJECT_ID.org file
+#  Therefore any changes to this compiled file in place will likely be reverted
+#  by a subsequent tangle operation.
+#
+#  This script assumes you are running from the repository main directory in
+#  order to source the appriopriate configuation file. 
+
+# Load bash configuation
+if [ -f ./config/${HOSTNAME}.sh ]; then
+    source ./config/${HOSTNAME}.sh
+else
+    echo "No bash config found. Are you running from repo main dir?"
+fi
+#+end_src
+- Snakemake
+  #+name: bash_script_smk_preamble
+  #+begin_src bash :noweb yes
+#!/usr/bin/env bash
+#+end_src
+
+******** Ideas
+
+  - https://unix.stackexchange.com/questions/1314/how-to-set-default-file-permissions-for-all-folders-files-in-a-directory
+  - Do in docker check in the config
+
+******* Box and rclone
+:PROPERTIES:
+:ID:       158bc20e-9ad6-431d-8651-2b5842cbe10e
+:END:
+
+- example [[id:8263e3b1-3ba4-4c4f-8d39-9dd9bb06e2bb][publish to box]]
+
+******* Docker and singularity
+:PROPERTIES:
+:ID:       aead48f8-e6b6-4849-b502-704b820427e3
+:END:
+
+******* Emacs and Org-mode
+******* R
+:PROPERTIES:
+:ID:       84393925-3ed6-4198-9c12-4f687de5fd92
+:END:
+
+******* Snakemake
+****** Data
+:PROPERTIES:
+:ID:       b0eb56c8-cb83-4db4-a890-f32b61b92f75
+:END:
+
+******* Inputs
+:PROPERTIES:
+:ID:       35978130-f228-4805-b1cb-0ffdf410f174
+:END:
+
+******** Table of inputs
+:PROPERTIES:
+:ID:       26c7d292-db75-4c5d-b4de-01cc5d5d9c18
+:END:
+
+#+name: inputs
+| basename | class | origin |
+|----------+-------+--------|
+|          |       |        |
+
+  
+filename | class | r_name | box_path | http | 
+basename|path|
+
+****** Functions and source scripts
+:PROPERTIES:
+:ID:       151766f1-8a55-48be-b111-b4d7b9a5afcd
+:END:
+
+Use awk while
+awk -F: '{print $3}' "$smryfile" | while read varX; do
+    echo $varX
+    done
+
+Org tables to extract script
+
+Downloads to.checker scripts
+
+Rclone w --update
+
+Wget
+
+****** Control flow and run scripts
+:PROPERTIES:
+:ID:       c620e32f-c209-4eb2-b33d-c4717373dc71
+:END:
+
+****** [[id:12cad8e7-97af-410a-8159-a2200d2a5519][Scientific report]]
+:PROPERTIES:
+:ID:       bcc28d4e-700a-479d-9e0f-207f42da5bd3
+:END:
+
+****** Reference
+:PROPERTIES:
+:ID:       93fb7b7b-b713-40ed-888d-573dcbbc0956
+:END:
+
+- https://github.com/dslp/dslp-repo-template
+- https://drivendata.github.io/cookiecutter-data-science/#directory-structure
+- [[tag:biocollab]]  
+
+***** [[id:61f0fe69-ab73-416d-b078-9c94a053520a][Local variables]]
+**** Local noweb code blocks
+:PROPERTIES:
+:ID:       1226ed2f-4740-431b-9122-63df3816d971
+:END:
+
+***** Bash command line preamble
+:PROPERTIES:
+:ID:       3560fb0a-1eff-4033-8c4c-bb6b82c4bbf8
+:END:
+
+#+name: bioinfo_bash_cmd_preamble
+#+begin_src bash
+if [[ -f ./config/${HOSTNAME}.sh ]];
+then source ./config/${HOSTNAME}.sh
+else
+    echo "No config file found for ${HOSTNAME}"
+    exit 1
+fi
+
+#+end_src
+#+name: bioinfo_bash_cmd_preamble_wrapper
+#+begin_src bash :noweb yes
+
+#+end_src
+
+***** Table of inputs to csv
+:PROPERTIES:
+:ID:       017e49d3-28fd-4907-b72c-13bcd01d00e6
+:END:
+
+***** Org manual input table export to csv
+:PROPERTIES:
+:ID:       655164a2-53ee-40aa-8120-286b55f164b5
+:END:
+
+- Lisp export function
+  #+name: org_input_tbl_lisp_export
+  #+begin_src emacs-lisp
+(require 'org)
+
+(defun my-tbl-export (name)
+"Search for table named `NAME` and export."
+(interactive "s")
+(show-all)
+(let ((case-fold-search t))
+(if (search-forward-regexp (concat "#\\+NAME: +" name) nil t)
+(progn
+  (next-line)
+  (org-table-export (format "/tmp/%s.csv" name) "orgtbl-to-csv")))))
+
+#+end_src
+  #+name: org_input_tbl_lisp_export_wrapper
+  #+begin_src org :noweb yes
+<<org_input_tbl_lisp_export>>
+#+end_src
+- Bash to make the csvs
+  #+name: org_input_tbl_to_csv
+  #+begin_src bash 
+# Insert tables as bash array named org_tables
+
+for table in "${org_tables[@]}";
+do
+/usr/bin/emacs-snapshot --batch "${org_file}" -l "${org_export_el}" --eval '(my-tbl-export "'"$table"'")'
+done
+
+mv /tmp/*_input.csv ${data_dir}/inputs/ 
+#+end_src
+  #+name: org_input_tbl_to_csv_wrapper
+  #+begin_src org :noweb yes
+<<org_input_tbl_to_csv>>
+#+end_src
+
+**** Local YAS (flat list)
+:PROPERTIES:
+:ID:       ce85a21e-466f-43d0-ad13-3cd21497bfc3
+:END:
+:LOGBOOK:
+CLOCK: [2021-12-09 Thu 11:43]--[2021-12-09 Thu 12:43] =>  1:00
+:END:
+
+***** Data
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.data
+  # -*- mode: snippet -*-
+  # key: bioinfo.data
+  # expand-env: ((yas-indent-line 'none))
+  # --
+  `(make-string (1+ (org-current-level)) ?*)` Data 
+#+end_src
+
+***** [[id:61f0fe69-ab73-416d-b078-9c94a053520a][Local variables]]
+***** bioinfo.config.host.sh
+:PROPERTIES:
+:ID:       2cdacb39-2dd0-405d-a4fb-c1cdd4004344
+:END:
+
+#+name: bioinfo.config.host.sh
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.host.sh
+# -*- mode: snippet -*-
+# key: bioinfo.config.host.sh
+# expand-env: ((yas-indent-line 'fixed))
+# --
+,#+begin_src bash :noweb yes :tangle ./config/${1:HOSTNAME}.sh
+<<bash_cmdline_script_preamble>>
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+#
+###   Bash configuration sourcing script for $1   ###
+#
+
+# Define host-local absolute variables
+data_dir="${2:LOCAL DATA DIRECTORY}"
+mntpt="${3:MOUNT POINT PATH}"
+repo="${4:REPO PATH}"
+threads=${5:THREADS}
+
+# ADD ADDITIONAL NOWEBS
+
+#
+echo "Setup complete for $(basename "\${repo}") on $HOSTNAME"        
+
+,#+end_src            
+#+end_src
+
+***** bioinfo.config.common.sh
+:PROPERTIES:
+:ID:       5120c9dd-8e0b-4b2c-8c77-a89f271a48e4
+:END:
+
+#+name: bioinfo.config.common.sh
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.common.sh
+# -*- mode: snippet -*-
+# key: bioinfo.config.common.sh
+# expand-env: ((yas-indent-line 'fixed))
+# --
+,#+name: bash_common_config
+,#+begin_src bash :noweb yes :tangle ./config/common.sh
+#!/bin/bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+
+# Check git file hook is read-able
+if [ -r "${repo}/.git/hooks/precommit" ]; then
+   echo "Git size check is read-able"
+else
+    echo
+    "Git size check is not read-able"
+    exit 1
+fi
+          
+# Check mount point  
+if grep -qs $mntpt /proc/mounts; then
+    echo "RIS storage mounted."
+else
+    echo "RIS storage NOT mounted, exiting."
+    exit 1
+fi
+
+# Check singularity container
+if [ -r $sif_dir/atac.sif ]; then
+    echo "Local SIF file present"
+else
+    echo "No local SIF file found"
+fi
+    fi
+}
+#+end_src
+
+***** bioinfo.launch.docker
+
+#+name: bioinfo.launch.docker
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
+  # -*- mode: snippet -*-
+  # key: bioinfo.launch.docker
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src bash
+  #!/bin/bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+        
+  # Notes: This block build from bioinfo.launch.docker at
+  #  ce85a21e-466f-43d0-ad13-3cd21497bfc3
+
+  # Function to launch an interactive docker session
+
+  ,#+end_src                
+#+end_src
+
+***** bioinfo.setup.bash
+
+#+name: bioinfo.setup.bash
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
+  # -*- mode: snippet -*-
+  # key: bioinfo.setup.bash
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  `(make-string (1+ (org-current-level)) ?*)` Bash
+  Potential YAS to run:
+  bioinfo.config.host.sh
+  bioinfo.config.main.sh
+  ris.mount
+  $0              
+#+end_src
+
+***** bioinfo.config.main.R
+
+#+name: bioinfo.config.main.R
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
+  # -*- mode: snippet -*-
+  # key: bioinfo.config.main.R
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src R :noweb yes :tangle ./config/main.R
+  #!/usr/bin/env Rscript
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # Repository-local, relative variables
+  $0
+
+  # Pull in from other repositories
+  ##
+  ## Basecamp
+  <<./basecamp/basecamp.org:basecamp_r_setup_wrapper()>>
+
+  ##
+  ## Biotools
+  <<./biotools/biotools.org:biotools_r_setup_wrapper()>>
+
+  ,#+end_src
+#+end_src
+
+***** bioinfo.config.local.R
+
+#+name: bioinfo.config.local.R
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
+  # -*- mode: snippet -*-
+  # key: bioinfo.config.local.R
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src R :noweb yes :tangle ./config/${1:HOSTNAME}.R
+  #!/usr/bin/env Rscript
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # Repository-local, host-absolute variables
+  data_dir = file.path("${2:DATA_DIR}")
+  source("./config/main.R")
+  $0
+  ,#+end_src
+#+end_src
+
+***** bioinfo.bash.script
+
+#+name: bioinfo.bash.script
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
+  # -*- mode: snippet -*-
+  # key: bioinfo.bash.script
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  #!/bin/bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  ### ${1:SCRIPT NAME} ###
+  #
+  # Notes:
+  ## This script assumes your your bash sessin is running within the repository docker container (see ./)                                
+  ## This script calls relative varibles and assumes you have sourced an appriopriate configuration file (see ./config) 
+#+end_src
+
+***** UPDATE_ON_USE bioinfo.setup
+CLOSED: [2021-12-09 Thu 12:38]
+:PROPERTIES:
+:ID:       dbd3c67c-e33b-42d8-800d-705292d3c372
+:END:
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
+# -*- mode: snippet -*-
+# key: bioinfo.setup
+# expand-env: ((yas-indent-line 'none))
+# --
+`(concat "*" (make-string (org-current-level) ?*))` Setup
+`(concat "**" (make-string (org-current-level) ?*))` Bash
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+- Local (by $HOSTNAME)
+- Common
+  ,#+begin_src bash :tangle ./config/common.sh
+,#+end_src           
+`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
+- Command line
+  ,#+name: bash_preamble_cmd
+  ,#+begin_src bash
+if [[ -f ./config/\${HOSTNAME}.sh ]];
+then source ./config/\${HOSTNAME}.sh
+else
+    echo "No config file found for \${HOSTNAME}"
+    exit 1
+fi
+,#+end_src
+- Snakemake           
+`(concat "**" (make-string (org-current-level) ?*))` TODO Box and rclone
+`(concat "**" (make-string (org-current-level) ?*))` TODO Docker and singularity                       
+`(concat "***" (make-string (org-current-level) ?*))` Processes
+1. Write
+   ,#+begin_src fundamental :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
+,#+end_src 
+2. Build
+3. Make singularity container from docker container               
+`(concat "**" (make-string (org-current-level) ?*))` TODO Emacs and Org-mode
+- [ ] Run minimal YAS
+  bioinfo.setup  
+  bioinfo.inputs
+  bioinfo.data
+  locvars
+- [ ] Add 
+  - to main reference section
+    - Bioinformatics project [[6acdcddf-d693-40f2-a3ae-9703bad56043][module headline]] and [[tag:{bioinfo}][instances]]
+  - to Local variables
+    ,#+TODO: WAITING(w@) TODO(t) INPROCESS(p) | CLOSEOUT DONE(d!) DELEGATED(@) CANCELED(@)  
+    ,#+property: header-args:R    :session *PROJECT_NAME*
+`(concat "**" (make-string (org-current-level) ?*))` TODO Local data directory and WashU RIS Storage processes
+- Mount
+- Create directory structure
+  ,#+begin_src bash
+  <<bash_preamble>>
+  ,#+end_src          
+`(concat "**" (make-string (org-current-level) ?*))` R
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles         
+`(concat "**" (make-string (org-current-level) ?*))` TODO Repository, git, and github
+- [ ] ensure [[file:.git/hooks/pre-commit]]
+- [ ] Create repository structure
+  ,#+begin_src bash
+mkdir -p "\${repo}/config"
+mkdir -p "\${repo}/resources"
+mkdir -p "\${repo}/results"
+mkdir -p "\${repo}/src"
+mkdir -p "\${repo}/workflow/scripts"
+,#+end_src
+`(concat "***" (make-string (org-current-level) ?*))` README
+`(concat "**" (make-string (org-current-level) ?*))` Snakemake
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+`(concat "***" (make-string (org-current-level) ?*))` TODO Run commands
+#+end_src
+
+***** bioinfo.inputs
+:PROPERTIES:
+:ID:       d6bb61c9-8b10-4460-b987-0a6c678d2ddb
+:END:
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
+# -*- mode: snippet -*-
+# key: bioinfo.inputs
+# expand-env: ((yas-indent-line 'none))
+# --
+`(make-string (1+ (org-current-level)) ?*)` Inputs
+,#+name: input_table
+|basename|dirname|get_class|model_class|origin
+`(concat "**" (make-string (org-current-level) ?*))` Manually created input tables
+- (names must end in _input)
+-    
+#+end_src     
+
+**** Reference
+:PROPERTIES:
+:ID:       c68a6456-411b-4cb1-a112-119d9919d19d
+:END:
+
+  - Bioinformatics project mod [[tag:{bioinfo}][instances]]
+  - [X] Setup
+    1. [X] Run insert.mod yas
+    2. [X] Org-mode
+       - [X] Properties- ID
+
+- https://github.com/jkitchin/ox-ipynb
+
+***** Notes
+:PROPERTIES:
+:ID:       2ed8a040-d768-4a78-9b14-6347b2c68c97
+:END:
+
+- makefile not appriopriate here- not a compiled process
+
+***** Ideas
+:PROPERTIES:
+:ID:       ad9ce310-42cf-4e7f-8d1b-3556e1b8d48c
+:END:
+
+- Ideas - clone in from a repo of this mod
+  - create test data set for on repo dev
+  - data model dictionary
+  - data model graphic
+
+- Project organization and setup
+  - Run scripts perform final execution 
+    - Example
+      1. Source .. config
+      2. Run startup
+      3. Execute 1
+      4. Execute 2
+      5. Run cleanup
+    - Run scripts check for input and output variables 
+  - Config
+  - Src
+    - Scripts are written with relative variables.
+    - Scripts depend on parameters defined in configuration files
+    - Src Scripts and functions exclude variable checking, etc
+    - Functions
+- Incorporate R docker
+- 
+  #+begin_src bash :tangle ./src/biocollab_vars.sh
+#!/bin/bash
+# Get variables
+project="USER INPUT"
+repos_dir="USER INPUT"
+read -p "Project name: " project
+read -p "Repositories main directory: " repos_dir 
+repos_dir="${repos_dir:=home/jeszyman/repos}"
+project_dir=$(echo "$project" | sed 's/_/-/')
+
+echo Project is $project
+echo Project directory is $project_dir
+echo Repo will be cloned to $repos_dir
+
+# Clone
+cd "${repos_dir}"
+
+git clone git@github.com:jeszyman/biocollab "${project_dir}" && echo "cloned"
+
+
+echo "project=$project" >> "${project_dir}/config/main"
+echo "project_dir=$project_dir" >> "${project_dir}/config/main"
+#ln -s ${repos_dir}/basecamp "${repos_dir}/${project_dir}"/
+# Add symlinks
+#wait 
+#ln -s ${repos_dir}/basecamp "${repos_dir}/${project_dir}"/
+#ln -s "${repos_dir}/biotools" "${repos_dir}/${project_dir}/"
+#ln -s "${repos_dir}/latex" "${repos_dir}/${project_dir}/"
+
+#mv "${repos_dir}/${project_dir}/biocollab.org" "${repos_dir}/${project_dir}/${project_id}.org"
+
+#ln -s "${repos_dir}/${project_dir}/${project_id}.org" "${repos_dir}/org/"
+
+#+end_src
+
+**** bioinformatics pipeline                                  
+:PROPERTIES:
+:CREATED:  [2019-04-26 Fri 10:32]
+:ID:       333E498B-E0EA-460C-95EC-1931ACE19473
+:END:
+:LOGBOOK:
+CLOCK: [2019-10-07 Mon 17:04]--[2019-10-07 Mon 17:34] =>  0:30
+CLOCK: [2019-09-27 Fri 16:24]--[2019-09-27 Fri 16:36] =>  0:12
+CLOCK: [2019-08-30 Fri 10:11]--[2019-08-30 Fri 10:24] =>  0:13
+CLOCK: [2019-08-27 Tue 16:18]--[2019-08-27 Tue 16:34] =>  0:16
+CLOCK: [2019-08-14 Wed 11:45]--[2019-08-14 Wed 11:54] =>  0:09
+CLOCK: [2019-07-09 Tue 14:45]--[2019-07-09 Tue 15:31] =>  0:46
+CLOCK: [2019-07-08 Mon 10:28]--[2019-07-08 Mon 10:50] =>  0:22
+CLOCK: [2019-07-08 Mon 08:17]--[2019-07-08 Mon 09:27] =>  1:10
+CLOCK: [2019-07-05 Fri 20:59]--[2019-07-05 Fri 21:00] =>  0:01
+CLOCK: [2019-07-05 Fri 20:48]--[2019-07-05 Fri 20:53] =>  0:05
+CLOCK: [2019-06-25 Tue 09:22]--[2019-06-25 Tue 09:37] =>  0:15
+CLOCK: [2019-06-03 Mon 18:26]--[2019-06-03 Mon 18:40] =>  0:14
+CLOCK: [2019-06-25 Tue 08:00]--[2019-06-25 Tue 08:26] =>  0:26
+CLOCK: [2019-06-23 Sun 09:29]--[2019-06-23 Sun 10:01] =>  0:32
+CLOCK: [2019-06-21 Fri 15:45]--[2019-06-21 Fri 17:30] =>  1:45
+:END:
+#+PROPERTY: LOGGING nil
+
+
+https://www.reddit.com/r/orgmode/comments/fj7xcm/reproducible_research_interleaving_disparate/
+- [ ] module instance startup- upon initial entry into work heading of a module
+  - identify and invoke most specific applicable module 
+  - invoke module hierarchy
+- [ ] module instance subsequent entry- push unnecessary data out of attention 
+  - convert any free text to org-items
+  - organize org-items
+    - delete if possible, else
+    - place in export, else
+    - place in reference tree, else 
+    - place in ideas, else
+    - place in work tree
+      - tree must have checkbox at highest level
+      - if sublevels have checkboxes, higher levels need counter
+- [ ] setup repository artifact [0/0]
+  - github and local 
+  - Dockerfile
+  - org file 
+- [ ] build docker image
+  - first, build dockerfile commands into fat bioinformatics-toolkit container 
+  - then parse out the necessary components into a repo-specific dockerfile
+  - push REPO to github  
+- [ ] closeout
+  - [ ] update mod- consolidate and functionalize common tasks
+  - [ ] export
+- biopipe
+  - link to dockerfile
+  - link to shell script
+  - project setup
+    - local shell scripts and dockerfiles w/ symlink to repo site
+      - how to git symlinks? https://www.google.com/search?q=git+symbolic+links
+      - https://www.google.com/search?q=git+store+symbolic+links
+- reference
+  - concepts
+    - [[id:ED45C725-4F3D-4B22-BC6E-0995294DA131][computational biology and bioinformatics]]
+  - platform
+    - [[id:cd560390-aa1e-4c9e-8317-08610e5de42a][linux]]
+    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
+    - [[id:6116d262-9ca8-430b-b385-65e1a7fc0a70][nextflow]]
+    - [[id:FB8FF6B1-C6BD-4272-AC15-05BB15DF609B][emacs]] [[id:B171BCE2-2FF8-45C6-8958-8799B349E1B0][orgmode]]
+    - [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][github]] 
+  - [[~/repos/.emacs.d/snippets/org-mode/biopipe][YAS]] 
+  - [[id:333E498B-E0EA-460C-95EC-1931ACE19473][mod]]
+    - attributes
+      | isa | module                     |
+      | isa | work module                |
+      | isa | engineering module         |
+      | isa | code module                |
+      | isa | process development module |
+  - principles and philosophy
+    - antifragility
+    - minimization
+    - transparency
+    - reproducibility
+    - efficiency
+    - ?intpretabilty? - code logging, etc 
+  - best practices
+    - each tool install as standalone
+    - Version control - git / github
+    - File organization
+      - https://libraries.mit.edu/data-management/
+      - See [[file:~/maintenance.org::Information Maintenance][information maintenance]] Organization -> File tree structure
+    - https://github.com/kylelobo/The-Documentation-Compendium/
+    - http://www.broadinstitute.org/gatk/guide/best-practices
+      best practices include recording everything
+      record of all commands
+      record of all software versions
+      see Emacs, rpubs.com, sessionInfo and knitR
+    - [[http://www.nature.com/sdata/for-authors/submission-guidelines][Nature data submission guidelines]]
+    - https://kieranhealy.org/resources/
+    - http://kieranhealy.org/files/misc/workflow-apps.pdf
+    - see Anders,13
+    - no docker in docker for dev- confuses vols, etc. instead add emacs to each container and have local repos of .emacs and org
+    - prefer binaries over source- only real advantage to source is custom build
+  - stack
+    - [[id:c28ef36f-5b5c-4789-90da-270e56fc4898][ubuntu]]
+    - [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][git and github]]
+    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
+      - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]] 
+        - dockerfile - include current build status in comments
+        - sequencing dockerfile repos
+          - https://github.com/broadinstitte/gtex-pipeline.git
+          - https://hub.docker.com/u/mgibio/
+          - https://hub.docker.com/u/biocontainers
+    - nextflow
+      - https://www.youtube.com/watch?v=jsxTC8pNPUc&t=579s
+      - https://github.com/cbcrg/lncrna-annotation-nf
+      - https://www.nextflow.io/example1.html
+      - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
+      - commands
+        |----------+---------|
+        | function | command |
+        |----------+---------|
+        | <35>     | <35>    |
+        |          |         |
+      - processes
+      - documentation
+    - compendia
+      - [[file:~/Box%20Sync/org/compend.org::*UNIX][UNIX]]
+      - [[file:~/.emacs.d/settings.org::*Emacs][Emacs]]
+      - git
+    - set alias https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
+    - https://github.com/cbcrg/lncrna-annotation-nf
+    - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
+    - https://github.com/bioinformatics-core-shared-training/docker-4-bioinformatics
+    - https://gatkforums.broadinstitute.org/firecloud/discussion/6886/guidelines-for-working-with-docker-images-and-dockerfiles-broadies-only
+    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker]]
+      - https://www.boynux.com/containers-fat-thin/
+  - examples 
+    - https://wiki.cyverse.org/wiki/display/TUT/Biocontainers+for+the+Discovery+Environment
+    - https://blog.bananacoding.com/2016/08/29/how-to-build-bioinformatic-tools-image-for-docker/#.XSvInN-YW02
+  - package managers
+    - bioconda-
+      - EZ to add to dockerfile,
+      - source difficult to understand, but can see sh and yaml- e.g. https://github.com/bioconda/bioconda-recipes/tree/master/recipes/samtools
+      - https://www.nature.com/articles/s41592-018-0046-7
+  - modules
+  - https://www.reddit.com/r/bioinformatics/comments/d260ok/no_your_ten_rules_arent_simple_and_they_wont_fix/
+- ideas
+  - module improvement
+    - work module
+      - focus on minimal work to closeout this objective
+        - move unnecessary work to ideas
+  - https://nextflow-io.github.io/nf-hack18/training.html
+  - Consider more emacs shell work: 
+  - add to gatk docker
+    - https://hub.docker.com/u/broadinstitute
+    - https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_cancer_m2_MuTect2.php
+  - optimization
+    - Lock pipe
+    - [[https://www.biostars.org/p/241437/][bioinformatics software distribution]] 
+  - extend    
+  - [ ] information management- see cite:griffith2015b           
+    - https://github.com/genome/gms
+  - https://stackoverflow.com/questions/31578446/running-a-script-inside-a-docker-container-using-shell-script
+  - https://software.broadinstitute.org/gatk/documentation/article?id=11101
+  - https://www.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/whole-genome-sequencing.html
+
 *** Common intro
 :PROPERTIES:
 :ID:       6213753d-2b4d-4877-ad8c-8d8d09db4471
@@ -7251,11 +8212,18 @@ Gene set
              $repo/data/test \
              demulti_TCCT_R1.fastq
   #+end_src
-** Reference 
+** General reference 
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://www.reddit.com/r/bioinformatics/comments/rc9901/how_do_you_see_the_future_of_computational/
+- https://www.reddit.com/r/bioinformatics/comments/r941br/does_this_learning_path_seem_good_to_become_a/
+- https://docs.gdc.cancer.gov/Data/Introduction/
+- https://www.reddit.com/r/bioinformatics/comments/u0ppfq/can_you_recommend_a_textbook_that_gives_a/
+- https://bioinformatics.chat/
+- http://labs.pathology.jhu.edu/halushka/science/
+- https://www.reddit.com/r/ProgrammerHumor/comments/tpo157/after_every_scrum_meeting/
 - https://www.nature.com/articles/s41592-022-01412-7
 - [[https://bioinformaticsresourceportal.wustl.edu/][Washington University Computational Biology & Bioinformatics Resource Portal]]
 - https://www.reddit.com/r/bioinformatics/comments/skiod8/whats_your_setup_like_to_make_your_life_easier/
