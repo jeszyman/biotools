@@ -581,7 +581,7 @@ RUN conda uninstall r-base
 
 RUN R -e "install.packages('BiocManager', repos='http://cran.rstudio.com/')"
 
-RUN R -e "BiocManager::install(version='3.14', update=TRUE, ask=FALSE)"
+RUN R -e "BiocManager::install(version='3.15', update=TRUE, ask=FALSE)"
 
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
@@ -1192,7 +1192,7 @@ tag=biotools
 #########1#########2#########3#########4#########5#########6#########7#########8
 cd $run_dir
 docker build . --file $dockerfile --tag jeszyman/$tag
-docker push jeszyman/$tag
+kdocker push jeszyman/$tag
 
 cd ~/repos/biotools/docker/
 docker build . --file biotools_Dockerfile --tag jeszyman/biotools
