@@ -513,10 +513,9 @@ CLOCK: [2022-01-04 Tue 09:15]--[2022-01-04 Tue 09:16] =>  0:01
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
 >>>>>>> 881cc173bd0cb9c758b9417edcb1cfb47a45d75a
 :END:
+****** Introduction
 #+begin_src bash :tangle ./docker/biotools_Dockerfile
 FROM jeszyman/basecamp
-#########1#########2#########3#########4#########5#########6#########7#########8
-
 ################################################################################
 ################################################################################
 ###                                                                          ###
@@ -532,8 +531,10 @@ FROM jeszyman/basecamp
 # After build, the image will be pushed to the dockerhub as
 # jeszyman/biotools
 # (https://hub.docker.com/repository/docker/jeszyman/atac)
-#
-# See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
+#+end_src
+****** APT
+#+begin_src bash :tangle ./docker/biotools_Dockerfile
 
 ###########
 ### APT ###
@@ -554,6 +555,10 @@ RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-mi
 RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
     libssl1.0.0 \
     libssl-dev
+
+#+end_src
+****** Conda
+#+begin_src bash :tangle ./docker/biotools_Dockerfile
 
 #############
 ### Conda ###
@@ -582,7 +587,7 @@ RUN conda install -c bioconda rsem
 RUN conda install -c bioconda salmon
 RUN conda install -c bioconda sambamba
 RUN conda install -c bioconda samblaster
-RUN conda install -c bioconda samtools
+RUN conda install -c bioconda samtools=1.7
 RUN conda install -c bioconda seqkit
 RUN conda install -c bioconda seqtk
 RUN conda install -c bioconda skewer
@@ -592,6 +597,10 @@ RUN conda install -c bioconda subread
 RUN conda install -c bioconda trimmomatic=0.39
 RUN conda install -c bioconda vcftools
 
+
+#+end_src
+****** R and Bioconductor
+#+begin_src bash :tangle ./docker/biotools_Dockerfile
 # To avoid conflict with jeszyman/basecamp R install
 RUN conda uninstall r-base
 
@@ -614,6 +623,10 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "TxDb.Mmusculus.UCSC.mm10.ensGene", \
                                  "tximport"));'
 
+#+end_src
+****** Custom and manual installs
+#+begin_src bash :tangle ./docker/biotools_Dockerfile
+
 #######################
 ### Custom Installs ###
 #######################
@@ -624,32 +637,6 @@ RUN pip install multiqc
 #    flexbar
 
 RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
-
-
-#+end_src
-#+begin_src bash :tangle ./docker/biotools_Dockerfile
-RUN R -e 'install.packages("BiocManager"); \
-    BiocManager::install(); \
-    BiocManager::install(c("AnnotationDbi", \
-                           "biomaRt", \
-                           "circlize", \
-                           "ComplexHeatmap", \
-                           "copynumber", \
-                           "DESeq2", \
-                           "DRIMSeq", \
-                           "edgeR", \
-                           "fgsea", \
-                           "gage", \
-                           "gageData", \  
-                           "GenomicFeatures", \
-                           "gplots", \
-                           "limma", \
-                           "pathview", \
-                           "pheatmap", \
-                           "PoiClaClu", \
-                           "SummarizedExperiment", \
-                           "tximport"));'
-
 
 #+end_src
 - Old code
