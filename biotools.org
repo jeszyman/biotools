@@ -19,6 +19,7 @@ CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 - cite:bentham2021
 - https://github.com/pfields8/Fields_et_al_2018
 - https://community.rstudio.com/t/during-startup-warning-message-setting-lc-ctype-failed-on-windows/21451
+** [[id:7ed344ce-373c-4f9e-b24f-87b57374e1a0][Biotools docker]]
 ** ATAC-seq biopipe
 :LOGBOOK:
 CLOCK: [2022-05-01 Sun 12:17]--[2022-05-01 Sun 13:47] =>  1:30
@@ -619,8 +620,11 @@ RUN R -e 'install.packages("BiocManager"); \
 
 RUN pip install multiqc
 
-RUN apt-get install -yq --no-install-recommends --allow-unauthenticated \
-    flexbar
+#RUN apt-get install -yq --no-install-recommends --allow-unauthenticated \
+#    flexbar
+
+RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
+
 
 #+end_src
 #+begin_src bash :tangle ./docker/biotools_Dockerfile
@@ -1211,7 +1215,7 @@ tag=biotools
 #########1#########2#########3#########4#########5#########6#########7#########8
 cd $run_dir
 docker build . --file $dockerfile --tag jeszyman/$tag
-kdocker push jeszyman/$tag
+docker push jeszyman/$tag
 
 cd ~/repos/biotools/docker/
 docker build . --file biotools_Dockerfile --tag jeszyman/biotools
