@@ -639,6 +639,17 @@ RUN pip install multiqc
 RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
 
 #+end_src
+
+****** Testing
+#+begin_src bash :tangle ./docker/biotools_Dockerfile
+###############
+### Testing ###
+###############
+
+# Latest deepTools on bioconda does not contain alignmentSieve
+RUN conda install -c bioconda deeptools=3.4 --force
+
+#+end_src
 - Old code
     #
   # cnvkit
