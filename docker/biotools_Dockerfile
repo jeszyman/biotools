@@ -19,7 +19,7 @@ FROM jeszyman/basecamp
 ### APT ###
 ###########
 
-# Most apt managed installs occured in jeszyman/basecamp (the FROM container). 
+# Most apt managed installs occured in jeszyman/basecamp (the FROM container).
 # These apt installs are to allow specific function of a few key bioinformatics
 # tools.
 
@@ -28,7 +28,7 @@ RUN apt-get update
 # Required for bioconda flexbar
 RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
     libtbb-dev \
-    libtbb2 
+    libtbb2
 
 # Required for bioconda samtools
 RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
@@ -47,7 +47,7 @@ RUN conda install -c bioconda bowtie
 RUN conda install -c bioconda bowtie2
 RUN conda install -c bioconda bwa
 RUN conda install -c bioconda cutadapt
-RUN conda install -c bioconda deeptools
+RUN conda install -c bioconda deeptools=3.4 --force
 RUN conda install -c bioconda fastp
 RUN conda install -c bioconda fastqc
 RUN conda install -c bioconda gatk
@@ -58,7 +58,7 @@ RUN conda install -c bioconda picard
 RUN conda install -c bioconda preseq
 RUN conda install -c bioconda pysam
 RUN conda install -c bioconda qualimap
-RUN conda install -c bioconda rsem 
+RUN conda install -c bioconda rsem
 RUN conda install -c bioconda salmon
 RUN conda install -c bioconda sambamba
 RUN conda install -c bioconda samblaster
@@ -105,4 +105,11 @@ RUN pip install multiqc
 
 RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
 
+###############
+### Testing ###
+###############
+
+# Latest deepTools on bioconda does not contain alignmentSieve
 RUN conda install -c bioconda deeptools=3.4 --force
+
+RUN conda install -c bioconda uscs-bigwigtobedgraph=377
