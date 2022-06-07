@@ -17,11 +17,17 @@ CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 ** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 ** [[id:7ed344ce-373c-4f9e-b24f-87b57374e1a0][Biotools docker]]
 ** My bioinformatics pipelines
+*** See [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
+*** [[file:~/repos/cappseq/cappseq.org][CAPP-seq]]
+:LOGBOOK:
+CLOCK: [2022-06-07 Tue 08:19]--[2022-06-07 Tue 08:21] =>  0:02
+:END:
 *** [[file:~/repos/cfdna-wgs/cfdna-wgs.org][cfDNA WGS biopipe]]
 :PROPERTIES:
 :ID:       13120759-71db-497c-8ed3-1c58e47a7840
 :END:
 :LOGBOOK:
+CLOCK: [2022-06-07 Tue 08:29]--[2022-06-07 Tue 10:56] =>  2:27
 CLOCK: [2022-06-02 Thu 08:38]--[2022-06-02 Thu 08:40] =>  0:02
 CLOCK: [2022-05-31 Tue 11:03]--[2022-05-31 Tue 12:44] =>  1:41
 :END:
@@ -155,6 +161,33 @@ done
 #########1#########2#########3#########4#########5#########6#########7#########8
 #+end_src
 ** Bioinformatics processes flat list
+*** Make bwa index                                                 :smk_rule:
+- Snakemake
+  #+begin_src snakemake
+rule make_bwa_index_:
+    input:
+        fasta = config["data_dir"] + "/inputs/hg19.fa.gz",
+    params:
+        out_dir = config["data_dir"] + "/ref/hg19_bwa"
+        prefix = config["data_dir"] + "/ref/hg19_bwa/hg19"
+    output:
+        config["data_dir"] + "/ref/hg19_bwa/hg19.amb"
+    shell:
+        """
+        scripts/make_bwa_index_.sh {params.out_dir} {params.prefix} {input.fasta}
+        """
+#+end_src
+- [[file:./workflow/scripts/make_bwa_index_.sh][Base script]]
+  #+begin_src bash :tangle ./workflow/scripts/make_bwa_index_.sh
+mkdir -p $1
+bwa index -p $2 -a bwtsw $3
+# Snakemake variables
+# Function
+# Run command
+#+end_src
+
+*** Variant interpretation
+https://www.nature.com/articles/s43018-022-00379-w
 *** Adaptive TCR-beta immunosequencing
 :PROPERTIES:
 :CREATED:  [2020-12-20 Sun 16:45]
@@ -436,8 +469,6 @@ RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0
 ### Testing ###
 ###############
 
-# Latest deepTools on bioconda does not contain alignmentSieve
-RUN conda install -c bioconda deeptools=3.4 --force
 
 RUN conda install -c bioconda uscs-bigwigtobedgraph=377
 #+end_src
@@ -4235,6 +4266,7 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :ID:       7b2235be-1f01-4e51-9de9-adbdfc016b36
 :END:
 :LOGBOOK:
+CLOCK: [2022-06-06 Mon 10:45]--[2022-06-06 Mon 11:25] =>  0:40
 CLOCK: [2022-06-03 Fri 08:56]--[2022-06-03 Fri 09:31] =>  0:35
 :END:
 - https://www.scopus.com/results/results.uri?sort=plf-f&src=s&st1=%22precision+run-on+sequencing%22+OR+%22PRO-seq%22&sid=eeff59adf884bc66d7f41fb65fee374c&sot=b&sdt=b&sl=57&s=TITLE-ABS-KEY%28%22precision+run-on+sequencing%22+OR+%22PRO-seq%22%29&origin=searchbasic&editSaveSearch=&yearFrom=Before+1960&yearTo=Present
@@ -4468,6 +4500,7 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 :PROPERTIES:
 :ID:       053daf71-9f9f-4b5e-b400-222c4d24afea
 :END:
+- [[id:fb782179-c4ed-4b13-9343-e930c73f2591][Zander spatial transcriptomics zoom]]
 - Platforms
   | Platform   | Areas per slide | Barcodes per area | Detection                     |
   |------------+-----------------+-------------------+-------------------------------|
@@ -7217,10 +7250,105 @@ Directory Structure
 Some tools directory scripts and org-mode code blocks will call scripts or functions not present within the repository. These can be found in https://github.com/jeszyman/biotools and https://github.com/jeszyman/basecamp.
 
 **** Scripts
+#!/usr/bin/env bash
+repo=$1
+mntpt=$2
+sif_dir=$3
+
+# Check for parameters, return usage if empty
+if [ $# -ne 3 ];
+then
+    printf "\n usage: repo_startup.sh <REPO PATH> <RIS MOUNT PT> <SINGULARITY CONTAINER DIR>
+    \n ATAC-seq repo development helper script
+    \n "
+else
+
+    # Check git file hook is read-able
+    if [ -r "${repo}/.git/hooks/precommit" ]; then
+        echo "Git size check is read-able"
+    else
+        echo
+        "Git size check is not read-able"
+        exit 1
+    fi
+
+    # Check mount point
+    if grep -qs $mntpt /proc/mounts; then
+        echo "RIS storage mounted."
+    else
+        echo "RIS storage NOT mounted, exiting."
+        exit 1
+    fi
+
+    # Check singularity container
+    if [ -r $sif_dir/atac.sif ]; then
+        echo "Local SIF file present"
+    else
+        echo "No local SIF file found"
+        exit 1
+    fi
+
+    # Check singularity container up-to-date
+    if [ /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif -nt $sif_dir/atac.sif ]; then
+        echo "Local SIF is out of date. Updating ..."
+        cp /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif $sif_dir/atac.sif
+    else
+        echo "Local SIF file is up to date"
+    fi
+
+    cur_branch=$(git branch | head -n 1)
+    echo "Current branch is $cur_branch"
+fi
+
 ***** Make bioinformatics project repository directory structure
 :PROPERTIES:
 :ID:       b1c8d0f3-42aa-4427-93e0-5e97261343d5
 :END:
+#+begin_src bash :tangle ./tools/shell/no_message_commit.sh
+#!/usr/bin/env bash
+cd ~/repos/mpnst
+git pull
+git add -A
+git commit -m.
+git push
+#+end_src
+
+#+begin_src bash
+#!/usr/bin/env bash
+git pull &&
+    git add -A &&
+    git commit -m "minor changes" &&
+    git push
+
+git branch
+git branch stable4.1
+git checkout stable4.1
+git merge master
+git push origin stable4.1
+git checkout master
+#+end_src
+#+begin_src bash :tangle ./tools/shell/add_biorepo_dirs.sh
+#!/usr/bin/env bash
+# Check for parameters, return usage if empty
+if [ $# -ne 1 ];
+then
+    printf "\n usage: add_biorepo_dirs <REPOSITORY PATH>
+    \n Creates common repository directories for a biopipe as needed
+    \n "
+else
+    repo_dirs=("config"
+               "resources"
+               "test/inputs"
+               "tools/shell"
+               "workflow/scripts")
+
+for dir in "${repo_dirs[@]}";
+do
+   mkdir -p $1/$dir
+done
+fi
+
+#+end_src
 #+begin_src bash :tangle ./src/add_biorepo_dirs.sh
 # Check for parameters, return usage if empty
 if [[ $# -eq 0 ]] || [[ add_biorepo_dirs.sh == "h" ]] ; then
@@ -7928,6 +8056,24 @@ code links by name via org-ref - ref:deepTools_plotCoverage
 filename | class | r_name | box_path | http |
 basename|path|
 
+
+**** Rename by dict                                                :smk_rule:
+- Snakemake
+#+begin_src snakemake
+rule rename:
+    params:
+        old_sample_id=lambda wcs: sampledict[wcs.f],
+    output:
+        read1=config["fq_symlink_dir"] + "/{f}_R1.fastq.gz",
+        read2=config["fq_symlink_dir"] + "/{f}_R2.fastq.gz",
+    shell:
+        """
+        if [ -f {output.read1} ]; then \\rm {output.read1}; fi
+        if [ -f {output.read2} ]; then \\rm {output.read2}; fi
+        ln -s --relative "{config[raw_fq_dir]}/{params.old_sample_id}_R1.fastq.gz" {output.read1}
+        ln -s --relative "{config[raw_fq_dir]}/{params.old_sample_id}_R2.fastq.gz" {output.read2}
+        """
+#+end_src
 
 *** Common intro
 :PROPERTIES:
