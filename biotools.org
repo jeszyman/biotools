@@ -14,6 +14,10 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+#+begin_src bash
+repo="${HOME}/repos/biotools"
+mkdir -p ${repo}/tools/shell
+#+end_src
 ** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 ** [[id:7ed344ce-373c-4f9e-b24f-87b57374e1a0][Biotools docker]]
 ** My bioinformatics pipelines
@@ -323,6 +327,7 @@ CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
 **** Write [[file:docker/biotools_Dockerfile][dockerfile]]
 :PROPERTIES:
 :ID:       400562f2-e750-46b3-98ef-84ea59d447c9
+:header-args:bash: :tangle ./docker/biotools_Dockerfile
 :END:
 :LOGBOOK:
 <<<<<<< HEAD
@@ -336,7 +341,7 @@ CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
 >>>>>>> 881cc173bd0cb9c758b9417edcb1cfb47a45d75a
 :END:
 ***** Introduction
-#+begin_src bash :tangle ./docker/biotools_Dockerfile
+#+begin_src bash
 FROM jeszyman/basecamp
 ################################################################################
 ################################################################################
@@ -356,7 +361,7 @@ FROM jeszyman/basecamp
 
 #+end_src
 ***** APT
-#+begin_src bash :tangle ./docker/biotools_Dockerfile
+#+begin_src bash
 
 ###########
 ### APT ###
@@ -380,7 +385,7 @@ RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-mi
 
 #+end_src
 ***** Conda
-#+begin_src bash :tangle ./docker/biotools_Dockerfile
+#+begin_src bash
 
 #############
 ### Conda ###
@@ -422,7 +427,7 @@ RUN conda install -c bioconda vcftools
 
 #+end_src
 ***** R and Bioconductor
-#+begin_src bash :tangle ./docker/biotools_Dockerfile
+#+begin_src bash
 # To avoid conflict with jeszyman/basecamp R install
 RUN conda uninstall r-base
 
@@ -447,7 +452,7 @@ RUN R -e 'install.packages("BiocManager"); \
 
 #+end_src
 ***** Custom and manual installs
-#+begin_src bash :tangle ./docker/biotools_Dockerfile
+#+begin_src bash
 
 #######################
 ### Custom Installs ###
@@ -464,13 +469,48 @@ RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0
 #+end_src
 
 ***** Testing
-#+begin_src bash :tangle ./docker/biotools_Dockerfile
+#+begin_src bash
 ###############
 ### Testing ###
 ###############
 
 
-RUN conda install -c bioconda uscs-bigwigtobedgraph=377
+# Select UCSC Command-line utilities
+RUN mkdir /opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedClip --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedCommonRegions --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedCoverage --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedExtendRanges --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGeneParts --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphPack --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedIntersect --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedItemOverlapCount --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedJoinTabOffset --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedJoinTabOffset.py --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedMergeAdjacent --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedPartition --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedPileUps --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedRemoveOverlap --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedRestrictToPositions --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedSort --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToExons --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedSummary --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedToBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCat --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCluster --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCorrelate --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigInfo --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigMerge --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigSummary --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToBedGraph --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToWig --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/#+end_src --directory-prefix=/opt/ucsc \
+    && chmod -R +x /opt/ucsc/
+ENV PATH="/opt/ucsc:${PATH}"
 #+end_src
 - Old code
     #
@@ -1030,16 +1070,14 @@ RUN conda install -c bioconda uscs-bigwigtobedgraph=377
   #+begin_src bash
 run_dir=~/repos/biotools/docker
 dockerfile=biotools_Dockerfile
-tag=biotools
+name="jeszyman/biotools"
 
 #########1#########2#########3#########4#########5#########6#########7#########8
-cd $run_dir
-docker build . --file $dockerfile --tag jeszyman/$tag
-docker push jeszyman/$tag
+docker pull $name
 
-cd ~/repos/biotools/docker/
-docker build . --file biotools_Dockerfile --tag jeszyman/biotools
-docker push jeszyman/biotools
+docker build $run_dir --file $dockerfile --tag $name &&
+    echo "Build successful. Remember to push"
+
 #+end_src
 **** Run functions
 - run docker interactively
