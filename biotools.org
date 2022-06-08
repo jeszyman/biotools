@@ -21,6 +21,10 @@ mkdir -p ${repo}/tools/shell
 ** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 ** [[id:7ed344ce-373c-4f9e-b24f-87b57374e1a0][Biotools docker]]
 ** My bioinformatics pipelines
+*** [[file:~/repos/exrna/exrna.org][exRNA]]
+:LOGBOOK:
+CLOCK: [2022-06-08 Wed 13:41]
+:END:
 *** See [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 *** [[file:~/repos/cappseq/cappseq.org][CAPP-seq]]
 :LOGBOOK:
@@ -1439,6 +1443,7 @@ https://www.nature.com/articles/s41592-019-0511-y
 ** Bioinformatics process hierarchies
 *** Liquid biopsy
 - cite:illumina2022
+**** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 *** Immune cell sequencing
 - cite:bentham2021
 *** Common bioinformatics file manipulation
@@ -2637,6 +2642,12 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
+******* Landau Group
+:PROPERTIES:
+:ID:       b4b2a35f-e59a-4e84-995e-ca16d7fd190d
+:END:
+cite:widman2022
+
 ******* [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling]]
 ******* [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 ******* [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
@@ -7061,6 +7072,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :ID:       271b4d5f-727e-496e-b835-8fe9f8655655
 :END:
 :LOGBOOK:
+CLOCK: [2022-06-08 Wed 13:40]--[2022-06-08 Wed 13:41] =>  0:01
 CLOCK: [2022-05-05 Thu 11:36]--[2022-05-05 Thu 12:13] =>  0:37
 CLOCK: [2022-04-29 Fri 14:07]--[2022-04-29 Fri 14:11] =>  0:04
 CLOCK: [2022-01-14 Fri 08:43]--[2022-01-14 Fri 10:00] =>  1:17
@@ -7075,7 +7087,7 @@ CLOCK: [2021-08-17 Tue 13:28]--[2021-08-17 Tue 14:17] =>  0:49
 **** Template
 :PROPERTIES:
 :ID:       2a6a5dac-151e-42e8-a80a-74f77ad0d4ca
-:header-args:bash: :tangle-mode (identity #o555)
+:header-args: :tangle-mode (identity #o555)
 :logging: nil
 :END:
 ***** Setup
@@ -7288,6 +7300,10 @@ Directory Structure
 Some tools directory scripts and org-mode code blocks will call scripts or functions not present within the repository. These can be found in https://github.com/jeszyman/biotools and https://github.com/jeszyman/basecamp.
 
 **** Scripts
+#+begin_src bash
+#!/usr/bin/env bash
+
+
 #!/usr/bin/env bash
 repo=$1
 mntpt=$2
@@ -7337,11 +7353,33 @@ else
     cur_branch=$(git branch | head -n 1)
     echo "Current branch is $cur_branch"
 fi
-
+#+end_src
 ***** Make bioinformatics project repository directory structure
 :PROPERTIES:
 :ID:       b1c8d0f3-42aa-4427-93e0-5e97261343d5
 :END:
+#+begin_src bash :tangle ./tools/shell/add_biorepo_dirs.sh
+#!/usr/bin/env bash
+# Check for parameters, return usage if empty
+if [ $# -ne 1 ];
+then
+    printf "\n usage: add_biorepo_dirs <REPOSITORY PATH>
+    \n Creates common repository directories for a biopipe as needed
+    \n "
+else
+    repo_dirs=("config"
+               "resources"
+               "test/inputs"
+               "tools/shell"
+               "workflow/scripts")
+
+for dir in "${repo_dirs[@]}";
+do
+   mkdir -p $1/$dir
+done
+fi
+
+#+end_src
 #+begin_src bash :tangle ./tools/shell/no_message_commit.sh
 #!/usr/bin/env bash
 cd ~/repos/mpnst
@@ -7365,28 +7403,7 @@ git merge master
 git push origin stable4.1
 git checkout master
 #+end_src
-#+begin_src bash :tangle ./tools/shell/add_biorepo_dirs.sh
-#!/usr/bin/env bash
-# Check for parameters, return usage if empty
-if [ $# -ne 1 ];
-then
-    printf "\n usage: add_biorepo_dirs <REPOSITORY PATH>
-    \n Creates common repository directories for a biopipe as needed
-    \n "
-else
-    repo_dirs=("config"
-               "resources"
-               "test/inputs"
-               "tools/shell"
-               "workflow/scripts")
 
-for dir in "${repo_dirs[@]}";
-do
-   mkdir -p $1/$dir
-done
-fi
-
-#+end_src
 #+begin_src bash :tangle ./src/add_biorepo_dirs.sh
 # Check for parameters, return usage if empty
 if [[ $# -eq 0 ]] || [[ add_biorepo_dirs.sh == "h" ]] ; then
