@@ -1,4 +1,0 @@
-cat: /home/jeszyman/repos/bioinformatics-toolkit/tmp/chr1-trimmed.fa: No such file or directory
-Using seed 1578508236
-Finished        0
-Error response from daemon: Cannot kill container: nxf-PvKkidRotdDfCEc192RZpBa0: Container 79ca45a7568d5ab3dadf14229b7a1549b8ffa26f0bc2bdb74b40463423ea1202 is not running
