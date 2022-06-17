@@ -147,3 +147,5 @@ RUN mkdir /opt/ucsc \
 ENV PATH="/opt/ucsc:${PATH}"
 
 RUN conda install -c bioconda deeptools=3.5.1 --force
+
+RUN conda install -c bioconda htseq

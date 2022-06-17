@@ -1027,10 +1027,6 @@ RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0
 ### Testing ###
 ###############
 
-<<<<<<< HEAD
-=======
-
->>>>>>> b9c2efa0f9dea497d44a36278f1ecc64a81ce014
 # Select UCSC Command-line utilities
 RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
@@ -1069,6 +1065,9 @@ RUN mkdir /opt/ucsc \
 ENV PATH="/opt/ucsc:${PATH}"
 
 RUN conda install -c bioconda deeptools=3.5.1 --force
+#+end_src
+#+begin_src bash
+RUN conda install -c bioconda htseq
 #+end_src
 - Old code
     #
@@ -1629,13 +1628,18 @@ RUN conda install -c bioconda deeptools=3.5.1 --force
 run_dir=~/repos/biotools/docker
 dockerfile=~/repos/biotools/docker/biotools_Dockerfile
 name="jeszyman/biotools"
+sing_path="/mnt/ris/aadel/jeszyman/sing_containers/biotools.sif"
 
 #########1#########2#########3#########4#########5#########6#########7#########8
 docker pull $name
 
-docker build $run_dir --file $dockerfile --tag $name &&
-    echo "Build successful. Remember to push"
+docker build $run_dir --file $dockerfile --tag $name
 
+docker push $name
+
+singularity pull $sing_path docker://$name
+
+#cp $sing_path ~/sing_containers/biotools.sif
 #+end_src
 **** Make singularity container
 #+begin_src bash
