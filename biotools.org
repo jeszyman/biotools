@@ -888,15 +888,11 @@ CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
 :header-args:bash: :tangle ./docker/biotools_Dockerfile
 :END:
 :LOGBOOK:
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:19] =>  1:00
-=======
-=======
 CLOCK: [2022-01-04 Tue 09:15]--[2022-01-04 Tue 09:16] =>  0:01
->>>>>>> c7cf2572c54fd42def640fdf5cb9c8b5c6722ee9
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
->>>>>>> 881cc173bd0cb9c758b9417edcb1cfb47a45d75a
+
 :END:
 ***** Introduction
 #+begin_src bash
@@ -1032,7 +1028,6 @@ RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0
 ### Testing ###
 ###############
 
-
 # Select UCSC Command-line utilities
 RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
@@ -1069,6 +1064,11 @@ RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/#+end_src --directory-prefix=/opt/ucsc \
     && chmod -R +x /opt/ucsc/
 ENV PATH="/opt/ucsc:${PATH}"
+
+RUN conda install -c bioconda deeptools=3.5.1 --force
+#+end_src
+#+begin_src bash
+RUN conda install -c bioconda htseq
 #+end_src
 - Old code
     #
@@ -1627,15 +1627,24 @@ ENV PATH="/opt/ucsc:${PATH}"
 - build biotools docker container
   #+begin_src bash
 run_dir=~/repos/biotools/docker
-dockerfile=biotools_Dockerfile
+dockerfile=~/repos/biotools/docker/biotools_Dockerfile
 name="jeszyman/biotools"
+sing_path="/mnt/ris/aadel/jeszyman/sing_containers/biotools.sif"
 
 #########1#########2#########3#########4#########5#########6#########7#########8
 docker pull $name
 
-docker build $run_dir --file $dockerfile --tag $name &&
-    echo "Build successful. Remember to push"
+docker build $run_dir --file $dockerfile --tag $name
 
+docker push $name
+
+singularity pull $sing_path docker://$name
+
+#cp $sing_path ~/sing_containers/biotools.sif
+#+end_src
+**** Make singularity container
+#+begin_src bash
+singularity pull /mnt/ris/aadel/jeszyman/sing_containers/biotools.sif docker://jeszyman/biotools
 #+end_src
 **** Run functions
 - run docker interactively

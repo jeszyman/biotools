@@ -109,9 +109,6 @@ RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0
 ### Testing ###
 ###############
 
-# Latest deepTools on bioconda does not contain alignmentSieve
-RUN conda install -c bioconda deeptools=3.4 --force
-
 # Select UCSC Command-line utilities
 RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
@@ -148,3 +145,7 @@ RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/#+end_src --directory-prefix=/opt/ucsc \
     && chmod -R +x /opt/ucsc/
 ENV PATH="/opt/ucsc:${PATH}"
+
+RUN conda install -c bioconda deeptools=3.5.1 --force
+
+RUN conda install -c bioconda htseq
