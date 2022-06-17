@@ -441,9 +441,6 @@ RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0
 ### Testing ###
 ###############
 
-# Latest deepTools on bioconda does not contain alignmentSieve
-RUN conda install -c bioconda deeptools=3.4 --force
-
 # Select UCSC Command-line utilities
 RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
@@ -480,6 +477,8 @@ RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/#+end_src --directory-prefix=/opt/ucsc \
     && chmod -R +x /opt/ucsc/
 ENV PATH="/opt/ucsc:${PATH}"
+
+RUN conda install -c bioconda deeptools=3.5.1 --force
 #+end_src
 - Old code
     #
@@ -1038,7 +1037,7 @@ ENV PATH="/opt/ucsc:${PATH}"
 - build biotools docker container
   #+begin_src bash
 run_dir=~/repos/biotools/docker
-dockerfile=biotools_Dockerfile
+dockerfile=~/repos/biotools/docker/biotools_Dockerfile
 name="jeszyman/biotools"
 
 #########1#########2#########3#########4#########5#########6#########7#########8
@@ -1047,6 +1046,10 @@ docker pull $name
 docker build $run_dir --file $dockerfile --tag $name &&
     echo "Build successful. Remember to push"
 
+#+end_src
+**** Make singularity container
+#+begin_src bash
+singularity pull /mnt/ris/aadel/jeszyman/sing_containers/biotools.sif docker://jeszyman/biotools
 #+end_src
 **** Run functions
 - run docker interactively
