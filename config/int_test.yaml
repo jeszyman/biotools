@@ -1,0 +1,3 @@
+container: "${HOME}/sing_containers/biotools.sif"
+data_dir: "test"
+threads: 4

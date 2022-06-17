@@ -1,0 +1,6 @@
+Building DAG of jobs...
+MissingInputException in line 18 of /home/jeszyman/repos/biotools/workflow/int_test.smk:
+Missing input files for rule all:
+test/fastq/trim/lib002.fastq.gz
+test/fastq/trim/lib001.fastq.gz
+test/fastq/trim/lib003.fastq.gz

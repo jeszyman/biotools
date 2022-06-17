@@ -1,0 +1,4 @@
+library	basename	ris_path
+lib001	HiSeqW23_AGTD_R1.fastq.gz	test/inputs/new_seq
+lib002	sample3_R1.fastq.gz	test/inputs
+lib003	nci2835462_R1.fastq.gz	test/inputs
