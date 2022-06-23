@@ -52,14 +52,11 @@ RUN conda install -c bioconda fastp
 RUN conda install -c bioconda fastqc
 RUN conda install -c bioconda gatk
 RUN conda install -c bioconda goleft
-RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda mosdepth
 RUN conda install -c bioconda picard
 RUN conda install -c bioconda preseq
 RUN conda install -c bioconda pysam
 RUN conda install -c bioconda qualimap
-RUN conda install -c bioconda rsem
-RUN conda install -c bioconda salmon
 RUN conda install -c bioconda sambamba
 RUN conda install -c bioconda samblaster
 RUN conda install -c bioconda samtools=1.7
@@ -67,8 +64,6 @@ RUN conda install -c bioconda seqkit
 RUN conda install -c bioconda seqtk
 RUN conda install -c bioconda skewer
 RUN conda install -c bioconda snakemake
-RUN conda install -c bioconda star
-RUN conda install -c bioconda subread
 RUN conda install -c bioconda trimmomatic=0.39
 RUN conda install -c bioconda vcftools
 
@@ -86,13 +81,11 @@ RUN R -e "BiocManager::install(version='3.15', update=TRUE, ask=FALSE)"
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
           BiocManager::install(c("BSgenome.Hsapiens.UCSC.hg19", \
-                                 "DESeq2", \
                                  "EnsDb.Mmusculus.v79", \
                                  "org.Mm.eg.db", \
                                  "readr", \
                                  "Rsamtools", \
-                                 "TxDb.Mmusculus.UCSC.mm10.ensGene", \
-                                 "tximport"));'
+                                 "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
 
 #######################
 ### Custom Installs ###

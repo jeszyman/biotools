@@ -1,3 +1,4 @@
+- [ ] move all docker to single repo
 * Biotools                                                           :career:
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:14]
@@ -41,7 +42,8 @@ mkdir -p "${repo}/docker"
 # Check Packages
 ##
 ## Bioconductor
-if (!requireNamespace("BiocManager", quietly = TRUE))
+if (!requireNamespace("BiocMan
+ager", quietly = TRUE))
     install.packages("BiocManager")
 ##
 packages = c(
@@ -142,7 +144,6 @@ done
 # get readmes
 #########1#########2#########3#########4#########5#########6#########7#########8
 #+end_src
-** My script tools
 ** snakemake                                                 :biotool:career:
 :PROPERTIES:
 :ID:       a8b27140-4b9e-40c5-86ab-ee5afeae723f
@@ -711,6 +712,7 @@ CLOCK: [2022-06-07 Tue 08:19]--[2022-06-07 Tue 08:21] =>  0:02
 :ID:       13120759-71db-497c-8ed3-1c58e47a7840
 :END:
 :LOGBOOK:
+CLOCK: [2022-06-23 Thu 10:20]
 CLOCK: [2022-06-16 Thu 12:48]--[2022-06-16 Thu 13:42] =>  0:54
 CLOCK: [2022-06-16 Thu 08:08]--[2022-06-16 Thu 08:39] =>  0:31
 CLOCK: [2022-06-07 Tue 08:29]--[2022-06-07 Tue 10:56] =>  2:27
@@ -767,6 +769,7 @@ CLOCK: [2022-03-24 Thu 11:43]--[2022-03-24 Thu 11:57] =>  0:14
 CLOCK: [2022-03-24 Thu 10:55]--[2022-03-24 Thu 11:03] =>  0:08
 CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 :END:
+cite:minnoye2021
 **** Experimental Design
 - Read length
   - https://www.biostars.org/p/418363/
@@ -874,27 +877,49 @@ CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 *** Batch effect
 - batch effect https://evayiwenwang.github.io/Managing_batch_effects/detect.html
 https://www.reddit.com/r/bioinformatics/comments/s3twgh/working_with_batch_effects/
-*** Biotools docker
+*** Biotools docker containers
+**** [[file:docker/rna_Dockerfile][RNA docker]]
+:PROPERTIES:
+:header-args:bash: :tangle ./docker/rna_Dockerfile
+:ID:       1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
+:END:
+***** Preamble
+#+begin_src bash
+FROM jeszyman/biotools
+#+end_src
+***** Conda
+#+begin_src bash
+RUN conda install -c bioconda kallisto
+RUN conda install -c bioconda rsem
+RUN conda install -c bioconda star
+RUN conda install -c bioconda subread
+RUN conda install -c bioconda salmon
+#+end_src
+***** R and Bioconductor
+#+begin_src bash
+RUN R -e 'install.packages("BiocManager"); \
+          BiocManager::install(); \
+          BiocManager::install(c("DESeq2", \
+                                 "tximport"));'
+
+#+end_src
+***** Custom installs
+#+begin_src bash
+RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl
+RUN source
+#+end_src
+**** [[file:docker/biotools_Dockerfile][Biotools docker]]
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
-:END:
-:LOGBOOK:
-CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
-:END:
-**** [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
-**** Write [[file:docker/biotools_Dockerfile][dockerfile]]
-:PROPERTIES:
-:ID:       400562f2-e750-46b3-98ef-84ea59d447c9
 :header-args:bash: :tangle ./docker/biotools_Dockerfile
 :END:
 :LOGBOOK:
-
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:19] =>  1:00
 CLOCK: [2022-01-04 Tue 09:15]--[2022-01-04 Tue 09:16] =>  0:01
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
-
+CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
 :END:
-***** Introduction
+****** Preamble
 #+begin_src bash
 FROM jeszyman/basecamp
 ################################################################################
@@ -914,7 +939,7 @@ FROM jeszyman/basecamp
 # (https://hub.docker.com/repository/docker/jeszyman/atac)
 
 #+end_src
-***** APT
+****** APT
 #+begin_src bash
 
 ###########
@@ -938,7 +963,7 @@ RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-mi
     libssl-dev
 
 #+end_src
-***** Conda
+****** Conda
 #+begin_src bash
 
 #############
@@ -958,14 +983,11 @@ RUN conda install -c bioconda fastp
 RUN conda install -c bioconda fastqc
 RUN conda install -c bioconda gatk
 RUN conda install -c bioconda goleft
-RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda mosdepth
 RUN conda install -c bioconda picard
 RUN conda install -c bioconda preseq
 RUN conda install -c bioconda pysam
 RUN conda install -c bioconda qualimap
-RUN conda install -c bioconda rsem
-RUN conda install -c bioconda salmon
 RUN conda install -c bioconda sambamba
 RUN conda install -c bioconda samblaster
 RUN conda install -c bioconda samtools=1.7
@@ -973,14 +995,10 @@ RUN conda install -c bioconda seqkit
 RUN conda install -c bioconda seqtk
 RUN conda install -c bioconda skewer
 RUN conda install -c bioconda snakemake
-RUN conda install -c bioconda star
-RUN conda install -c bioconda subread
 RUN conda install -c bioconda trimmomatic=0.39
 RUN conda install -c bioconda vcftools
-
-
 #+end_src
-***** R and Bioconductor
+****** R and Bioconductor
 #+begin_src bash
 # To avoid conflict with jeszyman/basecamp R install
 RUN conda uninstall r-base
@@ -996,16 +1014,14 @@ RUN R -e "BiocManager::install(version='3.15', update=TRUE, ask=FALSE)"
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
           BiocManager::install(c("BSgenome.Hsapiens.UCSC.hg19", \
-                                 "DESeq2", \
                                  "EnsDb.Mmusculus.v79", \
                                  "org.Mm.eg.db", \
                                  "readr", \
                                  "Rsamtools", \
-                                 "TxDb.Mmusculus.UCSC.mm10.ensGene", \
-                                 "tximport"));'
+                                 "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
 
 #+end_src
-***** Custom and manual installs
+****** Custom and manual installs
 #+begin_src bash
 
 #######################
@@ -1022,7 +1038,7 @@ RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0
 
 #+end_src
 
-***** Testing
+****** Testing
 #+begin_src bash
 ###############
 ### Testing ###
@@ -1627,9 +1643,9 @@ RUN conda install -c bioconda htseq
 - build biotools docker container
   #+begin_src bash
 run_dir=~/repos/biotools/docker
-dockerfile=~/repos/biotools/docker/biotools_Dockerfile
-name="jeszyman/biotools"
-sing_path="/mnt/ris/aadel/jeszyman/sing_containers/biotools.sif"
+dockerfile=~/repos/biotools/docker/rna_Dockerfile
+name="jeszyman/rna"
+sing_path="/mnt/ris/aadel/jeszyman/sing_containers/rna.sif"
 
 #########1#########2#########3#########4#########5#########6#########7#########8
 docker pull $name
@@ -1707,6 +1723,8 @@ docker_interactive() {
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
+**** [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
+
 *** cdDNA 5' motif analysis
 :PROPERTIES:
 :ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
@@ -2025,6 +2043,9 @@ cat /home/jeszyman/data/ref/hg19.fa | simNGS \
 - https://www.nejm.org/doi/10.1056/NEJMoa2024534?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub++0pubmed
 - duplication rate as a measure of lib complexity
 ** Bioinformatics process hierarchies
+*** Single cell methylation sequencing
+https://www.nature.com/articles/nmeth.3035
+https://www.nature.com/articles/s41467-018-03149-4
 *** Liquid biopsy
 - cite:illumina2022
 **** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
@@ -4156,6 +4177,7 @@ doi:10.2202/1544-6115.1637.
 :PROPERTIES:
 :ID:       76718cf1-9fdf-4955-8733-3f8423915844
 :END:
+-  cite:vorperian2022
 - https://www.sciencedirect.com/science/article/pii/S0092867419301679?via%3Dihub#sec4
 - https://www.sciencedirect.com/science/article/pii/S2211124720315412?via%3Dihub
 - https://www.sciencedirect.com/science/article/pii/S0092867419302855?via%3Dihub
@@ -4570,6 +4592,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :PROPERTIES:
 :ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
 :END:
+https://www.embopress.org/doi/full/10.15252/msb.20188746
 - https://www.biorxiv.org/content/biorxiv/early/2019/02/05/541433.full.pdf
 - examples
   - - see fig 3 & methods https://genome.cshlp.org/content/27/2/208.full.pdf

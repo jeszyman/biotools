@@ -1,0 +1,14 @@
+FROM jeszyman/biotools
+
+RUN conda install -c bioconda kallisto
+RUN conda install -c bioconda rsem
+RUN conda install -c bioconda star
+RUN conda install -c bioconda subread
+RUN conda install -c bioconda salmon
+
+RUN R -e 'install.packages("BiocManager"); \
+          BiocManager::install(); \
+          BiocManager::install(c("DESeq2", \
+                                 "tximport"));'
+
+RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl
