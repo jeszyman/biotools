@@ -12,3 +12,4 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "tximport"));'
 
 RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl
+RUN source
