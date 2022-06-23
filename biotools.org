@@ -878,16 +878,17 @@ cite:minnoye2021
 - batch effect https://evayiwenwang.github.io/Managing_batch_effects/detect.html
 https://www.reddit.com/r/bioinformatics/comments/s3twgh/working_with_batch_effects/
 *** Biotools docker containers
-**** [[file:docker/rna_Dockerfile][RNA docker]]
+**** Dockerfiles
+***** [[file:docker/rna_Dockerfile][RNA docker]]
 :PROPERTIES:
 :header-args:bash: :tangle ./docker/rna_Dockerfile
 :ID:       1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
 :END:
-***** Preamble
+****** Preamble
 #+begin_src bash
 FROM jeszyman/biotools
 #+end_src
-***** Conda
+****** Conda
 #+begin_src bash
 RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda rsem
@@ -895,7 +896,7 @@ RUN conda install -c bioconda star
 RUN conda install -c bioconda subread
 RUN conda install -c bioconda salmon
 #+end_src
-***** R and Bioconductor
+****** R and Bioconductor
 #+begin_src bash
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
@@ -903,12 +904,12 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "tximport"));'
 
 #+end_src
-***** Custom installs
+****** Custom installs
 #+begin_src bash
 RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl
 RUN source
 #+end_src
-**** [[file:docker/biotools_Dockerfile][Biotools docker]]
+***** [[file:docker/biotools_Dockerfile][Biotools docker]]
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
 :header-args:bash: :tangle ./docker/biotools_Dockerfile
@@ -919,7 +920,7 @@ CLOCK: [2022-01-04 Tue 09:15]--[2022-01-04 Tue 09:16] =>  0:01
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
 CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
 :END:
-****** Preamble
+******* Preamble
 #+begin_src bash
 FROM jeszyman/basecamp
 ################################################################################
@@ -930,77 +931,55 @@ FROM jeszyman/basecamp
 ################################################################################
 ################################################################################
 
-#############
-### Notes ###
-#############
+#################
+###   Notes   ###
+#################
 #
 # After build, the image will be pushed to the dockerhub as
 # jeszyman/biotools
 # (https://hub.docker.com/repository/docker/jeszyman/atac)
 
 #+end_src
-****** APT
+******* Conda
 #+begin_src bash
 
-###########
-### APT ###
-###########
+#################
+###   Conda   ###
+#################
 
-# Most apt managed installs occured in jeszyman/basecamp (the FROM container).
-# These apt installs are to allow specific function of a few key bioinformatics
-# tools.
-
-RUN apt-get update
-
-# Required for bioconda flexbar
-RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
-    libtbb-dev \
-    libtbb2
-
-# Required for bioconda samtools
-RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
-    libssl1.0.0 \
-    libssl-dev
-
+RUN conda install -c bioconda bbmap \
+    && conda install -c bioconda bcftools \
+    && conda install -c bioconda bedops \
+    && conda install -c bioconda bedtools \
+    && conda install -c bioconda bowtie \
+    && conda install -c bioconda bowtie2 \
+    && conda install -c bioconda bwa \
+    && conda install -c bioconda cutadapt \
+    && conda install -c bioconda deeptools=3.5.1 --force \
+    && conda install -c bioconda fastp \
+    && conda install -c bioconda fastqc \
+    && conda install -c bioconda gatk \
+    && conda install -c bioconda goleft \
+    && conda install -c bioconda htseq \
+    && conda install -c bioconda mosdepth \
+    && conda install -c bioconda picard \
+    && conda install -c bioconda preseq \
+    && conda install -c bioconda pysam \
+    && conda install -c bioconda qualimap \
+    && conda install -c bioconda sambamba \
+    && conda install -c bioconda samblaster \
+    && conda install -c bioconda samtools=1.7 \
+    && conda install -c bioconda seqkit \
+    && conda install -c bioconda seqtk \
+    && conda install -c bioconda skewer \
+    && conda install -c bioconda snakemake \
+    && conda install -c bioconda trimmomatic=0.39 \
+    && conda install -c bioconda vcftools
 #+end_src
-****** Conda
-#+begin_src bash
-
-#############
-### Conda ###
-#############
-
-RUN conda install -c bioconda bbmap
-RUN conda install -c bioconda bcftools
-RUN conda install -c bioconda bedops
-RUN conda install -c bioconda bedtools
-RUN conda install -c bioconda bowtie
-RUN conda install -c bioconda bowtie2
-RUN conda install -c bioconda bwa
-RUN conda install -c bioconda cutadapt
-RUN conda install -c bioconda fastp
-RUN conda install -c bioconda fastqc
-RUN conda install -c bioconda gatk
-RUN conda install -c bioconda goleft
-RUN conda install -c bioconda mosdepth
-RUN conda install -c bioconda picard
-RUN conda install -c bioconda preseq
-RUN conda install -c bioconda pysam
-RUN conda install -c bioconda qualimap
-RUN conda install -c bioconda sambamba
-RUN conda install -c bioconda samblaster
-RUN conda install -c bioconda samtools=1.7
-RUN conda install -c bioconda seqkit
-RUN conda install -c bioconda seqtk
-RUN conda install -c bioconda skewer
-RUN conda install -c bioconda snakemake
-RUN conda install -c bioconda trimmomatic=0.39
-RUN conda install -c bioconda vcftools
-#+end_src
-****** R and Bioconductor
+******* R and Bioconductor
 #+begin_src bash
 # To avoid conflict with jeszyman/basecamp R install
-RUN conda uninstall r-base
+#RUN conda uninstall r-base
 
 ##########################
 ###   R Bioconductor   ###
@@ -1020,30 +999,13 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
 
 #+end_src
-****** Custom and manual installs
+******* UCSC
 #+begin_src bash
 
-#######################
-### Custom Installs ###
-#######################
+##############################################
+###   Select UCSC Command-line utilities   ###
+##############################################
 
-RUN pip install multiqc
-
-#RUN apt-get install -yq --no-install-recommends --allow-unauthenticated \
-#    flexbar
-
-RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
-
-
-#+end_src
-
-****** Testing
-#+begin_src bash
-###############
-### Testing ###
-###############
-
-# Select UCSC Command-line utilities
 RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedClip --directory-prefix=/opt/ucsc \
@@ -1078,16 +1040,32 @@ RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToWig --directory-prefix=/opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/#+end_src --directory-prefix=/opt/ucsc \
     && chmod -R +x /opt/ucsc/
+
 ENV PATH="/opt/ucsc:${PATH}"
 
-RUN conda install -c bioconda deeptools=3.5.1 --force
-
 #+end_src
+******* Custom and manual installs
 #+begin_src bash
-RUN conda install -c bioconda htseq
 
+###########################
+###   Custom Installs   ###
+###########################
+
+# Multiqc
+
+RUN pip install multiqc
+
+# Flexbar
+
+RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
 
 #+end_src
+
+******* Development                                                     :dev:
+:PROPERTIES:
+:header-args: :tangle no
+:END:
+- give specific versions for all condas
 - Old code
     #
   # cnvkit
@@ -1641,18 +1619,16 @@ RUN conda install -c bioconda htseq
   ##
   #RUN echo "source activate py2" > ~/.bashrc
   #ENV PATH /opt/conda/envs/py2/bin:$PATH
-**** Build
+**** Helper shell scripts
+***** Build docker container
 - build biotools docker container
   #+begin_src bash
 run_dir=~/repos/biotools/docker
-<<<<<<< HEAD
 dockerfile=~/repos/biotools/docker/rna_Dockerfile
 name="jeszyman/rna"
 sing_path="/mnt/ris/aadel/jeszyman/sing_containers/rna.sif"
-=======
 dockerfile=~/repos/biotools/docker/biotools_Dockerfile
 name="jeszyman/biotools"
->>>>>>> 98a7bdd (.)
 
 #########1#########2#########3#########4#########5#########6#########7#########8
 docker pull $name
@@ -1665,11 +1641,11 @@ singularity pull $sing_path docker://$name
 
 #cp $sing_path ~/sing_containers/biotools.sif
 #+end_src
-**** Make singularity container
+***** Make singularity container
 #+begin_src bash
 singularity pull /mnt/ris/aadel/jeszyman/sing_containers/biotools.sif docker://jeszyman/biotools
 #+end_src
-**** Run functions
+***** Run functions
 - run docker interactively
   #+name: docker_interactive
   #+begin_src bash
@@ -1730,7 +1706,8 @@ docker_interactive() {
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
-**** [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
+**** Reference
+- [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
 
 *** cdDNA 5' motif analysis
 :PROPERTIES:
