@@ -120,6 +120,10 @@ RUN pip install multiqc
 
 RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
 
+# samtools
+
+RUN conda install -c bioconda samtools openssl=1.0
+
 ##################
 ###   Picard   ###
 ##################
