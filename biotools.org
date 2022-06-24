@@ -964,7 +964,6 @@ RUN conda install -c bioconda bbmap \
     && conda install -c bioconda goleft \
     && conda install -c bioconda htseq \
     && conda install -c bioconda mosdepth \
-    && conda install -c bioconda picard \
     && conda install -c bioconda preseq \
     && conda install -c bioconda pysam \
     && conda install -c bioconda qualimap \
@@ -1062,7 +1061,26 @@ RUN pip install multiqc
 RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
 
 #+end_src
+******** Picard
+#+begin_src bash
 
+##################
+###   Picard   ###
+##################
+
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated openjdk-8-jdk
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+#https://github.com/genome/docker-picard-cwl/commit/639ad8e4d8e7bd7e6e10f193df8d5cd16260d2e2
+RUN mkdir /opt/picard-2.18.1/ \
+    && cd /tmp/ \
+    && wget --no-check-certificate https://github.com/broadinstitute/picard/releases/download/2.18.1/picard.jar \
+    && mv picard.jar /opt/picard-2.18.1/ \
+    && ln -s /opt/picard-2.18.1 /opt/picard \
+    && ln -s /opt/picard-2.18.1 /usr/picard
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+#+end_src
 ******* Development                                                     :dev:
 :PROPERTIES:
 :header-args: :tangle no
@@ -1673,6 +1691,50 @@ singularity pull $sing_path docker://$name
 #cp $sing_path ~/sing_containers/biotools.sif
 #+end_src
 ***** Make singularity container
+#+begin_src bash
+#!/usr/bin/env bash
+#
+###   SCRIPT NAME   ###
+#
+
+# Notes
+# ...
+
+# Setup
+
+set -e # enable exit on error
+set -u # unset variables are errors
+set -o pipefail # failures can occur anywhere in pipeline
+
+# Variables
+
+readonly blah=$1
+blue=$(tput setaf 4)
+
+# Functions
+
+usage()
+{
+    printf "
+           ${blue}Script to do blah \n
+    usage:  blah\n
+"
+    exit 1
+}
+
+main()
+{
+    [[ $# -ne 2 ]] && usage
+    echo "$blah"
+    normal=$(tput sgr0)
+    printf "%40s\n" "${blue}This text is bluenormal"
+}
+
+# Run
+
+main "$@"
+#+end_src
+
 #+begin_src bash
 singularity pull /mnt/ris/aadel/jeszyman/sing_containers/biotools.sif docker://jeszyman/biotools
 #+end_src
