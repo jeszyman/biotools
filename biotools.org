@@ -1622,7 +1622,36 @@ RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0
   #RUN echo "source activate py2" > ~/.bashrc
   #ENV PATH /opt/conda/envs/py2/bin:$PATH
 **** Helper shell scripts
-***** Build docker container
+***** INPROCESS Build docker container
+#+begin_src bash
+#!/usr/bin/env bash
+
+#################################################
+###   Common build docker container command   ###
+#################################################
+
+# Notes
+
+# Setup
+
+set -euxo pipefail
+
+# Functions
+
+build(){
+    # Check for parameters, return usage if empty
+    if [ $# -ne 2 ];
+    then
+        printf "\n usage: FUNCTION NAME  VAR 1  VAR 2
+        \n  SCRIPT FUNCTION OR PURPOSE
+        \n "
+    else
+}
+
+# Commands
+#+end_src
+docker build . --file biotools_Dockerfile --no-cache --pull --tag jeszyman/biotools
+
 - build biotools docker container
   #+begin_src bash
 run_dir=~/repos/biotools/docker
