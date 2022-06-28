@@ -7,68 +7,48 @@ FROM jeszyman/basecamp
 ################################################################################
 ################################################################################
 
-#############
-### Notes ###
-#############
+#################
+###   Notes   ###
+#################
 #
 # After build, the image will be pushed to the dockerhub as
 # jeszyman/biotools
 # (https://hub.docker.com/repository/docker/jeszyman/atac)
 
-###########
-### APT ###
-###########
+#################
+###   Conda   ###
+#################
 
-# Most apt managed installs occured in jeszyman/basecamp (the FROM container).
-# These apt installs are to allow specific function of a few key bioinformatics
-# tools.
-
-RUN apt-get update
-
-# Required for bioconda flexbar
-RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
-    libtbb-dev \
-    libtbb2
-
-# Required for bioconda samtools
-RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
-    libssl1.0.0 \
-    libssl-dev
-
-#############
-### Conda ###
-#############
-
-RUN conda install -c bioconda bbmap
-RUN conda install -c bioconda bcftools
-RUN conda install -c bioconda bedops
-RUN conda install -c bioconda bedtools
-RUN conda install -c bioconda bowtie
-RUN conda install -c bioconda bowtie2
-RUN conda install -c bioconda bwa
-RUN conda install -c bioconda cutadapt
-RUN conda install -c bioconda deeptools=3.4 --force
-RUN conda install -c bioconda fastp
-RUN conda install -c bioconda fastqc
-RUN conda install -c bioconda gatk
-RUN conda install -c bioconda goleft
-RUN conda install -c bioconda mosdepth
-RUN conda install -c bioconda picard
-RUN conda install -c bioconda preseq
-RUN conda install -c bioconda pysam
-RUN conda install -c bioconda qualimap
-RUN conda install -c bioconda sambamba
-RUN conda install -c bioconda samblaster
-RUN conda install -c bioconda samtools=1.7
-RUN conda install -c bioconda seqkit
-RUN conda install -c bioconda seqtk
-RUN conda install -c bioconda skewer
-RUN conda install -c bioconda snakemake
-RUN conda install -c bioconda trimmomatic=0.39
-RUN conda install -c bioconda vcftools
+RUN conda install -c bioconda bbmap \
+    && conda install -c bioconda bcftools \
+    && conda install -c bioconda bedops \
+    && conda install -c bioconda bedtools \
+    && conda install -c bioconda bowtie \
+    && conda install -c bioconda bowtie2 \
+    && conda install -c bioconda bwa \
+    && conda install -c bioconda cutadapt \
+    && conda install -c bioconda deeptools=3.5.1 --force \
+    && conda install -c bioconda fastp \
+    && conda install -c bioconda fastqc \
+    && conda install -c bioconda gatk \
+    && conda install -c bioconda goleft \
+    && conda install -c bioconda htseq \
+    && conda install -c bioconda mosdepth \
+    && conda install -c bioconda preseq \
+    && conda install -c bioconda pysam \
+    && conda install -c bioconda qualimap \
+    && conda install -c bioconda sambamba \
+    && conda install -c bioconda samblaster \
+    && conda install -c bioconda samtools=1.7 \
+    && conda install -c bioconda seqkit \
+    && conda install -c bioconda seqtk \
+    && conda install -c bioconda skewer \
+    && conda install -c bioconda snakemake \
+    && conda install -c bioconda trimmomatic=0.39 \
+    && conda install -c bioconda vcftools
 
 # To avoid conflict with jeszyman/basecamp R install
-RUN conda uninstall r-base
+#RUN conda uninstall r-base
 
 ##########################
 ###   R Bioconductor   ###
@@ -87,22 +67,10 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "Rsamtools", \
                                  "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
 
-#######################
-### Custom Installs ###
-#######################
+##############################################
+###   Select UCSC Command-line utilities   ###
+##############################################
 
-RUN pip install multiqc
-
-#RUN apt-get install -yq --no-install-recommends --allow-unauthenticated \
-#    flexbar
-
-RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
-
-###############
-### Testing ###
-###############
-
-# Select UCSC Command-line utilities
 RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedClip --directory-prefix=/opt/ucsc \
@@ -137,10 +105,43 @@ RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToWig --directory-prefix=/opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/#+end_src --directory-prefix=/opt/ucsc \
     && chmod -R +x /opt/ucsc/
+
 ENV PATH="/opt/ucsc:${PATH}"
 
-RUN conda install -c bioconda deeptools=3.5.1 --force
+###########################
+###   Custom Installs   ###
+###########################
 
+# Multiqc
+
+RUN pip install multiqc
+
+# Flexbar
+
+RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
+
+# samtools
+
+RUN conda install -c bioconda samtools openssl=1.0
+
+##################
+###   Picard   ###
+##################
+
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated openjdk-8-jdk
+
+<<<<<<< HEAD
 RUN conda install -c bioconda htseq
 
 RUN conda install -c bioconda mirdeep2
+=======
+#########1#########2#########3#########4#########5#########6#########7#########8
+#https://github.com/genome/docker-picard-cwl/commit/639ad8e4d8e7bd7e6e10f193df8d5cd16260d2e2
+RUN mkdir /opt/picard-2.18.1/ \
+    && cd /tmp/ \
+    && wget --no-check-certificate https://github.com/broadinstitute/picard/releases/download/2.18.1/picard.jar \
+    && mv picard.jar /opt/picard-2.18.1/ \
+    && ln -s /opt/picard-2.18.1 /opt/picard \
+    && ln -s /opt/picard-2.18.1 /usr/picard
+#########1#########2#########3#########4#########5#########6#########7#########8
+>>>>>>> ae5a8a87e0ae59dd6680574df06c27aefd9f829f

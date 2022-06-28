@@ -1,4 +1,40 @@
-- [ ] move all docker to single repo
+https://www.reddit.com/r/commandline/comments/vcs92o/scitopdf_quickly_fetch_science_from_scihub/
+
+-e
+
+docker build --no-cache --file $dockeefile --pull --tag $tag .
+
+docker push $tag
+
+
+Singularity build
+
+
+Rclone cp
+#+begin_src bash
+cd ~/repos/cfdna-wgs
+cat
+#+end_src
+
+#+begin_src bash
+git add -A
+git commit -m "stable3.0.0"
+git push
+git push origin stable3.0.0
+#+end_src
+#+begin_src bash
+#!/usr/bin/env bash
+docker build \
+       --file biotools_Dockerfile \
+       --no-cache \
+       --pull \
+       --tag jeszyman/biotools \
+       .
+
+docker push jeszyman/biotools
+
+singularity
+#+end_src
 * Biotools                                                           :career:
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:14]
@@ -6,6 +42,7 @@
 :header-args:bash: :tangle-mode (identity #o555)
 :END:
 :LOGBOOK:
+CLOCK: [2022-06-24 Fri 10:19]--[2022-06-24 Fri 11:31] =>  1:12
 CLOCK: [2021-09-13 Mon 07:04]--[2021-09-13 Mon 07:27] =>  0:23
 CLOCK: [2021-08-20 Fri 11:33]--[2021-08-20 Fri 11:41] =>  0:08
 CLOCK: [2021-05-20 Thu 13:14]--[2021-05-20 Thu 13:38] =>  0:24
@@ -156,259 +193,6 @@ CLOCK: [2021-07-01 Thu 11:18]--[2021-07-01 Thu 11:48] =>  0:30
 :END:
 - https://stackoverflow.com/questions/56024818/conditional-execution-of-multiplexed-analysis-with-snakemake
 *** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
-*** Scripts (flat list)
-:PROPERTIES:
-:header-args: mkdirp yes
-:header-args+: :tangle-mode (identity #o555)
-:END:
-**** Draw rulegraph
-:PROPERTIES:
-:ID:       78a99954-1d5d-4e09-87a4-6690f28f4519
-:END:
-#+begin_src bash :tangle ./tools/shell/smk_draw.sh
-# Check for parameters and return usage
-if [ "$#" -ne 3 ];
-then
-    printf "\n usage: smk_dry_run.sh config_file smk_file pdf_loc
-    \n Draws the rulegraph for a snakemake file at pdf_loc
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 \
-        --cores 1 \
-        --rulegraph \
-        --snakefile $2 | dot -Tpdf > $3
-fi
-#+end_src
-
-**** Dry run
-:PROPERTIES:
-:ID:       c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
-:END:
-#+begin_src bash :tangle ./tools/shell/smk_dry_run.sh
-# Check for parameters and return usage
-if [ "$#" -ne 2 ];
-then
-    printf "\n usage: smk_dry_run.sh <SMK CONFIG YAML> <SMK FILE>
-    \n Script for snakemake dry run.
-    \n Will not test singularity container is working
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 \
-        --cores 1 \
-        --dry-run \
-        --forceall \
-        --printshellcmds \
-        --use-singularity \
-        --snakefile $2
-fi
-#+end_src
-**** Forced run
-:PROPERTIES:
-:ID:       c2a25d2f-05bb-4eda-920f-e2d9fa768de6
-:END:
-#+begin_src bash :tangle ./tools/shell/smk_forced_run.sh
-# Check for parameters and return usage
-if [ "$#" -ne 2 ];
-then
-    printf "\n usage: smk_forced_run.sh config_file smk_file
-    \n Script to complete forced run of snakefile.
-    \n Assumes
-    - Singularity container specified in config
-    - a mount point at /mnt
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 --cores 4 \
-        --use-singularity \
-        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
-        --forceall \
-        --printshellcmds \
-        --rerun-incomplete \
-        --snakefile $2 \
-        --verbose
-fi
-#+end_src
-**** Normal run
-:PROPERTIES:
-:ID:       3adf72d3-aa35-4a3d-8eba-0df075c52e26
-:END:
-#+begin_src bash :tangle ./tools/shell/smk_run.sh
-# Check for parameters, return usage if empty
-if [ "$#" -ne 2 ];
-then
-    printf "\n usage: smk_forced_run.sh <SMK CONFIG YAML> <SMK FILE>
-    \n Script to complete an normal run of a snakefile
-    \n Assumes
-    - Singularity container specified in config
-    - a mount point at /mnt
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 --cores 4 \
-        --use-singularity \
-        --printshellcmds \
-        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
-        --rerun-incomplete \
-        --snakefile $2 \
-        --verbose
-fi
-#+end_src
-
-**** Dev
-#+begin_src bash
-#!/bin/bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-
-####################################
-###   Choose and Run Snakefile   ###
-####################################
-
-# Setup
-#set -euxov pipefail
-
-source config/${HOSTNAME}.sh
-echo "The following `*.smk` archives were found; select one:"
-
-# set the prompt used by select, replacing "#?"
-PS3="Use number to select an option"
-
-select filename in ./workflow/*.smk
-
-do
-    if [[ "$filename" == "" ]]
-    then
-        echo "'$REPLY' is not a valid number"
-        continue
-    fi
-    echo $filename
-    select run_option in dry_run normal force_final force_all
-    do
-        echo selected $run_option
-        case $run_option in
-            dry_run)
-                source activate snakemake
-                snakemake \
-                    --configfile config/${HOSTNAME}.yaml \
-                    --cores $threads \
-                    --directory ${repo} \
-                    --dry-run \
-                    --rerun-incomplete \
-                    --singularity-args "--bind $mntpt:$mntpt" \
-                    --use-singularity \
-                    --snakefile $filename
-                ;;
-            normal)
-                source activate snakemake
-                select nohup_option in no yes
-                do
-                    case $nohup_option in
-                        no)
-                            snakemake \
-                                --configfile config/${HOSTNAME}.yaml \
-                                --cores $threads \
-                                --directory ${repo} \
-                                --singularity-args "--bind $mntpt:$mntpt" \
-                                --use-singularity \
-                                --snakefile $filename
-                            ;;
-                        yes)
-                            nohup snakemake \
-                                  --configfile config/${HOSTNAME}.yaml \
-                                  --cores $threads \
-                                  --directory ${repo} \
-                                  --singularity-args "--bind $mntpt:$mntpt" \
-                                  --use-singularity \
-                                  --snakefile $filename
-                            ;;
-                    esac
-                done
-                ;;
-            force_final)
-                source activate snakemake
-                select nohup_option in no yes
-                do
-                    case $nohup_option in
-                        no)
-                            snakemake \
-                                --configfile config/${HOSTNAME}.yaml \
-                                --cores $threads \
-                                --directory ${repo} \
-                                --force \
-                                --singularity-args "--bind $mntpt:$mntpt" \
-                                --use-singularity \
-                                --snakefile $filename
-                            ;;
-                        yes)
-                            nohup snakemake \
-                                  --configfile config/${HOSTNAME}.yaml \
-                                  --cores $threads \
-                                  --directory ${repo} \
-                                  --force \
-                                  --singularity-args "--bind $mntpt:$mntpt" \
-                                  --use-singularity \
-                                  --snakefile $filename
-                            ;;
-                    esac
-                done
-                ;;
-            force_all)
-                source activate snakemake
-                select nohup_option in no yes
-                do
-                    case $nohup_option in
-                        no)
-
-                snakemake \
-                    --configfile config/${HOSTNAME}.yaml \
-                    --cores $threads \
-                    --directory ${repo} \
-                    -F \
-                    --singularity-args "--bind $mntpt:$mntpt" \
-                    --use-singularity \
-                    --snakefile $filename
-                                            ;;
-                        yes)
-                nohup snakemake \
-                    --configfile config/${HOSTNAME}.yaml \
-                    --cores $threads \
-                    --directory ${repo} \
-                    -F \
-                    --singularity-args "--bind $mntpt:$mntpt" \
-                    --use-singularity \
-                    --snakefile $filename
-                            ;;
-                    esac
-                done
-                ;;
-        esac
-        break
-    done
-    break
-done
-#+end_src
-
 *** Processes
 **** Install and setup
   - via mambaforge https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
@@ -560,28 +344,54 @@ args = commandArgs(trailingOnly = TRUE)
 # key: smk.rule.bash
 # expand-env: ((yas-indent-line 'none))
 # --
-`(make-string (org-current-level) ?*)` ${1: RULE NAME}:smk_rule:
+`(make-string (org-current-level) ?*)` ${6: <RULE DESCRIPTIVE NAME>}    :smk_rule:
 - Snakemake
-,#+begin_src snakemake
-rule ${1:$(string-replace " " "_" (downcase yas-text))}:
+  #+begin_src snakemake
+rule ${1:<RULE WORKFLOW NAME>}:
+    input:
+        config["data_dir"] + "/${2:<INPUT>}",
+    params:
+        script = config["${3:<SCRIPTS DIR>}"] + "/$1.sh",
+    output:
+        config["data_dir"] + "/${4:<OUTPUT>}",
+    log:
+        config["data_dir"] + "/logs/${5:<INPUT ID>}_$1.log",
+    shell:
+        """
+        {params.script} \
+        {input} \
+        {output} &> {log}
+        """
+,#+end_src
+- [[file:./workflow/scripts/${1:$(downcase yas-text)}.sh][Shell script]]
+  #+begin_src bash :tangle ./workflow/scripts/${1:$(downcase yas-text)}.sh
+#!/usr/bin/env bash
+input=\$1
+output=\$2
+,#+end_src
+#+end_src
+
+
+**** sdf:smk_rule:
+- Snakemake
+#+begin_src snakemake
+rule Symbol’s function definition is void: string-replace:
     input:
     output:
     shell:
         """
-        scripts/${1:$(string-replace " " "_" (downcase yas-text))}.sh
+        scripts/Symbol’s function definition is void: string-replace.sh
         """
-,#+end_src
-- [[file:./workflows/scripts/${1:$(string-replace " " "_" (downcase yas-text))}.sh][Base script]]
-,  #+begin_src bash :tangle ./workflows/scripts/${1:$(string-replace " " "_" (downcase yas-text))}.sh
+#+end_src
+- [[file:./workflows/scripts/Symbol’s function definition is void: string-replace.sh][Base script]]
+,  #+begin_src bash :tangle ./workflows/scripts/Symbol’s function definition is void: string-replace.sh
 #!/usr/bin/env bash
 #########1#########2#########3#########4#########5#########6#########7#########8
 ###
-###   ${2: SCRIPT TITLE}   ###
+###    SCRIPT TITLE   ###
 ###
 
-,#+end_src
 #+end_src
-
 *** General reference
 - https://github.com/aomlomics/tourmaline
 - https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
@@ -702,7 +512,6 @@ snakemake --cores 20 --forceall
 CLOCK: [2022-06-08 Wed 14:22]--[2022-06-08 Wed 14:44] =>  0:22
 CLOCK: [2022-06-08 Wed 13:41]--[2022-06-08 Wed 13:59] =>  0:18
 :END:
-*** See [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 *** [[file:~/repos/cappseq/cappseq.org][CAPP-seq]]
 :LOGBOOK:
 CLOCK: [2022-06-07 Tue 08:19]--[2022-06-07 Tue 08:21] =>  0:02
@@ -712,7 +521,11 @@ CLOCK: [2022-06-07 Tue 08:19]--[2022-06-07 Tue 08:21] =>  0:02
 :ID:       13120759-71db-497c-8ed3-1c58e47a7840
 :END:
 :LOGBOOK:
-CLOCK: [2022-06-23 Thu 10:20]
+CLOCK: [2022-06-27 Mon 11:13]--[2022-06-27 Mon 13:40] =>  2:27
+CLOCK: [2022-06-27 Mon 09:11]--[2022-06-27 Mon 10:47] =>  1:36
+CLOCK: [2022-06-27 Mon 07:07]--[2022-06-27 Mon 09:11] =>  2:04
+CLOCK: [2022-06-24 Fri 08:02]--[2022-06-24 Fri 10:19] =>  2:17
+CLOCK: [2022-06-23 Thu 10:20]--[2022-06-23 Thu 11:18] =>  0:58
 CLOCK: [2022-06-16 Thu 12:48]--[2022-06-16 Thu 13:42] =>  0:54
 CLOCK: [2022-06-16 Thu 08:08]--[2022-06-16 Thu 08:39] =>  0:31
 CLOCK: [2022-06-07 Tue 08:29]--[2022-06-07 Tue 10:56] =>  2:27
@@ -724,6 +537,7 @@ CLOCK: [2022-05-31 Tue 11:03]--[2022-05-31 Tue 12:44] =>  1:41
 CLOCK: [2022-05-01 Sun 12:17]--[2022-05-01 Sun 13:47] =>  1:30
 CLOCK: [2021-12-09 Thu 12:47]--[2022-05-01 Sun 13:57] => 3432:10
 :END:
+*** See [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 ** Bioinformatics processes flat list
 *** Make bwa index                                                 :smk_rule:
 - Snakemake
@@ -878,16 +692,21 @@ cite:minnoye2021
 - batch effect https://evayiwenwang.github.io/Managing_batch_effects/detect.html
 https://www.reddit.com/r/bioinformatics/comments/s3twgh/working_with_batch_effects/
 *** Biotools docker containers
-**** [[file:docker/rna_Dockerfile][RNA docker]]
+- ...rebuild local sing and add checker
+- [ ] sing builds to box
+- [ ] move all docker to single repo
+**** Dockerfiles
+- https://github.com/orgs/genome/repositories?type=all
+***** [[file:docker/rna_Dockerfile][RNA docker]]
 :PROPERTIES:
 :header-args:bash: :tangle ./docker/rna_Dockerfile
 :ID:       1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
 :END:
-***** Preamble
+****** Preamble
 #+begin_src bash
 FROM jeszyman/biotools
 #+end_src
-***** Conda
+****** Conda
 #+begin_src bash
 RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda rsem
@@ -895,7 +714,7 @@ RUN conda install -c bioconda star
 RUN conda install -c bioconda subread
 RUN conda install -c bioconda salmon
 #+end_src
-***** R and Bioconductor
+****** R and Bioconductor
 #+begin_src bash
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
@@ -903,12 +722,12 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "tximport"));'
 
 #+end_src
-***** Custom installs
+****** Custom installs
 #+begin_src bash
 RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl
 RUN source
 #+end_src
-**** [[file:docker/biotools_Dockerfile][Biotools docker]]
+***** [[file:docker/biotools_Dockerfile][Biotools docker]]
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
 :header-args:bash: :tangle ./docker/biotools_Dockerfile
@@ -919,7 +738,7 @@ CLOCK: [2022-01-04 Tue 09:15]--[2022-01-04 Tue 09:16] =>  0:01
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
 CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
 :END:
-****** Preamble
+******* Preamble
 #+begin_src bash
 FROM jeszyman/basecamp
 ################################################################################
@@ -930,78 +749,54 @@ FROM jeszyman/basecamp
 ################################################################################
 ################################################################################
 
-#############
-### Notes ###
-#############
+#################
+###   Notes   ###
+#################
 #
 # After build, the image will be pushed to the dockerhub as
 # jeszyman/biotools
 # (https://hub.docker.com/repository/docker/jeszyman/atac)
 
 #+end_src
-****** APT
+******* Conda
 #+begin_src bash
 
-###########
-### APT ###
-###########
+#################
+###   Conda   ###
+#################
 
-# Most apt managed installs occured in jeszyman/basecamp (the FROM container).
-# These apt installs are to allow specific function of a few key bioinformatics
-# tools.
-
-RUN apt-get update
-
-# Required for bioconda flexbar
-RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
-    libtbb-dev \
-    libtbb2
-
-# Required for bioconda samtools
-RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
-    libssl1.0.0 \
-    libssl-dev
-
+RUN conda install -c bioconda bbmap \
+    && conda install -c bioconda bcftools \
+    && conda install -c bioconda bedops \
+    && conda install -c bioconda bedtools \
+    && conda install -c bioconda bowtie \
+    && conda install -c bioconda bowtie2 \
+    && conda install -c bioconda bwa \
+    && conda install -c bioconda cutadapt \
+    && conda install -c bioconda deeptools=3.5.1 --force \
+    && conda install -c bioconda fastp \
+    && conda install -c bioconda fastqc \
+    && conda install -c bioconda gatk \
+    && conda install -c bioconda goleft \
+    && conda install -c bioconda htseq \
+    && conda install -c bioconda mosdepth \
+    && conda install -c bioconda preseq \
+    && conda install -c bioconda pysam \
+    && conda install -c bioconda qualimap \
+    && conda install -c bioconda sambamba \
+    && conda install -c bioconda samblaster \
+    && conda install -c bioconda samtools=1.7 \
+    && conda install -c bioconda seqkit \
+    && conda install -c bioconda seqtk \
+    && conda install -c bioconda skewer \
+    && conda install -c bioconda snakemake \
+    && conda install -c bioconda trimmomatic=0.39 \
+    && conda install -c bioconda vcftools
 #+end_src
-****** Conda
-#+begin_src bash
-
-#############
-### Conda ###
-#############
-
-RUN conda install -c bioconda bbmap
-RUN conda install -c bioconda bcftools
-RUN conda install -c bioconda bedops
-RUN conda install -c bioconda bedtools
-RUN conda install -c bioconda bowtie
-RUN conda install -c bioconda bowtie2
-RUN conda install -c bioconda bwa
-RUN conda install -c bioconda cutadapt
-RUN conda install -c bioconda deeptools=3.4 --force
-RUN conda install -c bioconda fastp
-RUN conda install -c bioconda fastqc
-RUN conda install -c bioconda gatk
-RUN conda install -c bioconda goleft
-RUN conda install -c bioconda mosdepth
-RUN conda install -c bioconda picard
-RUN conda install -c bioconda preseq
-RUN conda install -c bioconda pysam
-RUN conda install -c bioconda qualimap
-RUN conda install -c bioconda sambamba
-RUN conda install -c bioconda samblaster
-RUN conda install -c bioconda samtools=1.7
-RUN conda install -c bioconda seqkit
-RUN conda install -c bioconda seqtk
-RUN conda install -c bioconda skewer
-RUN conda install -c bioconda snakemake
-RUN conda install -c bioconda trimmomatic=0.39
-RUN conda install -c bioconda vcftools
-#+end_src
-****** R and Bioconductor
+******* R and Bioconductor
 #+begin_src bash
 # To avoid conflict with jeszyman/basecamp R install
-RUN conda uninstall r-base
+#RUN conda uninstall r-base
 
 ##########################
 ###   R Bioconductor   ###
@@ -1021,30 +816,13 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
 
 #+end_src
-****** Custom and manual installs
+******* UCSC
 #+begin_src bash
 
-#######################
-### Custom Installs ###
-#######################
+##############################################
+###   Select UCSC Command-line utilities   ###
+##############################################
 
-RUN pip install multiqc
-
-#RUN apt-get install -yq --no-install-recommends --allow-unauthenticated \
-#    flexbar
-
-RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
-
-
-#+end_src
-
-****** Testing
-#+begin_src bash
-###############
-### Testing ###
-###############
-
-# Select UCSC Command-line utilities
 RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedClip --directory-prefix=/opt/ucsc \
@@ -1079,15 +857,56 @@ RUN mkdir /opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToWig --directory-prefix=/opt/ucsc \
     && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/#+end_src --directory-prefix=/opt/ucsc \
     && chmod -R +x /opt/ucsc/
+
 ENV PATH="/opt/ucsc:${PATH}"
 
-RUN conda install -c bioconda deeptools=3.5.1 --force
 #+end_src
+******* Custom and manual installs
 #+begin_src bash
-RUN conda install -c bioconda htseq
 
-RUN conda install -c bioconda mirdeep2
+###########################
+###   Custom Installs   ###
+###########################
+
+# Multiqc
+
+RUN pip install multiqc
+
+# Flexbar
+
+RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
+
+# samtools
+# https://www.biostars.org/p/9480029/
+RUN conda install -c bioconda samtools openssl=1.0
+
 #+end_src
+******** Picard
+#+begin_src bash
+
+##################
+###   Picard   ###
+##################
+
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated openjdk-8-jdk
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+#https://github.com/genome/docker-picard-cwl/commit/639ad8e4d8e7bd7e6e10f193df8d5cd16260d2e2
+RUN mkdir /opt/picard-2.18.1/ \
+    && cd /tmp/ \
+    && wget --no-check-certificate https://github.com/broadinstitute/picard/releases/download/2.18.1/picard.jar \
+    && mv picard.jar /opt/picard-2.18.1/ \
+    && ln -s /opt/picard-2.18.1 /opt/picard \
+    && ln -s /opt/picard-2.18.1 /usr/picard
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+
+#+end_src
+******* Development                                                     :dev:
+:PROPERTIES:
+:header-args: :tangle no
+:END:
+- give specific versions for all condas
 - Old code
     #
   # cnvkit
@@ -1641,13 +1460,45 @@ RUN conda install -c bioconda mirdeep2
   ##
   #RUN echo "source activate py2" > ~/.bashrc
   #ENV PATH /opt/conda/envs/py2/bin:$PATH
-**** Build
+**** Helper shell scripts
+***** INPROCESS Build docker container
+#+begin_src bash
+#!/usr/bin/env bash
+
+#################################################
+###   Common build docker container command   ###
+#################################################
+
+# Notes
+
+# Setup
+
+set -euxo pipefail
+
+# Functions
+
+build(){
+    # Check for parameters, return usage if empty
+    if [ $# -ne 2 ];
+    then
+        printf "\n usage: FUNCTION NAME  VAR 1  VAR 2
+        \n  SCRIPT FUNCTION OR PURPOSE
+        \n "
+    else
+}
+
+# Commands
+#+end_src
+docker build . --file biotools_Dockerfile --no-cache --pull --tag jeszyman/biotools
+
 - build biotools docker container
   #+begin_src bash
 run_dir=~/repos/biotools/docker
 dockerfile=~/repos/biotools/docker/rna_Dockerfile
 name="jeszyman/rna"
 sing_path="/mnt/ris/aadel/jeszyman/sing_containers/rna.sif"
+dockerfile=~/repos/biotools/docker/biotools_Dockerfile
+name="jeszyman/biotools"
 
 #########1#########2#########3#########4#########5#########6#########7#########8
 docker pull $name
@@ -1660,11 +1511,55 @@ singularity pull $sing_path docker://$name
 
 #cp $sing_path ~/sing_containers/biotools.sif
 #+end_src
-**** Make singularity container
+***** Make singularity container
+#+begin_src bash
+#!/usr/bin/env bash
+#
+###   SCRIPT NAME   ###
+#
+
+# Notes
+# ...
+
+# Setup
+
+set -e # enable exit on error
+set -u # unset variables are errors
+set -o pipefail # failures can occur anywhere in pipeline
+
+# Variables
+
+readonly blah=$1
+blue=$(tput setaf 4)
+
+# Functions
+
+usage()
+{
+    printf "
+           ${blue}Script to do blah \n
+    usage:  blah\n
+"
+    exit 1
+}
+
+main()
+{
+    [[ $# -ne 2 ]] && usage
+    echo "$blah"
+    normal=$(tput sgr0)
+    printf "%40s\n" "${blue}This text is bluenormal"
+}
+
+# Run
+
+main "$@"
+#+end_src
+
 #+begin_src bash
 singularity pull /mnt/ris/aadel/jeszyman/sing_containers/biotools.sif docker://jeszyman/biotools
 #+end_src
-**** Run functions
+***** Run functions
 - run docker interactively
   #+name: docker_interactive
   #+begin_src bash
@@ -1725,7 +1620,8 @@ docker_interactive() {
 :LOGBOOK:
 CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
-**** [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
+**** Reference
+- [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
 
 *** cdDNA 5' motif analysis
 :PROPERTIES:
@@ -7693,8 +7589,58 @@ CLOCK: [2021-08-25 Wed 08:05]--[2021-08-25 Wed 08:33] =>  0:28
 CLOCK: [2021-08-17 Tue 16:00]--[2021-08-17 Tue 17:30] =>  1:30
 CLOCK: [2021-08-17 Tue 13:28]--[2021-08-17 Tue 14:17] =>  0:49
 :END:
-*** Scripts
+*** Local transclusion
+**** Integration testing configuration YAML
+:PROPERTIES:
+:ID:       01e0536d-4981-4e08-9ac6-9aee3e879def
+:END:
+#+begin_src bash
+#########1#########2#########3#########4#########5#########6#########7#########8
 
+###################################################
+###   Standard Integration Testing Parameters   ###
+###################################################
+
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+threads: 4
+
+data_dir: "test"
+# Data directory will contain all snakefile outputs in a sub-directory.
+#########1#########2#########3#########4#########5#########6#########7#########8
+#+end_src
+
+**** Common bioinformatics pipeline repository structure and function
+:PROPERTIES:
+:ID:       acb9d298-c357-4468-95b1-df9f5549437e
+:END:
+Directory Structure
+#+begin_example
+-- Main
+   |-- config
+   |-- resources
+   |-- results
+   |-- test
+       |-- inputs
+   |-- tools
+   |-- workflow
+       |-- scripts
+#+end_example
+
+Some tools directory scripts and org-mode code blocks will call scripts or functions not present within the repository. These can be found in https://github.com/jeszyman/biotools and https://github.com/jeszyman/basecamp.
+
+*** gitignore
+# Taken from https://github.com/jeszyman/biotools on 2022-06-08
+# Ignore hidden directories
+./snake*
+**/.snakemake
+**/.cache
+**/.config
+**/.java
+*** Scripts (flat list)
 **** Make bioinformatics project repository directory structure
 :PROPERTIES:
 :ID:       b1c8d0f3-42aa-4427-93e0-5e97261343d5
@@ -7763,6 +7709,148 @@ else
 
     cur_branch=$(git branch | head -n 1)
     echo "Current branch is $cur_branch"
+fi
+#+end_src
+**** Dry run
+:PROPERTIES:
+:ID:       c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
+:END:
+#+begin_src bash :tangle ./tools/shell/smk_dry_run.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters and return usage
+if [ "$#" -ne 2 ];
+then
+    printf "\n usage: smk_dry_run.sh <SMK CONFIG YAML> <SMK FILE>
+    \n Script for snakemake dry run.
+    \n Will not test singularity container is working
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --dry-run \
+        --forceall \
+        --printshellcmds \
+        --use-singularity \
+        --snakefile $2
+fi
+#+end_src
+**** Draw rulegraph
+:PROPERTIES:
+:ID:       78a99954-1d5d-4e09-87a4-6690f28f4519
+:END:
+#+begin_src bash :tangle ./tools/shell/smk_draw.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters and return usage
+if [ "$#" -ne 3 ];
+then
+    printf "\n usage: smk_dry_run.sh config_file smk_file pdf_loc
+    \n Draws the rulegraph for a snakemake file at pdf_loc
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    png=$(echo $3 | sed 's/.pdf/.png/g')
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --rulegraph \
+        --snakefile $2 | dot -Tpdf > $3
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --rulegraph \
+        --snakefile $2 | dot -Tpng > $png
+fi
+#+end_src
+
+**** Normal run
+:PROPERTIES:
+:ID:       3adf72d3-aa35-4a3d-8eba-0df075c52e26
+:END:
+#+begin_src bash :tangle ./tools/shell/smk_run.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters, return usage if empty
+if [ "$#" -ne 2 ];
+then
+    printf "\n usage: smk_forced_run.sh <SMK CONFIG YAML> <SMK FILE>
+    \n Script to complete an normal run of a snakefile
+    \n Assumes
+    - Singularity container specified in config
+    - a mount point at /mnt
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 --cores 4 \
+        --use-singularity \
+        --printshellcmds \
+        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
+        --rerun-incomplete \
+        --snakefile $2 \
+        --verbose
+fi
+#+end_src
+
+**** Forced run
+:PROPERTIES:
+:ID:       c2a25d2f-05bb-4eda-920f-e2d9fa768de6
+:END:
+#+begin_src bash :tangle ./tools/shell/smk_forced_run.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters and return usage
+if [ "$#" -ne 2 ];
+then
+    printf "\n usage: smk_forced_run.sh config_file smk_file
+    \n Script to complete forced run of snakefile.
+    \n Assumes
+    - Singularity container specified in config
+    - a mount point at /mnt
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 --cores 4 \
+        --use-singularity \
+        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
+        --forceall \
+        --printshellcmds \
+        --rerun-incomplete \
+        --snakefile $2 \
+        --verbose
 fi
 #+end_src
 **** Development
@@ -7894,16 +7982,160 @@ git merge master
 git push origin stable4.1
 git checkout master
 #+end_src
+***** Dev
+#+begin_src bash
+#!/bin/bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+####################################
+###   Choose and Run Snakefile   ###
+####################################
+
+# Setup
+#set -euxov pipefail
+
+source config/${HOSTNAME}.sh
+echo "The following `*.smk` archives were found; select one:"
+
+# set the prompt used by select, replacing "#?"
+PS3="Use number to select an option"
+
+select filename in ./workflow/*.smk
+
+do
+    if [[ "$filename" == "" ]]
+    then
+        echo "'$REPLY' is not a valid number"
+        continue
+    fi
+    echo $filename
+    select run_option in dry_run normal force_final force_all
+    do
+        echo selected $run_option
+        case $run_option in
+            dry_run)
+                source activate snakemake
+                snakemake \
+                    --configfile config/${HOSTNAME}.yaml \
+                    --cores $threads \
+                    --directory ${repo} \
+                    --dry-run \
+                    --rerun-incomplete \
+                    --singularity-args "--bind $mntpt:$mntpt" \
+                    --use-singularity \
+                    --snakefile $filename
+                ;;
+            normal)
+                source activate snakemake
+                select nohup_option in no yes
+                do
+                    case $nohup_option in
+                        no)
+                            snakemake \
+                                --configfile config/${HOSTNAME}.yaml \
+                                --cores $threads \
+                                --directory ${repo} \
+                                --singularity-args "--bind $mntpt:$mntpt" \
+                                --use-singularity \
+                                --snakefile $filename
+                            ;;
+                        yes)
+                            nohup snakemake \
+                                  --configfile config/${HOSTNAME}.yaml \
+                                  --cores $threads \
+                                  --directory ${repo} \
+                                  --singularity-args "--bind $mntpt:$mntpt" \
+                                  --use-singularity \
+                                  --snakefile $filename
+                            ;;
+                    esac
+                done
+                ;;
+            force_final)
+                source activate snakemake
+                select nohup_option in no yes
+                do
+                    case $nohup_option in
+                        no)
+                            snakemake \
+                                --configfile config/${HOSTNAME}.yaml \
+                                --cores $threads \
+                                --directory ${repo} \
+                                --force \
+                                --singularity-args "--bind $mntpt:$mntpt" \
+                                --use-singularity \
+                                --snakefile $filename
+                            ;;
+                        yes)
+                            nohup snakemake \
+                                  --configfile config/${HOSTNAME}.yaml \
+                                  --cores $threads \
+                                  --directory ${repo} \
+                                  --force \
+                                  --singularity-args "--bind $mntpt:$mntpt" \
+                                  --use-singularity \
+                                  --snakefile $filename
+                            ;;
+                    esac
+                done
+                ;;
+            force_all)
+                source activate snakemake
+                select nohup_option in no yes
+                do
+                    case $nohup_option in
+                        no)
+
+                snakemake \
+                    --configfile config/${HOSTNAME}.yaml \
+                    --cores $threads \
+                    --directory ${repo} \
+                    -F \
+                    --singularity-args "--bind $mntpt:$mntpt" \
+                    --use-singularity \
+                    --snakefile $filename
+                                            ;;
+                        yes)
+                nohup snakemake \
+                    --configfile config/${HOSTNAME}.yaml \
+                    --cores $threads \
+                    --directory ${repo} \
+                    -F \
+                    --singularity-args "--bind $mntpt:$mntpt" \
+                    --use-singularity \
+                    --snakefile $filename
+                            ;;
+                    esac
+                done
+                ;;
+        esac
+        break
+    done
+    break
+done
+#+end_src
+
 *** Template
 :PROPERTIES:
 :ID:       2a6a5dac-151e-42e8-a80a-74f77ad0d4ca
-:header-args: :tangle-mode (identity #o555)
+:header-args: :tangle no :tangle-mode (identity #o555)
+:header-args+: :noweb yes
 :logging: nil
 :END:
 **** Setup
 :PROPERTIES:
 :ID:       7fe36f7c-f577-4028-a3ad-ebac215c4eac
 :END:
+***** Bash preamble
+#+name: bash_preamble
+#+begin_src bash
+
+#  Note: This script is tangled from code blocks in the Emacs Org-mode file at
+#  https://github.com/jeszyman/biotools/blob/master/biotools.org. Changes
+#  made directly to this file will be overwritten upon tangle from Org-mode.
+
+
+#+end_src
 ***** Repository
 add_biorepo_dirs.sh
 ***** Dockerfile
@@ -7990,26 +8222,6 @@ git log --pretty="- %s"
       - Stable branches follow semantic versioning
 - Sub-biopipes
   - Sub-biopipes and other resources (biotools, basecamp, etc.) are top-levle directories in the main repository. These can be symlinked or git submodules.
-*** Local transclusion
-**** Common bioinformatics pipeline repository structure and function
-:PROPERTIES:
-:ID:       acb9d298-c357-4468-95b1-df9f5549437e
-:END:
-Directory Structure
-#+begin_example
--- Main
-   |-- config
-   |-- resources
-   |-- results
-   |-- test
-       |-- inputs
-   |-- tools
-   |-- workflow
-       |-- scripts
-#+end_example
-
-Some tools directory scripts and org-mode code blocks will call scripts or functions not present within the repository. These can be found in https://github.com/jeszyman/biotools and https://github.com/jeszyman/basecamp.
-
 *** Best practice
 - snakemake bioinformatics pipeline development
   - git
