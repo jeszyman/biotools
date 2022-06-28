@@ -8,6 +8,7 @@ else
     # Necessary to run conda snakemake command in shell script
     eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
     #
+    png=$(echo $3 | sed 's/.pdf/.png/g')
     conda activate snakemake
     #
     snakemake \
@@ -15,4 +16,10 @@ else
         --cores 1 \
         --rulegraph \
         --snakefile $2 | dot -Tpdf > $3
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --rulegraph \
+        --snakefile $2 | dot -Tpng > $png
 fi
