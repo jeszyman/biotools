@@ -298,34 +298,35 @@ smk.rule.${1:$$(yas-choose-value '("bash" "r"))}
 # key: smk.rule.r
 # expand-env: ((yas-indent-line 'none))
 # --
-`(make-string (org-current-level) ?*)` ${1: RULE NAME}:smk_rule:
+`(make-string (org-current-level) ?*)` ${6: <RULE DESCRIPTIVE NAME>}    :smk_rule:
 - Snakemake
   ,#+begin_src snakemake
-rule ${1:$(string-replace " " "_" (downcase yas-text))}:
+rule ${1:<RULE WORKFLOW NAME>}:
     input:
+        config["data_dir"] + "/${2:<INPUT>}",
     params:
-        script = config["repo"] + "/workflow/scripts/${1:$(string-replace " " "_" (downcase yas-text))}.R"
+        script = config["${3:<SCRIPTS DIR>}"] + "/$1.R",
     output:
+        config["data_dir"] + "/${4:<OUTPUT>}",
     log:
-        config["data_dir"] + "/logs/${1:$(string-replace " " "_" (downcase yas-text))}.log"
+        config["data_dir"] + "/logs/${5:<LOG ID>}_$1.log",
     shell:
         """
         Rscript {params.script} \
-        >& {log}
+        {input} \
+        {output} \
+        > {log} 2>&1
         """
 ,#+end_src
-- [[file:./workflow/scripts/${1:$(string-replace " " "_" (downcase yas-text))}.R][Base script]]
-  ,#+begin_src R :noweb yes :tangle ./workflow/scripts/${1:$(string-replace " " "_" (downcase yas-text))}.R
+- [[file:./workflow/scripts/$1.R][Rscript]]
+  ,#+begin_src R :noweb yes :tangle ./workflow/scripts/$1.R
 #!/usr/bin/env Rscript
-#########1#########2#########3#########4#########5#########6#########7#########8
-###
-###   ${2: SCRIPT TITLE}   ###
-###
 
 args = commandArgs(trailingOnly = TRUE)
 = args[1]
 ,#+end_src
 #+end_src
+
 **** Bash rule
 #+name: smk.rule.bash
 #+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule.bash
@@ -335,7 +336,7 @@ args = commandArgs(trailingOnly = TRUE)
 # --
 `(make-string (org-current-level) ?*)` ${6: <RULE DESCRIPTIVE NAME>}    :smk_rule:
 - Snakemake
-  #+begin_src snakemake
+  ,#+begin_src snakemake
 rule ${1:<RULE WORKFLOW NAME>}:
     input:
         config["data_dir"] + "/${2:<INPUT>}",
@@ -353,7 +354,7 @@ rule ${1:<RULE WORKFLOW NAME>}:
         """
 ,#+end_src
 - [[file:./workflow/scripts/${1:$(downcase yas-text)}.sh][Shell script]]
-  #+begin_src bash :tangle ./workflow/scripts/${1:$(downcase yas-text)}.sh
+  ,#+begin_src bash :tangle ./workflow/scripts/${1:$(downcase yas-text)}.sh
 #!/usr/bin/env bash
 input=\$1
 output=\$2
@@ -692,7 +693,7 @@ https://www.reddit.com/r/bioinformatics/comments/s3twgh/working_with_batch_effec
 :ID:       1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
 :END:
 :LOGBOOK:
-CLOCK: [2022-06-28 Tue 07:55]
+CLOCK: [2022-06-28 Tue 07:55]--[2022-06-28 Tue 15:55] =>  8:00
 :END:
 ****** Preamble
 #+begin_src bash
