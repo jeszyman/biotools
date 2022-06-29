@@ -117,7 +117,7 @@ ENV PATH="/opt/ucsc:${PATH}"
 RUN pip install multiqc
 
 # Flexbar
-
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated libtbb2
 RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
 
 # samtools
