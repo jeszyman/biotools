@@ -1,4 +1,19 @@
 FROM jeszyman/biotools
+################################################################################
+################################################################################
+###                                                                          ###
+###         Dockerfile to build an RNA-focused docker image                  ###
+###                                                                          ###
+################################################################################
+################################################################################
+
+#################
+###   Notes   ###
+#################
+#
+# After build, the image will be pushed to the dockerhub as
+# jeszyman/rna
+# (https://hub.docker.com/repository/docker/jeszyman/rna)
 
 RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda rsem
@@ -12,4 +27,9 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "tximport"));'
 
 RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl
-RUN source
+
+RUN /bin/bash
+
+RUN cd /opt/mirdeep2 && perl install.pl
+
+ENV PATH="/opt/mirdeep2/bin:${PATH}"

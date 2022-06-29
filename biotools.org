@@ -1,16 +1,4 @@
-https://www.reddit.com/r/commandline/comments/vcs92o/scitopdf_quickly_fetch_science_from_scihub/
 
--e
-
-docker build --no-cache --file $dockeefile --pull --tag $tag .
-
-docker push $tag
-
-
-Singularity build
-
-
-Rclone cp
 #+begin_src bash
 cd ~/repos/cfdna-wgs
 cat
@@ -52,6 +40,7 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+- https://www.reddit.com/r/commandline/comments/vcs92o/scitopdf_quickly_fetch_science_from_scihub/
 ** Setup
 :PROPERTIES:
 :ID:       06e0c839-8a84-4890-9939-71e1bb5e7c6c
@@ -702,9 +691,28 @@ https://www.reddit.com/r/bioinformatics/comments/s3twgh/working_with_batch_effec
 :header-args:bash: :tangle ./docker/rna_Dockerfile
 :ID:       1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
 :END:
+:LOGBOOK:
+CLOCK: [2022-06-28 Tue 07:55]
+:END:
 ****** Preamble
 #+begin_src bash
 FROM jeszyman/biotools
+################################################################################
+################################################################################
+###                                                                          ###
+###         Dockerfile to build an RNA-focused docker image                  ###
+###                                                                          ###
+################################################################################
+################################################################################
+
+#################
+###   Notes   ###
+#################
+#
+# After build, the image will be pushed to the dockerhub as
+# jeszyman/rna
+# (https://hub.docker.com/repository/docker/jeszyman/rna)
+
 #+end_src
 ****** Conda
 #+begin_src bash
@@ -725,7 +733,12 @@ RUN R -e 'install.packages("BiocManager"); \
 ****** Custom installs
 #+begin_src bash
 RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl
-RUN source
+
+RUN /bin/bash
+
+RUN cd /opt/mirdeep2 && perl install.pl
+
+ENV PATH="/opt/mirdeep2/bin:${PATH}"
 #+end_src
 ***** [[file:docker/biotools_Dockerfile][Biotools docker]]
 :PROPERTIES:
@@ -1461,56 +1474,165 @@ RUN mkdir /opt/picard-2.18.1/ \
   #RUN echo "source activate py2" > ~/.bashrc
   #ENV PATH /opt/conda/envs/py2/bin:$PATH
 **** Helper shell scripts
-***** INPROCESS Build docker container
-#+begin_src bash
+***** DONE Build docker container
+:PROPERTIES:
+:ORDERED:  t
+:END:
+#+begin_src bash :tangle ./tools/shell/docker_build.sh
 #!/usr/bin/env bash
 
-#################################################
-###   Common build docker container command   ###
-#################################################
+set -o errexit   # abort on nonzero exitstatus
+set -o nounset   # abort on unbound variable
+set -o pipefail  # don't hide errors within pipes
 
-# Notes
+print_usage(){
+    cat <<- EOF
 
-# Setup
+###################################################
+###   Docker and Singularity Building Command   ###
+###################################################
 
-set -euxo pipefail
+Steps
+1) Builds docker container
+2) Pushes container to dockerhub
+3) Builds singularity file
+4) Pushes singularity file to box
 
-# Functions
+usage: docker_build.sh [options] <DOCKER FILE> <DOCKER TAG> <OPIONAL - DOCKER BUILD LOC>
+  options:
+    -n  No cache, use for validation of full build
+    -s  A sif directory location
+    -v  Docker version, a version appended to docker and singularity tags
+        Note: adding a version will push the singularity build to
+        shared/singularity-containers/stable
 
-build(){
-    # Check for parameters, return usage if empty
-    if [ $# -ne 2 ];
-    then
-        printf "\n usage: FUNCTION NAME  VAR 1  VAR 2
-        \n  SCRIPT FUNCTION OR PURPOSE
-        \n "
-    else
+example:
+
+docker_build.sh -n -s ~/sing_containers -v 2.0.0 ~/dockerfiles/atac_Dockerfile jeszyman/atac ~/docker_bulid_dir
+
+EOF
 }
 
-# Commands
+# Setup options
+while getopts "nt:v:s:" options;
+do
+    case "${options}" in
+        n) usecache="--no-cache" ;;
+        v) version=${OPTARG} ;;
+        s) sifdir=${OPTARG} ;;
+        \?)
+            echoerr "Invalid option -$OPTARG"
+            print_usage
+            exit 1
+            ;;
+    esac
+done
+
+shift $((OPTIND -1))
+
+[[ $# -eq 0 ]] && print_usage && exit 1
+
+# Scipt variables
+dockerfile=$1
+tag=$2
+if [ -z ${usecache+x} ]; then usecache="cache"; fi
+dockerloc="${3:-.}"
+
+main(){
+
+    # Build and push docker container. Append version if provided.
+    printf "\nBuilding Docker container now...\n"
+    sleep 2s
+    if [ -z ${version+x} ]
+    then
+        build_docker $dockerfile $tag $dockerloc $usecache
+        docker push $tag
+    else
+        build_docker $dockerfile $tag:$version $dockerloc $usecache
+        docker push $tag:$version
+    fi
+
+    # Build and push sif if provided.
+
+    if [ -z ${sifdir+x} ];
+
+    then
+        printf "\ns is unset, nothing more to do.\n"
+    else
+        printf "\nBuilding Singularity container now...\n"
+        sleep 2s
+        build_singularity $sifdir \
+                          $tag
+        printf "\nLocal Singularity build complete.\nPushing singularity to box...\n"
+        push_singularity $sifdir \
+                         $tag \
+                         "shared/singularity-containers"
+    fi
+}
+
+build_docker(){
+    local dockerfile="${1}"
+    local dockertag="${2}"
+    local dockerloc="${3}"
+    if [ $4 == "--no-cache" ];
+    then
+        docker build \
+               --file $dockerfile $4 \
+               --pull \
+               --tag $dockertag \
+               $dockerloc
+    else
+        docker build \
+               --file $dockerfile \
+               --pull \
+               --tag $dockertag \
+               $dockerloc
+    fi
+}
+
+push_docker(){
+    local dockertag="${1}"
+    docker push $dockertag
+}
+
+build_singularity(){
+    local sifdir="${1}"
+    local dockertag="${2}"
+    if [ -z ${version+x} ];
+    then
+        siftag=$(echo $dockertag | sed 's/^.*\///g')
+    else
+        siftag=$(echo $dockertag.$version | sed 's/^.*\///g')
+    fi
+    singularity pull \
+                --force \
+                "${sifdir}/${siftag}.sif" \
+                "docker://${dockertag}"
+}
+
+push_singularity(){
+    local sifdir=${1}
+    local dockertag=${2}
+    local targetbase="${3}"
+    if [ -z ${version+x} ];
+    then
+        siftag=$(echo $dockertag | sed 's/^.*\///g')
+        target=$(echo "${targetbase}/most-recent/")
+    else
+        siftag=$(echo $dockertag.$version | sed 's/^.*\///g')
+        target=$(echo "${targetbase}/stable/")
+    fi
+
+    rclone copy \
+           --update \
+           --verbose \
+           "${sifdir}/${siftag}.sif" remote:"${target}"
+}
+
+main "$@"
+
 #+end_src
-docker build . --file biotools_Dockerfile --no-cache --pull --tag jeszyman/biotools
 
-- build biotools docker container
-  #+begin_src bash
-run_dir=~/repos/biotools/docker
-dockerfile=~/repos/biotools/docker/rna_Dockerfile
-name="jeszyman/rna"
-sing_path="/mnt/ris/aadel/jeszyman/sing_containers/rna.sif"
-dockerfile=~/repos/biotools/docker/biotools_Dockerfile
-name="jeszyman/biotools"
-
-#########1#########2#########3#########4#########5#########6#########7#########8
-docker pull $name
-
-docker build $run_dir --file $dockerfile --tag $name
-
-docker push $name
-
-singularity pull $sing_path docker://$name
-
-#cp $sing_path ~/sing_containers/biotools.sif
-#+end_src
 ***** Make singularity container
 #+begin_src bash
 #!/usr/bin/env bash
