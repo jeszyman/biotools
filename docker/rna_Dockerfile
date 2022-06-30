@@ -1,4 +1,4 @@
-FROM jeszyman/biotools
+FROM jeszyman/biotools:1.0.2
 ################################################################################
 ################################################################################
 ###                                                                          ###
@@ -24,6 +24,9 @@ RUN conda install -c bioconda salmon
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
           BiocManager::install(c("DESeq2", \
+                                 "edgeR", \
+                                 "fgsea", \
+                                 "limma", \
                                  "tximport"));'
 
 RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl

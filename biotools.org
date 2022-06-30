@@ -687,60 +687,6 @@ https://www.reddit.com/r/bioinformatics/comments/s3twgh/working_with_batch_effec
 - [ ] move all docker to single repo
 **** Dockerfiles
 - https://github.com/orgs/genome/repositories?type=all
-***** [[file:docker/rna_Dockerfile][RNA docker]]
-:PROPERTIES:
-:header-args:bash: :tangle ./docker/rna_Dockerfile
-:ID:       1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
-:END:
-:LOGBOOK:
-CLOCK: [2022-06-28 Tue 07:55]--[2022-06-28 Tue 15:55] =>  8:00
-:END:
-****** Preamble
-#+begin_src bash
-FROM jeszyman/biotools:
-################################################################################
-################################################################################
-###                                                                          ###
-###         Dockerfile to build an RNA-focused docker image                  ###
-###                                                                          ###
-################################################################################
-################################################################################
-
-#################
-###   Notes   ###
-#################
-#
-# After build, the image will be pushed to the dockerhub as
-# jeszyman/rna
-# (https://hub.docker.com/repository/docker/jeszyman/rna)
-
-#+end_src
-****** Conda
-#+begin_src bash
-RUN conda install -c bioconda kallisto
-RUN conda install -c bioconda rsem
-RUN conda install -c bioconda star
-RUN conda install -c bioconda subread
-RUN conda install -c bioconda salmon
-#+end_src
-****** R and Bioconductor
-#+begin_src bash
-RUN R -e 'install.packages("BiocManager"); \
-          BiocManager::install(); \
-          BiocManager::install(c("DESeq2", \
-                                 "tximport"));'
-
-#+end_src
-****** Custom installs
-#+begin_src bash
-RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl
-
-RUN /bin/bash
-
-RUN cd /opt/mirdeep2 && perl install.pl
-
-ENV PATH="/opt/mirdeep2/bin:${PATH}"
-#+end_src
 ***** [[file:docker/biotools_Dockerfile][Biotools docker]]
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
@@ -822,7 +768,11 @@ RUN R -e "BiocManager::install(version='3.15', update=TRUE, ask=FALSE)"
 
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
-          BiocManager::install(c("BSgenome.Hsapiens.UCSC.hg19", \
+          BiocManager::install(c("AnnotationDbi",\
+                                 "apeglm"
+                                 "BiocParallel", \
+                                 "BSgenome.Hsapiens.UCSC.hg19", \
+                                 "ComplexHeatmap", \
                                  "EnsDb.Mmusculus.v79", \
                                  "org.Mm.eg.db", \
                                  "readr", \
@@ -1474,6 +1424,121 @@ RUN mkdir /opt/picard-2.18.1/ \
   ##
   #RUN echo "source activate py2" > ~/.bashrc
   #ENV PATH /opt/conda/envs/py2/bin:$PATH
+***** [[file:docker/rna_Dockerfile][RNA docker]]
+:PROPERTIES:
+:header-args:bash: :tangle ./docker/rna_Dockerfile
+:ID:       1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
+:END:
+:LOGBOOK:
+CLOCK: [2022-06-28 Tue 07:55]--[2022-06-28 Tue 15:55] =>  8:00
+:END:
+****** Preamble
+#+begin_src bash
+FROM jeszyman/biotools:1.0.2
+################################################################################
+################################################################################
+###                                                                          ###
+###         Dockerfile to build an RNA-focused docker image                  ###
+###                                                                          ###
+################################################################################
+################################################################################
+
+#################
+###   Notes   ###
+#################
+#
+# After build, the image will be pushed to the dockerhub as
+# jeszyman/rna
+# (https://hub.docker.com/repository/docker/jeszyman/rna)
+
+#+end_src
+****** Conda
+#+begin_src bash
+RUN conda install -c bioconda kallisto
+RUN conda install -c bioconda rsem
+RUN conda install -c bioconda star
+RUN conda install -c bioconda subread
+RUN conda install -c bioconda salmon
+#+end_src
+****** R and Bioconductor
+#+begin_src bash
+RUN R -e 'install.packages("BiocManager"); \
+          BiocManager::install(); \
+          BiocManager::install(c("DESeq2", \
+                                 "edgeR", \
+                                 "fgsea", \
+                                 "limma", \
+                                 "tximport"));'
+
+#+end_src
+****** Custom installs
+#+begin_src bash
+RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl
+
+RUN /bin/bash
+
+RUN cd /opt/mirdeep2 && perl install.pl
+
+ENV PATH="/opt/mirdeep2/bin:${PATH}"
+#+end_src
+***** [[file:docker/atac_Dockerfile][ATAC-seq docker]]
+#+begin_src bash :tangle ./docker/atac_Dockerfile
+FROM jeszyman/biotools:1.0.2
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+###################################
+###   Dockerfile for ATAC-seq   ###
+###################################
+
+# After build, the image will be pushed to dockerhub as jeszyman/atac
+# (https://hub.docker.com/repository/docker/jeszyman/atac)
+
+RUN apt-get -y update && apt-get upgrade -y
+
+# Simple bioconda installs
+RUN conda install -c bioconda macs2
+
+# Simple R installs
+##
+## Via Bioconductor
+RUN R -e 'install.packages("BiocManager"); \
+          BiocManager::install(); \
+          BiocManager::install(c("ATACseqQC", \
+                                 "ChIPpeakAnno", \
+                                 "ChIPseeker", \
+                                 "clusterProfiler", \
+                                 "csaw"));'
+
+
+# ATACseqQC
+##
+## Linux prerequisites
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
+    libgsl-dev \
+    libcurl4-openssl-dev
+    #libssl-dev
+##
+## ATACseqQC
+RUN R -e 'install.packages("BiocManager"); \
+    BiocManager::install(); \
+    BiocManager::install(c("ATACseqQC"));'
+
+# Homer
+RUN mkdir /opt/homer
+RUN cd /opt/homer
+RUN wget http://homer.ucsd.edu/homer/configureHomer.pl -O /opt/homer/configureHomer.pl
+RUN perl /opt/homer/configureHomer.pl -install
+
+ENV PATH="${PATH}:/opt/homer/bin/"
+
+RUN perl /opt/homer/.//configureHomer.pl -install mouse-p
+
+RUN conda install -c bioconda samtools=1.7
+
+# R CRAN Installs
+RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
+
+#+end_src
 **** Helper shell scripts
 ***** TODO Built docker container
 :PROPERTIES:
