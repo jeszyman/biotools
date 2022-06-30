@@ -1475,7 +1475,7 @@ RUN mkdir /opt/picard-2.18.1/ \
   #RUN echo "source activate py2" > ~/.bashrc
   #ENV PATH /opt/conda/envs/py2/bin:$PATH
 **** Helper shell scripts
-***** DONE Build docker container
+***** TODO Built docker container
 :PROPERTIES:
 :ORDERED:  t
 :END:
@@ -1499,7 +1499,7 @@ Steps
 3) Builds singularity file
 4) Pushes singularity file to box
 
-usage: docker_build.sh [options] <DOCKER FILE> <DOCKER TAG> <OPIONAL - DOCKER BUILD LOC>
+usage: docker_build.sh [options] <DOCKER FILE> <DOCKER TAG> [OPTIONAL - DOCKER BUILD LOC]
   options:
     -n  No cache, use for validation of full build
     -s  A sif directory location
@@ -1521,11 +1521,7 @@ do
         n) usecache="--no-cache" ;;
         v) version=${OPTARG} ;;
         s) sifdir=${OPTARG} ;;
-        \?)
-            echoerr "Invalid option -$OPTARG"
-            print_usage
-            exit 1
-            ;;
+        h | *) print_usage; exit 0 ;;
     esac
 done
 
@@ -1540,36 +1536,86 @@ if [ -z ${usecache+x} ]; then usecache="cache"; fi
 dockerloc="${3:-.}"
 
 main(){
-
     # Build and push docker container. Append version if provided.
-    printf "\nBuilding Docker container now...\n"
+    printf "\nBuilding Docker container now...\n "
     sleep 2s
     if [ -z ${version+x} ]
     then
         build_docker $dockerfile $tag $dockerloc $usecache
+        printf "\nPushing docker container to dockerhub...\n "
         docker push $tag
     else
-        build_docker $dockerfile $tag:$version $dockerloc $usecache
+        build_docker $dockerfile "${tag}:${version}" $dockerloc $usecache
+        printf "\nPushing docker container to dockerhub...\n "
         docker push $tag:$version
     fi
 
     # Build and push sif if provided.
 
     if [ -z ${sifdir+x} ];
-
     then
-        printf "\ns is unset, nothing more to do.\n"
-    else
-        printf "\nBuilding Singularity container now...\n"
         sleep 2s
+        printf "\n-s flag is unset, nothing more to do.\n "
+    else
+        dockertag="$tag"
+        if [ -z ${version+x} ];
+        then
+            siftag=$(echo $tag | sed 's/^.*\///g')
+            target="shared/singularity-containers/most-recent/"
+        else
+            presiftag=$(echo $tag | sed 's/^.*\///g')
+            siftag="${presiftag}.${version}"
+            target="shared/singularity-containers/stable/"
+        fi
+
+        printf "\nBuilding Singularity container now...\n"
+
         build_singularity $sifdir \
-                          $tag
+                          $siftag \
+                          $dockertag
+
+        sleep 2s
+        echo "build_singularity $sifdir $siftag $dockertag"
         printf "\nLocal Singularity build complete.\nPushing singularity to box...\n"
+
         push_singularity $sifdir \
-                         $tag \
-                         "shared/singularity-containers"
+                         $siftag \
+                         $target
+
     fi
 }
+
+# main(){
+
+
+#     # Build and push sif if provided.
+
+#     if [ -z ${sifdir+x} ];
+
+#     then
+#         sleep 2s
+#         printf "\n-s flag is unset, nothing more to do.\n "
+#     else
+#         dockertag="$tag"
+#         if [ -z ${version+x} ];
+#         then
+#             siftag="$tag"
+#             target="shared/singularity-containers/most-recent"
+#         else
+#             siftag="${tag}.${version}"
+#             target="shared/singularity-containers/stable"
+#         fi
+#         printf "\nBuilding Singularity container now...\n"
+#         sleep 2s
+#         build_singularity $sifdir \
+#                           $siftag \
+#                           $dockertag
+#         printf "\nLocal Singularity build complete.\nPushing singularity to box...\n"
+#         push_singularity $sifdir \
+#                          $siftag \
+#                          $target
+#     fi
+# }
 
 build_docker(){
     local dockerfile="${1}"
@@ -1598,13 +1644,8 @@ push_docker(){
 
 build_singularity(){
     local sifdir="${1}"
-    local dockertag="${2}"
-    if [ -z ${version+x} ];
-    then
-        siftag=$(echo $dockertag | sed 's/^.*\///g')
-    else
-        siftag=$(echo $dockertag.$version | sed 's/^.*\///g')
-    fi
+    local siftag="${2}"
+    local dockertag="${3}"
     singularity pull \
                 --force \
                 "${sifdir}/${siftag}.sif" \
@@ -1612,18 +1653,9 @@ build_singularity(){
 }
 
 push_singularity(){
-    local sifdir=${1}
-    local dockertag=${2}
-    local targetbase="${3}"
-    if [ -z ${version+x} ];
-    then
-        siftag=$(echo $dockertag | sed 's/^.*\///g')
-        target=$(echo "${targetbase}/most-recent/")
-    else
-        siftag=$(echo $dockertag.$version | sed 's/^.*\///g')
-        target=$(echo "${targetbase}/stable/")
-    fi
-
+    local sifdir="${1}"
+    local siftag="${2}"
+    local target="${3}"
     rclone copy \
            --update \
            --verbose \
