@@ -2165,6 +2165,7 @@ cat /home/jeszyman/data/ref/hg19.fa | simNGS \
 https://www.nature.com/articles/nmeth.3035
 https://www.nature.com/articles/s41467-018-03149-4
 *** Liquid biopsy
+https://www.nature.com/articles/s41416-022-01881-9
 - cite:illumina2022
 **** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 *** Immune cell sequencing
@@ -3365,6 +3366,8 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
+https://www.nature.com/articles/s41416-020-01047-5
+https://www.nature.com/articles/s41551-022-00855-9
 ******* Landau Group
 :PROPERTIES:
 :ID:       b4b2a35f-e59a-4e84-995e-ca16d7fd190d
@@ -7809,6 +7812,8 @@ CLOCK: [2021-08-25 Wed 08:05]--[2021-08-25 Wed 08:33] =>  0:28
 CLOCK: [2021-08-17 Tue 16:00]--[2021-08-17 Tue 17:30] =>  1:30
 CLOCK: [2021-08-17 Tue 13:28]--[2021-08-17 Tue 14:17] =>  0:49
 :END:
+https://stackoverflow.com/questions/13897717/push-commits-to-another-branch
+https://unix.stackexchange.com/questions/10646/repeat-a-unix-command-every-x-seconds-forever
 *** Local transclusion
 **** Integration testing configuration YAML
 :PROPERTIES:
