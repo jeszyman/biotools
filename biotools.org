@@ -1,9 +1,3 @@
-
-#+begin_src bash
-cd ~/repos/cfdna-wgs
-cat
-#+end_src
-
 #+begin_src bash
 git add -A
 git commit -m "stable3.0.0"
@@ -574,6 +568,7 @@ CLOCK: [2022-03-24 Thu 10:55]--[2022-03-24 Thu 11:03] =>  0:08
 CLOCK: [2021-05-26 Wed 07:53]--[2021-05-26 Wed 08:00] =>  0:07
 :END:
 cite:minnoye2021
+**** [[id:8ca221b7-b51a-4382-9844-5d8ba7193ff6][Chromatin accessibility biology]]
 **** Experimental Design
 - Read length
   - https://www.biostars.org/p/418363/
@@ -1540,7 +1535,7 @@ RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
 
 #+end_src
 **** Helper shell scripts
-***** TODO Built docker container
+***** Built docker container
 :PROPERTIES:
 :ORDERED:  t
 :END:
@@ -1903,6 +1898,7 @@ CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
 - http://m.genome.cshlp.org/content/early/2021/12/20/gr.275691.121.full.pdf#page=1&view=FitH
 - fragments for open chromatin and tissue of origin
 - footprinting
+  -
   - https://www.nature.com/articles/s41523-021-00237-5
   - for nucleosome footprinting cite:snyder2016
 - fragment size
@@ -1941,6 +1937,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 :PROPERTIES:
 :ID:       c4dde8d6-1a02-42c7-a6b6-786b757fcad1
 :END:
+- cite:zhu2021
 - inferred gene expression
   - cite:ulz2016
 - https://github.com/alexcpan/Griffin
@@ -2161,82 +2158,6 @@ cat /home/jeszyman/data/ref/hg19.fa | simNGS \
 - https://www.nejm.org/doi/10.1056/NEJMoa2024534?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub++0pubmed
 - duplication rate as a measure of lib complexity
 ** Bioinformatics process hierarchies
-*** Single cell methylation sequencing
-https://www.nature.com/articles/nmeth.3035
-https://www.nature.com/articles/s41467-018-03149-4
-*** Liquid biopsy
-https://www.nature.com/articles/s41416-022-01881-9
-- cite:illumina2022
-**** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
-*** Immune cell sequencing
-- cite:bentham2021
-*** Common bioinformatics file manipulation
-:PROPERTIES:
-:ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
-:END:
-- https://bioinf.shenwei.me/seqkit/usage/#pair
-- https://www.google.com/search?q=annotate+bed+file+with+gene+names
-- https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
-- [[https://www.biostars.org/p/68283/][count total length of regions in bed file]]
-- https://gatkforums.broadinstitute.org/gatk/discussion/6484/how-to-generate-an-unmapped-bam-from-fastq-or-aligned-bam
-- https://www.biostars.org/p/247903/
-- https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
-- [[https://github.com/lh3/seqtk][seqtk]]
-- https://gist.github.com/davfre/8596159
-**** Subsetting and splitting
-- Fastas
-  - https://www.biostars.org/p/13270/
-  - Fastqs
-    - [[Question: Selecting Random Pairs From Fastq?]]
-    - [[https://www.biostars.org/p/6544/][look at all the ways to split a fastq file!]]
-- Bams
-  - https://bioinformatics.stackexchange.com/questions/402/how-can-i-downsample-a-bam-file-while-keeping-both-reads-in-pairs
-  - https://www.google.com/search?q=subset+bam+file
-  - samtools view -bo subset.bam -s 123.4 alignments.bam chr1 chr2
-  function SubSample {
-  #+begin_src bash :tangle ./toosl/shell/subsample_bam.sh
-function SubSample {
-## Calculate the sampling factor based on the intended number of reads:
-FACTOR=$(samtools idxstats $1 | cut -f3 | awk -v COUNT=$2 'BEGIN {total=0} {total += $1} END {print COUNT/total}')
-
-if [[ $FACTOR > 1 ]]
-  then
-  echo '[ERROR]: Requested number of reads exceeds total read count in' $1 '-- exiting' && exit 1
-fi
-
-sambamba view -s $FACTOR -f bam -l 5 $1
-
-}
-#+end_src
-**** Database downloads
-- https://www.google.com/search?q=download+genbank+fasta
-*** Probability and statistics related to bioinformatics
-:PROPERTIES:
-:ID:       1768b182-858a-46f8-97a8-4cd9747a2361
-:END:
-[[id:ee66da5b-aa64-4535-af72-5d98976871ff][clinical prediction models]]
-- https://www.nature.com/articles/s41576-019-0130-6
-- https://www.pnas.org/content/107/21/9546
-- cite:tarazona2020
-- https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
-- Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
-- https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
-
-**** Clustering and cluster analysis
-https://www.reddit.com/r/statistics/comments/t3ok40/q_is_there_any_difference_between_latent_profile/
-- https://www.reddit.com/r/statistics/comments/t6gudh/q_how_to_evaluate_clustering_in_dimensionality/
-- http://statweb.stanford.edu/~susan/courses/stats305c/examplesClusters.html
-- https://bookdown.org/rdpeng/exdata/k-means-clustering.html
-- https://www.datanovia.com/en/lessons/cluster-analysis-example-quick-start-r-code/
-- https://academic.oup.com/biostatistics/article/19/1/71/3852318
-**** [[*Machine learning in genomics and bioinformatics][LINK TO Machine learning in genomics and bioinformatics]]
-*** Machine learning in genomics and bioinformatics
-- [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]]
-- cite:chiorean2022
-- https://www.science.org/doi/10.1126/scitranslmed.abk2756
-- https://www.nature.com/articles/s41568-021-00408-3
-- https://www.nature.com/articles/s41576-021-00434-9
-- [[id:1768b182-858a-46f8-97a8-4cd9747a2361][Probability and statistics related to bioinformatics]]
 *** Nucleic acid sequening processes
 https://www.reddit.com/r/bioinformatics/comments/te1f5w/what_is_important_to_know_about_your_ngs_library/
 **** [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][Nucleic acid sequence alignment]]
@@ -2248,6 +2169,8 @@ https://www.reddit.com/r/bioinformatics/comments/te1f5w/what_is_important_to_kno
 CLOCK: [2022-06-03 Fri 08:33]--[2022-06-03 Fri 08:40] =>  0:07
 CLOCK: [2021-05-27 Thu 11:25]--[2021-05-27 Thu 11:38] =>  0:13
 :END:
+https://www.illumina.com/content/dam/illumina-marketing/documents/products/illumina_sequencing_introduction.pdf
+http://tucf.com/htseq_GenomicSeq_DataSheet.pdf
 ***** [[id:7ec3083a-b152-4ab2-b4f8-5fb9bb5ba068][Determine sequencing coverage]]
 ***** General reference
 :PROPERTIES:
@@ -2314,6 +2237,10 @@ also demultiplexes
 - library preparation kits
   - [[https://www.illumina.com/library-prep-array-kit-selector.html][selector]]
   - https://support.illumina.com/sequencing/sequencing_kits/truseq-small-rna-kit.html
+******* Phix
+https://support.illumina.com/bulletins/2017/02/what-is-the-phix-control-v3-library-and-what-is-its-function-in-.html
+https://support.illumina.com/bulletins/2017/02/how-much-phix-spike-in-is-recommended-when-sequencing-low-divers.html
+https://support.illumina.com/bulletins/2016/07/what-is-nucleotide-diversity-and-why-is-it-important.html
 ******* Illumina TruSeq
 :PROPERTIES:
 :ID:       3CE663C4-BF37-4E2E-9A0D-0E822241D05E
@@ -2338,6 +2265,7 @@ also demultiplexes
 :PROPERTIES:
 :ID:       8f0a09c6-2a68-425c-91a9-4d09866c8ae2
 :END:
+https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-017-4428-5#Sec5
 - https://www.nature.com/articles/s41587-018-0006-x
 - https://sfvideo.blob.core.windows.net/sitefinity/docs/default-source/user-guide-manual/xgen-prism-dna-library-prep-kit-processing-sequencing-data-with-umis.pdf
 - https://github.com/pughlab/ConsensusCruncher
@@ -2762,6 +2690,8 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
 - see edit distance in [[id:A91BF233-F14E-4E91-A1E9-B39802A9ED2D][Computers, Computer Science, and Information Technology]]
 ***** [[id:61aac189-1770-4d80-a367-e7c39b46e0d1][Adaptive TCR-beta immunosequencing]]
 ***** [[id:ccab4617-0399-4ba3-828e-b5fbbb972ba1][Whole-genome sequencing]]
+
+
 
 **** Code associated with sequence reference builds
 :PROPERTIES:
@@ -3366,8 +3296,9 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
-https://www.nature.com/articles/s41416-020-01047-5
-https://www.nature.com/articles/s41551-022-00855-9
+- https://www.nature.com/articles/s41416-020-01047-5
+- https://www.nature.com/articles/s41551-022-00855-9
+
 ******* Landau Group
 :PROPERTIES:
 :ID:       b4b2a35f-e59a-4e84-995e-ca16d7fd190d
@@ -3428,15 +3359,100 @@ https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
 - w/ RNA-seq via splAdder
   - https://github.com/ratschlab/spladder
   - https://academic.oup.com/bioinformatics/article/32/12/1840/1744052?login=true
+*** Chromatin accessibility profiling methods
+:PROPERTIES:
+:ID:       f600cd95-723e-4893-8b3f-0634d8905920
+:END:
+- cite:minnoye2021
+- [[id:22e31d06-f5df-427e-bd70-3a2ccd3f47ec][ATAC-seq]]
+- [[id:8ca221b7-b51a-4382-9844-5d8ba7193ff6][Chromatin accessibility]]
+*** Single cell methylation sequencing
+:PROPERTIES:
+:ID:       992de4dc-775e-41f0-a70a-e38c99b87265
+:END:
+https://www.nature.com/articles/nmeth.3035
+https://www.nature.com/articles/s41467-018-03149-4
+[[id:2597b54c-972a-43c3-9630-0e542ba90eeb][Single-cell methods]]
+*** Liquid biopsy
+https://www.nature.com/articles/s41416-022-01881-9
+- cite:illumina2022
+**** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
+*** Immune cell sequencing
+- cite:bentham2021
+*** Common bioinformatics file manipulation
+:PROPERTIES:
+:ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
+:END:
+- https://bioinf.shenwei.me/seqkit/usage/#pair
+- https://www.google.com/search?q=annotate+bed+file+with+gene+names
+- https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
+- [[https://www.biostars.org/p/68283/][count total length of regions in bed file]]
+- https://gatkforums.broadinstitute.org/gatk/discussion/6484/how-to-generate-an-unmapped-bam-from-fastq-or-aligned-bam
+- https://www.biostars.org/p/247903/
+- https://gatkforums.broadinstitute.org/gatk/discussion/2909/how-to-fix-a-badly-formatted-bam
+- [[https://github.com/lh3/seqtk][seqtk]]
+- https://gist.github.com/davfre/8596159
+**** Subsetting and splitting
+- Fastas
+  - https://www.biostars.org/p/13270/
+  - Fastqs
+    - [[Question: Selecting Random Pairs From Fastq?]]
+    - [[https://www.biostars.org/p/6544/][look at all the ways to split a fastq file!]]
+- Bams
+  - https://bioinformatics.stackexchange.com/questions/402/how-can-i-downsample-a-bam-file-while-keeping-both-reads-in-pairs
+  - https://www.google.com/search?q=subset+bam+file
+  - samtools view -bo subset.bam -s 123.4 alignments.bam chr1 chr2
+  function SubSample {
+  #+begin_src bash :tangle ./toosl/shell/subsample_bam.sh
+function SubSample {
+## Calculate the sampling factor based on the intended number of reads:
+FACTOR=$(samtools idxstats $1 | cut -f3 | awk -v COUNT=$2 'BEGIN {total=0} {total += $1} END {print COUNT/total}')
+
+if [[ $FACTOR > 1 ]]
+  then
+  echo '[ERROR]: Requested number of reads exceeds total read count in' $1 '-- exiting' && exit 1
+fi
+
+sambamba view -s $FACTOR -f bam -l 5 $1
+
+}
+#+end_src
+**** Database downloads
+- https://www.google.com/search?q=download+genbank+fasta
+*** Probability and statistics related to bioinformatics
+:PROPERTIES:
+:ID:       1768b182-858a-46f8-97a8-4cd9747a2361
+:END:
+[[id:ee66da5b-aa64-4535-af72-5d98976871ff][clinical prediction models]]
+- https://www.nature.com/articles/s41576-019-0130-6
+- https://www.pnas.org/content/107/21/9546
+- cite:tarazona2020
+- https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
+- Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
+- https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
+
+**** Clustering and cluster analysis
+https://www.reddit.com/r/statistics/comments/t3ok40/q_is_there_any_difference_between_latent_profile/
+- https://www.reddit.com/r/statistics/comments/t6gudh/q_how_to_evaluate_clustering_in_dimensionality/
+- http://statweb.stanford.edu/~susan/courses/stats305c/examplesClusters.html
+- https://bookdown.org/rdpeng/exdata/k-means-clustering.html
+- https://www.datanovia.com/en/lessons/cluster-analysis-example-quick-start-r-code/
+- https://academic.oup.com/biostatistics/article/19/1/71/3852318
+**** [[*Machine learning in genomics and bioinformatics][LINK TO Machine learning in genomics and bioinformatics]]
+*** Machine learning in genomics and bioinformatics
+- [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]]
+- cite:chiorean2022
+- https://www.science.org/doi/10.1126/scitranslmed.abk2756
+- https://www.nature.com/articles/s41568-021-00408-3
+- https://www.nature.com/articles/s41576-021-00434-9
+- [[id:1768b182-858a-46f8-97a8-4cd9747a2361][Probability and statistics related to bioinformatics]]
 *** Epigenetics
 :PROPERTIES:
 :CREATED:  [2019-10-30 Wed 10:52]
 :ID:       079e398f-e3b0-49c4-92da-9b4f6a73684c
 :END:
 - https://www.illumina.com/destination/epigenetics-webinar-series.html
-- methylation
-  - https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/medip-seq-dip-seq.html
-  - cite:shen2018
+
 - [[id:8ca221b7-b51a-4382-9844-5d8ba7193ff6][Chromatin accessibility]]
 - epigenetics
     - ATAC-seq for chromatin accessiblity
@@ -3478,6 +3494,9 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
 :LOGBOOK:
 CLOCK: [2019-06-26 Wed 14:06]--[2019-06-26 Wed 14:45] =>  0:39
 :END:
+- methylation
+  - https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/medip-seq-dip-seq.html
+  - cite:shen2018
 cite:giacopelli2021prostate
 - Bisulfite sequencing
   - methylation protects/blocks cytosine conversion to uracil
@@ -3555,6 +3574,8 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 :PROPERTIES:
 :ID:       2597b54c-972a-43c3-9630-0e542ba90eeb
 :END:
+- cite:stuart2019
+[[id:992de4dc-775e-41f0-a70a-e38c99b87265][Single cell methylation sequencing]]
 https://www.reddit.com/r/bioinformatics/comments/uy9g1j/where_to_start_with_scrnaseq_data/
 https://www.embopress.org/doi/full/10.15252/msb.20188746
 - cite:storrs2022
@@ -5568,11 +5589,11 @@ https://www.reddit.com/r/bioinformatics/comments/ahbzg5/how_do_people_turn_their
 :ID:       10c078fd-a281-4612-a28b-5ceea1fa7af5
 :END:
 https://singularity.lbl.gov/install-linux
-** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][LINK TO Information Science / Data Science]]
+** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][Information Science / Data Science]]
 :PROPERTIES:
 :ID:       014218e1-bb8b-4282-84ec-84354c29b8f5
 :END:
-** [[file:~/repos/basecamp/basecamp.org::*Basecamp][LINK TO Basecamp]]
+** [[file:~/repos/basecamp/basecamp.org::*Basecamp][Basecamp]]
 :PROPERTIES:
 :ID:       76100c2b-a077-4c21-a398-16d88722e1c6
 :END:
@@ -5622,6 +5643,7 @@ cite:consortium2020
 :PROPERTIES:
 :ID:       cf2ea58e-8751-4d90-ab08-a63445925c89
 :END:
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5759201/
 - https://support.illumina.com/downloads/illumina-adapter-sequences-document-1000000002694.html
 - https://support.illumina.com/bulletins/2016/12/what-sequences-do-i-use-for-adapter-trimming.html
 *** [[id:c0c0ee28-2e41-41a7-9a3b-ae195117a93e][LINK TO common bioinformatics file manipulation]]
@@ -6218,6 +6240,10 @@ CLOCK: [2021-09-13 Mon 07:27]--[2021-09-13 Mon 07:46] =>  0:19
 **** trimmomatic :biotool:
 http://www.usadellab.org/cms/?page=trimmomatic
 https://www.biostars.org/p/478810/
+**** bcl2fastq
+https://support.illumina.com/content/dam/illumina-support/documents/documentation/software_documentation/bcl2fastq/bcl2fastq2-v2-20-software-guide-15051736-03.pdf
+**** NCBI Genome Workbench
+https://www.ncbi.nlm.nih.gov/tools/gbench/
 **** preseq :biotool:
 :PROPERTIES:
 :ID:       6d8cbcc0-2651-4c51-991e-639dbc81ea66
@@ -7812,6 +7838,7 @@ CLOCK: [2021-08-25 Wed 08:05]--[2021-08-25 Wed 08:33] =>  0:28
 CLOCK: [2021-08-17 Tue 16:00]--[2021-08-17 Tue 17:30] =>  1:30
 CLOCK: [2021-08-17 Tue 13:28]--[2021-08-17 Tue 14:17] =>  0:49
 :END:
+https://en.wikipedia.org/wiki/Minimum_viable_product
 https://stackoverflow.com/questions/13897717/push-commits-to-another-branch
 https://unix.stackexchange.com/questions/10646/repeat-a-unix-command-every-x-seconds-forever
 *** Local transclusion
@@ -9361,6 +9388,7 @@ Gene set
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://hpc.nih.gov/training/gatk_tutorial/preproc.html
 - https://www.ncbi.nlm.nih.gov/assembly/model/
 - https://github.com/pfields8/Fields_et_al_2018
 - https://darwinsark.org/forums/topic/open-source-database/
