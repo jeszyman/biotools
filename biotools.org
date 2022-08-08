@@ -486,6 +486,7 @@ CLOCK: [2022-06-07 Tue 08:19]--[2022-06-07 Tue 08:21] =>  0:02
 :ID:       13120759-71db-497c-8ed3-1c58e47a7840
 :END:
 :LOGBOOK:
+CLOCK: [2022-08-05 Fri 07:26]--[2022-08-05 Fri 11:30] =>  4:04
 CLOCK: [2022-06-27 Mon 11:13]--[2022-06-27 Mon 13:40] =>  2:27
 CLOCK: [2022-06-27 Mon 09:11]--[2022-06-27 Mon 10:47] =>  1:36
 CLOCK: [2022-06-27 Mon 07:07]--[2022-06-27 Mon 09:11] =>  2:04
@@ -1922,6 +1923,7 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 :PROPERTIES:
 :ID:       2597b54c-972a-43c3-9630-0e542ba90eeb
 :END:
+https://www.nature.com/articles/s41467-019-11591-1
 - cite:stuart2019
 [[id:992de4dc-775e-41f0-a70a-e38c99b87265][Single cell methylation sequencing]]
 https://www.reddit.com/r/bioinformatics/comments/uy9g1j/where_to_start_with_scrnaseq_data/
@@ -3679,6 +3681,7 @@ https://pubmed.ncbi.nlm.nih.gov/35311178/
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
 :END:
+https://ashpublications.org/blood/article/doi/10.1182/blood.2022016033/486036/Proteomic-and-Phosphoproteomic-Landscapes-of-Acute
 https://www.science.org/doi/10.1126/science.abj1541
 https://www.science.org/doi/10.1126/science.abj1541
 https://www.degruyter.com/document/doi/10.1515/hsz-2017-0104/html
@@ -5310,6 +5313,7 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 :LOGBOOK:
 CLOCK: [2021-11-03 Wed 08:43]--[2021-11-03 Wed 11:48] =>  3:05
 :END:
+- https://www.medrxiv.org/content/10.1101/2022.08.02.22278319v1
 - cite:ding2022
 - cite:esfahani2022
 - http://m.genome.cshlp.org/content/early/2021/12/20/gr.275691.121.full.pdf#page=1&view=FitH
@@ -9316,6 +9320,9 @@ https://www.reddit.com/r/orgmode/comments/fj7xcm/reproducible_research_interleav
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- multi-omics population disease characterizations
+  - https://www.frontiersin.org/articles/10.3389/fonc.2022.932337/full
+- https://www.omicsdi.org/
 - https://hpc.nih.gov/training/gatk_tutorial/preproc.html
 - https://www.ncbi.nlm.nih.gov/assembly/model/
 - https://github.com/pfields8/Fields_et_al_2018
