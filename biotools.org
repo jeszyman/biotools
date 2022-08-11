@@ -174,13 +174,20 @@ CLOCK: [2022-06-07 Tue 08:29]--[2022-06-07 Tue 10:56] =>  2:27
 CLOCK: [2022-06-02 Thu 08:38]--[2022-06-02 Thu 08:40] =>  0:02
 CLOCK: [2022-05-31 Tue 11:03]--[2022-05-31 Tue 12:44] =>  1:41
 :END:
+*** cfDNA CNA
+:PROPERTIES:
+:ID:       390ac35c-b4c3-46d3-b400-58df46d414ae
+:END:
+:LOGBOOK:
+CLOCK: [2022-08-10 Wed 13:10]--[2022-08-10 Wed 14:00] =>  1:56
+:END:
 *** ATAC-seq biopipe
 :LOGBOOK:
 CLOCK: [2022-05-01 Sun 12:17]--[2022-05-01 Sun 13:47] =>  1:30
 CLOCK: [2021-12-09 Thu 12:47]--[2022-05-01 Sun 13:57] => 3432:10
 :END:
 *** See [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
-** Bioinformatics process (hierarchies)
+** Bioinformatics process :hierarchy:
 *** Nucleic acid sequening processes
 https://www.reddit.com/r/bioinformatics/comments/te1f5w/what_is_important_to_know_about_your_ngs_library/
 **** [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][Nucleic acid sequence alignment]]
@@ -3618,7 +3625,9 @@ https://www.reddit.com/r/bioinformatics/comments/ahbzg5/how_do_people_turn_their
 :ID:       10c078fd-a281-4612-a28b-5ceea1fa7af5
 :END:
 https://singularity.lbl.gov/install-linux
-*** Bioinformatics processes flat list
+*** Bioinformatics processes :flat:
+**** Compare gene expression across species
+https://www.google.com/search?q=biostars+mouse+human+homology+match+genes&oq=biostars+mouse+human+homology+match+genes&aqs=chrome..69i57.9457j0j1&sourceid=chrome&ie=UTF-8
 **** Make bwa index                                                :smk_rule:
 - Snakemake
   #+begin_src snakemake
@@ -8320,10 +8329,12 @@ else
 fi
 #+end_src
 
-***** Normal run
+***** TODO [#D] Normal run
 :PROPERTIES:
+:effort: 00:30
 :ID:       3adf72d3-aa35-4a3d-8eba-0df075c52e26
 :END:
+- [ ] needs a cores option w/ default
 #+begin_src bash :tangle ./tools/shell/smk_run.sh
 #  Note: This code block transcluded from code blocks in the Emacs Org-mode
 #  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
@@ -8982,6 +8993,7 @@ CLOCK: [2022-05-16 Mon 07:48]--[2022-05-16 Mon 07:54] =>  0:06
 CLOCK: [2022-04-07 Thu 07:39]--[2022-04-07 Thu 07:44] =>  0:05
 CLOCK: [2021-07-01 Thu 11:18]--[2021-07-01 Thu 11:48] =>  0:30
 :END:
+- what's the difference b/w command line --cores and in-rule threads?
 - https://stackoverflow.com/questions/56024818/conditional-execution-of-multiplexed-analysis-with-snakemake
 **** [[https://snakemake.readthedocs.io/en/stable/index.html][Documentation]]
 - https://snakemake-wrappers.readthedocs.io/en/stable/wrappers.html
