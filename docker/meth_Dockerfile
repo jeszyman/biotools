@@ -1,0 +1,31 @@
+FROM jeszyman/biotools:1.0.2
+# Dockerfile to build a bioinformatics methylation toolkit
+
+#################
+###   Notes   ###
+#################
+#
+# After build, the image will be pushed to the dockerhub as
+# jeszyman/meth
+# (https://hub.docker.com/repository/docker/jeszyman/meth)
+
+#################
+###   Conda   ###
+#################
+
+RUN conda update conda
+RUN conda install -c bioconda metilene=0.2.8
+
+###########################
+###   Custom Installs   ###
+###########################
+
+# Biscuit
+RUN curl -OL $(curl -s https://api.github.com/repos/huishenlab/biscuit/releases/latest | grep browser_download_url | grep linux_amd64 | cut -d '"' -f 4)
+RUN mv biscuit_* biscuit
+RUN chmod +x biscuit
+RUN mv /biscuit /bin/
+RUN curl -OL $(curl -s https://api.github.com/repos/huishenlab/biscuit/releases/latest | grep browser_download_url | grep build_biscuit_QC_assets.pl | cut -d '"' -f 4)
+RUN chmod +x build_biscuit_QC_assets.pl
+RUN curl -OL $(curl -s https://api.github.com/repos/huishenlab/biscuit/releases/latest | grep browser_download_url | grep QC.sh | cut -d '"' -f 4)
+RUN chmod +x QC.sh
