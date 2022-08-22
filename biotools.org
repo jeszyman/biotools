@@ -1,3 +1,69 @@
+#+begin_src snakemake :tangle ./workflow/checkpoints.smk
+rule all:
+    input:
+        directory('scatter')
+        #'scatter_copy/{i}_copy.txt',
+        #'scatter_copy_head_collect/all.txt'
+
+# generate random number of files
+checkpoint scatter:
+    output:
+        directory('scatter')
+    shell:
+        '''
+        mkdir {output}
+        N=$(( $RANDOM % 10))
+        for j in $(seq 1 $N); do echo -n $j > {output}/$j.txt; done
+        '''
+
+# collect the results of processing unknown number of files
+# and merge them together into one file:
+
+def aggregate_input(wildcards):
+    '''
+    aggregate the file names of the random number of files
+    generated at the scatter step
+    '''
+    checkpoint_output = checkpoints.scatter.get(**wildcards).output[0]
+    return expand('scatter_copy_head/{i}_head.txt',
+           i=glob_wildcards(os.path.join(checkpoint_output, '{i}.txt')).i)
+
+
+# process these unknown number of files
+rule scatter_copy:
+    output:
+        txt = 'scatter_copy/{i}_copy.txt',
+    input:
+        txt = 'scatter/{i}.txt',
+    shell:
+        '''
+        cp -f {input.txt} {output.txt}
+        echo -n "_copy" >> {output.txt}
+        '''
+
+# process scatter_copy output
+rule scatter_copy_head:
+    output:
+        txt = 'scatter_copy_head/{i}_head.txt',
+    input:
+        txt = 'scatter_copy/{i}_copy.txt',
+    shell:
+        '''
+        cp -f {input.txt} {output.txt}
+        echo "_head" >> {output.txt}
+        '''
+
+
+rule scatter_copy_head_collect:
+    output:
+        combined = 'scatter_copy_head_collect/all.txt',
+    input:
+        aggregate_input
+    shell:
+        '''
+        cat {input} > {output.combined}
+        '''
+#+end_src
 * Biotools                                                           :career:
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:14]
@@ -1283,7 +1349,6 @@ main "$@"
 singularity pull /mnt/ris/aadel/jeszyman/sing_containers/biotools.sif docker://jeszyman/biotools
 #+end_src
 ** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
-** [[id:7ed344ce-373c-4f9e-b24f-87b57374e1a0][Biotools docker]]
 ** My bioinformatics pipelines
 *** meth seq
 :LOGBOOK:
@@ -1474,12 +1539,20 @@ CLOCK: [2022-06-08 Wed 13:41]--[2022-06-08 Wed 13:59] =>  0:18
 *** [[file:~/repos/cappseq/cappseq.org][CAPP-seq]]
 :LOGBOOK:
 CLOCK: [2022-06-07 Tue 08:19]--[2022-06-07 Tue 08:21] =>  0:02
+CLOCK: [2022-04-29 Fri 09:12]--[2022-04-29 Fri 10:00] =>  0:48
+CLOCK: [2022-04-26 Tue 08:34]--[2022-04-26 Tue 09:08] =>  0:34
+CLOCK: [2022-04-26 Tue 12:00]--[2022-04-26 Tue 13:31] =>  1:31
+CLOCK: [2022-04-26 Tue 09:51]--[2022-04-26 Tue 10:10] =>  0:19
 :END:
 *** [[file:~/repos/cfdna-wgs/cfdna-wgs.org][cfDNA WGS biopipe]]
 :PROPERTIES:
 :ID:       13120759-71db-497c-8ed3-1c58e47a7840
 :END:
 :LOGBOOK:
+CLOCK: [2022-05-04 Wed 08:12]--[2022-05-04 Wed 08:16] =>  0:04
+CLOCK: [2022-05-03 Tue 10:19]--[2022-05-03 Tue 11:04] =>  0:45
+CLOCK: [2022-05-03 Tue 09:46]--[2022-05-03 Tue 10:15] =>  0:29
+CLOCK: [2022-04-29 Fri 10:34]--[2022-04-29 Fri 10:56] =>  0:22
 CLOCK: [2022-06-27 Mon 11:13]--[2022-06-27 Mon 13:40] =>  2:27
 CLOCK: [2022-06-27 Mon 09:11]--[2022-06-27 Mon 10:47] =>  1:36
 CLOCK: [2022-06-27 Mon 07:07]--[2022-06-27 Mon 09:11] =>  2:04
@@ -3055,6 +3128,9 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 - https://www.nature.com/articles/s41416-020-01047-5
 - https://www.nature.com/articles/s41551-022-00855-9
 
+******* SEQC2
+https://www.nature.com/articles/s41587-021-00857-z
+https://genomebiology.biomedcentral.com/articles/10.1186/s13059-021-02529-2#Sec15
 ******* Landau Group
 :PROPERTIES:
 :ID:       b4b2a35f-e59a-4e84-995e-ca16d7fd190d
@@ -4185,6 +4261,7 @@ https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
 :LOGBOOK:
 CLOCK: [2022-08-17 Wed 13:46]--[2022-08-17 Wed 13:56] =>  0:10
 :END:
+https://www.nature.com/articles/s41587-021-00857-z
 **** Integrated hybrid capture and genome-wide- MAESTRO
 :PROPERTIES:
 :ID:       55b77210-fcb6-438d-a546-0c3605f6f5c4
@@ -5448,6 +5525,7 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 :PROPERTIES:
 :ID:       b7c65054-f648-4579-9c5f-7bedbe272b5c
 :END:
+https://github.com/BIMSBbioinfo/pigx_rnaseq
 https://hpc.nih.gov/apps/singularity.html
 http://byronjsmith.com/make-bml/
 https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424
@@ -10710,7 +10788,7 @@ CLOCK: [2021-07-01 Thu 11:18]--[2021-07-01 Thu 11:48] =>  0:30
 :END:
 - https://stackoverflow.com/questions/56024818/conditional-execution-of-multiplexed-analysis-with-snakemake
 **** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
-**** Processes
+**** Processes :hierarchy:
 ***** Install and setup
   - via mambaforge https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
     #+begin_src bash
@@ -10757,6 +10835,9 @@ https://stackoverflow.com/questions/50413374/glob-wildcards-on-multiple-director
 - syntax for running shell https://stackoverflow.com/questions/45553762/recommended-way-to-do-multiple-shell-commands-with-shell/49533645#49533645
 - https://stackoverflow.com/questions/17126996/emacs-mode-for-snakemake
 - check md5 https://stackoverflow.com/questions/65907256/snakemake-use-checksums-instead-of-timestamps
+***** :flat:
+****** Checkpoints
+https://stackoverflow.com/questions/70543163/snakemake-checkpoint-and-create-a-expand-list-wildcards-based-on-created-output
 **** Style
 - Configuration
   - tabular- declare per-unit identifiers and index in snakefile preamble. /E.g./ # units = pd.read_table("bin/units_test.tsv").set_index("sample", drop=False)

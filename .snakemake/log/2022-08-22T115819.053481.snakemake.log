@@ -1,0 +1,153 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                          count    min threads    max threads
+-------------------------  -------  -------------  -------------
+all                              1              1              1
+scatter                          1              1              1
+scatter_copy_head_collect        1              1              1
+total                            3              1              1
+
+Select jobs to execute...
+
+[Mon Aug 22 11:58:19 2022]
+checkpoint scatter:
+    output: scatter
+    jobid: 2
+    resources: tmpdir=/tmp
+Downstream jobs will be updated after completion.
+
+[Mon Aug 22 11:58:19 2022]
+Finished job 2.
+1 of 3 steps (33%) done
+Updating job scatter_copy_head_collect.
+Select jobs to execute...
+
+[Mon Aug 22 11:58:19 2022]
+rule scatter_copy:
+    input: scatter/3.txt
+    output: scatter_copy/3_copy.txt
+    jobid: 9
+    wildcards: i=3
+    resources: tmpdir=/tmp
+
+[Mon Aug 22 11:58:19 2022]
+Finished job 9.
+2 of 11 steps (18%) done
+Select jobs to execute...
+
+[Mon Aug 22 11:58:19 2022]
+rule scatter_copy:
+    input: scatter/4.txt
+    output: scatter_copy/4_copy.txt
+    jobid: 11
+    wildcards: i=4
+    resources: tmpdir=/tmp
+
+[Mon Aug 22 11:58:19 2022]
+Finished job 11.
+3 of 11 steps (27%) done
+Select jobs to execute...
+
+[Mon Aug 22 11:58:19 2022]
+rule scatter_copy_head:
+    input: scatter_copy/4_copy.txt
+    output: scatter_copy_head/4_head.txt
+    jobid: 10
+    wildcards: i=4
+    resources: tmpdir=/tmp
+
+[Mon Aug 22 11:58:19 2022]
+Finished job 10.
+4 of 11 steps (36%) done
+Select jobs to execute...
+
+[Mon Aug 22 11:58:19 2022]
+rule scatter_copy:
+    input: scatter/2.txt
+    output: scatter_copy/2_copy.txt
+    jobid: 7
+    wildcards: i=2
+    resources: tmpdir=/tmp
+
+[Mon Aug 22 11:58:19 2022]
+Finished job 7.
+5 of 11 steps (45%) done
+Select jobs to execute...
+
+[Mon Aug 22 11:58:19 2022]
+rule scatter_copy_head:
+    input: scatter_copy/3_copy.txt
+    output: scatter_copy_head/3_head.txt
+    jobid: 8
+    wildcards: i=3
+    resources: tmpdir=/tmp
+
+[Mon Aug 22 11:58:19 2022]
+Finished job 8.
+6 of 11 steps (55%) done
+Select jobs to execute...
+
+[Mon Aug 22 11:58:19 2022]
+rule scatter_copy_head:
+    input: scatter_copy/2_copy.txt
+    output: scatter_copy_head/2_head.txt
+    jobid: 6
+    wildcards: i=2
+    resources: tmpdir=/tmp
+
+[Mon Aug 22 11:58:19 2022]
+Finished job 6.
+7 of 11 steps (64%) done
+Select jobs to execute...
+
+[Mon Aug 22 11:58:19 2022]
+rule scatter_copy:
+    input: scatter/1.txt
+    output: scatter_copy/1_copy.txt
+    jobid: 5
+    wildcards: i=1
+    resources: tmpdir=/tmp
+
+[Mon Aug 22 11:58:19 2022]
+Finished job 5.
+8 of 11 steps (73%) done
+Select jobs to execute...
+
+[Mon Aug 22 11:58:19 2022]
+rule scatter_copy_head:
+    input: scatter_copy/1_copy.txt
+    output: scatter_copy_head/1_head.txt
+    jobid: 4
+    wildcards: i=1
+    resources: tmpdir=/tmp
+
+[Mon Aug 22 11:58:19 2022]
+Finished job 4.
+9 of 11 steps (82%) done
+Select jobs to execute...
+
+[Mon Aug 22 11:58:19 2022]
+rule scatter_copy_head_collect:
+    input: scatter_copy_head/1_head.txt, scatter_copy_head/2_head.txt, scatter_copy_head/3_head.txt, scatter_copy_head/4_head.txt
+    output: scatter_copy_head_collect/all.txt
+    jobid: 1
+    resources: tmpdir=/tmp
+
+[Mon Aug 22 11:58:19 2022]
+Finished job 1.
+10 of 11 steps (91%) done
+Select jobs to execute...
+
+[Mon Aug 22 11:58:19 2022]
+localrule all:
+    input: scatter_copy_head_collect/all.txt
+    jobid: 0
+    resources: tmpdir=/tmp
+
+[Mon Aug 22 11:58:19 2022]
+Finished job 0.
+11 of 11 steps (100%) done
+Complete log: /home/jeszyman/repos/biotools/.snakemake/log/2022-08-22T115819.053481.snakemake.log

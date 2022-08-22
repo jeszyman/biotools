@@ -1,0 +1,4 @@
+Building DAG of jobs...
+WildcardError in line 1 of /home/jeszyman/repos/biotools/workflow/checkpoints.smk:
+Wildcards in input files cannot be determined from output files:
+'i'
