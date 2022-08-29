@@ -1,69 +1,3 @@
-#+begin_src snakemake :tangle ./workflow/checkpoints.smk
-rule all:
-    input:
-        directory('scatter')
-        #'scatter_copy/{i}_copy.txt',
-        #'scatter_copy_head_collect/all.txt'
-
-# generate random number of files
-checkpoint scatter:
-    output:
-        directory('scatter')
-    shell:
-        '''
-        mkdir {output}
-        N=$(( $RANDOM % 10))
-        for j in $(seq 1 $N); do echo -n $j > {output}/$j.txt; done
-        '''
-
-# collect the results of processing unknown number of files
-# and merge them together into one file:
-
-def aggregate_input(wildcards):
-    '''
-    aggregate the file names of the random number of files
-    generated at the scatter step
-    '''
-    checkpoint_output = checkpoints.scatter.get(**wildcards).output[0]
-    return expand('scatter_copy_head/{i}_head.txt',
-           i=glob_wildcards(os.path.join(checkpoint_output, '{i}.txt')).i)
-
-
-# process these unknown number of files
-rule scatter_copy:
-    output:
-        txt = 'scatter_copy/{i}_copy.txt',
-    input:
-        txt = 'scatter/{i}.txt',
-    shell:
-        '''
-        cp -f {input.txt} {output.txt}
-        echo -n "_copy" >> {output.txt}
-        '''
-
-# process scatter_copy output
-rule scatter_copy_head:
-    output:
-        txt = 'scatter_copy_head/{i}_head.txt',
-    input:
-        txt = 'scatter_copy/{i}_copy.txt',
-    shell:
-        '''
-        cp -f {input.txt} {output.txt}
-        echo "_head" >> {output.txt}
-        '''
-
-
-rule scatter_copy_head_collect:
-    output:
-        combined = 'scatter_copy_head_collect/all.txt',
-    input:
-        aggregate_input
-    shell:
-        '''
-        cat {input} > {output.combined}
-        '''
-#+end_src
 * Biotools                                                           :career:
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:14]
@@ -86,6 +20,235 @@ CLOCK: [2020-10-14 Wed 16:00]--[2020-10-14 Wed 17:09] =>  1:09
 CLOCK: [2020-09-21 Mon 08:42]--[2020-09-21 Mon 08:56] =>  0:14
 CLOCK: [2020-09-21 Mon 07:01]--[2020-09-21 Mon 07:05] =>  0:04
 :END:
+** My bioinformatics pipelines
+*** meth seq
+:LOGBOOK:
+CLOCK: [2022-07-24 Sun 14:02]--[2022-07-24 Sun 15:02] =>  1:00
+CLOCK: [2022-07-24 Sun 09:56]--[2022-07-24 Sun 10:01] =>  0:05
+>>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
+:END:
+****** Preamble
+#+begin_src bash
+<<<<<<< HEAD
+FROM jeszyman/basecamp
+################################################################################
+################################################################################
+###                                                                          ###
+###         Dockerfile to build a basic bioinformatics docker image          ###
+###                                                                          ###
+################################################################################
+################################################################################
+
+#################
+###   Notes   ###
+#################
+#
+# After build, the image will be pushed to the dockerhub as
+# jeszyman/biotools
+# (https://hub.docker.com/repository/docker/jeszyman/atac)
+
+#+end_src
+****** Conda
+#+begin_src bash
+
+#################
+###   Conda   ###
+#################
+
+RUN conda install -c bioconda bbmap \
+    && conda install -c bioconda bcftools \
+    && conda install -c bioconda bedops \
+    && conda install -c bioconda bedtools \
+    && conda install -c bioconda bowtie \
+    && conda install -c bioconda bowtie2 \
+    && conda install -c bioconda bwa \
+    && conda install -c bioconda cutadapt \
+    && conda install -c bioconda deeptools=3.5.1 --force \
+    && conda install -c bioconda fastp \
+    && conda install -c bioconda fastqc \
+    && conda install -c bioconda gatk \
+    && conda install -c bioconda goleft \
+    && conda install -c bioconda htseq \
+    && conda install -c bioconda mosdepth \
+    && conda install -c bioconda preseq \
+    && conda install -c bioconda pysam \
+    && conda install -c bioconda qualimap \
+    && conda install -c bioconda sambamba \
+    && conda install -c bioconda samblaster \
+    && conda install -c bioconda samtools=1.7 \
+    && conda install -c bioconda seqkit \
+    && conda install -c bioconda seqtk \
+    && conda install -c bioconda skewer \
+    && conda install -c bioconda snakemake \
+    && conda install -c bioconda trimmomatic=0.39 \
+    && conda install -c bioconda vcftools
+
+#+end_src
+****** R and Bioconductor
+#+begin_src bash
+# To avoid conflict with jeszyman/basecamp R install
+#RUN conda uninstall r-base
+
+
+##########################
+###   R Bioconductor   ###
+##########################
+
+RUN R -e "install.packages('BiocManager', repos='http://cran.rstudio.com/')"
+
+RUN R -e "BiocManager::install(version='3.15', update=TRUE, ask=FALSE)"
+
+RUN R -e 'install.packages("BiocManager"); \
+          BiocManager::install(); \
+          BiocManager::install(c("AnnotationDbi",\
+                                 "apeglm"
+                                 "BiocParallel", \
+                                 "BSgenome.Hsapiens.UCSC.hg19", \
+                                 "ComplexHeatmap", \
+                                 "EnsDb.Mmusculus.v79", \
+                                 "org.Mm.eg.db", \
+                                 "readr", \
+                                 "Rsamtools", \
+                                 "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
+
+#+end_src
+****** UCSC
+#+begin_src bash
+
+##############################################
+###   Select UCSC Command-line utilities   ###
+##############################################
+
+RUN mkdir /opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedClip --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedCommonRegions --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedCoverage --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedExtendRanges --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGeneParts --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphPack --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedIntersect --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedItemOverlapCount --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedJoinTabOffset --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedJoinTabOffset.py --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedMergeAdjacent --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedPartition --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedPileUps --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedRemoveOverlap --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedRestrictToPositions --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedSort --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToExons --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedSummary --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedToBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCat --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCluster --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCorrelate --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigInfo --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigMerge --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigSummary --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToBedGraph --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToWig --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/#+end_src --directory-prefix=/opt/ucsc \
+    && chmod -R +x /opt/ucsc/
+
+ENV PATH="/opt/ucsc:${PATH}"
+
+#+end_src
+****** Custom and manual installs
+#+begin_src bash
+
+###########################
+###   Custom Installs   ###
+###########################
+
+# Multiqc
+
+RUN pip install multiqc
+
+# Flexbar
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated libtbb2
+RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
+
+# samtools
+# https://www.biostars.org/p/9480029/
+RUN conda install -c bioconda samtools openssl=1.0
+
+#+end_src
+******* Picard
+#+begin_src bash
+
+##################
+###   Picard   ###
+##################
+
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated openjdk-8-jdk
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+#https://github.com/genome/docker-picard-cwl/commit/639ad8e4d8e7bd7e6e10f193df8d5cd16260d2e2
+RUN mkdir /opt/picard-2.18.1/ \
+    && cd /tmp/ \
+    && wget --no-check-certificate https://github.com/broadinstitute/picard/releases/download/2.18.1/picard.jar \
+    && mv picard.jar /opt/picard-2.18.1/ \
+    && ln -s /opt/picard-2.18.1 /opt/picard \
+    && ln -s /opt/picard-2.18.1 /usr/picard
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+
+#+end_src
+****** Development                                                      :dev:
+:PROPERTIES:
+:header-args: :tangle no
+
+*** [[file:~/repos/exrna/exrna.org][exRNA]]
+:LOGBOOK:
+CLOCK: [2022-06-08 Wed 14:22]--[2022-06-08 Wed 14:44] =>  0:22
+CLOCK: [2022-06-08 Wed 13:41]--[2022-06-08 Wed 13:59] =>  0:18
+:END:
+*** [[file:~/repos/cappseq/cappseq.org][CAPP-seq]]
+:LOGBOOK:
+CLOCK: [2022-06-07 Tue 08:19]--[2022-06-07 Tue 08:21] =>  0:02
+CLOCK: [2022-04-29 Fri 09:12]--[2022-04-29 Fri 10:00] =>  0:48
+CLOCK: [2022-04-26 Tue 08:34]--[2022-04-26 Tue 09:08] =>  0:34
+CLOCK: [2022-04-26 Tue 12:00]--[2022-04-26 Tue 13:31] =>  1:31
+CLOCK: [2022-04-26 Tue 09:51]--[2022-04-26 Tue 10:10] =>  0:19
+:END:
+*** [[file:~/repos/cfdna-wgs/cfdna-wgs.org][cfDNA WGS biopipe]]
+:PROPERTIES:
+:ID:       13120759-71db-497c-8ed3-1c58e47a7840
+:END:
+:LOGBOOK:
+CLOCK: [2022-05-04 Wed 08:12]--[2022-05-04 Wed 08:16] =>  0:04
+CLOCK: [2022-05-03 Tue 10:19]--[2022-05-03 Tue 11:04] =>  0:45
+CLOCK: [2022-05-03 Tue 09:46]--[2022-05-03 Tue 10:15] =>  0:29
+CLOCK: [2022-04-29 Fri 10:34]--[2022-04-29 Fri 10:56] =>  0:22
+CLOCK: [2022-06-27 Mon 11:13]--[2022-06-27 Mon 13:40] =>  2:27
+CLOCK: [2022-06-27 Mon 09:11]--[2022-06-27 Mon 10:47] =>  1:36
+CLOCK: [2022-06-27 Mon 07:07]--[2022-06-27 Mon 09:11] =>  2:04
+CLOCK: [2022-06-24 Fri 08:02]--[2022-06-24 Fri 10:19] =>  2:17
+CLOCK: [2022-06-23 Thu 10:20]--[2022-06-23 Thu 11:18] =>  0:58
+CLOCK: [2022-06-16 Thu 12:48]--[2022-06-16 Thu 13:42] =>  0:54
+CLOCK: [2022-06-16 Thu 08:08]--[2022-06-16 Thu 08:39] =>  0:31
+CLOCK: [2022-06-07 Tue 08:29]--[2022-06-07 Tue 10:56] =>  2:27
+CLOCK: [2022-06-02 Thu 08:38]--[2022-06-02 Thu 08:40] =>  0:02
+CLOCK: [2022-05-31 Tue 11:03]--[2022-05-31 Tue 12:44] =>  1:41
+:END:
+**** frag
+:LOGBOOK:
+CLOCK: [2022-04-29 Fri 13:52]--[2022-04-29 Fri 14:07] =>  0:15
+CLOCK: [2022-04-29 Fri 11:17]--[2022-04-29 Fri 11:40] =>  0:23
+CLOCK: [2021-12-07 Tue 08:55]--[2021-12-07 Tue 09:08] =>  0:13
+:END:
+*** [[file:~/repos/atac-seq/atac_seq.org][ATAC-seq biopipe]]
+:LOGBOOK:
+CLOCK: [2022-08-29 Mon 12:18]--[2022-08-29 Mon 13:00] =>  0:42
+CLOCK: [2022-05-01 Sun 12:17]--[2022-05-01 Sun 13:47] =>  1:30
+CLOCK: [2021-12-09 Thu 12:47]--[2022-05-01 Sun 13:57] => 3432:10
+:END:
+*** See [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
+** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 ** Scripts
 *** Bash helper scripts [[file:tools/shell/]]
 **** Built docker container
@@ -1348,228 +1511,6 @@ main "$@"
 #+begin_src bash
 singularity pull /mnt/ris/aadel/jeszyman/sing_containers/biotools.sif docker://jeszyman/biotools
 #+end_src
-** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
-** My bioinformatics pipelines
-*** meth seq
-:LOGBOOK:
-CLOCK: [2022-07-24 Sun 14:02]--[2022-07-24 Sun 15:02] =>  1:00
-CLOCK: [2022-07-24 Sun 09:56]--[2022-07-24 Sun 10:01] =>  0:05
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
-:END:
-****** Preamble
-#+begin_src bash
-<<<<<<< HEAD
-FROM jeszyman/basecamp
-################################################################################
-################################################################################
-###                                                                          ###
-###         Dockerfile to build a basic bioinformatics docker image          ###
-###                                                                          ###
-################################################################################
-################################################################################
-
-#################
-###   Notes   ###
-#################
-#
-# After build, the image will be pushed to the dockerhub as
-# jeszyman/biotools
-# (https://hub.docker.com/repository/docker/jeszyman/atac)
-
-#+end_src
-****** Conda
-#+begin_src bash
-
-#################
-###   Conda   ###
-#################
-
-RUN conda install -c bioconda bbmap \
-    && conda install -c bioconda bcftools \
-    && conda install -c bioconda bedops \
-    && conda install -c bioconda bedtools \
-    && conda install -c bioconda bowtie \
-    && conda install -c bioconda bowtie2 \
-    && conda install -c bioconda bwa \
-    && conda install -c bioconda cutadapt \
-    && conda install -c bioconda deeptools=3.5.1 --force \
-    && conda install -c bioconda fastp \
-    && conda install -c bioconda fastqc \
-    && conda install -c bioconda gatk \
-    && conda install -c bioconda goleft \
-    && conda install -c bioconda htseq \
-    && conda install -c bioconda mosdepth \
-    && conda install -c bioconda preseq \
-    && conda install -c bioconda pysam \
-    && conda install -c bioconda qualimap \
-    && conda install -c bioconda sambamba \
-    && conda install -c bioconda samblaster \
-    && conda install -c bioconda samtools=1.7 \
-    && conda install -c bioconda seqkit \
-    && conda install -c bioconda seqtk \
-    && conda install -c bioconda skewer \
-    && conda install -c bioconda snakemake \
-    && conda install -c bioconda trimmomatic=0.39 \
-    && conda install -c bioconda vcftools
-
-#+end_src
-****** R and Bioconductor
-#+begin_src bash
-# To avoid conflict with jeszyman/basecamp R install
-#RUN conda uninstall r-base
-
-
-##########################
-###   R Bioconductor   ###
-##########################
-
-RUN R -e "install.packages('BiocManager', repos='http://cran.rstudio.com/')"
-
-RUN R -e "BiocManager::install(version='3.15', update=TRUE, ask=FALSE)"
-
-RUN R -e 'install.packages("BiocManager"); \
-          BiocManager::install(); \
-          BiocManager::install(c("AnnotationDbi",\
-                                 "apeglm"
-                                 "BiocParallel", \
-                                 "BSgenome.Hsapiens.UCSC.hg19", \
-                                 "ComplexHeatmap", \
-                                 "EnsDb.Mmusculus.v79", \
-                                 "org.Mm.eg.db", \
-                                 "readr", \
-                                 "Rsamtools", \
-                                 "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
-
-#+end_src
-****** UCSC
-#+begin_src bash
-
-##############################################
-###   Select UCSC Command-line utilities   ###
-##############################################
-
-RUN mkdir /opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedClip --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedCommonRegions --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedCoverage --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedExtendRanges --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGeneParts --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphPack --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedIntersect --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedItemOverlapCount --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedJoinTabOffset --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedJoinTabOffset.py --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedMergeAdjacent --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedPartition --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedPileUps --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedRemoveOverlap --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedRestrictToPositions --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedSort --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToExons --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedSummary --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedToBed --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCat --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCluster --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCorrelate --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigInfo --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigMerge --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigSummary --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToBedGraph --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToWig --directory-prefix=/opt/ucsc \
-    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/#+end_src --directory-prefix=/opt/ucsc \
-    && chmod -R +x /opt/ucsc/
-
-ENV PATH="/opt/ucsc:${PATH}"
-
-#+end_src
-****** Custom and manual installs
-#+begin_src bash
-
-###########################
-###   Custom Installs   ###
-###########################
-
-# Multiqc
-
-RUN pip install multiqc
-
-# Flexbar
-RUN apt-get install -yq --no-install-recommends --allow-unauthenticated libtbb2
-RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
-
-# samtools
-# https://www.biostars.org/p/9480029/
-RUN conda install -c bioconda samtools openssl=1.0
-
-#+end_src
-******* Picard
-#+begin_src bash
-
-##################
-###   Picard   ###
-##################
-
-RUN apt-get install -yq --no-install-recommends --allow-unauthenticated openjdk-8-jdk
-
-#########1#########2#########3#########4#########5#########6#########7#########8
-#https://github.com/genome/docker-picard-cwl/commit/639ad8e4d8e7bd7e6e10f193df8d5cd16260d2e2
-RUN mkdir /opt/picard-2.18.1/ \
-    && cd /tmp/ \
-    && wget --no-check-certificate https://github.com/broadinstitute/picard/releases/download/2.18.1/picard.jar \
-    && mv picard.jar /opt/picard-2.18.1/ \
-    && ln -s /opt/picard-2.18.1 /opt/picard \
-    && ln -s /opt/picard-2.18.1 /usr/picard
-#########1#########2#########3#########4#########5#########6#########7#########8
-
-
-#+end_src
-****** Development                                                      :dev:
-:PROPERTIES:
-:header-args: :tangle no
-
-*** [[file:~/repos/exrna/exrna.org][exRNA]]
-:LOGBOOK:
-CLOCK: [2022-06-08 Wed 14:22]--[2022-06-08 Wed 14:44] =>  0:22
-CLOCK: [2022-06-08 Wed 13:41]--[2022-06-08 Wed 13:59] =>  0:18
-:END:
-*** [[file:~/repos/cappseq/cappseq.org][CAPP-seq]]
-:LOGBOOK:
-CLOCK: [2022-06-07 Tue 08:19]--[2022-06-07 Tue 08:21] =>  0:02
-CLOCK: [2022-04-29 Fri 09:12]--[2022-04-29 Fri 10:00] =>  0:48
-CLOCK: [2022-04-26 Tue 08:34]--[2022-04-26 Tue 09:08] =>  0:34
-CLOCK: [2022-04-26 Tue 12:00]--[2022-04-26 Tue 13:31] =>  1:31
-CLOCK: [2022-04-26 Tue 09:51]--[2022-04-26 Tue 10:10] =>  0:19
-:END:
-*** [[file:~/repos/cfdna-wgs/cfdna-wgs.org][cfDNA WGS biopipe]]
-:PROPERTIES:
-:ID:       13120759-71db-497c-8ed3-1c58e47a7840
-:END:
-:LOGBOOK:
-CLOCK: [2022-05-04 Wed 08:12]--[2022-05-04 Wed 08:16] =>  0:04
-CLOCK: [2022-05-03 Tue 10:19]--[2022-05-03 Tue 11:04] =>  0:45
-CLOCK: [2022-05-03 Tue 09:46]--[2022-05-03 Tue 10:15] =>  0:29
-CLOCK: [2022-04-29 Fri 10:34]--[2022-04-29 Fri 10:56] =>  0:22
-CLOCK: [2022-06-27 Mon 11:13]--[2022-06-27 Mon 13:40] =>  2:27
-CLOCK: [2022-06-27 Mon 09:11]--[2022-06-27 Mon 10:47] =>  1:36
-CLOCK: [2022-06-27 Mon 07:07]--[2022-06-27 Mon 09:11] =>  2:04
-CLOCK: [2022-06-24 Fri 08:02]--[2022-06-24 Fri 10:19] =>  2:17
-CLOCK: [2022-06-23 Thu 10:20]--[2022-06-23 Thu 11:18] =>  0:58
-CLOCK: [2022-06-16 Thu 12:48]--[2022-06-16 Thu 13:42] =>  0:54
-CLOCK: [2022-06-16 Thu 08:08]--[2022-06-16 Thu 08:39] =>  0:31
-CLOCK: [2022-06-07 Tue 08:29]--[2022-06-07 Tue 10:56] =>  2:27
-CLOCK: [2022-06-02 Thu 08:38]--[2022-06-02 Thu 08:40] =>  0:02
-CLOCK: [2022-05-31 Tue 11:03]--[2022-05-31 Tue 12:44] =>  1:41
-:END:
-*** ATAC-seq biopipe
-:LOGBOOK:
-CLOCK: [2022-05-01 Sun 12:17]--[2022-05-01 Sun 13:47] =>  1:30
-CLOCK: [2021-12-09 Thu 12:47]--[2022-05-01 Sun 13:57] => 3432:10
-:END:
-*** See [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 ** Bioinformatics process hierarchies
 *** Nucleic acid sequening processes
 https://www.reddit.com/r/bioinformatics/comments/te1f5w/what_is_important_to_know_about_your_ngs_library/
@@ -2872,7 +2813,6 @@ done
 # get readmes
 #########1#########2#########3#########4#########5#########6#########7#########8
 #+end_src
-** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 ** [[id:7ed344ce-373c-4f9e-b24f-87b57374e1a0][Biotools docker]]
 ** My bioinformatics pipelines
 *** [[file:~/repos/exrna/exrna.org][exRNA]]
@@ -3454,6 +3394,7 @@ Additional source data can be found on Zenodo (Supplementary Table 13)."
 :PROPERTIES:
 :ID:       2597b54c-972a-43c3-9630-0e542ba90eeb
 :END:
+https://www.nature.com/articles/s41588-022-01157-1
 - cite:stuart2019
 [[id:992de4dc-775e-41f0-a70a-e38c99b87265][Single cell methylation sequencing]]
 https://www.reddit.com/r/bioinformatics/comments/uy9g1j/where_to_start_with_scrnaseq_data/
@@ -4285,6 +4226,7 @@ cite:widman2022
 **** Tumor-informed methods
 - phylogenic for cancer evolution cite:abbosh2017
 **** WGS cfDNA methods
+- mutation profiling in low coverage wgs https://www.nature.com/articles/s41467-022-32598-1
 - https://www.biorxiv.org/content/10.1101/2022.01.17.476508v1.full.pdf
 - cite:zviran2020
 **** cfDNA and ctDNA-specific visualizations
@@ -10786,7 +10728,77 @@ CLOCK: [2022-05-16 Mon 07:48]--[2022-05-16 Mon 07:54] =>  0:06
 CLOCK: [2022-04-07 Thu 07:39]--[2022-04-07 Thu 07:44] =>  0:05
 CLOCK: [2021-07-01 Thu 11:18]--[2021-07-01 Thu 11:48] =>  0:30
 :END:
+https://www.embl.org/groups/bioinformatics-rome/blog/2022/05/snakemake-profile-5-handling-memory-and-timeout-errors/
+#+begin_src snakemake :tangle ./workflow/checkpoints.smk
+rule all:
+    input:
+        directory('scatter')
+        #'scatter_copy/{i}_copy.txt',
+        #'scatter_copy_head_collect/all.txt'
+
+# generate random number of files
+checkpoint scatter:
+    output:
+        directory('scatter')
+    shell:
+        '''
+        mkdir {output}
+        N=$(( $RANDOM % 10))
+        for j in $(seq 1 $N); do echo -n $j > {output}/$j.txt; done
+        '''
+
+# collect the results of processing unknown number of files
+# and merge them together into one file:
+
+def aggregate_input(wildcards):
+    '''
+    aggregate the file names of the random number of files
+    generated at the scatter step
+    '''
+    checkpoint_output = checkpoints.scatter.get(**wildcards).output[0]
+    return expand('scatter_copy_head/{i}_head.txt',
+           i=glob_wildcards(os.path.join(checkpoint_output, '{i}.txt')).i)
+
+
+# process these unknown number of files
+rule scatter_copy:
+    output:
+        txt = 'scatter_copy/{i}_copy.txt',
+    input:
+        txt = 'scatter/{i}.txt',
+    shell:
+        '''
+        cp -f {input.txt} {output.txt}
+        echo -n "_copy" >> {output.txt}
+        '''
+
+# process scatter_copy output
+rule scatter_copy_head:
+    output:
+        txt = 'scatter_copy_head/{i}_head.txt',
+    input:
+        txt = 'scatter_copy/{i}_copy.txt',
+    shell:
+        '''
+        cp -f {input.txt} {output.txt}
+        echo "_head" >> {output.txt}
+        '''
+
+
+rule scatter_copy_head_collect:
+    output:
+        combined = 'scatter_copy_head_collect/all.txt',
+    input:
+        aggregate_input
+    shell:
+        '''
+        cat {input} > {output.combined}
+        '''
+#+end_src
 - https://stackoverflow.com/questions/56024818/conditional-execution-of-multiplexed-analysis-with-snakemake
+**** [[https://snakemake.readthedocs.io/en/stable/index.html][Documentation]]
+- https://snakemake-wrappers.readthedocs.io/en/stable/wrappers.html
+- [[Snakemake Tutorial][Snakemake Tutorial]]
 **** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 **** Processes :hierarchy:
 ***** Install and setup
@@ -11129,6 +11141,11 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :ID:       271b4d5f-727e-496e-b835-8fe9f8655655
 :END:
 :LOGBOOK:
+CLOCK: [2022-08-29 Mon 13:01]--[2022-08-29 Mon 13:56] =>  0:55
+CLOCK: [2021-12-09 Thu 11:43]--[2021-12-09 Thu 12:43] =>  1:00
+CLOCK: [2022-08-29 Mon 13:00]--[2022-08-29 Mon 13:01] =>  0:01
+CLOCK: [2022-08-15 Mon 08:11]--[2022-08-15 Mon 08:19] =>  0:08
+CLOCK: [2022-08-09 Tue 13:40]--[2022-08-09 Tue 13:48] =>  0:08
 CLOCK: [2022-08-15 Mon 07:55]--[2022-08-15 Mon 08:11] =>  0:16
 CLOCK: [2022-07-26 Tue 09:10]--[2022-07-26 Tue 09:47] =>  0:37
 CLOCK: [2022-06-16 Thu 13:54]--[2022-06-16 Thu 13:58] =>  0:04
@@ -11145,8 +11162,9 @@ CLOCK: [2021-08-25 Wed 08:05]--[2021-08-25 Wed 08:33] =>  0:28
 CLOCK: [2021-08-17 Tue 16:00]--[2021-08-17 Tue 17:30] =>  1:30
 CLOCK: [2021-08-17 Tue 13:28]--[2021-08-17 Tue 14:17] =>  0:49
 :END:
-https://www.embl.org/groups/bioinformatics-rome/blog/2022/05/snakemake-profile-5-handling-memory-and-timeout-errors/
-*** Processes
+*** Processes :hierarchy:
+**** :flat:
+- https://en.wikipedia.org/wiki/Minimum_viable_product
 **** Snakemake install and setup
 - via mambaforge https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
   #+begin_src bash
@@ -11234,392 +11252,6 @@ Dev next version of pipeline
 - syntax for running shell https://stackoverflow.com/questions/45553762/recommended-way-to-do-multiple-shell-commands-with-shell/49533645#49533645
 - https://stackoverflow.com/questions/17126996/emacs-mode-for-snakemake
 - check md5 https://stackoverflow.com/questions/65907256/snakemake-use-checksums-instead-of-timestamps
-*** Best practices and style checklist
-:PROPERTIES:
-:ID:       3924c49e-5296-4fcd-8994-9b62a5bbf772
-:END:
-:LOGBOOK:
-CLOCK: [2022-08-15 Mon 08:11]--[2022-08-15 Mon 08:19] =>  0:08
-CLOCK: [2022-08-09 Tue 13:40]--[2022-08-09 Tue 13:48] =>  0:08
-:END:
-retain origninal logfile names
-name ing by library index
-naming by conventioanl file strucute - fastq, bam, ...
-- [-] By process
-  - [ ] Commits - follow [[https://www.conventionalcommits.org/en/v1.0.0/][conventional commits]]
-  - [X] Minimum working example
-    - [X] Repos have MWE for each task-specific snakefile
-  - [ ] Git
-    - [ ] Branches follow simplified trunk-based development:
-      - [ ] master as trunk branch
-      - [ ] Stable release branches are creatd for external use.
-        - [ ] Stable branches follow semantic versioning
-        - [ ] Suffixed as .stable.<SEM VAR>
-- [-] By output file
-  - Use tabular configuration for samples
-  - [X] Integration testing configuration YAML
-    - [X] All parameters have a repository-specific identifier
-    - [X] subdivide labels. /E.g./
-      ref:
-        index:
-      rather than ref_index:
-      (use as ref = config["ref"]["index"])
-    - [X] Use boolean setters where appriopriate
-      - /E.g./
-        - in config: call_variants: false
-        - and in rule all:         lambda wildcards: "analysis/09a_variant_annot/all.merged.filt.PASS.snpeff.vcf.gz.tbi" if config["call_variants"] else [],
-  - [X] Task-specific snakefile
-    - [X] Each rule has logfile defined in workflow directed to log_dir
-    - [X] Any software generated log files are redirected to log_dir
-    - [X] Externalize all scripts from workflow and allow independent script execution
-    - [X] Rule calls script as a param
-    - [X] Rule specifies a container
-    - [X] Each rule has an introductory descriptive comment
-  - [X] Minimum working example required files in ./test/inputs, all other ./.test directories can be deleted
-  - [ ] Snakemake rules
-    - [ ] Descriptive comment
-    - [ ] Log file with structured name (logging outputs are retained on run error)
-    - [ ] Externalize all processes to shell scripts
-  - [ ] README
-    - Include Change log
-  - [X] Inputs
-    - [X] Tabular sample sheet for per-unit identifiers, exported from org table
-    - Input data provenance- Record exact details of obtaining non-VC input data.
-  - Integration testing snakefile
-    - Contains all extraneous commands not relevant to focus of repo (symlinking, etc)
-    - Covers every rule
-    - Shell script remove results file structures for forced full runs.
-    - Add data validation and sanity checks
-    - Setup an in-repository test environment to perform integration testing, preferably with known positive / negative samples
-- [X] By Org-mode heading
-  - [X] Setup
-    - [X] Bash preamble
-    - [X] Integration testing shell commands documented
-  - [X] Integration testing
-    - [X] Snakefile as preamble, all rule, out-of-workflow rules, and include statements
-      - [X] Preamble
-        - [X] Libraries
-          - [X] Have a readable file check
-          - [X] Identify library dictinary with task-specific workflow
-        - [X] Define task-specific workflow directory structure
-      - [X] All rule
-        - [X] Each output from task-specific workflows is documented
-        - [X] All outputs except essential final outputs are commented out after testing
-    - [X] Generate and link to DAG
-*** :dev:
-**** Prioritized
-**** Ideas
-- https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#benchmark-rules
-template as makefile
-additional best practices
-benchmarking
-email setup
-code links by name via org-ref - ref:deepTools_plotCoverage
-- version 1 as minimum viable product: https://en.wikipedia.org/wiki/Minimum_viable_product
-***** Inputs
-:PROPERTIES:
-:ID:       35978130-f228-4805-b1cb-0ffdf410f174
-:END:
-
-****** Table of inputs
-:PROPERTIES:
-:ID:       26c7d292-db75-4c5d-b4de-01cc5d5d9c18
-:END:
-
-#+name: inputs
-| basename | class | origin |
-|----------+-------+--------|
-|          |       |        |
-
-
-filename | class | r_name | box_path | http |
-basename|path|
-4. https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html see multiext
-**** Ideas
-- tangle in org text as snakefile comments https://eschulte.github.io/babel-dev/DONE-tangle-entire-org-mode-file-in-comments.html
-- parse yaml for shell https://mikefarah.gitbook.io/yq/
-- email notices
-- lock emacs buffer regions with successful run
-*** :ref:
-**** Local YAS (prefix smk.)
-***** Insert snakemake file org-mode tree
-#+name: smk
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk
-# -*- mode: snippet -*-
-# key: smk
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (org-current-level) ?*)` [[file:./workflow/$2.smk][Snakefile]]:smk:
-:PROPERTIES:
-:header-args:snakemake: :tangle ./workflow/${2: SNAKEFILE NAME}.smk
-:END:
-`(make-string (+ 1 (org-current-level)) ?*)` Smk preamble
-,#+begin_src snakemake
-
-,#+end_src
-`(make-string (+ 1 (org-current-level)) ?*)` Smk rules
-`(make-string (+ 2 (org-current-level)) ?*)` All rule
-,#+begin_src snakemake
-rule all:
-    input:
-
-,#+end_src
-- add rules with smk.rule
-`(make-string (+ 1 (org-current-level)) ?*)` Dev
-:PROPERTIES:
-:header-args:snakemake: :tangle no
-:END:
-`(make-string (+ 1 (org-current-level)) ?*)` Ideas
-:PROPERTIES:
-:header-args:snakemake: :tangle no
-:END:
-#+end_src
-***** Make Rule
-#+name: smk.rule
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule
-# -*- mode: snippet -*-
-# key: smk.rule
-# expand-env: ((yas-indent-line 'none))
-# --
-smk.rule.${1:$$(yas-choose-value '("bash" "r"))}
-#+end_src
-***** R rule
-#+name: smk.rule.r
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule.r
-# -*- mode: snippet -*-
-# key: smk.rule.r
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (org-current-level) ?*)` ${6: <RULE DESCRIPTIVE NAME>}    :smk_rule:
-- Snakemake
-  ,#+begin_src snakemake
-rule ${1:<RULE WORKFLOW NAME>}:
-    input:
-        config["data_dir"] + "/${2:<INPUT>}",
-    params:
-        script = config["${3:<SCRIPTS DIR>}"] + "/$1.R",
-    output:
-        config["data_dir"] + "/${4:<OUTPUT>}",
-    log:
-        config["data_dir"] + "/logs/${5:<LOG ID>}_$1.log",
-    shell:
-        """
-        Rscript {params.script} \
-        {input} \
-        {output} \
-        > {log} 2>&1
-        """
-,#+end_src
-- [[file:./workflow/scripts/$1.R][Rscript]]
-  ,#+begin_src R :noweb yes :tangle ./workflow/scripts/$1.R
-#!/usr/bin/env Rscript
-
-args = commandArgs(trailingOnly = TRUE)
-= args[1]
-,#+end_src
-#+end_src
-
-***** Bash rule
-#+name: smk.rule.bash
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule.bash
-# -*- mode: snippet -*-
-# key: smk.rule.bash
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (org-current-level) ?*)` ${11: <RULE DESCRIPTIVE ORG NAME>}    :smk_rule:
-- Snakemake
-  ,#+begin_src snakemake
-# ${1:<DESCRIPTIVE COMMENT>}
-rule ${2:<RULE WORKFLOW NAME>}:
-    input:
-        ${3:<SNAKEFILE IDENTIFIER>}_${4:<INPUT DIRECTORY IDENTIFIER>}_dir + "/${5:<UNIT ID>}_${6:<INPUT SUFFIX}",
-    params:
-        script = $3_script_dir + "/$2.sh",
-    output:
-        $3_${7:<OUTPUT DIRECTORY IDENTIFIER>} + "/$5_${8:<OUTPUT SUFFIX>}",
-    log:
-        $3_${9:<LOG DIRECTORY IDENTIFIER>} + "/$5_$2.log",
-    container:
-        $3_container,
-    shell:
-        """
-        {params.script} \
-        {input} \
-        {output} &> {log}
-        """
-,#+end_src
-- [[file:./workflow/scripts/${2:$(downcase yas-text)}.sh][Shell script]]
-  ,#+begin_src bash :tangle ./workflow/scripts/${2:$(downcase yas-text)}.sh
-#!/usr/bin/env bash
-input=\$1
-output=\$2
-,#+end_src
-#+end_src
-
-
-***** sdf:smk_rule:
-- Snakemake
-#+begin_src snakemake
-rule Symbol’s function definition is void: string-replace:
-    input:
-    output:
-    shell:
-        """
-        scripts/Symbol’s function definition is void: string-replace.sh
-        """
-#+end_src
-- [[file:./workflows/scripts/Symbol’s function definition is void: string-replace.sh][Base script]]
-,  #+begin_src bash :tangle ./workflows/scripts/Symbol’s function definition is void: string-replace.sh
-#!/usr/bin/env bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-###
-###    SCRIPT TITLE   ###
-###
-
-#+end_src
-**** Local YAS (flat list)
-:PROPERTIES:
-:ID:       ce85a21e-466f-43d0-ad13-3cd21497bfc3
-:END:
-:LOGBOOK:
-CLOCK: [2021-12-09 Thu 11:43]--[2021-12-09 Thu 12:43] =>  1:00
-:END:
-- Command line
-  #+name: bash_cmdline_script_preamble
-  #+begin_src bash :noweb yes
-#!/usr/bin/env bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-#
-# Notes:
-#  This script is tangled from source code in the PROJECT_ID.org file
-#  Therefore any changes to this compiled file in place will likely be reverted
-#  by a subsequent tangle operation.
-#
-#  This script assumes you are running from the repository main directory in
-#  order to source the appriopriate configuation file.
-
-# Load bash configuation
-if [ -f ./config/${HOSTNAME}.sh ]; then
-    source ./config/${HOSTNAME}.sh
-else
-    echo "No bash config found. Are you running from repo main dir?"
-fi
-#+end_src
-***** Data
-
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.data
-  # -*- mode: snippet -*-
-  # key: bioinfo.data
-  # expand-env: ((yas-indent-line 'none))
-  # --
-  `(make-string (1+ (org-current-level)) ?*)` Data
-#+end_src
-
-***** [[id:61f0fe69-ab73-416d-b078-9c94a053520a][Local variables]]
-***** bioinfo.config.host.sh
-:PROPERTIES:
-:ID:       2cdacb39-2dd0-405d-a4fb-c1cdd4004344
-:END:
-
-#+name: bioinfo.config.host.sh
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.host.sh
-# -*- mode: snippet -*-
-# key: bioinfo.config.host.sh
-# expand-env: ((yas-indent-line 'fixed))
-# --
-,#+begin_src bash :noweb yes :tangle ./config/${1:HOSTNAME}.sh
-<<bash_cmdline_script_preamble>>
-#########1#########2#########3#########4#########5#########6#########7#########8
-
-#
-###   Bash configuration sourcing script for $1   ###
-#
-
-# Define host-local absolute variables
-data_dir="${2:LOCAL DATA DIRECTORY}"
-mntpt="${3:MOUNT POINT PATH}"
-repo="${4:REPO PATH}"
-threads=${5:THREADS}
-
-# ADD ADDITIONAL NOWEBS
-
-#
-echo "Setup complete for $(basename "\${repo}") on $HOSTNAME"
-
-,#+end_src
-#+end_src
-
-***** bioinfo.config.common.sh
-=======
-cd ~/snakemake-tutorial/
-
-conda activate snakemake-tutorial
-
-
-snakemake -p --cores 2 sorted_reads/{A,B}.bam
-#    --dry-run \
-
-snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
-
-expand("sorted_reads/{sample}.bam", sample=SAMPLES)
-
-snakemake -p --cores 2 plots/quals.svg
-
-snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
-
-snakemake --cores 20 --forceall --summary
-
-snakemake --cores 20 --forceall
-
-conda install pygraphviz
-
-snakemake --report report.html
-
-open report.html
-
-snakemake --cores 20 --forceall
-#+end_src
-- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
-**** [[https://snakemake.readthedocs.io/en/stable/index.html][Documentation]]
-- https://snakemake-wrappers.readthedocs.io/en/stable/wrappers.html
-- [[Snakemake Tutorial][Snakemake Tutorial]]
-**** Examples
-- https://github.com/vari-bbc/rnaseq_workflow/blob/master/Snakefile
-- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
-- https://github.com/yztxwd/rna-seq-standard-pipeline/tree/c19a9e27216b86d3dbfdaed7228aeff59f869383
-- https://github.com/porchard/ATACseq-Snakemake/blob/master/src/Snakefile
-- https://github.com/zhxiaokang/RASflow
-- https://github.com/EthanHolleman
-- https://www.biostars.org/p/406385/
-- https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
-- https://github.com/lachlandeer/snakemake-econ-r
-**** Ideas
-- tangle in org text as snakefile comments https://eschulte.github.io/babel-dev/DONE-tangle-entire-org-mode-file-in-comments.html
-- parse yaml for shell https://mikefarah.gitbook.io/yq/
-- email notices
-- lock emacs buffer regions with successful run
-** Bioinformatics project                                :mod:biopipe:career:
-:PROPERTIES:
-:ID:       271b4d5f-727e-496e-b835-8fe9f8655655
-:END:
-:LOGBOOK:
-CLOCK: [2022-06-16 Thu 13:54]--[2022-06-16 Thu 13:58] =>  0:04
-CLOCK: [2022-06-16 Thu 09:44]--[2022-06-16 Thu 11:29] =>  1:45
-CLOCK: [2022-06-08 Wed 13:40]--[2022-06-08 Wed 13:41] =>  0:01
-CLOCK: [2022-05-05 Thu 11:36]--[2022-05-05 Thu 12:13] =>  0:37
-CLOCK: [2022-04-29 Fri 14:07]--[2022-04-29 Fri 14:11] =>  0:04
-CLOCK: [2022-01-14 Fri 08:43]--[2022-01-14 Fri 10:00] =>  1:17
-CLOCK: [2021-12-09 Thu 09:58]--[2021-12-09 Thu 11:43] =>  1:45
-CLOCK: [2021-12-09 Thu 08:55]--[2021-12-09 Thu 09:57] =>  1:02
-CLOCK: [2021-08-26 Thu 08:01]--[2021-08-26 Thu 08:45] =>  0:44
-CLOCK: [2021-08-25 Wed 09:13]--[2021-08-25 Wed 10:35] =>  1:22
-CLOCK: [2021-08-25 Wed 08:05]--[2021-08-25 Wed 08:33] =>  0:28
-CLOCK: [2021-08-17 Tue 16:00]--[2021-08-17 Tue 17:30] =>  1:30
-CLOCK: [2021-08-17 Tue 13:28]--[2021-08-17 Tue 14:17] =>  0:49
-:END:
-https://en.wikipedia.org/wiki/Minimum_viable_product
-https://stackoverflow.com/questions/13897717/push-commits-to-another-branch
-https://unix.stackexchange.com/questions/10646/repeat-a-unix-command-every-x-seconds-forever
 *** Local transclusion
 **** Integration testing configuration YAML
 >>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
@@ -12302,7 +11934,7 @@ Directory Structure
 
 Some tools directory scripts and org-mode code blocks will call scripts or functions not present within the repository. These can be found in https://github.com/jeszyman/biotools and https://github.com/jeszyman/basecamp.
 
-**** Scripts (flat list)
+*** Scripts (flat list)
 #+begin_src bash :tangle ./tools/shell/rm_test_results.sh
 #!/usr/bin/env bash
 
@@ -12312,7 +11944,7 @@ rm -rf !(inputs)
 cd ../
 
 #+end_src
-***** Make bioinformatics project repository directory structure
+**** Make bioinformatics project repository directory structure
 :PROPERTIES:
 :ID:       b1c8d0f3-42aa-4427-93e0-5e97261343d5
 :END:
@@ -12338,7 +11970,7 @@ done
 fi
 
 #+end_src
-***** Check run conditions for integration testing
+**** Check run conditions for integration testing
 #+begin_src bash
 #!/usr/bin/env bash
 
@@ -12382,7 +12014,7 @@ else
     echo "Current branch is $cur_branch"
 fi
 #+end_src
-***** Dry run
+**** Dry run
 :PROPERTIES:
 :ID:       c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
 :END:
@@ -12415,7 +12047,7 @@ else
         --snakefile $2
 fi
 #+end_src
-***** Draw rulegraph
+**** Draw rulegraph
 :PROPERTIES:
 :ID:       78a99954-1d5d-4e09-87a4-6690f28f4519
 :END:
@@ -12452,7 +12084,7 @@ else
 fi
 #+end_src
 
-***** TODO [#D] Normal run
+**** TODO [#D] Normal run
 :PROPERTIES:
 :effort: 00:30
 :ID:       3adf72d3-aa35-4a3d-8eba-0df075c52e26
@@ -12490,7 +12122,7 @@ else
 fi
 #+end_src
 
-***** Forced run
+**** Forced run
 :PROPERTIES:
 :ID:       c2a25d2f-05bb-4eda-920f-e2d9fa768de6
 :END:
@@ -12526,7 +12158,7 @@ else
         --verbose
 fi
 #+end_src
-***** Development
+**** Development
 :PROPERTIES:
 :header-args: :tangle no
 :END:
@@ -12656,7 +12288,7 @@ git merge master
 git push origin stable4.1
 git checkout master
 #+end_src
-****** Dev
+***** Dev
 #+begin_src bash
 #!/bin/bash
 #########1#########2#########3#########4#########5#########6#########7#########8
@@ -12915,6 +12547,347 @@ snakemake --cores 20 --forceall
 - https://www.biostars.org/p/406385/
 - https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
 - https://github.com/lachlandeer/snakemake-econ-r
+*** :dev:
+**** Prioritized
+- [ ] update [[id:3924c49e-5296-4fcd-8994-9b62a5bbf772][best practices checklist]]
+**** Ideas
+- [X] Use boolean setters where appriopriate
+      - /E.g./
+        - in config: call_variants: false
+        - and in rule all:         lambda wildcards: "analysis/09a_variant_annot/all.merged.filt.PASS.snpeff.vcf.gz.tbi" if config["call_variants"] else [],
+- Add data validation and sanity checks in int testing
+    - Setup an in-repository test environment to perform integration testing, preferably with known positive / negative samples
+- [ ] Commits - follow [[https://www.conventionalcommits.org/en/v1.0.0/][conventional commits]]
+- https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#benchmark-rules
+template as makefile
+additional best practices
+benchmarking
+email setup
+code links by name via org-ref - ref:deepTools_plotCoverage
+- version 1 as minimum viable product: https://en.wikipedia.org/wiki/Minimum_viable_product
+***** Inputs
+:PROPERTIES:
+:ID:       35978130-f228-4805-b1cb-0ffdf410f174
+:END:
+
+****** Table of inputs
+:PROPERTIES:
+:ID:       26c7d292-db75-4c5d-b4de-01cc5d5d9c18
+:END:
+
+#+name: inputs
+| basename | class | origin |
+|----------+-------+--------|
+|          |       |        |
+
+
+filename | class | r_name | box_path | http |
+basename|path|
+4. https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html see multiext
+***** Ideas
+- tangle in org text as snakefile comments https://eschulte.github.io/babel-dev/DONE-tangle-entire-org-mode-file-in-comments.html
+- parse yaml for shell https://mikefarah.gitbook.io/yq/
+- email notices
+- lock emacs buffer regions with successful run
+***** Ideas
+- tangle in org text as snakefile comments https://eschulte.github.io/babel-dev/DONE-tangle-entire-org-mode-file-in-comments.html
+- parse yaml for shell https://mikefarah.gitbook.io/yq/
+- email notices
+- lock emacs buffer regions with successful run
+*** :ref:
+**** [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][Git]]
+**** [[id:a8b27140-4b9e-40c5-86ab-ee5afeae723f][snakemake]]
+**** Local YAS :flat:
+:PROPERTIES:
+:ID:       ce85a21e-466f-43d0-ad13-3cd21497bfc3
+:END:
+- Command line
+  #+name: bash_cmdline_script_preamble
+  #+begin_src bash :noweb yes
+#!/usr/bin/env bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+# Notes:
+#  This script is tangled from source code in the PROJECT_ID.org file
+#  Therefore any changes to this compiled file in place will likely be reverted
+#  by a subsequent tangle operation.
+#
+#  This script assumes you are running from the repository main directory in
+#  order to source the appriopriate configuation file.
+
+# Load bash configuation
+if [ -f ./config/${HOSTNAME}.sh ]; then
+    source ./config/${HOSTNAME}.sh
+else
+    echo "No bash config found. Are you running from repo main dir?"
+fi
+#+end_src
+***** Data
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.data
+  # -*- mode: snippet -*-
+  # key: bioinfo.data
+  # expand-env: ((yas-indent-line 'none))
+  # --
+  `(make-string (1+ (org-current-level)) ?*)` Data
+#+end_src
+
+***** [[id:61f0fe69-ab73-416d-b078-9c94a053520a][Local variables]]
+***** bioinfo.config.host.sh
+:PROPERTIES:
+:ID:       2cdacb39-2dd0-405d-a4fb-c1cdd4004344
+:END:
+
+#+name: bioinfo.config.host.sh
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.host.sh
+# -*- mode: snippet -*-
+# key: bioinfo.config.host.sh
+# expand-env: ((yas-indent-line 'fixed))
+# --
+,#+begin_src bash :noweb yes :tangle ./config/${1:HOSTNAME}.sh
+<<bash_cmdline_script_preamble>>
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+#
+###   Bash configuration sourcing script for $1   ###
+#
+
+# Define host-local absolute variables
+data_dir="${2:LOCAL DATA DIRECTORY}"
+mntpt="${3:MOUNT POINT PATH}"
+repo="${4:REPO PATH}"
+threads=${5:THREADS}
+
+# ADD ADDITIONAL NOWEBS
+
+#
+echo "Setup complete for $(basename "\${repo}") on $HOSTNAME"
+
+,#+end_src
+#+end_src
+
+***** bioinfo.config.common.sh
+=======
+cd ~/snakemake-tutorial/
+
+conda activate snakemake-tutorial
+
+
+snakemake -p --cores 2 sorted_reads/{A,B}.bam
+#    --dry-run \
+
+snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
+
+expand("sorted_reads/{sample}.bam", sample=SAMPLES)
+
+snakemake -p --cores 2 plots/quals.svg
+
+snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
+
+snakemake --cores 20 --forceall --summary
+
+snakemake --cores 20 --forceall
+
+conda install pygraphviz
+
+snakemake --report report.html
+
+open report.html
+
+snakemake --cores 20 --forceall
+#+end_src
+- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
+***** Local YAS (prefix smk.)
+***** Insert snakemake file org-mode tree
+#+name: smk
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk
+# -*- mode: snippet -*-
+# key: smk
+# expand-env: ((yas-indent-line 'none))
+# --
+`(make-string (org-current-level) ?*)` [[file:./workflow/$2.smk][Snakefile]]:smk:
+:PROPERTIES:
+:header-args:snakemake: :tangle ./workflow/${2: SNAKEFILE NAME}.smk
+:END:
+`(make-string (+ 1 (org-current-level)) ?*)` Smk preamble
+,#+begin_src snakemake
+
+,#+end_src
+`(make-string (+ 1 (org-current-level)) ?*)` Smk rules
+`(make-string (+ 2 (org-current-level)) ?*)` All rule
+,#+begin_src snakemake
+rule all:
+    input:
+
+,#+end_src
+- add rules with smk.rule
+`(make-string (+ 1 (org-current-level)) ?*)` Dev
+:PROPERTIES:
+:header-args:snakemake: :tangle no
+:END:
+`(make-string (+ 1 (org-current-level)) ?*)` Ideas
+:PROPERTIES:
+:header-args:snakemake: :tangle no
+:END:
+#+end_src
+***** Make Rule
+#+name: smk.rule
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule
+# -*- mode: snippet -*-
+# key: smk.rule
+# expand-env: ((yas-indent-line 'none))
+# --
+smk.rule.${1:$$(yas-choose-value '("bash" "r"))}
+#+end_src
+***** R rule
+:PROPERTIES:
+:ID:       928c57a9-dd2b-427b-b1c4-191e6321d133
+:END:
+#+name: smk.rule.r
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule.r
+# -*- mode: snippet -*-
+# key: smk.rule.r
+# expand-env: ((yas-indent-line 'none))
+# --
+`(make-string (org-current-level) ?*)` ${6: <RULE DESCRIPTIVE NAME>}    :smk_rule:
+- Snakemake
+  ,#+begin_src snakemake
+rule ${1:<RULE WORKFLOW NAME>}:
+    input:
+        config["data_dir"] + "/${2:<INPUT>}",
+    params:
+        script = config["${3:<SCRIPTS DIR>}"] + "/$1.R",
+    output:
+        config["data_dir"] + "/${4:<OUTPUT>}",
+    log:
+        config["data_dir"] + "/logs/${5:<LOG ID>}_$1.log",
+    shell:
+        """
+        Rscript {params.script} \
+        {input} \
+        {output} \
+        > {log} 2>&1
+        """
+,#+end_src
+- [[file:./workflow/scripts/$1.R][Rscript]]
+  ,#+begin_src R :noweb yes :tangle ./workflow/scripts/$1.R
+#!/usr/bin/env Rscript
+
+args = commandArgs(trailingOnly = TRUE)
+= args[1]
+,#+end_src
+#+end_src
+
+***** Bash rule
+:PROPERTIES:
+:ID:       5ac79198-801a-4ab9-82df-88402cb63e4d
+:END:
+#+name: smk.rule.bash
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule.bash
+# -*- mode: snippet -*-
+# key: smk.rule.bash
+# expand-env: ((yas-indent-line 'none))
+# --
+`(make-string (org-current-level) ?*)` ${11: <RULE DESCRIPTIVE ORG NAME>}    :smk_rule:
+- Snakemake
+  ,#+begin_src snakemake
+# ${1:<DESCRIPTIVE COMMENT>}
+rule ${2:<RULE WORKFLOW NAME>}:
+    container:
+        $3_container,
+    input:
+        ${3:< SMK ID >}_${4:< PROCESS ID >} + "/{${5:<UNIT ID>}}${6:<INPUT SUFFIX}",
+    log:
+        config["logdir"] + "/{$5}_$3_$2.log",
+    output:
+        $3_${7:<OUTPUT DIRECTORY IDENTIFIER>} + "/{$5}${8:<OUTPUT SUFFIX>}",
+    params:
+        script = $3_script_dir + "/$2.sh",
+    shell:
+        """
+        {params.script} \
+        {input} \
+        {output} &> {log}
+        """
+,#+end_src
+- [[file:./workflow/scripts/${2:$(downcase yas-text)}.sh][Shell script]]
+  ,#+begin_src bash :tangle ./workflow/scripts/${2:$(downcase yas-text)}.sh
+#!/usr/bin/env bash
+input=\$1
+output=\$2
+,#+end_src
+#+end_src
+
+
+***** sdf:smk_rule:
+- Snakemake
+#+begin_src snakemake
+rule Symbol’s function definition is void: string-replace:
+    input:
+    output:
+    shell:
+        """
+        scripts/Symbol’s function definition is void: string-replace.sh
+        """
+#+end_src
+- [[file:./workflows/scripts/Symbol’s function definition is void: string-replace.sh][Base script]]
+,  #+begin_src bash :tangle ./workflows/scripts/Symbol’s function definition is void: string-replace.sh
+#!/usr/bin/env bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+###
+###    SCRIPT TITLE   ###
+###
+
+#+end_src
+**** Style and best practices
+:PROPERTIES:
+:ID:       3924c49e-5296-4fcd-8994-9b62a5bbf772
+:logging: nil
+:END:
+- File, directory, and variable naming
+  - Names common across repos and snakefiles, to be referenced directly from config:
+    - datadir
+    - logdir
+  - All inputs and outputs to a single local data directory. This directory is common across snakefiles and pipelines and therefore naming within must be unique.
+  - Outputs to flat list of subdirectories by {file type}-{smk}-{step}
+  - Output file names as {identifier}_{smk}_{step}.{suffix}
+  - Simplify parameter names as much as possible in configuration YAMLs and operational snakefiles. Construct naming logic within the integration snakefile.
+- Snakefile and org file structure
+  - Per rule
+    - Conform to [[id:5ac79198-801a-4ab9-82df-88402cb63e4d][bash]] and [[id:928c57a9-dd2b-427b-b1c4-191e6321d133][R]] rule YAS
+  - Inputs
+    - Use tabular configuration for samples
+  - README
+    - Include Change log
+    - Update at least at stable version
+  - Integration testing snakefile
+    - Contains all extraneous commands not relevant to focus of repo (symlinking, etc)
+    - Preamble
+      - Define initial samples
+      - Make readable file check
+      - Symlink sample files from inputs using a python library
+      - Define task-specific workflow directory structure
+    - All rule has output of every content-specific snakefile. Intermediate rules are commented out.
+  - Resources
+    - Generate and link to DAG
+- Development and updates
+  - Trunk-based development via git and github
+  - Stable release branches are creatd for external use.
+    - Follow semantic versioning
+    - Brach named as stable.<SEM VAR>
+  - Version 1 is a minimum working example using only data in test/inputs
+
+**** Examples
+- https://github.com/vari-bbc/rnaseq_workflow/blob/master/Snakefile
+- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
+- https://github.com/yztxwd/rna-seq-standard-pipeline/tree/c19a9e27216b86d3dbfdaed7228aeff59f869383
+- https://github.com/porchard/ATACseq-Snakemake/blob/master/src/Snakefile
+- https://github.com/zhxiaokang/RASflow
+- https://github.com/EthanHolleman
+- https://www.biostars.org/p/406385/
+- https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
+- https://github.com/lachlandeer/snakemake-econ-r
+
 ** Development
 *** v0.1.0
 **** sifs to szymanski RIS
@@ -13040,6 +13013,7 @@ snakemake --cores 20 --forceall
 :END:
 - multi-omics population disease characterizations
   - https://www.frontiersin.org/articles/10.3389/fonc.2022.932337/full
+https://www.reddit.com/r/bioinformatics/comments/wtnu0f/staying_up_to_date_with_processestechnology/
 - https://www.omicsdi.org/
 - https://hpc.nih.gov/training/gatk_tutorial/preproc.html
 - https://www.ncbi.nlm.nih.gov/assembly/model/
