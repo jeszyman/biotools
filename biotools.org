@@ -248,6 +248,1758 @@ CLOCK: [2022-05-01 Sun 12:17]--[2022-05-01 Sun 13:47] =>  1:30
 CLOCK: [2021-12-09 Thu 12:47]--[2022-05-01 Sun 13:57] => 3432:10
 :END:
 *** See [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
+** Bioinformatics project                                :mod:biopipe:career:
+:PROPERTIES:
+:ID:       271b4d5f-727e-496e-b835-8fe9f8655655
+:END:
+:LOGBOOK:
+CLOCK: [2022-08-29 Mon 13:01]--[2022-08-29 Mon 13:56] =>  0:55
+CLOCK: [2021-12-09 Thu 11:43]--[2021-12-09 Thu 12:43] =>  1:00
+CLOCK: [2022-08-29 Mon 13:00]--[2022-08-29 Mon 13:01] =>  0:01
+CLOCK: [2022-08-15 Mon 08:11]--[2022-08-15 Mon 08:19] =>  0:08
+CLOCK: [2022-08-09 Tue 13:40]--[2022-08-09 Tue 13:48] =>  0:08
+CLOCK: [2022-08-15 Mon 07:55]--[2022-08-15 Mon 08:11] =>  0:16
+CLOCK: [2022-07-26 Tue 09:10]--[2022-07-26 Tue 09:47] =>  0:37
+CLOCK: [2022-06-16 Thu 13:54]--[2022-06-16 Thu 13:58] =>  0:04
+CLOCK: [2022-06-16 Thu 09:44]--[2022-06-16 Thu 11:29] =>  1:45
+CLOCK: [2022-06-08 Wed 13:40]--[2022-06-08 Wed 13:41] =>  0:01
+CLOCK: [2022-05-05 Thu 11:36]--[2022-05-05 Thu 12:13] =>  0:37
+CLOCK: [2022-04-29 Fri 14:07]--[2022-04-29 Fri 14:11] =>  0:04
+CLOCK: [2022-01-14 Fri 08:43]--[2022-01-14 Fri 10:00] =>  1:17
+CLOCK: [2021-12-09 Thu 09:58]--[2021-12-09 Thu 11:43] =>  1:45
+CLOCK: [2021-12-09 Thu 08:55]--[2021-12-09 Thu 09:57] =>  1:02
+CLOCK: [2021-08-26 Thu 08:01]--[2021-08-26 Thu 08:45] =>  0:44
+CLOCK: [2021-08-25 Wed 09:13]--[2021-08-25 Wed 10:35] =>  1:22
+CLOCK: [2021-08-25 Wed 08:05]--[2021-08-25 Wed 08:33] =>  0:28
+CLOCK: [2021-08-17 Tue 16:00]--[2021-08-17 Tue 17:30] =>  1:30
+CLOCK: [2021-08-17 Tue 13:28]--[2021-08-17 Tue 14:17] =>  0:49
+:END:
+*** Processes :hierarchy:
+**** :flat:
+- https://en.wikipedia.org/wiki/Minimum_viable_product
+**** Snakemake install and setup
+- via mambaforge https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
+  #+begin_src bash
+conda init bash
+/bin/bash
+conda activate base
+conda install -n base -c conda-forge mamba
+y
+mamba create -c conda-forge -c bioconda -n snakemake snakemake
+y
+conda activate snakemake
+snakemake --help
+#+end_src
+- via miniconda
+  - [[https://docs.anaconda.com/anaconda/install/multi-user/][install multi-user miniconda]]
+- add singularity
+  -
+**** Per-project setup work tree
+- [ ] Declare repo on github https://github.com/new
+- [ ] Run setup commads for directory and repo
+  #+begin_src bash
+repo=exrna
+repo=meth
+repo_path="${HOME}/repos/${repo}"
+mkdir -p "${repo_path}"
+cd "${repo_path}"
+
+git init
+touch README.md
+git add README.md
+git add -A
+git commit -m "first commit"
+git branch -M master
+git remote add origin git@github.com:jeszyman/${repo}.git
+git push -u origin master
+#+end_src
+- [ ] Import [[id:669a5d96-0bea-4d56-ae7e-11151fbfe4a4][size check git hook]]
+- [ ] Make inital [[*README][README]]
+
+**** Writing snakefiles
+https://stackoverflow.com/questions/50413374/glob-wildcards-on-multiple-directories-with-different-file-names
+- Input functions
+  - https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/09-input_functions/index.html
+- [[id:f20681eb-de70-4540-a9ba-63de0c800321][Python dictionaries]]
+- https://stackoverflow.com/questions/56042158/snakemake-correct-syntax-for-accessing-dictionary-values
+- python dict for names https://stackoverflow.com/questions/50413374/glob-wildcards-on-multiple-directories-with-different-file-names
+- Run rule on all files in dir https://snakemake.readthedocs.io/en/stable/project_info/faq.html#how-do-i-run-my-rule-on-all-files-of-a-certain-directory
+- To pass character vector to R snakemake rule https://stackoverflow.com/questions/13840207/character-vector-as-an-argument-to-r-script
+- R package management in snakemake rules
+  - https://github.com/lachlandeer/snakemake-econ-r
+- https://lachlandeer.github.io/snakemake-econ-r-tutorial/logging-output-and-errors.html
+- https://stackoverflow.com/questions/69483414/unspecified-syntax-error-in-snakemake-rule
+- test workflow output- https://stackoverflow.com/questions/50198628/snakemake-confusion-on-how-to-access-config-files-properly
+- workaround for using snakemake vars in shell script https://stackoverflow.com/a/49533645/6106936
+- https://github.com/snakemake/snakemake/issues/971
+- Configuration files
+  - [[id:2d51112e-b2a4-41c5-bbd9-d9fc85cc59c5][YAML document markup language]]
+  - Using config variables
+    - https://lachlandeer.github.io/snakemake-econ-r-tutorial/config-files.html
+  - can do multiple config files- see https://stackoverflow.com/questions/62696099/snakemake-multiple-config-files
+**** Project stable version update
+:PROPERTIES:
+:ID:       f6717c79-64ce-4b16-b455-649df2ba20fd
+:END:
+-
+- https://stackoverflow.com/questions/13897717/push-commits-to-another-branch
+***** Update
+Write minimum working product
+
+Add in mod workflows as linked headers, date complete dictates update
+
+Add dev to versioned updates
+Push to version 1
+Run versioned snakefile in experimental repo
+Do some experimental repo downstream analysis/ results
+
+
+Dev next version of pipeline
+
+**** Run
+  --lint
+  --rulegraph
+  - https://www.google.com/search?q=snakemake+run+specific+rule
+  - docker - https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html?highlight=docker#running-jobs-in-containers
+- syntax for running shell https://stackoverflow.com/questions/45553762/recommended-way-to-do-multiple-shell-commands-with-shell/49533645#49533645
+- https://stackoverflow.com/questions/17126996/emacs-mode-for-snakemake
+- check md5 https://stackoverflow.com/questions/65907256/snakemake-use-checksums-instead-of-timestamps
+*** Local transclusion
+**** Integration testing configuration YAML
+>>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
+:PROPERTIES:
+:ID:       5120c9dd-8e0b-4b2c-8c77-a89f271a48e4
+:END:
+
+#+name: bioinfo.config.common.sh
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.common.sh
+# -*- mode: snippet -*-
+# key: bioinfo.config.common.sh
+# expand-env: ((yas-indent-line 'fixed))
+# --
+,#+name: bash_common_config
+,#+begin_src bash :noweb yes :tangle ./config/common.sh
+#!/bin/bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+
+# Check git file hook is read-able
+if [ -r "${repo}/.git/hooks/precommit" ]; then
+   echo "Git size check is read-able"
+else
+    echo
+    "Git size check is not read-able"
+    exit 1
+fi
+
+# Check mount point
+if grep -qs $mntpt /proc/mounts; then
+    echo "RIS storage mounted."
+else
+    echo "RIS storage NOT mounted, exiting."
+    exit 1
+fi
+
+# Check singularity container
+if [ -r $sif_dir/atac.sif ]; then
+    echo "Local SIF file present"
+else
+    echo "No local SIF file found"
+fi
+    fi
+}
+#+end_src
+
+***** bioinfo.launch.docker
+
+#+name: bioinfo.launch.docker
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
+  # -*- mode: snippet -*-
+  # key: bioinfo.launch.docker
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src bash
+  #!/bin/bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+
+  # Notes: This block build from bioinfo.launch.docker at
+  #  ce85a21e-466f-43d0-ad13-3cd21497bfc3
+
+  # Function to launch an interactive docker session
+
+  ,#+end_src
+#+end_src
+
+***** bioinfo.setup.bash
+
+#+name: bioinfo.setup.bash
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
+  # -*- mode: snippet -*-
+  # key: bioinfo.setup.bash
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  `(make-string (1+ (org-current-level)) ?*)` Bash
+  Potential YAS to run:
+  bioinfo.config.host.sh
+  bioinfo.config.main.sh
+  ris.mount
+  $0
+#+end_src
+
+***** bioinfo.config.main.R
+
+#+name: bioinfo.config.main.R
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
+  # -*- mode: snippet -*-
+  # key: bioinfo.config.main.R
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src R :noweb yes :tangle ./config/main.R
+  #!/usr/bin/env Rscript
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # Repository-local, relative variables
+  $0
+
+  # Pull in from other repositories
+  ##
+  ## Basecamp
+  <<./basecamp/basecamp.org:basecamp_r_setup_wrapper()>>
+
+  ##
+  ## Biotools
+  <<./biotools/biotools.org:biotools_r_setup_wrapper()>>
+
+  ,#+end_src
+#+end_src
+
+***** bioinfo.config.local.R
+
+#+name: bioinfo.config.local.R
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
+  # -*- mode: snippet -*-
+  # key: bioinfo.config.local.R
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src R :noweb yes :tangle ./config/${1:HOSTNAME}.R
+  #!/usr/bin/env Rscript
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # Repository-local, host-absolute variables
+  data_dir = file.path("${2:DATA_DIR}")
+  source("./config/main.R")
+  $0
+  ,#+end_src
+#+end_src
+
+***** bioinfo.bash.script
+
+#+name: bioinfo.bash.script
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
+  # -*- mode: snippet -*-
+  # key: bioinfo.bash.script
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  #!/bin/bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  ### ${1:SCRIPT NAME} ###
+  #
+  # Notes:
+  ## This script assumes your your bash sessin is running within the repository docker container (see ./)
+  ## This script calls relative varibles and assumes you have sourced an appriopriate configuration file (see ./config)
+#+end_src
+
+***** UPDATE_ON_USE bioinfo.setup
+CLOSED: [2021-12-09 Thu 12:38]
+:PROPERTIES:
+:ID:       dbd3c67c-e33b-42d8-800d-705292d3c372
+:END:
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
+# -*- mode: snippet -*-
+# key: bioinfo.setup
+# expand-env: ((yas-indent-line 'none))
+# --
+`(concat "*" (make-string (org-current-level) ?*))` Setup
+`(concat "**" (make-string (org-current-level) ?*))` Bash
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+- Local (by $HOSTNAME)
+- Common
+  ,#+begin_src bash :tangle ./config/common.sh
+,#+end_src
+`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
+- Command line
+  ,#+name: bash_preamble_cmd
+  ,#+begin_src bash
+if [[ -f ./config/\${HOSTNAME}.sh ]];
+then source ./config/\${HOSTNAME}.sh
+else
+    echo "No config file found for \${HOSTNAME}"
+    exit 1
+fi
+,#+end_src
+- Snakemake
+`(concat "**" (make-string (org-current-level) ?*))` TODO Box and rclone
+`(concat "**" (make-string (org-current-level) ?*))` TODO Docker and singularity
+`(concat "***" (make-string (org-current-level) ?*))` Processes
+1. Write
+   ,#+begin_src fundamental :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
+,#+end_src
+2. Build
+3. Make singularity container from docker container
+`(concat "**" (make-string (org-current-level) ?*))` TODO Emacs and Org-mode
+- [ ] Run minimal YAS
+  bioinfo.setup
+  bioinfo.inputs
+  bioinfo.data
+  locvars
+- [ ] Add
+  - to main reference section
+    - Bioinformatics project [[6acdcddf-d693-40f2-a3ae-9703bad56043][module headline]] and [[tag:{bioinfo}][instances]]
+  - to Local variables
+    ,#+TODO: WAITING(w@) TODO(t) INPROCESS(p) | CLOSEOUT DONE(d!) DELEGATED(@) CANCELED(@)
+    ,#+property: header-args:R    :session *PROJECT_NAME*
+`(concat "**" (make-string (org-current-level) ?*))` TODO Local data directory and WashU RIS Storage processes
+- Mount
+- Create directory structure
+  ,#+begin_src bash
+  <<bash_preamble>>
+  ,#+end_src
+`(concat "**" (make-string (org-current-level) ?*))` R
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
+`(concat "**" (make-string (org-current-level) ?*))` TODO Repository, git, and github
+- [ ] ensure [[file:.git/hooks/pre-commit]]
+- [ ] Create repository structure
+  ,#+begin_src bash
+mkdir -p "\${repo}/config"
+mkdir -p "\${repo}/resources"
+mkdir -p "\${repo}/results"
+mkdir -p "\${repo}/src"
+mkdir -p "\${repo}/workflow/scripts"
+,#+end_src
+`(concat "***" (make-string (org-current-level) ?*))` README
+`(concat "**" (make-string (org-current-level) ?*))` Snakemake
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+`(concat "***" (make-string (org-current-level) ?*))` TODO Run commands
+#+end_src
+
+***** bioinfo.inputs
+:PROPERTIES:
+:ID:       d6bb61c9-8b10-4460-b987-0a6c678d2ddb
+:END:
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
+# -*- mode: snippet -*-
+# key: bioinfo.inputs
+# expand-env: ((yas-indent-line 'none))
+# --
+`(make-string (1+ (org-current-level)) ?*)` Inputs
+,#+name: input_table
+|basename|dirname|get_class|model_class|origin
+`(concat "**" (make-string (org-current-level) ?*))` Manually created input tables
+- (names must end in _input)
+-
+#+end_src
+
+
+**** General Reference
+:PROPERTIES:
+:ID:       c68a6456-411b-4cb1-a112-119d9919d19d
+:END:
+- [[https://www.biostars.org/p/190366/][Biostars Forum:Good Habit for Bioinformatics Analyst or Scientist]]
+- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
+Bioinformatics project design principles
+
+Simplicity
+Don't create without a purpose
+
+Consistency
+
+Transparency
+
+Reproducibility
+
+
+- https://github.com/dslp/dslp-repo-template
+- https://drivendata.github.io/cookiecutter-data-science/#directory-structure
+- [[tag:biocollab]]
+- Bioinformatics project mod [[tag:{bioinfo}][instances]]
+- [X] Setup
+  1. [X] Run insert.mod yas
+  2. [X] Org-mode
+     - [X] Properties- ID
+- https://www.reddit.com/r/MachineLearning/comments/s65icb/discussion_how_do_you_organize_a_data_science/
+- https://www.biostars.org/p/190366/
+- https://github.com/jkitchin/ox-ipynb
+- https://help.osf.io/hc/en-us/articles/360019931133-Creating-a-data-management-plan-DMP-document
+***** Notes
+:PROPERTIES:
+:ID:       2ed8a040-d768-4a78-9b14-6347b2c68c97
+:END:
+
+- makefile not appriopriate here- not a compiled process
+
+***** Ideas
+:PROPERTIES:
+:ID:       ad9ce310-42cf-4e7f-8d1b-3556e1b8d48c
+:END:
+
+- Ideas - clone in from a repo of this mod
+  - create test data set for on repo dev
+  - data model dictionary
+  - data model graphic
+
+- Project organization and setup
+  - Run scripts perform final execution
+    - Example
+      1. Source .. config
+      2. Run startup
+      3. Execute 1
+      4. Execute 2
+      5. Run cleanup
+    - Run scripts check for input and output variables
+  - Config
+  - Src
+    - Scripts are written with relative variables.
+    - Scripts depend on parameters defined in configuration files
+    - Src Scripts and functions exclude variable checking, etc
+    - Functions
+- Incorporate R docker
+-
+  #+begin_src bash :tangle ./tools/shell/biocollab_vars.sh
+#!/bin/bash
+# Get variables
+project="USER INPUT"
+repos_dir="USER INPUT"
+read -p "Project name: " project
+read -p "Repositories main directory: " repos_dir
+repos_dir="${repos_dir:=home/jeszyman/repos}"
+project_dir=$(echo "$project" | sed 's/_/-/')
+
+echo Project is $project
+echo Project directory is $project_dir
+echo Repo will be cloned to $repos_dir
+
+# Clone
+cd "${repos_dir}"
+
+git clone git@github.com:jeszyman/biocollab "${project_dir}" && echo "cloned"
+
+
+echo "project=$project" >> "${project_dir}/config/main"
+echo "project_dir=$project_dir" >> "${project_dir}/config/main"
+#ln -s ${repos_dir}/basecamp "${repos_dir}/${project_dir}"/
+# Add symlinks
+#wait
+#ln -s ${repos_dir}/basecamp "${repos_dir}/${project_dir}"/
+#ln -s "${repos_dir}/biotools" "${repos_dir}/${project_dir}/"
+#ln -s "${repos_dir}/latex" "${repos_dir}/${project_dir}/"
+
+#mv "${repos_dir}/${project_dir}/biocollab.org" "${repos_dir}/${project_dir}/${project_id}.org"
+
+#ln -s "${repos_dir}/${project_dir}/${project_id}.org" "${repos_dir}/org/"
+
+#+end_src
+
+***** bioinformatics pipeline
+:PROPERTIES:
+:CREATED:  [2019-04-26 Fri 10:32]
+:ID:       333E498B-E0EA-460C-95EC-1931ACE19473
+:END:
+:LOGBOOK:
+CLOCK: [2019-10-07 Mon 17:04]--[2019-10-07 Mon 17:34] =>  0:30
+CLOCK: [2019-09-27 Fri 16:24]--[2019-09-27 Fri 16:36] =>  0:12
+CLOCK: [2019-08-30 Fri 10:11]--[2019-08-30 Fri 10:24] =>  0:13
+CLOCK: [2019-08-27 Tue 16:18]--[2019-08-27 Tue 16:34] =>  0:16
+CLOCK: [2019-08-14 Wed 11:45]--[2019-08-14 Wed 11:54] =>  0:09
+CLOCK: [2019-07-09 Tue 14:45]--[2019-07-09 Tue 15:31] =>  0:46
+CLOCK: [2019-07-08 Mon 10:28]--[2019-07-08 Mon 10:50] =>  0:22
+CLOCK: [2019-07-08 Mon 08:17]--[2019-07-08 Mon 09:27] =>  1:10
+CLOCK: [2019-07-05 Fri 20:59]--[2019-07-05 Fri 21:00] =>  0:01
+CLOCK: [2019-07-05 Fri 20:48]--[2019-07-05 Fri 20:53] =>  0:05
+CLOCK: [2019-06-25 Tue 09:22]--[2019-06-25 Tue 09:37] =>  0:15
+CLOCK: [2019-06-03 Mon 18:26]--[2019-06-03 Mon 18:40] =>  0:14
+CLOCK: [2019-06-25 Tue 08:00]--[2019-06-25 Tue 08:26] =>  0:26
+CLOCK: [2019-06-23 Sun 09:29]--[2019-06-23 Sun 10:01] =>  0:32
+CLOCK: [2019-06-21 Fri 15:45]--[2019-06-21 Fri 17:30] =>  1:45
+:END:
+#+PROPERTY: LOGGING nil
+
+
+https://www.reddit.com/r/orgmode/comments/fj7xcm/reproducible_research_interleaving_disparate/
+- [ ] module instance startup- upon initial entry into work heading of a module
+  - identify and invoke most specific applicable module
+  - invoke module hierarchy
+- [ ] module instance subsequent entry- push unnecessary data out of attention
+  - convert any free text to org-items
+  - organize org-items
+    - delete if possible, else
+    - place in export, else
+    - place in reference tree, else
+    - place in ideas, else
+    - place in work tree
+      - tree must have checkbox at highest level
+      - if sublevels have checkboxes, higher levels need counter
+- [ ] setup repository artifact [0/0]
+  - github and local
+  - Dockerfile
+  - org file
+- [ ] build docker image
+  - first, build dockerfile commands into fat bioinformatics-toolkit container
+  - then parse out the necessary components into a repo-specific dockerfile
+  - push REPO to github
+- [ ] closeout
+  - [ ] update mod- consolidate and functionalize common tasks
+  - [ ] export
+- biopipe
+  - link to dockerfile
+  - link to shell script
+  - project setup
+    - local shell scripts and dockerfiles w/ symlink to repo site
+      - how to git symlinks? https://www.google.com/search?q=git+symbolic+links
+      - https://www.google.com/search?q=git+store+symbolic+links
+- reference
+  - concepts
+    - [[id:ED45C725-4F3D-4B22-BC6E-0995294DA131][computational biology and bioinformatics]]
+  - platform
+    - [[id:cd560390-aa1e-4c9e-8317-08610e5de42a][linux]]
+    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
+    - [[id:6116d262-9ca8-430b-b385-65e1a7fc0a70][nextflow]]
+    - [[id:FB8FF6B1-C6BD-4272-AC15-05BB15DF609B][emacs]] [[id:B171BCE2-2FF8-45C6-8958-8799B349E1B0][orgmode]]
+    - [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][github]]
+  - [[~/repos/.emacs.d/snippets/org-mode/biopipe][YAS]]
+  - [[id:333E498B-E0EA-460C-95EC-1931ACE19473][mod]]
+    - attributes
+      | isa | module                     |
+      | isa | work module                |
+      | isa | engineering module         |
+      | isa | code module                |
+      | isa | process development module |
+  - principles and philosophy
+    - antifragility
+    - minimization
+    - transparency
+    - reproducibility
+    - efficiency
+    - ?intpretabilty? - code logging, etc
+  - best practices
+    - each tool install as standalone
+    - Version control - git / github
+    - File organization
+      - https://libraries.mit.edu/data-management/
+      - See [[file:~/maintenance.org::Information Maintenance][information maintenance]] Organization -> File tree structure
+    - https://github.com/kylelobo/The-Documentation-Compendium/
+    - http://www.broadinstitute.org/gatk/guide/best-practices
+      best practices include recording everything
+      record of all commands
+      record of all software versions
+      see Emacs, rpubs.com, sessionInfo and knitR
+    - [[http://www.nature.com/sdata/for-authors/submission-guidelines][Nature data submission guidelines]]
+    - https://kieranhealy.org/resources/
+    - http://kieranhealy.org/files/misc/workflow-apps.pdf
+    - see Anders,13
+    - no docker in docker for dev- confuses vols, etc. instead add emacs to each container and have local repos of .emacs and org
+    - prefer binaries over source- only real advantage to source is custom build
+  - stack
+    - [[id:c28ef36f-5b5c-4789-90da-270e56fc4898][ubuntu]]
+    - [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][git and github]]
+    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
+      - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
+        - dockerfile - include current build status in comments
+        - sequencing dockerfile repos
+          - https://github.com/broadinstitte/gtex-pipeline.git
+          - https://hub.docker.com/u/mgibio/
+          - https://hub.docker.com/u/biocontainers
+    - nextflow
+      - https://www.youtube.com/watch?v=jsxTC8pNPUc&t=579s
+      - https://github.com/cbcrg/lncrna-annotation-nf
+      - https://www.nextflow.io/example1.html
+      - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
+      - commands
+        |----------+---------|
+        | function | command |
+        |----------+---------|
+        | <35>     | <35>    |
+        |          |         |
+      - processes
+      - documentation
+    - compendia
+      - [[file:~/Box%20Sync/org/compend.org::*UNIX][UNIX]]
+      - [[file:~/.emacs.d/settings.org::*Emacs][Emacs]]
+      - git
+    - set alias https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
+    - https://github.com/cbcrg/lncrna-annotation-nf
+    - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
+    - https://github.com/bioinformatics-core-shared-training/docker-4-bioinformatics
+    - https://gatkforums.broadinstitute.org/firecloud/discussion/6886/guidelines-for-working-with-docker-images-and-dockerfiles-broadies-only
+    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker]]
+      - https://www.boynux.com/containers-fat-thin/
+  - examples
+    - https://wiki.cyverse.org/wiki/display/TUT/Biocontainers+for+the+Discovery+Environment
+    - https://blog.bananacoding.com/2016/08/29/how-to-build-bioinformatic-tools-image-for-docker/#.XSvInN-YW02
+  - package managers
+    - bioconda-
+      - EZ to add to dockerfile,
+      - source difficult to understand, but can see sh and yaml- e.g. https://github.com/bioconda/bioconda-recipes/tree/master/recipes/samtools
+      - https://www.nature.com/articles/s41592-018-0046-7
+  - modules
+  - https://www.reddit.com/r/bioinformatics/comments/d260ok/no_your_ten_rules_arent_simple_and_they_wont_fix/
+- ideas
+  - module improvement
+    - work module
+      - focus on minimal work to closeout this objective
+        - move unnecessary work to ideas
+  - https://nextflow-io.github.io/nf-hack18/training.html
+  - Consider more emacs shell work:
+  - add to gatk docker
+    - https://hub.docker.com/u/broadinstitute
+    - https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_cancer_m2_MuTect2.php
+  - optimization
+    - Lock pipe
+    - [[https://www.biostars.org/p/241437/][bioinformatics software distribution]]
+  - extend
+  - [ ] information management- see cite:griffith2015b
+    - https://github.com/genome/gms
+  - https://stackoverflow.com/questions/31578446/running-a-script-inside-a-docker-container-using-shell-script
+  - https://software.broadinstitute.org/gatk/documentation/article?id=11101
+  - https://www.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/whole-genome-sequencing.html
+**** Templates
+:PROPERTIES:
+:ID:       2a6a5dac-151e-42e8-a80a-74f77ad0d4ca
+:header-args: :tangle no :tangle-mode (identity #o555)
+:header-args+: :noweb yes
+:logging: nil
+:END:
+***** Setup
+:PROPERTIES:
+:ID:       7fe36f7c-f577-4028-a3ad-ebac215c4eac
+:END:
+****** Bash preamble
+#+name: bash_preamble
+#+begin_src bash
+
+#  Note: This script is tangled from code blocks in the Emacs Org-mode file at
+#  https://github.com/jeszyman/biotools/blob/master/biotools.org. Changes
+#  made directly to this file will be overwritten upon tangle from Org-mode.
+
+
+#+end_src
+****** Repository
+add_biorepo_dirs.sh
+****** Dockerfile
+****** Snakemake configuration YAML
+:PROPERTIES:
+
+:END:
+#+begin_src bash :tangle ./config/int_test.yaml
+container: "${HOME}/sing_containers/biotools.sif"
+data_dir: "test"
+threads: 4
+#+end_src
+****** Integration testing setup
+#+begin_src bash
+mkdir -p test/inputs/new_seq
+touch test/inputs/new_seq/HiSeqW23_AGTD_R1.fastq.gz
+touch test/inputs/sample3_R1.fastq.gz
+touch test/inputs/nci2835462_R1.fastq.gz
+#+end_src
+******* [[file:test/inputs/libraries.tsv][Libraries table]]
+****** gitignore
+# Taken from https://github.com/jeszyman/biotools
+# Ignore hidden directories
+./snake*
+**/.snakemake
+**/.cache
+**/.config
+**/.java
+nohup*
+***** Integration testing
+****** [[file:workflow/int_test.smk][Snakefile]]                        :smk:
+:PROPERTIES:
+
+:END:
+- snakefile
+  #+begin_src snakemake :tangle ./workflow/int_test.smk
+# Import packages
+import pandas as pd
+import re
+
+# Setup variables from tabular input
+
+##
+#libraries = pd.read_table("test/inputs/libraries.tsv")
+libraries = pd.read_table(config["data_dir"] + "/inputs/libraries.tsv")
+
+library_indict = libraries["library"].tolist()
+
+file_indict = libraries['ris_path'].astype(str) + "/" + libraries['basename'].astype(str)
+
+lib_dict = dict(zip(library_indict, file_indict))
+
+container: config["container"]
+
+LIBRARY_IDS = list(libraries.library.unique())
+
+rule all:
+    input:
+        expand(config["data_dir"] + "/fastq/raw/{library}.fastq.gz", library = lib_dict.keys())
+
+rule symlink_inputs:
+    input:
+        lambda wildcards: lib_dict[wildcards.file_indict],
+    output:
+        config["data_dir"] + "/fastq/raw/{file_indict}.fastq.gz"
+    shell:
+        """
+        ln -sf --relative {input} {output}
+        """
+#+end_src
+******* Preamble, variable naming, and functions
+******* All rule
+******* Symlink input fastqs                                       :smk_rule:
+******* Includes statements
+****** Rename by dict                                              :smk_rule:
+- Snakemake
+#+begin_src snakemake
+rule rename:
+    params:
+        old_sample_id=lambda wcs: sampledict[wcs.f],
+    output:
+        read1=config["fq_symlink_dir"] + "/{f}_R1.fastq.gz",
+        read2=config["fq_symlink_dir"] + "/{f}_R2.fastq.gz",
+    shell:
+        """
+        if [ -f {output.read1} ]; then \\rm {output.read1}; fi
+        if [ -f {output.read2} ]; then \\rm {output.read2}; fi
+        ln -s --relative "{config[raw_fq_dir]}/{params.old_sample_id}_R1.fastq.gz" {output.read1}
+        ln -s --relative "{config[raw_fq_dir]}/{params.old_sample_id}_R2.fastq.gz" {output.read2}
+        """
+#+end_src
+
+***** README
+:PROPERTIES:
+:export_file_name: ./readme.md
+:export_file_options: toc:nil
+:END:
+****** Changelong
+#+begin_src bash
+git log --pretty="- %s"
+#+end_src
+****** Development
+******* Common intro
+:PROPERTIES:
+:ID:       6213753d-2b4d-4877-ad8c-8d8d09db4471
+:END:
+Workflow
+
+I use a core set of tools and data structures to perform and document common bioinformatics and data science tasks.
+
+Using the same tools and strucutres, each task should be entirely generalized and reproducible.
+
+These tools are
+Docker - software install and versioning
+Snakemake - workflow documentation
+Git - file level version control
+R - statistics and data visualizations
+Latex - text files
+
+Fig # generalized workflow
+Inputs -> preprocessing
+             -> bioinformatics pipelines
+                    -> initial outputs
+                    -> analysis tables and figures
+                    -> report - publication quality figures and writeup
+
+Each workflow is validated on test data, and then associated with a biotools git repository commit and docker image commit.
+
+Projects using these workflows are run on a specific repository and docker commit to ensure reproducibility.
+
+Rna-seq for de and pathways
+Quantification and normalization salmon
+Differential expression
+Gene set
+******* Ideas
+******** [[id:acb9d298-c357-4468-95b1-df9f5549437e][Common bioinformatics pipeline repository structure and function]]
+
+#+transclude: [[id:acb9d298-c357-4468-95b1-df9f5549437e]] :only-contents
+***** Reference
+**** Local transclusion
+***** Common bioinformatics pipeline repository structure and function
+:PROPERTIES:
+:ID:       acb9d298-c357-4468-95b1-df9f5549437e
+:END:
+Directory Structure
+#+begin_example
+-- Main
+   |-- config
+   |-- resources
+   |-- results
+   |-- test
+       |-- inputs
+   |-- tools
+   |-- workflow
+       |-- scripts
+#+end_example
+
+Some tools directory scripts and org-mode code blocks will call scripts or functions not present within the repository. These can be found in https://github.com/jeszyman/biotools and https://github.com/jeszyman/basecamp.
+
+*** Scripts (flat list)
+#+begin_src bash :tangle ./tools/shell/rm_test_results.sh
+#!/usr/bin/env bash
+
+shopt -s extglob
+cd ./test
+rm -rf !(inputs)
+cd ../
+
+#+end_src
+**** Make bioinformatics project repository directory structure
+:PROPERTIES:
+:ID:       b1c8d0f3-42aa-4427-93e0-5e97261343d5
+:END:
+#+begin_src bash :tangle ./tools/shell/add_biorepo_dirs.sh
+#!/usr/bin/env bash
+# Check for parameters, return usage if empty
+if [ $# -ne 1 ];
+then
+    printf "\n usage: add_biorepo_dirs <REPOSITORY PATH>
+    \n Creates common repository directories for a biopipe as needed
+    \n "
+else
+    repo_dirs=("config"
+               "resources"
+               "test/inputs"
+               "tools/shell"
+               "workflow/scripts")
+
+for dir in "${repo_dirs[@]}";
+do
+   mkdir -p $1/$dir
+done
+fi
+
+#+end_src
+**** Check run conditions for integration testing
+#+begin_src bash
+#!/usr/bin/env bash
+
+repo=$1
+mntpt=$2
+sif_dir=$3
+
+# Check for parameters, return usage if empty
+if [ $# -ne 3 ];
+then
+    printf "\n usage: repo_startup.sh <REPO PATH> <RIS MOUNT PT> <SINGULARITY CONTAINER DIR>
+    \n Repo development helper script to check run conditions for integration testing
+    \n "
+else
+
+    # Check mount point
+    if grep -qs $mntpt /proc/mounts; then
+        echo "RIS storage mounted."
+    else
+        echo "RIS storage NOT mounted, exiting."
+        exit 1
+    fi
+
+    # Check singularity container
+    if [ -r $sif_dir/atac.sif ]; then
+        echo "Local SIF file present"
+    else
+        echo "No local SIF file found"
+        exit 1
+    fi
+
+    # Check singularity container up-to-date
+    if [ /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif -nt $sif_dir/atac.sif ]; then
+        echo "Local SIF is out of date. Updating ..."
+        cp /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif $sif_dir/atac.sif
+    else
+        echo "Local SIF file is up to date"
+    fi
+
+    cur_branch=$(git branch | head -n 1)
+    echo "Current branch is $cur_branch"
+fi
+#+end_src
+**** Dry run
+:PROPERTIES:
+:ID:       c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
+:END:
+#+begin_src bash :tangle ./tools/shell/smk_dry_run.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters and return usage
+if [ "$#" -ne 2 ];
+then
+    printf "\n usage: smk_dry_run.sh <SMK CONFIG YAML> <SMK FILE>
+    \n Script for snakemake dry run.
+    \n Will not test singularity container is working
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --dry-run \
+        --forceall \
+        --printshellcmds \
+        --use-singularity \
+        --snakefile $2
+fi
+#+end_src
+**** Draw rulegraph
+:PROPERTIES:
+:ID:       78a99954-1d5d-4e09-87a4-6690f28f4519
+:END:
+#+begin_src bash :tangle ./tools/shell/smk_draw.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters and return usage
+if [ "$#" -ne 3 ];
+then
+    printf "\n usage: smk_dry_run.sh config_file smk_file pdf_loc
+    \n Draws the rulegraph for a snakemake file at pdf_loc
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    png=$(echo $3 | sed 's/.pdf/.png/g')
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --rulegraph \
+        --snakefile $2 | dot -Tpdf > $3
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --rulegraph \
+        --snakefile $2 | dot -Tpng > $png
+fi
+#+end_src
+
+**** TODO [#D] Normal run
+:PROPERTIES:
+:effort: 00:30
+:ID:       3adf72d3-aa35-4a3d-8eba-0df075c52e26
+:END:
+- [ ] needs a cores option w/ default
+#+begin_src bash :tangle ./tools/shell/smk_run.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters, return usage if empty
+if [ "$#" -ne 2 ];
+then
+    printf "\n usage: smk_forced_run.sh <SMK CONFIG YAML> <SMK FILE>
+    \n Script to complete an normal run of a snakefile
+    \n Assumes
+    - Singularity container specified in config
+    - a mount point at /mnt
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 --cores 4 \
+        --use-singularity \
+        --printshellcmds \
+        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
+        --rerun-incomplete \
+        --snakefile $2 \
+        --verbose
+fi
+#+end_src
+
+**** Forced run
+:PROPERTIES:
+:ID:       c2a25d2f-05bb-4eda-920f-e2d9fa768de6
+:END:
+#+begin_src bash :tangle ./tools/shell/smk_forced_run.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters and return usage
+if [ "$#" -ne 2 ];
+then
+    printf "\n usage: smk_forced_run.sh config_file smk_file
+    \n Script to complete forced run of snakefile.
+    \n Assumes
+    - Singularity container specified in config
+    - a mount point at /mnt
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 --cores 4 \
+        --use-singularity \
+        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
+        --forceall \
+        --printshellcmds \
+        --rerun-incomplete \
+        --snakefile $2 \
+        --verbose
+fi
+#+end_src
+**** Development
+:PROPERTIES:
+:header-args: :tangle no
+:END:
+- https://unix.stackexchange.com/questions/10646/repeat-a-unix-command-every-x-seconds-forever
+- ?
+  #+begin_src bash
+#!/bin/bash
+#
+#############################################################################
+###              BIOINFORMATICS PROJECT COMMON SETUP SCRIPT               ###
+#############################################################################
+#
+###############
+### SCRIPTS ###
+###############
+#
+# Interactive docker initialization
+docker_interactive() {
+  repo="USER INPUT"
+  read -p "repo name: " repo
+  case $HOSTNAME in
+      (radonc-cancerbio) docker run -it \
+                                -v /media/:/media/ \
+                                -v /home/:/home/ \
+                          -u $(id -u ${USER}) \
+                          jeszyman/$repo \
+                          /bin/bash;;
+      (jeszyman-*) docker run -it \
+                          -v /home/:/home/ \
+                          -u $(id -u ${USER}) \
+                          jeszyman/$repo \
+                          /bin/bash;;
+      (acl*) docker run -it \
+                    -v /drive3/:/drive3/ \
+                    -v /duo4/:/duo4/ \
+                    -v /home/:/home/ \
+                    -u $(id -u ${USER}) \
+                    jeszyman/$repo \
+                    /bin/bash;;
+      (ACL*) docker run -it \
+                    -v /home/:/home/ \
+                    -v /duo4/:/duo4/ \
+                    -u $(id -u ${USER}):$(id -g ${USER}) \
+                    -h=${HOSTNAME} \
+                    jeszyman/$repo \
+                    /bin/bash;;
+      (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker(jeszyman/'"$repo"')' /bin/bash;;
+  esac
+}
+#
+#
+echo "Biotools setup completed successfully"
+#
+############################################################################
+#
+#############
+### IDEAS ###
+#############
+# # identifies server in docker containers
+# server_ask() {
+#     echo -n "Choose your server: "
+#     read SERVER
+#     SERVER="${SERVER:=chaudhuri-roche}"
+# }
+# # check if inside docker
+# if [ -f /.dockerenv ];then
+#     dockercontainer=yes
+#     echo "Your are in a docker container"
+# else
+#     dockercontainer=no
+#     echo "Not in docker"
+#     # setup NON-docker variables
+#     shopt -s nocasematch
+#     case $HOSTNAME in
+#         (radonc-cancerbio) server_home="/home/jeszyman" ;;
+#         (jeszyman-*) server_home="/home/jeszyman" ;;
+#         (acl*) server_home="/home/jszymanski" ;;
+#         (virtual-workstation*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
+#         (blade*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
+#     esac
+#     projectdir=$server_home"/repos/$project"
+#     localdata="$server_home/data/$project/"
+#     unset $SERVER
+# fi
+# #
+# case $dockercontainer in
+#     (yes) server_ask ;;
+#     (no) ;;
+# esac
+# #
+# case $SERVER in
+#     (chaudhuri-roche) projectdir=/drive3/users/jszymanski/repos/$project
+#                       localdata=/drive3/users/jszymanski/data/$project;;
+#     (NA) ;;
+# esac
+#
+#IDEAS
+### DEPENDENCIES ###
+#declare -a software=(
+#"rclone"
+# #DOES NOT RETURN ON MGI                     "docker"
+# #"git"
+# "bash"
+# )
+# for i in "${software[@]}"; do
+# if command -v $i >/dev/null 2>&1 ; then
+#     echo "$i installed"
+# else
+#     echo "$i not found, exiting"
+#     exit 1
+# fi
+# done
+
+#+end_src
+- example [[id:8263e3b1-3ba4-4c4f-8d39-9dd9bb06e2bb][publish to box]]
+  #+begin_src bash
+#!/usr/bin/env bash
+git pull &&
+    git add -A &&
+    git commit -m "minor changes" &&
+    git push
+
+git branch
+git branch stable4.1
+git checkout stable4.1
+git merge master
+git push origin stable4.1
+git checkout master
+#+end_src
+***** Dev
+#+begin_src bash
+#!/bin/bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+####################################
+###   Choose and Run Snakefile   ###
+####################################
+
+# Setup
+#set -euxov pipefail
+
+source config/${HOSTNAME}.sh
+echo "The following `*.smk` archives were found; select one:"
+
+# set the prompt used by select, replacing "#?"
+PS3="Use number to select an option"
+
+select filename in ./workflow/*.smk
+
+do
+    if [[ "$filename" == "" ]]
+    then
+        echo "'$REPLY' is not a valid number"
+        continue
+    fi
+    echo $filename
+    select run_option in dry_run normal force_final force_all
+    do
+        echo selected $run_option
+        case $run_option in
+            dry_run)
+                source activate snakemake
+                snakemake \
+                    --configfile config/${HOSTNAME}.yaml \
+                    --cores $threads \
+                    --directory ${repo} \
+                    --dry-run \
+                    --rerun-incomplete \
+                    --singularity-args "--bind $mntpt:$mntpt" \
+                    --use-singularity \
+                    --snakefile $filename
+                ;;
+            normal)
+                source activate snakemake
+                select nohup_option in no yes
+                do
+                    case $nohup_option in
+                        no)
+                            snakemake \
+                                --configfile config/${HOSTNAME}.yaml \
+                                --cores $threads \
+                                --directory ${repo} \
+                                --singularity-args "--bind $mntpt:$mntpt" \
+                                --use-singularity \
+                                --snakefile $filename
+                            ;;
+                        yes)
+                            nohup snakemake \
+                                  --configfile config/${HOSTNAME}.yaml \
+                                  --cores $threads \
+                                  --directory ${repo} \
+                                  --singularity-args "--bind $mntpt:$mntpt" \
+                                  --use-singularity \
+                                  --snakefile $filename
+                            ;;
+                    esac
+                done
+                ;;
+            force_final)
+                source activate snakemake
+                select nohup_option in no yes
+                do
+                    case $nohup_option in
+                        no)
+                            snakemake \
+                                --configfile config/${HOSTNAME}.yaml \
+                                --cores $threads \
+                                --directory ${repo} \
+                                --force \
+                                --singularity-args "--bind $mntpt:$mntpt" \
+                                --use-singularity \
+                                --snakefile $filename
+                            ;;
+                        yes)
+                            nohup snakemake \
+                                  --configfile config/${HOSTNAME}.yaml \
+                                  --cores $threads \
+                                  --directory ${repo} \
+                                  --force \
+                                  --singularity-args "--bind $mntpt:$mntpt" \
+                                  --use-singularity \
+                                  --snakefile $filename
+                            ;;
+                    esac
+                done
+                ;;
+            force_all)
+                source activate snakemake
+                select nohup_option in no yes
+                do
+                    case $nohup_option in
+                        no)
+
+                snakemake \
+                    --configfile config/${HOSTNAME}.yaml \
+                    --cores $threads \
+                    --directory ${repo} \
+                    -F \
+                    --singularity-args "--bind $mntpt:$mntpt" \
+                    --use-singularity \
+                    --snakefile $filename
+                                            ;;
+                        yes)
+                nohup snakemake \
+                    --configfile config/${HOSTNAME}.yaml \
+                    --cores $threads \
+                    --directory ${repo} \
+                    -F \
+                    --singularity-args "--bind $mntpt:$mntpt" \
+                    --use-singularity \
+                    --snakefile $filename
+                            ;;
+                    esac
+                done
+                ;;
+        esac
+        break
+    done
+    break
+done
+#+end_src
+
+**** Examples
+- https://github.com/jeszyman/exrna
+- https://github.com/jeszyman/cfdna-wgs
+- https://github.com/jeszyman/cappseq
+- https://github.com/jeszyman/cfdna-frag
+- https://github.com/jeszyman/atac-seq
+**** snakemake                                               :biotool:career:
+:PROPERTIES:
+:ID:       a8b27140-4b9e-40c5-86ab-ee5afeae723f
+:CREATED:  [2021-09-13 Mon 07:29]
+:END:
+:LOGBOOK:
+CLOCK: [2022-08-12 Fri 09:13]--[2022-08-12 Fri 09:34] =>  0:21
+CLOCK: [2022-05-16 Mon 07:48]--[2022-05-16 Mon 07:54] =>  0:06
+CLOCK: [2022-04-07 Thu 07:39]--[2022-04-07 Thu 07:44] =>  0:05
+CLOCK: [2021-07-01 Thu 11:18]--[2021-07-01 Thu 11:48] =>  0:30
+:END:
+- what's the difference b/w command line --cores and in-rule threads?
+- https://stackoverflow.com/questions/56024818/conditional-execution-of-multiplexed-analysis-with-snakemake
+**** [[https://snakemake.readthedocs.io/en/stable/index.html][Documentation]]
+- https://snakemake-wrappers.readthedocs.io/en/stable/wrappers.html
+- [[Snakemake Tutorial][Snakemake Tutorial]]
+**** General reference
+- https://github.com/aomlomics/tourmaline
+- https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
+- https://swcarpentry.github.io/r-novice-inflammation/05-cmdline/index.html
+- https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
+- #+PROPERTY: header-args:bash :tangle-mode (identity #o777)
+- ideas
+  `(make-string (+ 2 (org-current-level)) ?*)` Run commands
+  ,#+begin_src bash
+  conda activate snakemake
+
+  snakemake \
+    --cores $threads \
+    --printshellcmds \
+    --snakefile workflow/$1
+  ,#+end_src
+- Standards and best practice
+  - https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html#snakefiles-best-practices
+- Wildcards
+  - https://edwards.flinders.edu.au/wildcards-in-snakemake/
+- https://endrebak.gitbooks.io/the-snakemake-book/content/
+- https://academic.oup.com/bioinformatics/article/28/19/2520/290322
+- https://www.biostars.org/p/9469533/
+- https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
+- https://stackoverflow.com/questions/54400171/how-to-use-list-in-snakemake-tabular-configuration-for-describing-of-sequencing
+- https://github.com/ngs-docs/2020-ggg-201b-rnaseq/blob/latest/rnaseq-workflow.Rmd
+- https://angus.readthedocs.io/en/2019/snakemake_for_automation.html
+- https://pages.charlesreid1.com/how-do-i-snakemake/converting/
+- http://ivory.idyll.org/blog/2020-snakemake-hacks-collections-files.html
+- http://origin.research.jetbrains.org/files/material/5ec245b4e907c.pdf
+- https://f1000research.com/articles/10-33/v2
+- [ ] https://lachlandeer.github.io/snakemake-econ-r-tutorial/config-files.html
+- https://github.com/snakemake-workflows/rna-seq-star-deseq2/blob/master/workflow/rules/diffexp.smk
+- https://github.com/csoneson/ARMOR
+- https://github.com/slowkow/snakefiles/blob/master/kallisto/Snakefile
+- https://lachlandeer.github.io/snakemake-econ-r-tutorial/initial-steps-with-snakemake.html
+- for repos, git ignore the singularity build
+- https://github.com/EnvGen/snakemake-workflows
+
+***** Tutorials and guides
+- https://reproducibility.sschmeier.com/index.html
+- a tutorial
+  #+begin_src bash
+source ~/repos/biotools/src/functions.sh
+docker_interactive
+biotools
+
+#
+mkdir -p /tmp/snakemake-tutorial
+cd /tmp/snakemake-tutorial
+#
+wget https://github.com/snakemake/snakemake-tutorial-data/archive/v5.24.1.tar.gz
+#
+tar --wildcards -xf v5.24.1.tar.gz --strip 1 "*/data" "*/environment.yaml"
+ls
+
+#
+snakemake --help
+
+snakemake -np mapped_reads/A.bam
+#+end_src
+- another tutorial
+  #+begin_src bash
+sudo apt-get install singularity-container
+
+cd ~/snakemake-tutorial/
+
+conda activate snakemake-tutorial
+
+
+snakemake -p --cores 2 sorted_reads/{A,B}.bam
+#    --dry-run \
+
+snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
+
+expand("sorted_reads/{sample}.bam", sample=SAMPLES)
+
+snakemake -p --cores 2 plots/quals.svg
+
+snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
+
+snakemake --cores 20 --forceall --summary
+
+snakemake --cores 20 --forceall
+
+conda install pygraphviz
+
+snakemake --report report.html
+
+open report.html
+
+snakemake --cores 20 --forceall
+#+end_src
+- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
+**** Examples
+- https://github.com/vari-bbc/rnaseq_workflow/blob/master/Snakefile
+- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
+- https://github.com/yztxwd/rna-seq-standard-pipeline/tree/c19a9e27216b86d3dbfdaed7228aeff59f869383
+- https://github.com/porchard/ATACseq-Snakemake/blob/master/src/Snakefile
+- https://github.com/zhxiaokang/RASflow
+- https://github.com/EthanHolleman
+- https://www.biostars.org/p/406385/
+- https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
+- https://github.com/lachlandeer/snakemake-econ-r
+*** :dev:
+**** Prioritized
+- [ ] update [[id:3924c49e-5296-4fcd-8994-9b62a5bbf772][best practices checklist]]
+**** Ideas
+- [X] Use boolean setters where appriopriate
+      - /E.g./
+        - in config: call_variants: false
+        - and in rule all:         lambda wildcards: "analysis/09a_variant_annot/all.merged.filt.PASS.snpeff.vcf.gz.tbi" if config["call_variants"] else [],
+- Add data validation and sanity checks in int testing
+    - Setup an in-repository test environment to perform integration testing, preferably with known positive / negative samples
+- [ ] Commits - follow [[https://www.conventionalcommits.org/en/v1.0.0/][conventional commits]]
+- https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#benchmark-rules
+template as makefile
+additional best practices
+benchmarking
+email setup
+code links by name via org-ref - ref:deepTools_plotCoverage
+- version 1 as minimum viable product: https://en.wikipedia.org/wiki/Minimum_viable_product
+***** Inputs
+:PROPERTIES:
+:ID:       35978130-f228-4805-b1cb-0ffdf410f174
+:END:
+
+****** Table of inputs
+:PROPERTIES:
+:ID:       26c7d292-db75-4c5d-b4de-01cc5d5d9c18
+:END:
+
+#+name: inputs
+| basename | class | origin |
+|----------+-------+--------|
+|          |       |        |
+
+
+filename | class | r_name | box_path | http |
+basename|path|
+4. https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html see multiext
+***** Ideas
+- tangle in org text as snakefile comments https://eschulte.github.io/babel-dev/DONE-tangle-entire-org-mode-file-in-comments.html
+- parse yaml for shell https://mikefarah.gitbook.io/yq/
+- email notices
+- lock emacs buffer regions with successful run
+***** Ideas
+- tangle in org text as snakefile comments https://eschulte.github.io/babel-dev/DONE-tangle-entire-org-mode-file-in-comments.html
+- parse yaml for shell https://mikefarah.gitbook.io/yq/
+- email notices
+- lock emacs buffer regions with successful run
+*** :ref:
+**** [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][Git]]
+**** [[id:a8b27140-4b9e-40c5-86ab-ee5afeae723f][snakemake]]
+**** Local YAS :flat:
+:PROPERTIES:
+:ID:       ce85a21e-466f-43d0-ad13-3cd21497bfc3
+:END:
+- Command line
+  #+name: bash_cmdline_script_preamble
+  #+begin_src bash :noweb yes
+#!/usr/bin/env bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+# Notes:
+#  This script is tangled from source code in the PROJECT_ID.org file
+#  Therefore any changes to this compiled file in place will likely be reverted
+#  by a subsequent tangle operation.
+#
+#  This script assumes you are running from the repository main directory in
+#  order to source the appriopriate configuation file.
+
+# Load bash configuation
+if [ -f ./config/${HOSTNAME}.sh ]; then
+    source ./config/${HOSTNAME}.sh
+else
+    echo "No bash config found. Are you running from repo main dir?"
+fi
+#+end_src
+***** Data
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.data
+  # -*- mode: snippet -*-
+  # key: bioinfo.data
+  # expand-env: ((yas-indent-line 'none))
+  # --
+  `(make-string (1+ (org-current-level)) ?*)` Data
+#+end_src
+
+***** [[id:61f0fe69-ab73-416d-b078-9c94a053520a][Local variables]]
+***** bioinfo.config.host.sh
+:PROPERTIES:
+:ID:       2cdacb39-2dd0-405d-a4fb-c1cdd4004344
+:END:
+
+#+name: bioinfo.config.host.sh
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.host.sh
+# -*- mode: snippet -*-
+# key: bioinfo.config.host.sh
+# expand-env: ((yas-indent-line 'fixed))
+# --
+,#+begin_src bash :noweb yes :tangle ./config/${1:HOSTNAME}.sh
+<<bash_cmdline_script_preamble>>
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+#
+###   Bash configuration sourcing script for $1   ###
+#
+
+# Define host-local absolute variables
+data_dir="${2:LOCAL DATA DIRECTORY}"
+mntpt="${3:MOUNT POINT PATH}"
+repo="${4:REPO PATH}"
+threads=${5:THREADS}
+
+# ADD ADDITIONAL NOWEBS
+
+#
+echo "Setup complete for $(basename "\${repo}") on $HOSTNAME"
+
+,#+end_src
+#+end_src
+
+***** bioinfo.config.common.sh
+=======
+cd ~/snakemake-tutorial/
+
+conda activate snakemake-tutorial
+
+
+snakemake -p --cores 2 sorted_reads/{A,B}.bam
+#    --dry-run \
+
+snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
+
+expand("sorted_reads/{sample}.bam", sample=SAMPLES)
+
+snakemake -p --cores 2 plots/quals.svg
+
+snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
+
+snakemake --cores 20 --forceall --summary
+
+snakemake --cores 20 --forceall
+
+conda install pygraphviz
+
+snakemake --report report.html
+
+open report.html
+
+snakemake --cores 20 --forceall
+#+end_src
+- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
+***** Local YAS (prefix smk.)
+***** Insert snakemake file org-mode tree
+#+name: smk
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk
+# -*- mode: snippet -*-
+# key: smk
+# expand-env: ((yas-indent-line 'none))
+# --
+`(make-string (org-current-level) ?*)` [[file:./workflow/$2.smk][Snakefile]]:smk:
+:PROPERTIES:
+:header-args:snakemake: :tangle ./workflow/${2: SNAKEFILE NAME}.smk
+:END:
+`(make-string (+ 1 (org-current-level)) ?*)` Smk preamble
+,#+begin_src snakemake
+
+,#+end_src
+`(make-string (+ 1 (org-current-level)) ?*)` Smk rules
+`(make-string (+ 2 (org-current-level)) ?*)` All rule
+,#+begin_src snakemake
+rule all:
+    input:
+
+,#+end_src
+- add rules with smk.rule
+`(make-string (+ 1 (org-current-level)) ?*)` Dev
+:PROPERTIES:
+:header-args:snakemake: :tangle no
+:END:
+`(make-string (+ 1 (org-current-level)) ?*)` Ideas
+:PROPERTIES:
+:header-args:snakemake: :tangle no
+:END:
+#+end_src
+***** Make Rule
+#+name: smk.rule
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule
+# -*- mode: snippet -*-
+# key: smk.rule
+# expand-env: ((yas-indent-line 'none))
+# --
+smk.rule.${1:$$(yas-choose-value '("bash" "r"))}
+#+end_src
+***** R rule
+:PROPERTIES:
+:ID:       928c57a9-dd2b-427b-b1c4-191e6321d133
+:END:
+#+name: smk.rule.r
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule.r
+# -*- mode: snippet -*-
+# key: smk.rule.r
+# expand-env: ((yas-indent-line 'none))
+# --
+`(make-string (org-current-level) ?*)` ${6: <RULE DESCRIPTIVE NAME>}    :smk_rule:
+- Snakemake
+  ,#+begin_src snakemake
+rule ${1:<RULE WORKFLOW NAME>}:
+    input:
+        config["data_dir"] + "/${2:<INPUT>}",
+    params:
+        script = config["${3:<SCRIPTS DIR>}"] + "/$1.R",
+    output:
+        config["data_dir"] + "/${4:<OUTPUT>}",
+    log:
+        config["data_dir"] + "/logs/${5:<LOG ID>}_$1.log",
+    shell:
+        """
+        Rscript {params.script} \
+        {input} \
+        {output} \
+        > {log} 2>&1
+        """
+,#+end_src
+- [[file:./workflow/scripts/$1.R][Rscript]]
+  ,#+begin_src R :noweb yes :tangle ./workflow/scripts/$1.R
+#!/usr/bin/env Rscript
+
+args = commandArgs(trailingOnly = TRUE)
+= args[1]
+,#+end_src
+#+end_src
+
+***** Bash rule
+:PROPERTIES:
+:ID:       5ac79198-801a-4ab9-82df-88402cb63e4d
+:END:
+#+name: smk.rule.bash
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule.bash
+# -*- mode: snippet -*-
+# key: smk.rule.bash
+# expand-env: ((yas-indent-line 'none))
+# --
+`(make-string (org-current-level) ?*)` ${11: <RULE DESCRIPTIVE ORG NAME>}    :smk_rule:
+- Snakemake
+  ,#+begin_src snakemake
+# ${1:<DESCRIPTIVE COMMENT>}
+rule ${2:<RULE WORKFLOW NAME>}:
+    container:
+        $3_container,
+    input:
+        ${3:< SMK ID >}_${4:< PROCESS ID >} + "/{${5:<UNIT ID>}}${6:<INPUT SUFFIX}",
+    log:
+        config["logdir"] + "/{$5}_$3_$2.log",
+    output:
+        $3_${7:<OUTPUT DIRECTORY IDENTIFIER>} + "/{$5}${8:<OUTPUT SUFFIX>}",
+    params:
+        script = $3_script_dir + "/$2.sh",
+    shell:
+        """
+        {params.script} \
+        {input} \
+        {output} &> {log}
+        """
+,#+end_src
+- [[file:./workflow/scripts/${2:$(downcase yas-text)}.sh][Shell script]]
+  ,#+begin_src bash :tangle ./workflow/scripts/${2:$(downcase yas-text)}.sh
+#!/usr/bin/env bash
+input=\$1
+output=\$2
+,#+end_src
+#+end_src
+
+
+***** sdf:smk_rule:
+- Snakemake
+#+begin_src snakemake
+rule Symbol’s function definition is void: string-replace:
+    input:
+    output:
+    shell:
+        """
+        scripts/Symbol’s function definition is void: string-replace.sh
+        """
+#+end_src
+- [[file:./workflows/scripts/Symbol’s function definition is void: string-replace.sh][Base script]]
+,  #+begin_src bash :tangle ./workflows/scripts/Symbol’s function definition is void: string-replace.sh
+#!/usr/bin/env bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+###
+###    SCRIPT TITLE   ###
+###
+
+#+end_src
+**** Style and best practices
+:PROPERTIES:
+:ID:       3924c49e-5296-4fcd-8994-9b62a5bbf772
+:logging: nil
+:END:
+- File, directory, and variable naming
+  - Names common across repos and snakefiles, to be referenced directly from config:
+    - datadir
+    - logdir
+  - All inputs and outputs to a single local data directory. This directory is common across snakefiles and pipelines and therefore naming within must be unique.
+  - Outputs to flat list of subdirectories by {file type}-{smk}-{step}
+  - Output file names as {identifier}_{smk}_{step}.{suffix}
+  - Simplify parameter names as much as possible in configuration YAMLs and operational snakefiles. Construct naming logic within the integration snakefile.
+- Snakefile and org file structure
+  - Per rule
+    - Conform to [[id:5ac79198-801a-4ab9-82df-88402cb63e4d][bash]] and [[id:928c57a9-dd2b-427b-b1c4-191e6321d133][R]] rule YAS
+  - Inputs
+    - Use tabular configuration for samples
+  - README
+    - Include Change log
+    - Update at least at stable version
+  - Integration testing snakefile
+    - Contains all extraneous commands not relevant to focus of repo (symlinking, etc)
+    - Preamble
+      - Define initial samples
+      - Make readable file check
+      - Symlink sample files from inputs using a python library
+      - Define task-specific workflow directory structure
+    - All rule has output of every content-specific snakefile. Intermediate rules are commented out.
+  - Resources
+    - Generate and link to DAG
+- Development and updates
+  - Trunk-based development via git and github
+  - Stable release branches are creatd for external use.
+    - Follow semantic versioning
+    - Brach named as stable.<SEM VAR>
+  - Version 1 is a minimum working example using only data in test/inputs
+
+**** Examples
+- https://github.com/vari-bbc/rnaseq_workflow/blob/master/Snakefile
+- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
+- https://github.com/yztxwd/rna-seq-standard-pipeline/tree/c19a9e27216b86d3dbfdaed7228aeff59f869383
+- https://github.com/porchard/ATACseq-Snakemake/blob/master/src/Snakefile
+- https://github.com/zhxiaokang/RASflow
+- https://github.com/EthanHolleman
+- https://www.biostars.org/p/406385/
+- https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
+- https://github.com/lachlandeer/snakemake-econ-r
+
 ** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 ** Scripts
 *** Bash helper scripts [[file:tools/shell/]]
@@ -558,6 +2310,8 @@ CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
 CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
 :END:
 *** Dockerfiles
+**** Basecamp
+conda latest version: 4.14.0
 **** [[file:docker/biotools_Dockerfile][Biotools docker]]
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
@@ -1435,6 +3189,9 @@ ENV PATH="${PATH}:/opt/homer/bin/"
 RUN perl /opt/homer/.//configureHomer.pl -install mouse-p
 
 #+end_src
+***** :dev:
+get updated bowtie 2 with multithread indexing (>2.2.6?)
+https://www.biostars.org/p/219541/
 **** cfDNA WGS
 :PROPERTIES:
 :header-args:bash: :tangle ./docker/cfdna_wgs_Dockerfile
@@ -8456,6 +10213,11 @@ CLOCK: [2018-03-03 Sat 20:28]--[2018-03-03 Sat 20:56] =>  0:28
 - https://academic.oup.com/nar/article/43/D1/D1117/2439489
 - Uniprot
   - https://www.uniprot.org/help/query-fields
+*** Chromosome sizes
+:PROPERTIES:
+:ID:       8a50f360-6043-4e19-9620-61f3b957b28a
+:END:
+  - http://hgdownload.cse.ucsc.edu/goldenpath/mm10/bigZips/mm10.chrom.sizes
 *** Genome reference builds and associated sequences
 :PROPERTIES:
 :ID:       e9e201b5-4a94-4861-8de8-803676c3a37f
@@ -11163,1758 +12925,6 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 
 
 *** Hierarchical lists
-** Bioinformatics project                                :mod:biopipe:career:
-:PROPERTIES:
-:ID:       271b4d5f-727e-496e-b835-8fe9f8655655
-:END:
-:LOGBOOK:
-CLOCK: [2022-08-29 Mon 13:01]--[2022-08-29 Mon 13:56] =>  0:55
-CLOCK: [2021-12-09 Thu 11:43]--[2021-12-09 Thu 12:43] =>  1:00
-CLOCK: [2022-08-29 Mon 13:00]--[2022-08-29 Mon 13:01] =>  0:01
-CLOCK: [2022-08-15 Mon 08:11]--[2022-08-15 Mon 08:19] =>  0:08
-CLOCK: [2022-08-09 Tue 13:40]--[2022-08-09 Tue 13:48] =>  0:08
-CLOCK: [2022-08-15 Mon 07:55]--[2022-08-15 Mon 08:11] =>  0:16
-CLOCK: [2022-07-26 Tue 09:10]--[2022-07-26 Tue 09:47] =>  0:37
-CLOCK: [2022-06-16 Thu 13:54]--[2022-06-16 Thu 13:58] =>  0:04
-CLOCK: [2022-06-16 Thu 09:44]--[2022-06-16 Thu 11:29] =>  1:45
-CLOCK: [2022-06-08 Wed 13:40]--[2022-06-08 Wed 13:41] =>  0:01
-CLOCK: [2022-05-05 Thu 11:36]--[2022-05-05 Thu 12:13] =>  0:37
-CLOCK: [2022-04-29 Fri 14:07]--[2022-04-29 Fri 14:11] =>  0:04
-CLOCK: [2022-01-14 Fri 08:43]--[2022-01-14 Fri 10:00] =>  1:17
-CLOCK: [2021-12-09 Thu 09:58]--[2021-12-09 Thu 11:43] =>  1:45
-CLOCK: [2021-12-09 Thu 08:55]--[2021-12-09 Thu 09:57] =>  1:02
-CLOCK: [2021-08-26 Thu 08:01]--[2021-08-26 Thu 08:45] =>  0:44
-CLOCK: [2021-08-25 Wed 09:13]--[2021-08-25 Wed 10:35] =>  1:22
-CLOCK: [2021-08-25 Wed 08:05]--[2021-08-25 Wed 08:33] =>  0:28
-CLOCK: [2021-08-17 Tue 16:00]--[2021-08-17 Tue 17:30] =>  1:30
-CLOCK: [2021-08-17 Tue 13:28]--[2021-08-17 Tue 14:17] =>  0:49
-:END:
-*** Processes :hierarchy:
-**** :flat:
-- https://en.wikipedia.org/wiki/Minimum_viable_product
-**** Snakemake install and setup
-- via mambaforge https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
-  #+begin_src bash
-conda init bash
-/bin/bash
-conda activate base
-conda install -n base -c conda-forge mamba
-y
-mamba create -c conda-forge -c bioconda -n snakemake snakemake
-y
-conda activate snakemake
-snakemake --help
-#+end_src
-- via miniconda
-  - [[https://docs.anaconda.com/anaconda/install/multi-user/][install multi-user miniconda]]
-- add singularity
-  -
-**** Per-project setup work tree
-- [ ] Declare repo on github https://github.com/new
-- [ ] Run setup commads for directory and repo
-  #+begin_src bash
-repo=exrna
-repo=meth
-repo_path="${HOME}/repos/${repo}"
-mkdir -p "${repo_path}"
-cd "${repo_path}"
-
-git init
-touch README.md
-git add README.md
-git add -A
-git commit -m "first commit"
-git branch -M master
-git remote add origin git@github.com:jeszyman/${repo}.git
-git push -u origin master
-#+end_src
-- [ ] Import [[id:669a5d96-0bea-4d56-ae7e-11151fbfe4a4][size check git hook]]
-- [ ] Make inital [[*README][README]]
-
-**** Writing snakefiles
-https://stackoverflow.com/questions/50413374/glob-wildcards-on-multiple-directories-with-different-file-names
-- Input functions
-  - https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/09-input_functions/index.html
-- [[id:f20681eb-de70-4540-a9ba-63de0c800321][Python dictionaries]]
-- https://stackoverflow.com/questions/56042158/snakemake-correct-syntax-for-accessing-dictionary-values
-- python dict for names https://stackoverflow.com/questions/50413374/glob-wildcards-on-multiple-directories-with-different-file-names
-- Run rule on all files in dir https://snakemake.readthedocs.io/en/stable/project_info/faq.html#how-do-i-run-my-rule-on-all-files-of-a-certain-directory
-- To pass character vector to R snakemake rule https://stackoverflow.com/questions/13840207/character-vector-as-an-argument-to-r-script
-- R package management in snakemake rules
-  - https://github.com/lachlandeer/snakemake-econ-r
-- https://lachlandeer.github.io/snakemake-econ-r-tutorial/logging-output-and-errors.html
-- https://stackoverflow.com/questions/69483414/unspecified-syntax-error-in-snakemake-rule
-- test workflow output- https://stackoverflow.com/questions/50198628/snakemake-confusion-on-how-to-access-config-files-properly
-- workaround for using snakemake vars in shell script https://stackoverflow.com/a/49533645/6106936
-- https://github.com/snakemake/snakemake/issues/971
-- Configuration files
-  - [[id:2d51112e-b2a4-41c5-bbd9-d9fc85cc59c5][YAML document markup language]]
-  - Using config variables
-    - https://lachlandeer.github.io/snakemake-econ-r-tutorial/config-files.html
-  - can do multiple config files- see https://stackoverflow.com/questions/62696099/snakemake-multiple-config-files
-**** Project stable version update
-:PROPERTIES:
-:ID:       f6717c79-64ce-4b16-b455-649df2ba20fd
-:END:
--
-- https://stackoverflow.com/questions/13897717/push-commits-to-another-branch
-***** Update
-Write minimum working product
-
-Add in mod workflows as linked headers, date complete dictates update
-
-Add dev to versioned updates
-Push to version 1
-Run versioned snakefile in experimental repo
-Do some experimental repo downstream analysis/ results
-
-
-Dev next version of pipeline
-
-**** Run
-  --lint
-  --rulegraph
-  - https://www.google.com/search?q=snakemake+run+specific+rule
-  - docker - https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html?highlight=docker#running-jobs-in-containers
-- syntax for running shell https://stackoverflow.com/questions/45553762/recommended-way-to-do-multiple-shell-commands-with-shell/49533645#49533645
-- https://stackoverflow.com/questions/17126996/emacs-mode-for-snakemake
-- check md5 https://stackoverflow.com/questions/65907256/snakemake-use-checksums-instead-of-timestamps
-*** Local transclusion
-**** Integration testing configuration YAML
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
-:PROPERTIES:
-:ID:       5120c9dd-8e0b-4b2c-8c77-a89f271a48e4
-:END:
-
-#+name: bioinfo.config.common.sh
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.common.sh
-# -*- mode: snippet -*-
-# key: bioinfo.config.common.sh
-# expand-env: ((yas-indent-line 'fixed))
-# --
-,#+name: bash_common_config
-,#+begin_src bash :noweb yes :tangle ./config/common.sh
-#!/bin/bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-#
-
-# Check git file hook is read-able
-if [ -r "${repo}/.git/hooks/precommit" ]; then
-   echo "Git size check is read-able"
-else
-    echo
-    "Git size check is not read-able"
-    exit 1
-fi
-
-# Check mount point
-if grep -qs $mntpt /proc/mounts; then
-    echo "RIS storage mounted."
-else
-    echo "RIS storage NOT mounted, exiting."
-    exit 1
-fi
-
-# Check singularity container
-if [ -r $sif_dir/atac.sif ]; then
-    echo "Local SIF file present"
-else
-    echo "No local SIF file found"
-fi
-    fi
-}
-#+end_src
-
-***** bioinfo.launch.docker
-
-#+name: bioinfo.launch.docker
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
-  # -*- mode: snippet -*-
-  # key: bioinfo.launch.docker
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src bash
-  #!/bin/bash
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-
-  # Notes: This block build from bioinfo.launch.docker at
-  #  ce85a21e-466f-43d0-ad13-3cd21497bfc3
-
-  # Function to launch an interactive docker session
-
-  ,#+end_src
-#+end_src
-
-***** bioinfo.setup.bash
-
-#+name: bioinfo.setup.bash
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
-  # -*- mode: snippet -*-
-  # key: bioinfo.setup.bash
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  `(make-string (1+ (org-current-level)) ?*)` Bash
-  Potential YAS to run:
-  bioinfo.config.host.sh
-  bioinfo.config.main.sh
-  ris.mount
-  $0
-#+end_src
-
-***** bioinfo.config.main.R
-
-#+name: bioinfo.config.main.R
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
-  # -*- mode: snippet -*-
-  # key: bioinfo.config.main.R
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src R :noweb yes :tangle ./config/main.R
-  #!/usr/bin/env Rscript
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  # Repository-local, relative variables
-  $0
-
-  # Pull in from other repositories
-  ##
-  ## Basecamp
-  <<./basecamp/basecamp.org:basecamp_r_setup_wrapper()>>
-
-  ##
-  ## Biotools
-  <<./biotools/biotools.org:biotools_r_setup_wrapper()>>
-
-  ,#+end_src
-#+end_src
-
-***** bioinfo.config.local.R
-
-#+name: bioinfo.config.local.R
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
-  # -*- mode: snippet -*-
-  # key: bioinfo.config.local.R
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src R :noweb yes :tangle ./config/${1:HOSTNAME}.R
-  #!/usr/bin/env Rscript
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  # Repository-local, host-absolute variables
-  data_dir = file.path("${2:DATA_DIR}")
-  source("./config/main.R")
-  $0
-  ,#+end_src
-#+end_src
-
-***** bioinfo.bash.script
-
-#+name: bioinfo.bash.script
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
-  # -*- mode: snippet -*-
-  # key: bioinfo.bash.script
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  #!/bin/bash
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  ### ${1:SCRIPT NAME} ###
-  #
-  # Notes:
-  ## This script assumes your your bash sessin is running within the repository docker container (see ./)
-  ## This script calls relative varibles and assumes you have sourced an appriopriate configuration file (see ./config)
-#+end_src
-
-***** UPDATE_ON_USE bioinfo.setup
-CLOSED: [2021-12-09 Thu 12:38]
-:PROPERTIES:
-:ID:       dbd3c67c-e33b-42d8-800d-705292d3c372
-:END:
-
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
-# -*- mode: snippet -*-
-# key: bioinfo.setup
-# expand-env: ((yas-indent-line 'none))
-# --
-`(concat "*" (make-string (org-current-level) ?*))` Setup
-`(concat "**" (make-string (org-current-level) ?*))` Bash
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-- Local (by $HOSTNAME)
-- Common
-  ,#+begin_src bash :tangle ./config/common.sh
-,#+end_src
-`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
-- Command line
-  ,#+name: bash_preamble_cmd
-  ,#+begin_src bash
-if [[ -f ./config/\${HOSTNAME}.sh ]];
-then source ./config/\${HOSTNAME}.sh
-else
-    echo "No config file found for \${HOSTNAME}"
-    exit 1
-fi
-,#+end_src
-- Snakemake
-`(concat "**" (make-string (org-current-level) ?*))` TODO Box and rclone
-`(concat "**" (make-string (org-current-level) ?*))` TODO Docker and singularity
-`(concat "***" (make-string (org-current-level) ?*))` Processes
-1. Write
-   ,#+begin_src fundamental :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
-,#+end_src
-2. Build
-3. Make singularity container from docker container
-`(concat "**" (make-string (org-current-level) ?*))` TODO Emacs and Org-mode
-- [ ] Run minimal YAS
-  bioinfo.setup
-  bioinfo.inputs
-  bioinfo.data
-  locvars
-- [ ] Add
-  - to main reference section
-    - Bioinformatics project [[6acdcddf-d693-40f2-a3ae-9703bad56043][module headline]] and [[tag:{bioinfo}][instances]]
-  - to Local variables
-    ,#+TODO: WAITING(w@) TODO(t) INPROCESS(p) | CLOSEOUT DONE(d!) DELEGATED(@) CANCELED(@)
-    ,#+property: header-args:R    :session *PROJECT_NAME*
-`(concat "**" (make-string (org-current-level) ?*))` TODO Local data directory and WashU RIS Storage processes
-- Mount
-- Create directory structure
-  ,#+begin_src bash
-  <<bash_preamble>>
-  ,#+end_src
-`(concat "**" (make-string (org-current-level) ?*))` R
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
-`(concat "**" (make-string (org-current-level) ?*))` TODO Repository, git, and github
-- [ ] ensure [[file:.git/hooks/pre-commit]]
-- [ ] Create repository structure
-  ,#+begin_src bash
-mkdir -p "\${repo}/config"
-mkdir -p "\${repo}/resources"
-mkdir -p "\${repo}/results"
-mkdir -p "\${repo}/src"
-mkdir -p "\${repo}/workflow/scripts"
-,#+end_src
-`(concat "***" (make-string (org-current-level) ?*))` README
-`(concat "**" (make-string (org-current-level) ?*))` Snakemake
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-`(concat "***" (make-string (org-current-level) ?*))` TODO Run commands
-#+end_src
-
-***** bioinfo.inputs
-:PROPERTIES:
-:ID:       d6bb61c9-8b10-4460-b987-0a6c678d2ddb
-:END:
-
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
-# -*- mode: snippet -*-
-# key: bioinfo.inputs
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (1+ (org-current-level)) ?*)` Inputs
-,#+name: input_table
-|basename|dirname|get_class|model_class|origin
-`(concat "**" (make-string (org-current-level) ?*))` Manually created input tables
-- (names must end in _input)
--
-#+end_src
-
-
-**** General Reference
-:PROPERTIES:
-:ID:       c68a6456-411b-4cb1-a112-119d9919d19d
-:END:
-- [[https://www.biostars.org/p/190366/][Biostars Forum:Good Habit for Bioinformatics Analyst or Scientist]]
-- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
-Bioinformatics project design principles
-
-Simplicity
-Don't create without a purpose
-
-Consistency
-
-Transparency
-
-Reproducibility
-
-
-- https://github.com/dslp/dslp-repo-template
-- https://drivendata.github.io/cookiecutter-data-science/#directory-structure
-- [[tag:biocollab]]
-- Bioinformatics project mod [[tag:{bioinfo}][instances]]
-- [X] Setup
-  1. [X] Run insert.mod yas
-  2. [X] Org-mode
-     - [X] Properties- ID
-- https://www.reddit.com/r/MachineLearning/comments/s65icb/discussion_how_do_you_organize_a_data_science/
-- https://www.biostars.org/p/190366/
-- https://github.com/jkitchin/ox-ipynb
-- https://help.osf.io/hc/en-us/articles/360019931133-Creating-a-data-management-plan-DMP-document
-***** Notes
-:PROPERTIES:
-:ID:       2ed8a040-d768-4a78-9b14-6347b2c68c97
-:END:
-
-- makefile not appriopriate here- not a compiled process
-
-***** Ideas
-:PROPERTIES:
-:ID:       ad9ce310-42cf-4e7f-8d1b-3556e1b8d48c
-:END:
-
-- Ideas - clone in from a repo of this mod
-  - create test data set for on repo dev
-  - data model dictionary
-  - data model graphic
-
-- Project organization and setup
-  - Run scripts perform final execution
-    - Example
-      1. Source .. config
-      2. Run startup
-      3. Execute 1
-      4. Execute 2
-      5. Run cleanup
-    - Run scripts check for input and output variables
-  - Config
-  - Src
-    - Scripts are written with relative variables.
-    - Scripts depend on parameters defined in configuration files
-    - Src Scripts and functions exclude variable checking, etc
-    - Functions
-- Incorporate R docker
--
-  #+begin_src bash :tangle ./tools/shell/biocollab_vars.sh
-#!/bin/bash
-# Get variables
-project="USER INPUT"
-repos_dir="USER INPUT"
-read -p "Project name: " project
-read -p "Repositories main directory: " repos_dir
-repos_dir="${repos_dir:=home/jeszyman/repos}"
-project_dir=$(echo "$project" | sed 's/_/-/')
-
-echo Project is $project
-echo Project directory is $project_dir
-echo Repo will be cloned to $repos_dir
-
-# Clone
-cd "${repos_dir}"
-
-git clone git@github.com:jeszyman/biocollab "${project_dir}" && echo "cloned"
-
-
-echo "project=$project" >> "${project_dir}/config/main"
-echo "project_dir=$project_dir" >> "${project_dir}/config/main"
-#ln -s ${repos_dir}/basecamp "${repos_dir}/${project_dir}"/
-# Add symlinks
-#wait
-#ln -s ${repos_dir}/basecamp "${repos_dir}/${project_dir}"/
-#ln -s "${repos_dir}/biotools" "${repos_dir}/${project_dir}/"
-#ln -s "${repos_dir}/latex" "${repos_dir}/${project_dir}/"
-
-#mv "${repos_dir}/${project_dir}/biocollab.org" "${repos_dir}/${project_dir}/${project_id}.org"
-
-#ln -s "${repos_dir}/${project_dir}/${project_id}.org" "${repos_dir}/org/"
-
-#+end_src
-
-***** bioinformatics pipeline
-:PROPERTIES:
-:CREATED:  [2019-04-26 Fri 10:32]
-:ID:       333E498B-E0EA-460C-95EC-1931ACE19473
-:END:
-:LOGBOOK:
-CLOCK: [2019-10-07 Mon 17:04]--[2019-10-07 Mon 17:34] =>  0:30
-CLOCK: [2019-09-27 Fri 16:24]--[2019-09-27 Fri 16:36] =>  0:12
-CLOCK: [2019-08-30 Fri 10:11]--[2019-08-30 Fri 10:24] =>  0:13
-CLOCK: [2019-08-27 Tue 16:18]--[2019-08-27 Tue 16:34] =>  0:16
-CLOCK: [2019-08-14 Wed 11:45]--[2019-08-14 Wed 11:54] =>  0:09
-CLOCK: [2019-07-09 Tue 14:45]--[2019-07-09 Tue 15:31] =>  0:46
-CLOCK: [2019-07-08 Mon 10:28]--[2019-07-08 Mon 10:50] =>  0:22
-CLOCK: [2019-07-08 Mon 08:17]--[2019-07-08 Mon 09:27] =>  1:10
-CLOCK: [2019-07-05 Fri 20:59]--[2019-07-05 Fri 21:00] =>  0:01
-CLOCK: [2019-07-05 Fri 20:48]--[2019-07-05 Fri 20:53] =>  0:05
-CLOCK: [2019-06-25 Tue 09:22]--[2019-06-25 Tue 09:37] =>  0:15
-CLOCK: [2019-06-03 Mon 18:26]--[2019-06-03 Mon 18:40] =>  0:14
-CLOCK: [2019-06-25 Tue 08:00]--[2019-06-25 Tue 08:26] =>  0:26
-CLOCK: [2019-06-23 Sun 09:29]--[2019-06-23 Sun 10:01] =>  0:32
-CLOCK: [2019-06-21 Fri 15:45]--[2019-06-21 Fri 17:30] =>  1:45
-:END:
-#+PROPERTY: LOGGING nil
-
-
-https://www.reddit.com/r/orgmode/comments/fj7xcm/reproducible_research_interleaving_disparate/
-- [ ] module instance startup- upon initial entry into work heading of a module
-  - identify and invoke most specific applicable module
-  - invoke module hierarchy
-- [ ] module instance subsequent entry- push unnecessary data out of attention
-  - convert any free text to org-items
-  - organize org-items
-    - delete if possible, else
-    - place in export, else
-    - place in reference tree, else
-    - place in ideas, else
-    - place in work tree
-      - tree must have checkbox at highest level
-      - if sublevels have checkboxes, higher levels need counter
-- [ ] setup repository artifact [0/0]
-  - github and local
-  - Dockerfile
-  - org file
-- [ ] build docker image
-  - first, build dockerfile commands into fat bioinformatics-toolkit container
-  - then parse out the necessary components into a repo-specific dockerfile
-  - push REPO to github
-- [ ] closeout
-  - [ ] update mod- consolidate and functionalize common tasks
-  - [ ] export
-- biopipe
-  - link to dockerfile
-  - link to shell script
-  - project setup
-    - local shell scripts and dockerfiles w/ symlink to repo site
-      - how to git symlinks? https://www.google.com/search?q=git+symbolic+links
-      - https://www.google.com/search?q=git+store+symbolic+links
-- reference
-  - concepts
-    - [[id:ED45C725-4F3D-4B22-BC6E-0995294DA131][computational biology and bioinformatics]]
-  - platform
-    - [[id:cd560390-aa1e-4c9e-8317-08610e5de42a][linux]]
-    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
-    - [[id:6116d262-9ca8-430b-b385-65e1a7fc0a70][nextflow]]
-    - [[id:FB8FF6B1-C6BD-4272-AC15-05BB15DF609B][emacs]] [[id:B171BCE2-2FF8-45C6-8958-8799B349E1B0][orgmode]]
-    - [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][github]]
-  - [[~/repos/.emacs.d/snippets/org-mode/biopipe][YAS]]
-  - [[id:333E498B-E0EA-460C-95EC-1931ACE19473][mod]]
-    - attributes
-      | isa | module                     |
-      | isa | work module                |
-      | isa | engineering module         |
-      | isa | code module                |
-      | isa | process development module |
-  - principles and philosophy
-    - antifragility
-    - minimization
-    - transparency
-    - reproducibility
-    - efficiency
-    - ?intpretabilty? - code logging, etc
-  - best practices
-    - each tool install as standalone
-    - Version control - git / github
-    - File organization
-      - https://libraries.mit.edu/data-management/
-      - See [[file:~/maintenance.org::Information Maintenance][information maintenance]] Organization -> File tree structure
-    - https://github.com/kylelobo/The-Documentation-Compendium/
-    - http://www.broadinstitute.org/gatk/guide/best-practices
-      best practices include recording everything
-      record of all commands
-      record of all software versions
-      see Emacs, rpubs.com, sessionInfo and knitR
-    - [[http://www.nature.com/sdata/for-authors/submission-guidelines][Nature data submission guidelines]]
-    - https://kieranhealy.org/resources/
-    - http://kieranhealy.org/files/misc/workflow-apps.pdf
-    - see Anders,13
-    - no docker in docker for dev- confuses vols, etc. instead add emacs to each container and have local repos of .emacs and org
-    - prefer binaries over source- only real advantage to source is custom build
-  - stack
-    - [[id:c28ef36f-5b5c-4789-90da-270e56fc4898][ubuntu]]
-    - [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][git and github]]
-    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
-      - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
-        - dockerfile - include current build status in comments
-        - sequencing dockerfile repos
-          - https://github.com/broadinstitte/gtex-pipeline.git
-          - https://hub.docker.com/u/mgibio/
-          - https://hub.docker.com/u/biocontainers
-    - nextflow
-      - https://www.youtube.com/watch?v=jsxTC8pNPUc&t=579s
-      - https://github.com/cbcrg/lncrna-annotation-nf
-      - https://www.nextflow.io/example1.html
-      - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
-      - commands
-        |----------+---------|
-        | function | command |
-        |----------+---------|
-        | <35>     | <35>    |
-        |          |         |
-      - processes
-      - documentation
-    - compendia
-      - [[file:~/Box%20Sync/org/compend.org::*UNIX][UNIX]]
-      - [[file:~/.emacs.d/settings.org::*Emacs][Emacs]]
-      - git
-    - set alias https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
-    - https://github.com/cbcrg/lncrna-annotation-nf
-    - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
-    - https://github.com/bioinformatics-core-shared-training/docker-4-bioinformatics
-    - https://gatkforums.broadinstitute.org/firecloud/discussion/6886/guidelines-for-working-with-docker-images-and-dockerfiles-broadies-only
-    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker]]
-      - https://www.boynux.com/containers-fat-thin/
-  - examples
-    - https://wiki.cyverse.org/wiki/display/TUT/Biocontainers+for+the+Discovery+Environment
-    - https://blog.bananacoding.com/2016/08/29/how-to-build-bioinformatic-tools-image-for-docker/#.XSvInN-YW02
-  - package managers
-    - bioconda-
-      - EZ to add to dockerfile,
-      - source difficult to understand, but can see sh and yaml- e.g. https://github.com/bioconda/bioconda-recipes/tree/master/recipes/samtools
-      - https://www.nature.com/articles/s41592-018-0046-7
-  - modules
-  - https://www.reddit.com/r/bioinformatics/comments/d260ok/no_your_ten_rules_arent_simple_and_they_wont_fix/
-- ideas
-  - module improvement
-    - work module
-      - focus on minimal work to closeout this objective
-        - move unnecessary work to ideas
-  - https://nextflow-io.github.io/nf-hack18/training.html
-  - Consider more emacs shell work:
-  - add to gatk docker
-    - https://hub.docker.com/u/broadinstitute
-    - https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_cancer_m2_MuTect2.php
-  - optimization
-    - Lock pipe
-    - [[https://www.biostars.org/p/241437/][bioinformatics software distribution]]
-  - extend
-  - [ ] information management- see cite:griffith2015b
-    - https://github.com/genome/gms
-  - https://stackoverflow.com/questions/31578446/running-a-script-inside-a-docker-container-using-shell-script
-  - https://software.broadinstitute.org/gatk/documentation/article?id=11101
-  - https://www.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/whole-genome-sequencing.html
-**** Templates
-:PROPERTIES:
-:ID:       2a6a5dac-151e-42e8-a80a-74f77ad0d4ca
-:header-args: :tangle no :tangle-mode (identity #o555)
-:header-args+: :noweb yes
-:logging: nil
-:END:
-***** Setup
-:PROPERTIES:
-:ID:       7fe36f7c-f577-4028-a3ad-ebac215c4eac
-:END:
-****** Bash preamble
-#+name: bash_preamble
-#+begin_src bash
-
-#  Note: This script is tangled from code blocks in the Emacs Org-mode file at
-#  https://github.com/jeszyman/biotools/blob/master/biotools.org. Changes
-#  made directly to this file will be overwritten upon tangle from Org-mode.
-
-
-#+end_src
-****** Repository
-add_biorepo_dirs.sh
-****** Dockerfile
-****** Snakemake configuration YAML
-:PROPERTIES:
-
-:END:
-#+begin_src bash :tangle ./config/int_test.yaml
-container: "${HOME}/sing_containers/biotools.sif"
-data_dir: "test"
-threads: 4
-#+end_src
-****** Integration testing setup
-#+begin_src bash
-mkdir -p test/inputs/new_seq
-touch test/inputs/new_seq/HiSeqW23_AGTD_R1.fastq.gz
-touch test/inputs/sample3_R1.fastq.gz
-touch test/inputs/nci2835462_R1.fastq.gz
-#+end_src
-******* [[file:test/inputs/libraries.tsv][Libraries table]]
-****** gitignore
-# Taken from https://github.com/jeszyman/biotools
-# Ignore hidden directories
-./snake*
-**/.snakemake
-**/.cache
-**/.config
-**/.java
-nohup*
-***** Integration testing
-****** [[file:workflow/int_test.smk][Snakefile]]                        :smk:
-:PROPERTIES:
-
-:END:
-- snakefile
-  #+begin_src snakemake :tangle ./workflow/int_test.smk
-# Import packages
-import pandas as pd
-import re
-
-# Setup variables from tabular input
-
-##
-#libraries = pd.read_table("test/inputs/libraries.tsv")
-libraries = pd.read_table(config["data_dir"] + "/inputs/libraries.tsv")
-
-library_indict = libraries["library"].tolist()
-
-file_indict = libraries['ris_path'].astype(str) + "/" + libraries['basename'].astype(str)
-
-lib_dict = dict(zip(library_indict, file_indict))
-
-container: config["container"]
-
-LIBRARY_IDS = list(libraries.library.unique())
-
-rule all:
-    input:
-        expand(config["data_dir"] + "/fastq/raw/{library}.fastq.gz", library = lib_dict.keys())
-
-rule symlink_inputs:
-    input:
-        lambda wildcards: lib_dict[wildcards.file_indict],
-    output:
-        config["data_dir"] + "/fastq/raw/{file_indict}.fastq.gz"
-    shell:
-        """
-        ln -sf --relative {input} {output}
-        """
-#+end_src
-******* Preamble, variable naming, and functions
-******* All rule
-******* Symlink input fastqs                                       :smk_rule:
-******* Includes statements
-****** Rename by dict                                              :smk_rule:
-- Snakemake
-#+begin_src snakemake
-rule rename:
-    params:
-        old_sample_id=lambda wcs: sampledict[wcs.f],
-    output:
-        read1=config["fq_symlink_dir"] + "/{f}_R1.fastq.gz",
-        read2=config["fq_symlink_dir"] + "/{f}_R2.fastq.gz",
-    shell:
-        """
-        if [ -f {output.read1} ]; then \\rm {output.read1}; fi
-        if [ -f {output.read2} ]; then \\rm {output.read2}; fi
-        ln -s --relative "{config[raw_fq_dir]}/{params.old_sample_id}_R1.fastq.gz" {output.read1}
-        ln -s --relative "{config[raw_fq_dir]}/{params.old_sample_id}_R2.fastq.gz" {output.read2}
-        """
-#+end_src
-
-***** README
-:PROPERTIES:
-:export_file_name: ./readme.md
-:export_file_options: toc:nil
-:END:
-****** Changelong
-#+begin_src bash
-git log --pretty="- %s"
-#+end_src
-****** Development
-******* Common intro
-:PROPERTIES:
-:ID:       6213753d-2b4d-4877-ad8c-8d8d09db4471
-:END:
-Workflow
-
-I use a core set of tools and data structures to perform and document common bioinformatics and data science tasks.
-
-Using the same tools and strucutres, each task should be entirely generalized and reproducible.
-
-These tools are
-Docker - software install and versioning
-Snakemake - workflow documentation
-Git - file level version control
-R - statistics and data visualizations
-Latex - text files
-
-Fig # generalized workflow
-Inputs -> preprocessing
-             -> bioinformatics pipelines
-                    -> initial outputs
-                    -> analysis tables and figures
-                    -> report - publication quality figures and writeup
-
-Each workflow is validated on test data, and then associated with a biotools git repository commit and docker image commit.
-
-Projects using these workflows are run on a specific repository and docker commit to ensure reproducibility.
-
-Rna-seq for de and pathways
-Quantification and normalization salmon
-Differential expression
-Gene set
-******* Ideas
-******** [[id:acb9d298-c357-4468-95b1-df9f5549437e][Common bioinformatics pipeline repository structure and function]]
-
-#+transclude: [[id:acb9d298-c357-4468-95b1-df9f5549437e]] :only-contents
-***** Reference
-**** Local transclusion
-***** Common bioinformatics pipeline repository structure and function
-:PROPERTIES:
-:ID:       acb9d298-c357-4468-95b1-df9f5549437e
-:END:
-Directory Structure
-#+begin_example
--- Main
-   |-- config
-   |-- resources
-   |-- results
-   |-- test
-       |-- inputs
-   |-- tools
-   |-- workflow
-       |-- scripts
-#+end_example
-
-Some tools directory scripts and org-mode code blocks will call scripts or functions not present within the repository. These can be found in https://github.com/jeszyman/biotools and https://github.com/jeszyman/basecamp.
-
-*** Scripts (flat list)
-#+begin_src bash :tangle ./tools/shell/rm_test_results.sh
-#!/usr/bin/env bash
-
-shopt -s extglob
-cd ./test
-rm -rf !(inputs)
-cd ../
-
-#+end_src
-**** Make bioinformatics project repository directory structure
-:PROPERTIES:
-:ID:       b1c8d0f3-42aa-4427-93e0-5e97261343d5
-:END:
-#+begin_src bash :tangle ./tools/shell/add_biorepo_dirs.sh
-#!/usr/bin/env bash
-# Check for parameters, return usage if empty
-if [ $# -ne 1 ];
-then
-    printf "\n usage: add_biorepo_dirs <REPOSITORY PATH>
-    \n Creates common repository directories for a biopipe as needed
-    \n "
-else
-    repo_dirs=("config"
-               "resources"
-               "test/inputs"
-               "tools/shell"
-               "workflow/scripts")
-
-for dir in "${repo_dirs[@]}";
-do
-   mkdir -p $1/$dir
-done
-fi
-
-#+end_src
-**** Check run conditions for integration testing
-#+begin_src bash
-#!/usr/bin/env bash
-
-repo=$1
-mntpt=$2
-sif_dir=$3
-
-# Check for parameters, return usage if empty
-if [ $# -ne 3 ];
-then
-    printf "\n usage: repo_startup.sh <REPO PATH> <RIS MOUNT PT> <SINGULARITY CONTAINER DIR>
-    \n Repo development helper script to check run conditions for integration testing
-    \n "
-else
-
-    # Check mount point
-    if grep -qs $mntpt /proc/mounts; then
-        echo "RIS storage mounted."
-    else
-        echo "RIS storage NOT mounted, exiting."
-        exit 1
-    fi
-
-    # Check singularity container
-    if [ -r $sif_dir/atac.sif ]; then
-        echo "Local SIF file present"
-    else
-        echo "No local SIF file found"
-        exit 1
-    fi
-
-    # Check singularity container up-to-date
-    if [ /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif -nt $sif_dir/atac.sif ]; then
-        echo "Local SIF is out of date. Updating ..."
-        cp /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif $sif_dir/atac.sif
-    else
-        echo "Local SIF file is up to date"
-    fi
-
-    cur_branch=$(git branch | head -n 1)
-    echo "Current branch is $cur_branch"
-fi
-#+end_src
-**** Dry run
-:PROPERTIES:
-:ID:       c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
-:END:
-#+begin_src bash :tangle ./tools/shell/smk_dry_run.sh
-#  Note: This code block transcluded from code blocks in the Emacs Org-mode
-#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
-#  Changes made directly to this region will be overwritten by transclusion from
-#  the source blocks in that file.
-
-# Check for parameters and return usage
-if [ "$#" -ne 2 ];
-then
-    printf "\n usage: smk_dry_run.sh <SMK CONFIG YAML> <SMK FILE>
-    \n Script for snakemake dry run.
-    \n Will not test singularity container is working
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 \
-        --cores 1 \
-        --dry-run \
-        --forceall \
-        --printshellcmds \
-        --use-singularity \
-        --snakefile $2
-fi
-#+end_src
-**** Draw rulegraph
-:PROPERTIES:
-:ID:       78a99954-1d5d-4e09-87a4-6690f28f4519
-:END:
-#+begin_src bash :tangle ./tools/shell/smk_draw.sh
-#  Note: This code block transcluded from code blocks in the Emacs Org-mode
-#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
-#  Changes made directly to this region will be overwritten by transclusion from
-#  the source blocks in that file.
-
-# Check for parameters and return usage
-if [ "$#" -ne 3 ];
-then
-    printf "\n usage: smk_dry_run.sh config_file smk_file pdf_loc
-    \n Draws the rulegraph for a snakemake file at pdf_loc
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    png=$(echo $3 | sed 's/.pdf/.png/g')
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 \
-        --cores 1 \
-        --rulegraph \
-        --snakefile $2 | dot -Tpdf > $3
-    #
-    snakemake \
-        --configfile $1 \
-        --cores 1 \
-        --rulegraph \
-        --snakefile $2 | dot -Tpng > $png
-fi
-#+end_src
-
-**** TODO [#D] Normal run
-:PROPERTIES:
-:effort: 00:30
-:ID:       3adf72d3-aa35-4a3d-8eba-0df075c52e26
-:END:
-- [ ] needs a cores option w/ default
-#+begin_src bash :tangle ./tools/shell/smk_run.sh
-#  Note: This code block transcluded from code blocks in the Emacs Org-mode
-#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
-#  Changes made directly to this region will be overwritten by transclusion from
-#  the source blocks in that file.
-
-# Check for parameters, return usage if empty
-if [ "$#" -ne 2 ];
-then
-    printf "\n usage: smk_forced_run.sh <SMK CONFIG YAML> <SMK FILE>
-    \n Script to complete an normal run of a snakefile
-    \n Assumes
-    - Singularity container specified in config
-    - a mount point at /mnt
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 --cores 4 \
-        --use-singularity \
-        --printshellcmds \
-        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
-        --rerun-incomplete \
-        --snakefile $2 \
-        --verbose
-fi
-#+end_src
-
-**** Forced run
-:PROPERTIES:
-:ID:       c2a25d2f-05bb-4eda-920f-e2d9fa768de6
-:END:
-#+begin_src bash :tangle ./tools/shell/smk_forced_run.sh
-#  Note: This code block transcluded from code blocks in the Emacs Org-mode
-#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
-#  Changes made directly to this region will be overwritten by transclusion from
-#  the source blocks in that file.
-
-# Check for parameters and return usage
-if [ "$#" -ne 2 ];
-then
-    printf "\n usage: smk_forced_run.sh config_file smk_file
-    \n Script to complete forced run of snakefile.
-    \n Assumes
-    - Singularity container specified in config
-    - a mount point at /mnt
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 --cores 4 \
-        --use-singularity \
-        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
-        --forceall \
-        --printshellcmds \
-        --rerun-incomplete \
-        --snakefile $2 \
-        --verbose
-fi
-#+end_src
-**** Development
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-- https://unix.stackexchange.com/questions/10646/repeat-a-unix-command-every-x-seconds-forever
-- ?
-  #+begin_src bash
-#!/bin/bash
-#
-#############################################################################
-###              BIOINFORMATICS PROJECT COMMON SETUP SCRIPT               ###
-#############################################################################
-#
-###############
-### SCRIPTS ###
-###############
-#
-# Interactive docker initialization
-docker_interactive() {
-  repo="USER INPUT"
-  read -p "repo name: " repo
-  case $HOSTNAME in
-      (radonc-cancerbio) docker run -it \
-                                -v /media/:/media/ \
-                                -v /home/:/home/ \
-                          -u $(id -u ${USER}) \
-                          jeszyman/$repo \
-                          /bin/bash;;
-      (jeszyman-*) docker run -it \
-                          -v /home/:/home/ \
-                          -u $(id -u ${USER}) \
-                          jeszyman/$repo \
-                          /bin/bash;;
-      (acl*) docker run -it \
-                    -v /drive3/:/drive3/ \
-                    -v /duo4/:/duo4/ \
-                    -v /home/:/home/ \
-                    -u $(id -u ${USER}) \
-                    jeszyman/$repo \
-                    /bin/bash;;
-      (ACL*) docker run -it \
-                    -v /home/:/home/ \
-                    -v /duo4/:/duo4/ \
-                    -u $(id -u ${USER}):$(id -g ${USER}) \
-                    -h=${HOSTNAME} \
-                    jeszyman/$repo \
-                    /bin/bash;;
-      (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker(jeszyman/'"$repo"')' /bin/bash;;
-  esac
-}
-#
-#
-echo "Biotools setup completed successfully"
-#
-############################################################################
-#
-#############
-### IDEAS ###
-#############
-# # identifies server in docker containers
-# server_ask() {
-#     echo -n "Choose your server: "
-#     read SERVER
-#     SERVER="${SERVER:=chaudhuri-roche}"
-# }
-# # check if inside docker
-# if [ -f /.dockerenv ];then
-#     dockercontainer=yes
-#     echo "Your are in a docker container"
-# else
-#     dockercontainer=no
-#     echo "Not in docker"
-#     # setup NON-docker variables
-#     shopt -s nocasematch
-#     case $HOSTNAME in
-#         (radonc-cancerbio) server_home="/home/jeszyman" ;;
-#         (jeszyman-*) server_home="/home/jeszyman" ;;
-#         (acl*) server_home="/home/jszymanski" ;;
-#         (virtual-workstation*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
-#         (blade*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
-#     esac
-#     projectdir=$server_home"/repos/$project"
-#     localdata="$server_home/data/$project/"
-#     unset $SERVER
-# fi
-# #
-# case $dockercontainer in
-#     (yes) server_ask ;;
-#     (no) ;;
-# esac
-# #
-# case $SERVER in
-#     (chaudhuri-roche) projectdir=/drive3/users/jszymanski/repos/$project
-#                       localdata=/drive3/users/jszymanski/data/$project;;
-#     (NA) ;;
-# esac
-#
-#IDEAS
-### DEPENDENCIES ###
-#declare -a software=(
-#"rclone"
-# #DOES NOT RETURN ON MGI                     "docker"
-# #"git"
-# "bash"
-# )
-# for i in "${software[@]}"; do
-# if command -v $i >/dev/null 2>&1 ; then
-#     echo "$i installed"
-# else
-#     echo "$i not found, exiting"
-#     exit 1
-# fi
-# done
-
-#+end_src
-- example [[id:8263e3b1-3ba4-4c4f-8d39-9dd9bb06e2bb][publish to box]]
-  #+begin_src bash
-#!/usr/bin/env bash
-git pull &&
-    git add -A &&
-    git commit -m "minor changes" &&
-    git push
-
-git branch
-git branch stable4.1
-git checkout stable4.1
-git merge master
-git push origin stable4.1
-git checkout master
-#+end_src
-***** Dev
-#+begin_src bash
-#!/bin/bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-
-####################################
-###   Choose and Run Snakefile   ###
-####################################
-
-# Setup
-#set -euxov pipefail
-
-source config/${HOSTNAME}.sh
-echo "The following `*.smk` archives were found; select one:"
-
-# set the prompt used by select, replacing "#?"
-PS3="Use number to select an option"
-
-select filename in ./workflow/*.smk
-
-do
-    if [[ "$filename" == "" ]]
-    then
-        echo "'$REPLY' is not a valid number"
-        continue
-    fi
-    echo $filename
-    select run_option in dry_run normal force_final force_all
-    do
-        echo selected $run_option
-        case $run_option in
-            dry_run)
-                source activate snakemake
-                snakemake \
-                    --configfile config/${HOSTNAME}.yaml \
-                    --cores $threads \
-                    --directory ${repo} \
-                    --dry-run \
-                    --rerun-incomplete \
-                    --singularity-args "--bind $mntpt:$mntpt" \
-                    --use-singularity \
-                    --snakefile $filename
-                ;;
-            normal)
-                source activate snakemake
-                select nohup_option in no yes
-                do
-                    case $nohup_option in
-                        no)
-                            snakemake \
-                                --configfile config/${HOSTNAME}.yaml \
-                                --cores $threads \
-                                --directory ${repo} \
-                                --singularity-args "--bind $mntpt:$mntpt" \
-                                --use-singularity \
-                                --snakefile $filename
-                            ;;
-                        yes)
-                            nohup snakemake \
-                                  --configfile config/${HOSTNAME}.yaml \
-                                  --cores $threads \
-                                  --directory ${repo} \
-                                  --singularity-args "--bind $mntpt:$mntpt" \
-                                  --use-singularity \
-                                  --snakefile $filename
-                            ;;
-                    esac
-                done
-                ;;
-            force_final)
-                source activate snakemake
-                select nohup_option in no yes
-                do
-                    case $nohup_option in
-                        no)
-                            snakemake \
-                                --configfile config/${HOSTNAME}.yaml \
-                                --cores $threads \
-                                --directory ${repo} \
-                                --force \
-                                --singularity-args "--bind $mntpt:$mntpt" \
-                                --use-singularity \
-                                --snakefile $filename
-                            ;;
-                        yes)
-                            nohup snakemake \
-                                  --configfile config/${HOSTNAME}.yaml \
-                                  --cores $threads \
-                                  --directory ${repo} \
-                                  --force \
-                                  --singularity-args "--bind $mntpt:$mntpt" \
-                                  --use-singularity \
-                                  --snakefile $filename
-                            ;;
-                    esac
-                done
-                ;;
-            force_all)
-                source activate snakemake
-                select nohup_option in no yes
-                do
-                    case $nohup_option in
-                        no)
-
-                snakemake \
-                    --configfile config/${HOSTNAME}.yaml \
-                    --cores $threads \
-                    --directory ${repo} \
-                    -F \
-                    --singularity-args "--bind $mntpt:$mntpt" \
-                    --use-singularity \
-                    --snakefile $filename
-                                            ;;
-                        yes)
-                nohup snakemake \
-                    --configfile config/${HOSTNAME}.yaml \
-                    --cores $threads \
-                    --directory ${repo} \
-                    -F \
-                    --singularity-args "--bind $mntpt:$mntpt" \
-                    --use-singularity \
-                    --snakefile $filename
-                            ;;
-                    esac
-                done
-                ;;
-        esac
-        break
-    done
-    break
-done
-#+end_src
-
-**** Examples
-- https://github.com/jeszyman/exrna
-- https://github.com/jeszyman/cfdna-wgs
-- https://github.com/jeszyman/cappseq
-- https://github.com/jeszyman/cfdna-frag
-- https://github.com/jeszyman/atac-seq
-**** snakemake                                               :biotool:career:
-:PROPERTIES:
-:ID:       a8b27140-4b9e-40c5-86ab-ee5afeae723f
-:CREATED:  [2021-09-13 Mon 07:29]
-:END:
-:LOGBOOK:
-CLOCK: [2022-08-12 Fri 09:13]--[2022-08-12 Fri 09:34] =>  0:21
-CLOCK: [2022-05-16 Mon 07:48]--[2022-05-16 Mon 07:54] =>  0:06
-CLOCK: [2022-04-07 Thu 07:39]--[2022-04-07 Thu 07:44] =>  0:05
-CLOCK: [2021-07-01 Thu 11:18]--[2021-07-01 Thu 11:48] =>  0:30
-:END:
-- what's the difference b/w command line --cores and in-rule threads?
-- https://stackoverflow.com/questions/56024818/conditional-execution-of-multiplexed-analysis-with-snakemake
-**** [[https://snakemake.readthedocs.io/en/stable/index.html][Documentation]]
-- https://snakemake-wrappers.readthedocs.io/en/stable/wrappers.html
-- [[Snakemake Tutorial][Snakemake Tutorial]]
-**** General reference
-- https://github.com/aomlomics/tourmaline
-- https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
-- https://swcarpentry.github.io/r-novice-inflammation/05-cmdline/index.html
-- https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
-- #+PROPERTY: header-args:bash :tangle-mode (identity #o777)
-- ideas
-  `(make-string (+ 2 (org-current-level)) ?*)` Run commands
-  ,#+begin_src bash
-  conda activate snakemake
-
-  snakemake \
-    --cores $threads \
-    --printshellcmds \
-    --snakefile workflow/$1
-  ,#+end_src
-- Standards and best practice
-  - https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html#snakefiles-best-practices
-- Wildcards
-  - https://edwards.flinders.edu.au/wildcards-in-snakemake/
-- https://endrebak.gitbooks.io/the-snakemake-book/content/
-- https://academic.oup.com/bioinformatics/article/28/19/2520/290322
-- https://www.biostars.org/p/9469533/
-- https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
-- https://stackoverflow.com/questions/54400171/how-to-use-list-in-snakemake-tabular-configuration-for-describing-of-sequencing
-- https://github.com/ngs-docs/2020-ggg-201b-rnaseq/blob/latest/rnaseq-workflow.Rmd
-- https://angus.readthedocs.io/en/2019/snakemake_for_automation.html
-- https://pages.charlesreid1.com/how-do-i-snakemake/converting/
-- http://ivory.idyll.org/blog/2020-snakemake-hacks-collections-files.html
-- http://origin.research.jetbrains.org/files/material/5ec245b4e907c.pdf
-- https://f1000research.com/articles/10-33/v2
-- [ ] https://lachlandeer.github.io/snakemake-econ-r-tutorial/config-files.html
-- https://github.com/snakemake-workflows/rna-seq-star-deseq2/blob/master/workflow/rules/diffexp.smk
-- https://github.com/csoneson/ARMOR
-- https://github.com/slowkow/snakefiles/blob/master/kallisto/Snakefile
-- https://lachlandeer.github.io/snakemake-econ-r-tutorial/initial-steps-with-snakemake.html
-- for repos, git ignore the singularity build
-- https://github.com/EnvGen/snakemake-workflows
-
-***** Tutorials and guides
-- https://reproducibility.sschmeier.com/index.html
-- a tutorial
-  #+begin_src bash
-source ~/repos/biotools/src/functions.sh
-docker_interactive
-biotools
-
-#
-mkdir -p /tmp/snakemake-tutorial
-cd /tmp/snakemake-tutorial
-#
-wget https://github.com/snakemake/snakemake-tutorial-data/archive/v5.24.1.tar.gz
-#
-tar --wildcards -xf v5.24.1.tar.gz --strip 1 "*/data" "*/environment.yaml"
-ls
-
-#
-snakemake --help
-
-snakemake -np mapped_reads/A.bam
-#+end_src
-- another tutorial
-  #+begin_src bash
-sudo apt-get install singularity-container
-
-cd ~/snakemake-tutorial/
-
-conda activate snakemake-tutorial
-
-
-snakemake -p --cores 2 sorted_reads/{A,B}.bam
-#    --dry-run \
-
-snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
-
-expand("sorted_reads/{sample}.bam", sample=SAMPLES)
-
-snakemake -p --cores 2 plots/quals.svg
-
-snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
-
-snakemake --cores 20 --forceall --summary
-
-snakemake --cores 20 --forceall
-
-conda install pygraphviz
-
-snakemake --report report.html
-
-open report.html
-
-snakemake --cores 20 --forceall
-#+end_src
-- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
-**** Examples
-- https://github.com/vari-bbc/rnaseq_workflow/blob/master/Snakefile
-- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
-- https://github.com/yztxwd/rna-seq-standard-pipeline/tree/c19a9e27216b86d3dbfdaed7228aeff59f869383
-- https://github.com/porchard/ATACseq-Snakemake/blob/master/src/Snakefile
-- https://github.com/zhxiaokang/RASflow
-- https://github.com/EthanHolleman
-- https://www.biostars.org/p/406385/
-- https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
-- https://github.com/lachlandeer/snakemake-econ-r
-*** :dev:
-**** Prioritized
-- [ ] update [[id:3924c49e-5296-4fcd-8994-9b62a5bbf772][best practices checklist]]
-**** Ideas
-- [X] Use boolean setters where appriopriate
-      - /E.g./
-        - in config: call_variants: false
-        - and in rule all:         lambda wildcards: "analysis/09a_variant_annot/all.merged.filt.PASS.snpeff.vcf.gz.tbi" if config["call_variants"] else [],
-- Add data validation and sanity checks in int testing
-    - Setup an in-repository test environment to perform integration testing, preferably with known positive / negative samples
-- [ ] Commits - follow [[https://www.conventionalcommits.org/en/v1.0.0/][conventional commits]]
-- https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#benchmark-rules
-template as makefile
-additional best practices
-benchmarking
-email setup
-code links by name via org-ref - ref:deepTools_plotCoverage
-- version 1 as minimum viable product: https://en.wikipedia.org/wiki/Minimum_viable_product
-***** Inputs
-:PROPERTIES:
-:ID:       35978130-f228-4805-b1cb-0ffdf410f174
-:END:
-
-****** Table of inputs
-:PROPERTIES:
-:ID:       26c7d292-db75-4c5d-b4de-01cc5d5d9c18
-:END:
-
-#+name: inputs
-| basename | class | origin |
-|----------+-------+--------|
-|          |       |        |
-
-
-filename | class | r_name | box_path | http |
-basename|path|
-4. https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html see multiext
-***** Ideas
-- tangle in org text as snakefile comments https://eschulte.github.io/babel-dev/DONE-tangle-entire-org-mode-file-in-comments.html
-- parse yaml for shell https://mikefarah.gitbook.io/yq/
-- email notices
-- lock emacs buffer regions with successful run
-***** Ideas
-- tangle in org text as snakefile comments https://eschulte.github.io/babel-dev/DONE-tangle-entire-org-mode-file-in-comments.html
-- parse yaml for shell https://mikefarah.gitbook.io/yq/
-- email notices
-- lock emacs buffer regions with successful run
-*** :ref:
-**** [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][Git]]
-**** [[id:a8b27140-4b9e-40c5-86ab-ee5afeae723f][snakemake]]
-**** Local YAS :flat:
-:PROPERTIES:
-:ID:       ce85a21e-466f-43d0-ad13-3cd21497bfc3
-:END:
-- Command line
-  #+name: bash_cmdline_script_preamble
-  #+begin_src bash :noweb yes
-#!/usr/bin/env bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-#
-# Notes:
-#  This script is tangled from source code in the PROJECT_ID.org file
-#  Therefore any changes to this compiled file in place will likely be reverted
-#  by a subsequent tangle operation.
-#
-#  This script assumes you are running from the repository main directory in
-#  order to source the appriopriate configuation file.
-
-# Load bash configuation
-if [ -f ./config/${HOSTNAME}.sh ]; then
-    source ./config/${HOSTNAME}.sh
-else
-    echo "No bash config found. Are you running from repo main dir?"
-fi
-#+end_src
-***** Data
-
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.data
-  # -*- mode: snippet -*-
-  # key: bioinfo.data
-  # expand-env: ((yas-indent-line 'none))
-  # --
-  `(make-string (1+ (org-current-level)) ?*)` Data
-#+end_src
-
-***** [[id:61f0fe69-ab73-416d-b078-9c94a053520a][Local variables]]
-***** bioinfo.config.host.sh
-:PROPERTIES:
-:ID:       2cdacb39-2dd0-405d-a4fb-c1cdd4004344
-:END:
-
-#+name: bioinfo.config.host.sh
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.host.sh
-# -*- mode: snippet -*-
-# key: bioinfo.config.host.sh
-# expand-env: ((yas-indent-line 'fixed))
-# --
-,#+begin_src bash :noweb yes :tangle ./config/${1:HOSTNAME}.sh
-<<bash_cmdline_script_preamble>>
-#########1#########2#########3#########4#########5#########6#########7#########8
-
-#
-###   Bash configuration sourcing script for $1   ###
-#
-
-# Define host-local absolute variables
-data_dir="${2:LOCAL DATA DIRECTORY}"
-mntpt="${3:MOUNT POINT PATH}"
-repo="${4:REPO PATH}"
-threads=${5:THREADS}
-
-# ADD ADDITIONAL NOWEBS
-
-#
-echo "Setup complete for $(basename "\${repo}") on $HOSTNAME"
-
-,#+end_src
-#+end_src
-
-***** bioinfo.config.common.sh
-=======
-cd ~/snakemake-tutorial/
-
-conda activate snakemake-tutorial
-
-
-snakemake -p --cores 2 sorted_reads/{A,B}.bam
-#    --dry-run \
-
-snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
-
-expand("sorted_reads/{sample}.bam", sample=SAMPLES)
-
-snakemake -p --cores 2 plots/quals.svg
-
-snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
-
-snakemake --cores 20 --forceall --summary
-
-snakemake --cores 20 --forceall
-
-conda install pygraphviz
-
-snakemake --report report.html
-
-open report.html
-
-snakemake --cores 20 --forceall
-#+end_src
-- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
-***** Local YAS (prefix smk.)
-***** Insert snakemake file org-mode tree
-#+name: smk
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk
-# -*- mode: snippet -*-
-# key: smk
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (org-current-level) ?*)` [[file:./workflow/$2.smk][Snakefile]]:smk:
-:PROPERTIES:
-:header-args:snakemake: :tangle ./workflow/${2: SNAKEFILE NAME}.smk
-:END:
-`(make-string (+ 1 (org-current-level)) ?*)` Smk preamble
-,#+begin_src snakemake
-
-,#+end_src
-`(make-string (+ 1 (org-current-level)) ?*)` Smk rules
-`(make-string (+ 2 (org-current-level)) ?*)` All rule
-,#+begin_src snakemake
-rule all:
-    input:
-
-,#+end_src
-- add rules with smk.rule
-`(make-string (+ 1 (org-current-level)) ?*)` Dev
-:PROPERTIES:
-:header-args:snakemake: :tangle no
-:END:
-`(make-string (+ 1 (org-current-level)) ?*)` Ideas
-:PROPERTIES:
-:header-args:snakemake: :tangle no
-:END:
-#+end_src
-***** Make Rule
-#+name: smk.rule
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule
-# -*- mode: snippet -*-
-# key: smk.rule
-# expand-env: ((yas-indent-line 'none))
-# --
-smk.rule.${1:$$(yas-choose-value '("bash" "r"))}
-#+end_src
-***** R rule
-:PROPERTIES:
-:ID:       928c57a9-dd2b-427b-b1c4-191e6321d133
-:END:
-#+name: smk.rule.r
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule.r
-# -*- mode: snippet -*-
-# key: smk.rule.r
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (org-current-level) ?*)` ${6: <RULE DESCRIPTIVE NAME>}    :smk_rule:
-- Snakemake
-  ,#+begin_src snakemake
-rule ${1:<RULE WORKFLOW NAME>}:
-    input:
-        config["data_dir"] + "/${2:<INPUT>}",
-    params:
-        script = config["${3:<SCRIPTS DIR>}"] + "/$1.R",
-    output:
-        config["data_dir"] + "/${4:<OUTPUT>}",
-    log:
-        config["data_dir"] + "/logs/${5:<LOG ID>}_$1.log",
-    shell:
-        """
-        Rscript {params.script} \
-        {input} \
-        {output} \
-        > {log} 2>&1
-        """
-,#+end_src
-- [[file:./workflow/scripts/$1.R][Rscript]]
-  ,#+begin_src R :noweb yes :tangle ./workflow/scripts/$1.R
-#!/usr/bin/env Rscript
-
-args = commandArgs(trailingOnly = TRUE)
-= args[1]
-,#+end_src
-#+end_src
-
-***** Bash rule
-:PROPERTIES:
-:ID:       5ac79198-801a-4ab9-82df-88402cb63e4d
-:END:
-#+name: smk.rule.bash
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule.bash
-# -*- mode: snippet -*-
-# key: smk.rule.bash
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (org-current-level) ?*)` ${11: <RULE DESCRIPTIVE ORG NAME>}    :smk_rule:
-- Snakemake
-  ,#+begin_src snakemake
-# ${1:<DESCRIPTIVE COMMENT>}
-rule ${2:<RULE WORKFLOW NAME>}:
-    container:
-        $3_container,
-    input:
-        ${3:< SMK ID >}_${4:< PROCESS ID >} + "/{${5:<UNIT ID>}}${6:<INPUT SUFFIX}",
-    log:
-        config["logdir"] + "/{$5}_$3_$2.log",
-    output:
-        $3_${7:<OUTPUT DIRECTORY IDENTIFIER>} + "/{$5}${8:<OUTPUT SUFFIX>}",
-    params:
-        script = $3_script_dir + "/$2.sh",
-    shell:
-        """
-        {params.script} \
-        {input} \
-        {output} &> {log}
-        """
-,#+end_src
-- [[file:./workflow/scripts/${2:$(downcase yas-text)}.sh][Shell script]]
-  ,#+begin_src bash :tangle ./workflow/scripts/${2:$(downcase yas-text)}.sh
-#!/usr/bin/env bash
-input=\$1
-output=\$2
-,#+end_src
-#+end_src
-
-
-***** sdf:smk_rule:
-- Snakemake
-#+begin_src snakemake
-rule Symbol’s function definition is void: string-replace:
-    input:
-    output:
-    shell:
-        """
-        scripts/Symbol’s function definition is void: string-replace.sh
-        """
-#+end_src
-- [[file:./workflows/scripts/Symbol’s function definition is void: string-replace.sh][Base script]]
-,  #+begin_src bash :tangle ./workflows/scripts/Symbol’s function definition is void: string-replace.sh
-#!/usr/bin/env bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-###
-###    SCRIPT TITLE   ###
-###
-
-#+end_src
-**** Style and best practices
-:PROPERTIES:
-:ID:       3924c49e-5296-4fcd-8994-9b62a5bbf772
-:logging: nil
-:END:
-- File, directory, and variable naming
-  - Names common across repos and snakefiles, to be referenced directly from config:
-    - datadir
-    - logdir
-  - All inputs and outputs to a single local data directory. This directory is common across snakefiles and pipelines and therefore naming within must be unique.
-  - Outputs to flat list of subdirectories by {file type}-{smk}-{step}
-  - Output file names as {identifier}_{smk}_{step}.{suffix}
-  - Simplify parameter names as much as possible in configuration YAMLs and operational snakefiles. Construct naming logic within the integration snakefile.
-- Snakefile and org file structure
-  - Per rule
-    - Conform to [[id:5ac79198-801a-4ab9-82df-88402cb63e4d][bash]] and [[id:928c57a9-dd2b-427b-b1c4-191e6321d133][R]] rule YAS
-  - Inputs
-    - Use tabular configuration for samples
-  - README
-    - Include Change log
-    - Update at least at stable version
-  - Integration testing snakefile
-    - Contains all extraneous commands not relevant to focus of repo (symlinking, etc)
-    - Preamble
-      - Define initial samples
-      - Make readable file check
-      - Symlink sample files from inputs using a python library
-      - Define task-specific workflow directory structure
-    - All rule has output of every content-specific snakefile. Intermediate rules are commented out.
-  - Resources
-    - Generate and link to DAG
-- Development and updates
-  - Trunk-based development via git and github
-  - Stable release branches are creatd for external use.
-    - Follow semantic versioning
-    - Brach named as stable.<SEM VAR>
-  - Version 1 is a minimum working example using only data in test/inputs
-
-**** Examples
-- https://github.com/vari-bbc/rnaseq_workflow/blob/master/Snakefile
-- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
-- https://github.com/yztxwd/rna-seq-standard-pipeline/tree/c19a9e27216b86d3dbfdaed7228aeff59f869383
-- https://github.com/porchard/ATACseq-Snakemake/blob/master/src/Snakefile
-- https://github.com/zhxiaokang/RASflow
-- https://github.com/EthanHolleman
-- https://www.biostars.org/p/406385/
-- https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
-- https://github.com/lachlandeer/snakemake-econ-r
-
 ** Development
 *** v0.1.0
 **** sifs to szymanski RIS
@@ -13033,7 +13043,7 @@ rule Symbol’s function definition is void: string-replace:
              $repo/data/test \
              demulti_TCCT_R1.fastq
   #+end_src
-** General reference
+** General reference :ref:
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
