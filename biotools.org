@@ -247,6 +247,10 @@ CLOCK: [2022-08-29 Mon 12:18]--[2022-08-29 Mon 13:00] =>  0:42
 CLOCK: [2022-05-01 Sun 12:17]--[2022-05-01 Sun 13:47] =>  1:30
 CLOCK: [2021-12-09 Thu 12:47]--[2022-05-01 Sun 13:57] => 3432:10
 :END:
+*** cfDNA WGS fragmentomics biopipe
+:LOGBOOK:
+CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
+:END:
 *** See [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 ** Bioinformatics project                                :mod:biopipe:career:
 :PROPERTIES:
@@ -274,6 +278,7 @@ CLOCK: [2021-08-25 Wed 08:05]--[2021-08-25 Wed 08:33] =>  0:28
 CLOCK: [2021-08-17 Tue 16:00]--[2021-08-17 Tue 17:30] =>  1:30
 CLOCK: [2021-08-17 Tue 13:28]--[2021-08-17 Tue 14:17] =>  0:49
 :END:
+single pipe per repo
 *** Processes :hierarchy:
 **** :flat:
 - https://en.wikipedia.org/wiki/Minimum_viable_product
@@ -635,6 +640,28 @@ Reproducibility
 - https://www.biostars.org/p/190366/
 - https://github.com/jkitchin/ox-ipynb
 - https://help.osf.io/hc/en-us/articles/360019931133-Creating-a-data-management-plan-DMP-document
+***** MGI bioinformatics workshop
+:PROPERTIES:
+:ID:       fd71110c-0923-48a9-b1a1-704973535fe5
+:END:
+
+https://github.com/genome/bfx-workshop/blob/master/README.md#communications
+
+****** DONE MGI bioinformatics workshop
+CLOSED: [2021-02-01 Mon 10:38] SCHEDULED: <2021-02-01 Mon 10:00>
+:PROPERTIES:
+:ID:       986a87c0-7a7d-4f31-a6c8-4dcea09a74c8
+:END:
+:LOGBOOK:
+CLOCK: [2021-02-01 Mon 10:05]--[2021-02-01 Mon 10:14] =>  0:09
+CLOCK: [2021-01-25 Mon 10:34]--[2021-01-25 Mon 10:39] =>  0:05
+:END:
+- https://mail.google.com/mail/u/0/#inbox/FMfcgxwLsSgRxQhMclSgxvkznlgrGMXq
+- [2021-02-01 Mon] RIS
+  -
+- [2021-01-25 Mon] Bisulfite sequencing
+  -
+
 ***** Notes
 :PROPERTIES:
 :ID:       2ed8a040-d768-4a78-9b14-6347b2c68c97
@@ -1809,7 +1836,6 @@ open report.html
 snakemake --cores 20 --forceall
 #+end_src
 - https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
-***** Local YAS (prefix smk.)
 ***** Insert snakemake file org-mode tree
 #+name: smk
 #+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk
@@ -2000,7 +2026,6 @@ rule Symbol’s function definition is void: string-replace:
 - https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
 - https://github.com/lachlandeer/snakemake-econ-r
 
-** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
 ** Scripts
 *** Bash helper scripts [[file:tools/shell/]]
 **** Built docker container
@@ -8028,7 +8053,7 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 :CREATED:  [2020-12-20 Sun 16:45]
 :ID:       61aac189-1770-4d80-a367-e7c39b46e0d1
 :END:
-**** Assess library complexity
+**** [#Y] Assess library complexity
 [[id:6d8cbcc0-2651-4c51-991e-639dbc81ea66][preseq]]
 **** ATAC-seq
 :PROPERTIES:
@@ -8341,8 +8366,7 @@ https://www.nature.com/articles/s43018-022-00379-w
 :CREATED:  [2020-12-20 Sun 16:45]
 :ID:       61aac189-1770-4d80-a367-e7c39b46e0d1
 :END:
-*** Assess library complexity
-[[id:6d8cbcc0-2651-4c51-991e-639dbc81ea66][preseq]]
+
 *** ATAC-seq
 :PROPERTIES:
 :ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
@@ -10861,8 +10885,7 @@ https://www.ncbi.nlm.nih.gov/tools/gbench/
 :END:
 - http://smithlabresearch.org/manuals/preseqmanual.pdf
 - library complexity- preseqr http://smithlabresearch.org/manuals/preseqmanual.pdf
-=======
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
+
 **** ATACseqQC                                                      :biotool:
 :PROPERTIES:
 :ID:       a5b73c70-3f1f-4018-92b2-bfdcaed53cf5
@@ -11937,12 +11960,6 @@ https://www.pnas.org/content/115/4/E743.long
 :END:
   - https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
 
-**** preseq :biotool:
-:PROPERTIES:
-:ID:       6d8cbcc0-2651-4c51-991e-639dbc81ea66
-:END:
-- http://smithlabresearch.org/manuals/preseqmanual.pdf
-- library complexity- preseqr http://smithlabresearch.org/manuals/preseqmanual.pdf
 **** rsem                                                           :biotool:
 :PROPERTIES:
 :ID:       85db5c34-b5fd-4b6c-bdb7-88263e553ba3
