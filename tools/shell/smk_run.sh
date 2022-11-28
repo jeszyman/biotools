@@ -1,3 +1,8 @@
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
 # Check for parameters, return usage if empty
 if [ "$#" -ne 2 ];
 then
@@ -19,6 +24,7 @@ else
         --printshellcmds \
         --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
         --rerun-incomplete \
+        --resources mem_mb=6000 \
         --snakefile $2 \
         --verbose
 fi
