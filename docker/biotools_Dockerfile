@@ -1,4 +1,4 @@
-FROM jeszyman/basecamp
+FROM jeszyman/basecamp:2.0.0
 ################################################################################
 ################################################################################
 ###                                                                          ###
@@ -18,34 +18,34 @@ FROM jeszyman/basecamp
 #################
 ###   Conda   ###
 #################
+RUN conda install -c bioconda -c conda-forge bbmap=39.00 \
+    && conda install -c bioconda -c conda-forge bcftools=1.15.1 \
+    && conda install -c bioconda -c conda-forge bedops=2.4.41 \
+    && conda install -c bioconda -c conda-forge bedtools=2.30.0 \
+    && conda install -c bioconda -c conda-forge bowtie=1.3.1 \
+    && conda install -c bioconda -c conda-forge bowtie2=2.4.5 \
+    && conda install -c bioconda -c conda-forge bwa=0.7.17 \
+    && conda install -c bioconda -c conda-forge cutadapt=4.1 \
+    && conda install -c bioconda -c conda-forge deeptools=3.5.1 \
+    && conda install -c bioconda -c conda-forge fastp=0.23.2 \
+    && conda install -c bioconda -c conda-forge fastqc=0.11.9 \
+    && conda install -c bioconda -c conda-forge gatk \
+    && conda install -c bioconda -c conda-forge goleft=0.2.4 \
+    && conda install -c bioconda -c conda-forge htseq=2.0.2 \
+    && conda install -c bioconda -c conda-forge mosdepth=0.3.3 \
+    && conda install -c bioconda -c conda-forge vcftools
 
-RUN conda install -c bioconda bbmap \
-    && conda install -c bioconda bcftools \
-    && conda install -c bioconda bedops \
-    && conda install -c bioconda bedtools \
-    && conda install -c bioconda bowtie \
-    && conda install -c bioconda bowtie2 \
-    && conda install -c bioconda bwa \
-    && conda install -c bioconda cutadapt \
-    && conda install -c bioconda deeptools=3.5.1 --force \
-    && conda install -c bioconda fastp \
-    && conda install -c bioconda fastqc \
-    && conda install -c bioconda gatk \
-    && conda install -c bioconda goleft \
-    && conda install -c bioconda htseq \
-    && conda install -c bioconda mosdepth \
-    && conda install -c bioconda preseq \
-    && conda install -c bioconda pysam \
-    && conda install -c bioconda qualimap \
-    && conda install -c bioconda sambamba \
-    && conda install -c bioconda samblaster \
-    && conda install -c bioconda samtools=1.7 \
-    && conda install -c bioconda seqkit \
-    && conda install -c bioconda seqtk \
-    && conda install -c bioconda skewer \
-    && conda install -c bioconda snakemake \
-    && conda install -c bioconda trimmomatic=0.39 \
-    && conda install -c bioconda vcftools
+RUN conda create -c bioconda -c conda-forge --name samtools.1.7 samtools=1.7
+
+RUN conda install -c bioconda -c conda-forge samblaster \
+    && conda install -c bioconda -c conda-forge sambamba \
+    && conda install -c bioconda -c conda-forge qualimap \
+    && conda install -c bioconda -c conda-forge preseq=3.2.0 \
+    && conda install -c bioconda -c conda-forge pysam=0.19.1 \
+    && conda install -c bioconda -c conda-forge seqkit=2.3.1 \
+    && conda install -c bioconda -c conda-forge seqtk=1.3 \
+    && conda install -c bioconda -c conda-forge skewer=0.2.2 \
+    && conda install -c bioconda -c conda-forge trimmomatic=0.39
 
 # To avoid conflict with jeszyman/basecamp R install
 #RUN conda uninstall r-base
@@ -61,15 +61,27 @@ RUN R -e "BiocManager::install(version='3.15', update=TRUE, ask=FALSE)"
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
           BiocManager::install(c("AnnotationDbi",\
-                                 "apeglm"
+                                 "apeglm", \
                                  "BiocParallel", \
-                                 "BSgenome.Hsapiens.UCSC.hg19", \
+                                 "biomaRt", \
+                                 "BSgenome.Hsapiens.UCSC.hg38", \
+                                 "BSgenome.Mmusculus.UCSC.mm10", \
                                  "ComplexHeatmap", \
+                                 "DEGreport", \
+                                 "DESeq2", \
+                                 "edgeR", \
                                  "EnsDb.Mmusculus.v79", \
+                                 "GenomicAlignments", \
+                                 "org.Hs.eg.db", \
                                  "org.Mm.eg.db", \
                                  "readr", \
                                  "Rsamtools", \
+                                 "TxDb.Hsapiens.UCSC.hg38.knownGene", \
+                                 "TxDb.Hsapiens.UCSC.hg38.ensGene", \
+                                 "TxDb.Mmusculus.UCSC.mm10.knownGene", \
                                  "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
+
+RUN R -e "install.packages(c('seqinr'), repos='http://cran.rstudio.com/')"
 
 ##############################################
 ###   Select UCSC Command-line utilities   ###
@@ -126,7 +138,7 @@ RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0
 
 # samtools
 # https://www.biostars.org/p/9480029/
-RUN conda install -c bioconda samtools openssl=1.0
+#RUN conda install -c bioconda samtools openssl=1.0
 
 ##################
 ###   Picard   ###

@@ -4,6 +4,1538 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :header-args:bash: :tangle-mode (identity #o555)
 :END:
+** My bioinformatics pipelines
+*** meth seq
+
+****** Preamble
+#+begin_src bash
+<<<<<<< HEAD
+FROM jeszyman/basecamp
+################################################################################
+################################################################################
+###                                                                          ###
+###         Dockerfile to build a basic bioinformatics docker image          ###
+###                                                                          ###
+################################################################################
+################################################################################
+
+#################
+###   Notes   ###
+#################
+#
+# After build, the image will be pushed to the dockerhub as
+# jeszyman/biotools
+# (https://hub.docker.com/repository/docker/jeszyman/atac)
+
+#+end_src
+****** Conda
+#+begin_src bash
+
+#################
+###   Conda   ###
+#################
+
+RUN conda install -c bioconda bbmap \
+    && conda install -c bioconda bcftools \
+    && conda install -c bioconda bedops \
+    && conda install -c bioconda bedtools \
+    && conda install -c bioconda bowtie \
+    && conda install -c bioconda bowtie2 \
+    && conda install -c bioconda bwa \
+    && conda install -c bioconda cutadapt \
+    && conda install -c bioconda deeptools=3.5.1 --force \
+    && conda install -c bioconda fastp \
+    && conda install -c bioconda fastqc \
+    && conda install -c bioconda gatk \
+    && conda install -c bioconda goleft \
+    && conda install -c bioconda htseq \
+    && conda install -c bioconda mosdepth \
+    && conda install -c bioconda preseq \
+    && conda install -c bioconda pysam \
+    && conda install -c bioconda qualimap \
+    && conda install -c bioconda sambamba \
+    && conda install -c bioconda samblaster \
+    && conda install -c bioconda samtools=1.7 \
+    && conda install -c bioconda seqkit \
+    && conda install -c bioconda seqtk \
+    && conda install -c bioconda skewer \
+    && conda install -c bioconda snakemake \
+    && conda install -c bioconda trimmomatic=0.39 \
+    && conda install -c bioconda vcftools
+
+#+end_src
+****** R and Bioconductor
+#+begin_src bash
+# To avoid conflict with jeszyman/basecamp R install
+#RUN conda uninstall r-base
+
+
+##########################
+###   R Bioconductor   ###
+##########################
+
+RUN R -e "install.packages('BiocManager', repos='http://cran.rstudio.com/')"
+
+RUN R -e "BiocManager::install(version='3.15', update=TRUE, ask=FALSE)"
+
+RUN R -e 'install.packages("BiocManager"); \
+          BiocManager::install(); \
+          BiocManager::install(c("AnnotationDbi",\
+                                 "apeglm"
+                                 "BiocParallel", \
+                                 "BSgenome.Hsapiens.UCSC.hg19", \
+                                 "ComplexHeatmap", \
+                                 "EnsDb.Mmusculus.v79", \
+                                 "org.Mm.eg.db", \
+                                 "readr", \
+                                 "Rsamtools", \
+                                 "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
+
+#+end_src
+****** UCSC
+#+begin_src bash
+
+##############################################
+###   Select UCSC Command-line utilities   ###
+##############################################
+
+RUN mkdir /opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedClip --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedCommonRegions --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedCoverage --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedExtendRanges --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGeneParts --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphPack --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedIntersect --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedItemOverlapCount --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedJoinTabOffset --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedJoinTabOffset.py --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedMergeAdjacent --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedPartition --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedPileUps --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedRemoveOverlap --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedRestrictToPositions --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedSort --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToExons --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedSummary --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedToBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCat --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCluster --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCorrelate --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigInfo --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigMerge --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigSummary --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToBedGraph --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToWig --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/#+end_src --directory-prefix=/opt/ucsc \
+    && chmod -R +x /opt/ucsc/
+
+ENV PATH="/opt/ucsc:${PATH}"
+
+#+end_src
+****** Custom and manual installs
+#+begin_src bash
+
+###########################
+###   Custom Installs   ###
+###########################
+
+# Multiqc
+
+RUN pip install multiqc
+
+# Flexbar
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated libtbb2
+RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
+
+# samtools
+# https://www.biostars.org/p/9480029/
+RUN conda install -c bioconda samtools openssl=1.0
+
+#+end_src
+******* Picard
+#+begin_src bash
+
+##################
+###   Picard   ###
+##################
+
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated openjdk-8-jdk
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+#https://github.com/genome/docker-picard-cwl/commit/639ad8e4d8e7bd7e6e10f193df8d5cd16260d2e2
+RUN mkdir /opt/picard-2.18.1/ \
+    && cd /tmp/ \
+    && wget --no-check-certificate https://github.com/broadinstitute/picard/releases/download/2.18.1/picard.jar \
+    && mv picard.jar /opt/picard-2.18.1/ \
+    && ln -s /opt/picard-2.18.1 /opt/picard \
+    && ln -s /opt/picard-2.18.1 /usr/picard
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+
+#+end_src
+****** Development                                                      :dev:
+:PROPERTIES:
+:header-args: :tangle no
+
+*** [[file:~/repos/exrna/exrna.org][exRNA]]
+:LOGBOOK:
+CLOCK: [2022-06-08 Wed 14:22]--[2022-06-08 Wed 14:44] =>  0:22
+CLOCK: [2022-06-08 Wed 13:41]--[2022-06-08 Wed 13:59] =>  0:18
+:END:
+*** [[file:~/repos/cappseq/cappseq.org][CAPP-seq]]
+:LOGBOOK:
+CLOCK: [2022-06-07 Tue 08:19]--[2022-06-07 Tue 08:21] =>  0:02
+CLOCK: [2022-04-29 Fri 09:12]--[2022-04-29 Fri 10:00] =>  0:48
+CLOCK: [2022-04-26 Tue 08:34]--[2022-04-26 Tue 09:08] =>  0:34
+CLOCK: [2022-04-26 Tue 12:00]--[2022-04-26 Tue 13:31] =>  1:31
+CLOCK: [2022-04-26 Tue 09:51]--[2022-04-26 Tue 10:10] =>  0:19
+:END:
+*** [[file:~/repos/cfdna-wgs/cfdna-wgs.org][cfDNA WGS biopipe]]
+:PROPERTIES:
+:ID:       13120759-71db-497c-8ed3-1c58e47a7840
+:END:
+:LOGBOOK:
+CLOCK: [2022-05-04 Wed 08:12]--[2022-05-04 Wed 08:16] =>  0:04
+CLOCK: [2022-05-03 Tue 10:19]--[2022-05-03 Tue 11:04] =>  0:45
+CLOCK: [2022-05-03 Tue 09:46]--[2022-05-03 Tue 10:15] =>  0:29
+CLOCK: [2022-04-29 Fri 10:34]--[2022-04-29 Fri 10:56] =>  0:22
+CLOCK: [2022-06-27 Mon 11:13]--[2022-06-27 Mon 13:40] =>  2:27
+CLOCK: [2022-06-27 Mon 09:11]--[2022-06-27 Mon 10:47] =>  1:36
+CLOCK: [2022-06-27 Mon 07:07]--[2022-06-27 Mon 09:11] =>  2:04
+CLOCK: [2022-06-24 Fri 08:02]--[2022-06-24 Fri 10:19] =>  2:17
+CLOCK: [2022-06-23 Thu 10:20]--[2022-06-23 Thu 11:18] =>  0:58
+CLOCK: [2022-06-16 Thu 12:48]--[2022-06-16 Thu 13:42] =>  0:54
+CLOCK: [2022-06-16 Thu 08:08]--[2022-06-16 Thu 08:39] =>  0:31
+CLOCK: [2022-06-07 Tue 08:29]--[2022-06-07 Tue 10:56] =>  2:27
+CLOCK: [2022-06-02 Thu 08:38]--[2022-06-02 Thu 08:40] =>  0:02
+CLOCK: [2022-05-31 Tue 11:03]--[2022-05-31 Tue 12:44] =>  1:41
+:END:
+**** frag
+:LOGBOOK:
+CLOCK: [2022-04-29 Fri 13:52]--[2022-04-29 Fri 14:07] =>  0:15
+CLOCK: [2022-04-29 Fri 11:17]--[2022-04-29 Fri 11:40] =>  0:23
+CLOCK: [2021-12-07 Tue 08:55]--[2021-12-07 Tue 09:08] =>  0:13
+:END:
+*** [[file:~/repos/atac-seq/atac_seq.org][ATAC-seq biopipe]]
+:LOGBOOK:
+CLOCK: [2022-08-29 Mon 12:18]--[2022-08-29 Mon 13:00] =>  0:42
+CLOCK: [2022-05-01 Sun 12:17]--[2022-05-01 Sun 13:47] =>  1:30
+CLOCK: [2021-12-09 Thu 12:47]--[2022-05-01 Sun 13:57] => 3432:10
+:END:
+*** cfDNA WGS fragmentomics biopipe
+:LOGBOOK:
+CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
+:END:
+*** See [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project module]]
+** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics project]]
+** Scripts
+*** Bash helper scripts [[file:tools/shell/]]
+**** Built docker container
+:PROPERTIES:
+:ORDERED:  t
+:END:
+#+begin_src bash :tangle ./tools/shell/docker_build.sh
+#!/usr/bin/env bash
+
+set -o errexit   # abort on nonzero exitstatus
+set -o nounset   # abort on unbound variable
+set -o pipefail  # don't hide errors within pipes
+
+print_usage(){
+    cat <<- EOF
+
+###################################################
+###   Docker and Singularity Building Command   ###
+###################################################
+
+Steps
+1) Builds docker container
+2) Pushes container to dockerhub
+3) Builds singularity file
+4) Pushes singularity file to box
+
+usage: docker_build.sh [options] <DOCKER FILE> <DOCKER TAG> [OPTIONAL - DOCKER BUILD LOC]
+  options:
+    -n  No cache, use for validation of full build
+    -s  A sif directory location
+    -v  Docker version, a version appended to docker and singularity tags
+        Note: adding a version will push the singularity build to
+        shared/singularity-containers/stable
+
+example:
+
+docker_build.sh -n -s ~/sing_containers -v 2.0.0 ~/dockerfiles/atac_Dockerfile jeszyman/atac ~/docker_bulid_dir
+
+EOF
+}
+
+# Setup options
+while getopts "nt:v:s:" options;
+do
+    case "${options}" in
+        n) usecache="--no-cache" ;;
+        v) version=${OPTARG} ;;
+        s) sifdir=${OPTARG} ;;
+        h | *) print_usage; exit 0 ;;
+    esac
+done
+
+shift $((OPTIND -1))
+
+[[ $# -eq 0 ]] && print_usage && exit 1
+
+# Scipt variables
+dockerfile=$1
+tag=$2
+if [ -z ${usecache+x} ]; then usecache="cache"; fi
+dockerloc="${3:-.}"
+
+main(){
+    # Build and push docker container. Append version if provided.
+    printf "\nBuilding Docker container now...\n "
+    sleep 2s
+    if [ -z ${version+x} ]
+    then
+        build_docker $dockerfile $tag $dockerloc $usecache
+        printf "\nPushing docker container to dockerhub...\n "
+        docker push $tag
+    else
+        build_docker $dockerfile "${tag}:${version}" $dockerloc $usecache
+        printf "\nPushing docker container to dockerhub...\n "
+        docker push $tag:$version
+    fi
+
+    # Build and push sif if provided.
+
+    if [ -z ${sifdir+x} ];
+    then
+        sleep 2s
+        printf "\n-s flag is unset, nothing more to do.\n "
+    else
+        dockertag="$tag"
+        if [ -z ${version+x} ];
+        then
+            siftag=$(echo $tag | sed 's/^.*\///g')
+            target="shared/singularity-containers/most-recent/"
+        else
+            presiftag=$(echo $tag | sed 's/^.*\///g')
+            siftag="${presiftag}.${version}"
+            target="shared/singularity-containers/stable/"
+        fi
+
+        printf "\nBuilding Singularity container now...\n"
+
+        build_singularity $sifdir \
+                          $siftag \
+                          $dockertag
+
+        sleep 2s
+        echo "build_singularity $sifdir $siftag $dockertag"
+        printf "\nLocal Singularity build complete.\nPushing singularity to box...\n"
+
+        push_singularity $sifdir \
+                         $siftag \
+                         $target
+
+    fi
+}
+
+# main(){
+
+
+#     # Build and push sif if provided.
+
+#     if [ -z ${sifdir+x} ];
+
+#     then
+#         sleep 2s
+#         printf "\n-s flag is unset, nothing more to do.\n "
+#     else
+#         dockertag="$tag"
+#         if [ -z ${version+x} ];
+#         then
+#             siftag="$tag"
+#             target="shared/singularity-containers/most-recent"
+#         else
+#             siftag="${tag}.${version}"
+#             target="shared/singularity-containers/stable"
+#         fi
+#         printf "\nBuilding Singularity container now...\n"
+#         sleep 2s
+#         build_singularity $sifdir \
+#                           $siftag \
+#                           $dockertag
+#         printf "\nLocal Singularity build complete.\nPushing singularity to box...\n"
+#         push_singularity $sifdir \
+#                          $siftag \
+#                          $target
+#     fi
+# }
+
+build_docker(){
+    local dockerfile="${1}"
+    local dockertag="${2}"
+    local dockerloc="${3}"
+    if [ $4 == "--no-cache" ];
+    then
+        docker build \
+               --file $dockerfile $4 \
+               --pull \
+               --tag $dockertag \
+               $dockerloc
+    else
+        docker build \
+               --file $dockerfile \
+               --pull \
+               --tag $dockertag \
+               $dockerloc
+    fi
+}
+
+push_docker(){
+    local dockertag="${1}"
+    docker push $dockertag
+}
+
+build_singularity(){
+    local sifdir="${1}"
+    local siftag="${2}"
+    local dockertag="${3}"
+    singularity pull \
+                --force \
+                "${sifdir}/${siftag}.sif" \
+                "docker://${dockertag}"
+}
+
+push_singularity(){
+    local sifdir="${1}"
+    local siftag="${2}"
+    local target="${3}"
+    rclone copy \
+           --update \
+           --verbose \
+           "${sifdir}/${siftag}.sif" remote:"${target}"
+}
+
+main "$@"
+
+#+end_src
+
+*****                                                                   :ref:
+- https://github.com/orgs/genome/repositories?type=all
+*****                                                                   :dev:
+- old mpnst dockerfile
+  #+begin_src bash
+FROM jeszyman/biotools
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+##############################################
+###      Dockerfile for MPNST Projects     ###
+##############################################
+
+# After build, this image will be pushed to dockerhub as jeszyman/mpnst.
+#  See (https://hub.docker.com/repository/docker/jeszyman/mpnst)
+
+#
+RUN cd /opt && \
+    git clone https://github.com/shahcompbio/hmmcopy_utils.git && \
+    cd hmmcopy_utils && \
+    cmake . && \
+    make
+
+#
+# ichorCNA
+##
+## linux dependencies
+RUN apt-get update \
+   && apt-get install -y \
+   libcurl4-openssl-dev \
+   libssl-dev \
+   libxml2-dev
+#RUN rm /usr/lib/x86_64-linux-gnu/libcurl.so.4
+#RUN ln -s /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0 /usr/lib/x86_64-linux-gnu/libcurl.so.4
+##
+## R dependencies
+RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("HMMcopy"); BiocManager::install("GenomeInfoDb"); BiocManager::install("GenomicRanges");'
+##
+## git clone install
+RUN cd /opt \
+    && git clone https://github.com/broadinstitute/ichorCNA.git \
+    && cd ichorCNA \
+    && R CMD INSTALL . \
+    && cd /opt
+##
+#+end_src
+- ...rebuild local sing and add checker
+- [ ] sing builds to box
+- [ ] move all docker to single repo
+
+***:dev:
+**** Run functions
+- run docker interactively
+  #+name: docker_interactive
+  #+begin_src bash
+docker_interactive() {
+    if [ -f /.dockerenv ]; then
+        echo "shell already in docker, exiting"
+        exit 1
+    else
+        account="USER INPUT"
+        container="USER INPUT"
+        read -p "docker account name: " account
+        account="${account:=jeszyman}"
+        read -p "container name: " container
+        container="${container:=biotools}"
+        case $HOSTNAME in
+            (radonc-cancerbio) docker run -it \
+                                      --env HOME=${HOME} \
+                                      --hostname ${HOSTNAME} \
+                                      --user $(id -u ${USER}) \
+                                      --volume /home/:/home/ \
+                                      --volume /mnt/:/mnt/ \
+                                      --volume /tmp/:/tmp/ \
+                                      $account/$container \
+                                      /bin/bash;;
+            (acl*) docker run -it \
+                          --env HOME=${HOME} \
+                          --hostname ${HOSTNAME} \
+                          -v /drive3/:/drive3/ \
+                          -v /duo4/:/duo4/ \
+                          -v /home/:/home/ \
+                          -v /tmp/:/tmp/ \
+                          -u $(id -u ${USER}) \
+                          $account/$container \
+                          /bin/bash;;
+            (ACL*) docker run -it \
+                          --env HOME=${HOME} \
+                          --hostname ${HOSTNAME} \
+                          -v /home/:/home/ \
+                          -v /duo4/:/duo4/ \
+                          -u $(id -u ${USER}):$(id -g ${USER}) \
+                          $account/$container \
+                          /bin/bash;;
+            (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker($account/'"$container"')' /bin/bash;;
+            (*) docker run -it \
+                       --env HOME=/home/${USER} \
+                       --hostname ${HOSTNAME} \
+                       --user $(id -u ${USER}) \
+                       --volume /home/:/home/ \
+                       --volume /mnt/:/mnt/ \
+                       --volume /tmp/:/tmp/ \
+                       $account/$container \
+                       /bin/bash;;
+        esac
+    fi
+}
+#+end_src
+**** [[*Built docker container][Built docker container]]
+** Biotools dockerfiles
+:LOGBOOK:
+CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:19] =>  1:00
+CLOCK: [2022-01-04 Tue 09:15]--[2022-01-04 Tue 09:16] =>  0:01
+CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
+CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
+:END:
+*** [[id:79e01a67-5ba1-4257-8353-8c5cf1ac8c4a][Basecamp docker]]
+*** [[file:docker/biotools_Dockerfile][Biotools docker]]
+SCHEDULED: <2022-09-29 Thu>
+:PROPERTIES:
+:ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
+:header-args:bash: :tangle ./docker/biotools_Dockerfile
+:END:
+:LOGBOOK:
+CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:19] =>  1:00
+CLOCK: [2022-01-04 Tue 09:15]--[2022-01-04 Tue 09:16] =>  0:01
+CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:15] =>  0:56
+CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
+:END:
+***** Preamble
+#+begin_src bash
+FROM jeszyman/basecamp:2.0.0
+################################################################################
+################################################################################
+###                                                                          ###
+###         Dockerfile to build a basic bioinformatics docker image          ###
+###                                                                          ###
+################################################################################
+################################################################################
+
+#################
+###   Notes   ###
+#################
+#
+# After build, the image will be pushed to the dockerhub as
+# jeszyman/biotools
+# (https://hub.docker.com/repository/docker/jeszyman/atac)
+
+#+end_src
+***** Conda
+#+begin_src bash
+
+#################
+###   Conda   ###
+#################
+RUN conda install -c bioconda -c conda-forge bbmap=39.00 \
+    && conda install -c bioconda -c conda-forge bcftools=1.15.1 \
+    && conda install -c bioconda -c conda-forge bedops=2.4.41 \
+    && conda install -c bioconda -c conda-forge bedtools=2.30.0 \
+    && conda install -c bioconda -c conda-forge bowtie=1.3.1 \
+    && conda install -c bioconda -c conda-forge bowtie2=2.4.5 \
+    && conda install -c bioconda -c conda-forge bwa=0.7.17 \
+    && conda install -c bioconda -c conda-forge cutadapt=4.1 \
+    && conda install -c bioconda -c conda-forge deeptools=3.5.1 \
+    && conda install -c bioconda -c conda-forge fastp=0.23.2 \
+    && conda install -c bioconda -c conda-forge fastqc=0.11.9 \
+    && conda install -c bioconda -c conda-forge gatk \
+    && conda install -c bioconda -c conda-forge goleft=0.2.4 \
+    && conda install -c bioconda -c conda-forge htseq=2.0.2 \
+    && conda install -c bioconda -c conda-forge mosdepth=0.3.3 \
+    && conda install -c bioconda -c conda-forge vcftools
+
+RUN conda create -c bioconda -c conda-forge --name samtools.1.7 samtools=1.7
+
+RUN conda install -c bioconda -c conda-forge samblaster \
+    && conda install -c bioconda -c conda-forge sambamba \
+    && conda install -c bioconda -c conda-forge qualimap \
+    && conda install -c bioconda -c conda-forge preseq=3.2.0 \
+    && conda install -c bioconda -c conda-forge pysam=0.19.1 \
+    && conda install -c bioconda -c conda-forge seqkit=2.3.1 \
+    && conda install -c bioconda -c conda-forge seqtk=1.3 \
+    && conda install -c bioconda -c conda-forge skewer=0.2.2 \
+    && conda install -c bioconda -c conda-forge trimmomatic=0.39
+
+#+end_src
+***** R and Bioconductor
+#+begin_src bash
+# To avoid conflict with jeszyman/basecamp R install
+#RUN conda uninstall r-base
+
+##########################
+###   R Bioconductor   ###
+##########################
+
+RUN R -e "install.packages('BiocManager', repos='http://cran.rstudio.com/')"
+
+RUN R -e "BiocManager::install(version='3.15', update=TRUE, ask=FALSE)"
+
+RUN R -e 'install.packages("BiocManager"); \
+          BiocManager::install(); \
+          BiocManager::install(c("AnnotationDbi",\
+                                 "apeglm", \
+                                 "BiocParallel", \
+                                 "biomaRt", \
+                                 "BSgenome.Hsapiens.UCSC.hg38", \
+                                 "BSgenome.Mmusculus.UCSC.mm10", \
+                                 "ComplexHeatmap", \
+                                 "DEGreport", \
+                                 "DESeq2", \
+                                 "edgeR", \
+                                 "EnsDb.Mmusculus.v79", \
+                                 "GenomicAlignments", \
+                                 "org.Hs.eg.db", \
+                                 "org.Mm.eg.db", \
+                                 "readr", \
+                                 "Rsamtools", \
+                                 "TxDb.Hsapiens.UCSC.hg38.knownGene", \
+                                 "TxDb.Hsapiens.UCSC.hg38.ensGene", \
+                                 "TxDb.Mmusculus.UCSC.mm10.knownGene", \
+                                 "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
+
+RUN R -e "install.packages(c('seqinr'), repos='http://cran.rstudio.com/')"
+
+#+end_src
+***** UCSC
+#+begin_src bash
+
+##############################################
+###   Select UCSC Command-line utilities   ###
+##############################################
+
+RUN mkdir /opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedClip --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedCommonRegions --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedCoverage --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedExtendRanges --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGeneParts --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphPack --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedIntersect --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedItemOverlapCount --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedJoinTabOffset --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedJoinTabOffset.py --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedMergeAdjacent --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedPartition --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedPileUps --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedRemoveOverlap --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedRestrictToPositions --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedSort --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToExons --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedSummary --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedToBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCat --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCluster --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCorrelate --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigInfo --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigMerge --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigSummary --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToBedGraph --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToWig --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/#+end_src --directory-prefix=/opt/ucsc \
+    && chmod -R +x /opt/ucsc/
+
+ENV PATH="/opt/ucsc:${PATH}"
+
+#+end_src
+***** Custom and manual installs
+#+begin_src bash
+
+###########################
+###   Custom Installs   ###
+###########################
+
+# Multiqc
+
+RUN pip install multiqc
+
+# Flexbar
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated libtbb2
+RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
+
+# samtools
+# https://www.biostars.org/p/9480029/
+#RUN conda install -c bioconda samtools openssl=1.0
+
+#+end_src
+****** Picard
+#+begin_src bash
+
+##################
+###   Picard   ###
+##################
+
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated openjdk-8-jdk
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+#https://github.com/genome/docker-picard-cwl/commit/639ad8e4d8e7bd7e6e10f193df8d5cd16260d2e2
+RUN mkdir /opt/picard-2.18.1/ \
+    && cd /tmp/ \
+    && wget --no-check-certificate https://github.com/broadinstitute/picard/releases/download/2.18.1/picard.jar \
+    && mv picard.jar /opt/picard-2.18.1/ \
+    && ln -s /opt/picard-2.18.1 /opt/picard \
+    && ln -s /opt/picard-2.18.1 /usr/picard
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+
+#+end_src
+***** Development                                                       :dev:
+:PROPERTIES:
+:header-args: :tangle no
+:END:
+- Old code
+    #
+  # cnvkit
+  RUN pip install -U cython
+  #FAILS [2021-02-17] RUN pip install -U future futures pandas pomegranate pyfaidx
+  #FAILS [2021-02-17] RUN pip install cnvkit==0.9.6
+  #
+  # RSeQC
+  RUN pip install RSeQC
+  #
+  #
+  RUN cd /opt && \
+      git clone https://github.com/shahcompbio/hmmcopy_utils.git && \
+      cd hmmcopy_utils && \
+      cmake . && \
+      make
+  ##NEED edger, limma, gage, dseq2, wgcna
+  #
+  RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("DNAcopy");'
+  #
+
+  #########1#########2#########3#########4#########5#########6#########7######
+  #TESTING
+  #
+  #RUN conda install -c bioconda tophat
+  #RUN conda install -c bioconda cnvkit
+  #RUN conda install -c bioconda manta
+  #RUN conda install -c bioconda lumpy-sv
+  #RUN conda install -c bioconda multiqc
+
+  ###8
+  # #
+  # ### LUMPY
+  # # from https://raw.githubusercontent.com/zlskidmore/docker-lumpy/master/Dockerfile
+  # # RUN apt-get update -qq
+  # # RUN apt-get install -qq --no-install-recommends \
+  # # python-pip \
+  # # git \
+  # # cmake \
+  # # build-essential \
+  # # libz-dev
+  # # RUN cd /opt && git clone https://github.com/hall-lab/lumpy-sv.git && cd /opt/lumpy-sv && make
+  # #########1#########2#########3#########4#########5#########6#########7#########8
+  # ### Samtools
+  # RUN apt-get update -qq
+  # RUN apt-get install -qq --no-install-recommends \
+  # wget \
+  # bzip2 \
+  # cmake \
+  # gcc \
+  # zlib1g-dev \
+  # libncurses5-dev
+  # ENV SAMTOOLS_INSTALL_DIR=/opt/samtools
+  # WORKDIR /tmp
+  # RUN wget --no-check-certificate https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2 && \
+  # tar --bzip2 -xf samtools-1.9.tar.bz2 && \
+  # cd /tmp/samtools-1.9 && \
+  # ./configure --prefix=$SAMTOOLS_INSTALL_DIR && \
+  # make && \
+  # make install && \
+  # cd / && \
+  # rm -rf /tmp/samtools-1.9 && \
+  # ln -s /opt/samtools/bin/* /usr/bin/
+
+  # # # WORKDIR /usr/local/bin/
+  # # # RUN curl -SL https://github.com/samtools/samtools/releases/download/${samtools_version}/samtools-${samtools_version}.tar.bz2 \
+  # # #     > /usr/local/bin/samtools-${samtools_version}.tar.bz2
+  # # # RUN tar -xjf /usr/local/bin/samtools-${samtools_version}.tar.bz2 -C /usr/local/bin/
+  # # # RUN cd /usr/local/bin/samtools-${samtools_version}/ && ./configure
+  # # # RUN cd /usr/local/bin/samtools-${samtools_version}/ && make
+  # # # RUN cd /usr/local/bin/samtools-${samtools_version}/ && make install
+
+  # # # # install lumpy
+  # # # WORKDIR /usr/local/bin
+  # # # RUN wget https://github.com/arq5x/lumpy-sv/releases/download/${lumpy_version}/lumpy-sv.tar.gz
+  # # # RUN tar -xzvf lumpy-sv.tar.gz
+  # # # WORKDIR /usr/local/bin/lumpy-sv
+  # # # RUN make
+  # # # RUN ln -s /usr/local/bin/lumpy-sv/bin/lumpy /usr/local/bin/lumpy
+  # # # RUN ln -s /usr/local/bin/lumpy-sv/bin/lumpy_filter /usr/local/bin/lumpy_filter
+  # # # RUN ln -s /usr/local/bin/lumpy-sv/bin/lumpyexpress /usr/local/bin/lumpyexpress
+  # # # https://github.com/hall-lab/sv-pipeline/blob/master/docker/lumpy/Dockerfile
+  # # # Build dependencies
+  # # RUN apt-get update -qq \
+  # #     && apt-get -y install \
+  # #         apt-transport-https \
+  # #         g++ \
+  # # 	gawk \
+  # #         libcurl4-gnutls-dev \
+  # #         autoconf \
+  # # 	libssl-dev \
+  # #         git
+
+  # #########1#########2#########3#########4#########5#########6#########7#########8
+  # # ###############
+  # # #bam-readcount#
+  # # ###############
+  # # # ENV SAMTOOLS_ROOT=/opt/samtools
+  # # # RUN apt-get update && apt-get install -y --no-install-recommends \
+  # # #         cmake \
+  # # #         patch && \
+  # # #     mkdir /opt/bam-readcount && \
+  # # #     cd /opt/bam-readcount && \
+  # # #     git clone https://github.com/genome/bam-readcount.git /tmp/bam-readcount-0.7.4 && \
+  # # #     git -C /tmp/bam-readcount-0.7.4 checkout v0.7.4 && \
+  # # #     cmake /tmp/bam-readcount-0.7.4 && \
+  # # #     make && \
+  # # #     rm -rf /tmp/bam-readcount-0.7.4 && \
+  # # #     ln -s /opt/bam-readcount/bin/bam-readcount /usr/bin/bam-readcount
+
+  # # # #note - this script needs cyvcf - installed in the python secetion!
+  # # # COPY bam_readcount_helper.py /usr/bin/bam_readcount_helper.py
+  # # # #############
+  # # # ## IGV 3.0 ##
+
+  # # # RUN apt-get update && apt-get install -y --no-install-recommends \
+  # # #     software-properties-common \
+  # # #     glib-networking-common && \
+  # # #     mkdir -p /igv && \
+  # # #     cd /igv && \
+  # # #     wget http://data.broadinstitute.org/igv/projects/downloads/3.0_beta/IGV_3.0_beta.zip && \
+  # # #     unzip IGV_3.0_beta.zip && \
+  # # #     cd IGV_3.0_beta && \
+  # # #     sed -i 's/Xmx4000/Xmx8000/g' igv.sh && \
+  # # #     cd /usr/bin && \
+  # # #     ln -s /igv/IGV_3.0_beta/igv.sh ./igv
+
+  # # ##############
+  # # ## bedtools ##
+
+  # # WORKDIR /usr/local
+  # # RUN git clone https://github.com/arq5x/bedtools2.git && \
+  # #     cd /usr/local/bedtools2 && \
+  # #     git checkout v2.25.0 && \
+  # #     make && \
+  # #     ln -s /usr/local/bedtools2/bin/* /usr/local/bin/
+  # # ##############
+  # # ## vcftools ##
+  # # ENV ZIP=vcftools-0.1.14.tar.gz
+  # # ENV URL=https://github.com/vcftools/vcftools/releases/download/v0.1.14/
+  # # ENV FOLDER=vcftools-0.1.14
+  # # ENV DST=/tmp
+
+  # # RUN wget $URL/$ZIP -O $DST/$ZIP && \
+  # #     tar xvf $DST/$ZIP -C $DST && \
+  # #     rm $DST/$ZIP && \
+  # #     cd $DST/$FOLDER && \
+  # #     ./configure && \
+  # #     make && \
+  # #     make install && \
+  # #     cd / && \
+  # #     rm -rf $DST/$FOLDER
+  # # ##################
+  # # # ucsc utilities #
+  # # RUN mkdir -p /tmp/ucsc && \
+  # #     cd /tmp/ucsc && \
+  # #     wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedToBed http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToBedGraph http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/wigToBigWig && \
+  # #     chmod ugo+x * && \
+  # #     mv * /usr/bin/
+  # # ############################
+  # # # R, bioconductor packages #
+  # # # from https://raw.githubusercontent.com/rocker-org/rocker-versioned/master/r-ver/3.4.0/Dockerfile
+  # # # we'll pin to 3.4.0 for now
+
+  # # # ARG R_VERSION
+  # # # ARG BUILD_DATE
+  # # # ENV BUILD_DATE 2017-06-20
+  # # # ENV R_VERSION=${R_VERSION:-3.4.0}
+  # # # RUN apt-get update && apt-get install -y --no-install-recommends locales && \
+  # # #     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+  # # #     locale-gen en_US.UTF-8 && \
+  # # #     LC_ALL=en_US.UTF-8 && \
+  # # #     LANG=en_US.UTF-8 && \
+  # # #     /usr/sbin/update-locale LANG=en_US.UTF-8 && \
+  # # #     TERM=xterm && \
+  # # #     apt-get install -y --no-install-recommends \
+  # # #     bash-completion \
+  # # #     ca-certificates \
+  # # #     file \
+  # # #     fonts-texgyre \
+  # # #     g++ \
+  # # #     gfortran \
+  # # #     gsfonts \
+  # # #     libbz2-1.0 \
+  # # #     libcurl3 \
+  # # #     libicu55 \
+  # # #     libjpeg-turbo8 \
+  # # #     libopenblas-dev \
+  # # #     libpangocairo-1.0-0 \
+  # # #     libpcre3 \
+  # # #     libpng12-0 \
+  # # #     libtiff5 \
+  # # #     liblzma5 \
+  # # #     locales \
+  # # #     zlib1g \
+  # # #     libbz2-dev \
+  # # #     libcairo2-dev \
+  # # #     libcurl4-openssl-dev \
+  # # #     libpango1.0-dev \
+  # # #     libjpeg-dev \
+  # # #     libicu-dev \
+  # # #     libmariadb-client-lgpl-dev \
+  # # #     libmysqlclient-dev \
+  # # #     libpcre3-dev \
+  # # #     libpng-dev \
+  # # #     libreadline-dev \
+  # # #     libtiff5-dev \
+  # # #     liblzma-dev \
+  # # #     libx11-dev \
+  # # #     libxt-dev \
+  # # #     perl \
+  # # #     tcl8.5-dev \
+  # # #     tk8.5-dev \
+  # # #     texinfo \
+  # # #     texlive-extra-utils \
+  # # #     texlive-fonts-recommended \
+  # # #     texlive-fonts-extra \
+  # # #     texlive-latex-recommended \
+  # # #     x11proto-core-dev \
+  # # #     xauth \
+  # # #     xfonts-base \
+  # # #     xvfb \
+  # # #     zlib1g-dev && \
+  # # #     cd /tmp/ && \
+  # # #     ## Download source code
+  # # #     curl -O https://cran.r-project.org/src/base/R-3/R-${R_VERSION}.tar.gz && \
+  # # #     ## Extract source code
+  # # #     tar -xf R-${R_VERSION}.tar.gz && \
+  # # #     cd R-${R_VERSION} && \
+  # # #     ## Set compiler flags
+  # # #     R_PAPERSIZE=letter && \
+  # # #     R_BATCHSAVE="--no-save --no-restore" && \
+  # # #     R_BROWSER=xdg-open && \
+  # # #     PAGER=/usr/bin/pager && \
+  # # #     PERL=/usr/bin/perl && \
+  # # #     R_UNZIPCMD=/usr/bin/unzip && \
+  # # #     R_ZIPCMD=/usr/bin/zip && \
+  # # #     R_PRINTCMD=/usr/bin/lpr && \
+  # # #     LIBnn=lib && \
+  # # #     AWK=/usr/bin/awk && \
+  # # #     CFLAGS="-g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g" && \
+  # # #     CXXFLAGS="-g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g" && \
+  # # #     ## Configure options
+  # # #     ./configure --enable-R-shlib \
+  # # #                --enable-memory-profiling \
+  # # #                --with-readline \
+  # # #                --with-blas="-lopenblas" \
+  # # #                --disable-nls \
+  # # #                --without-recommended-packages && \
+  # # #     ## Build and install
+  # # #     make && \
+  # # #     make install && \
+  # # #     ## Add a default CRAN mirror
+  # # #     echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /usr/local/lib/R/etc/Rprofile.site && \
+  # # #     ## Add a library directory (for user-installed packages)
+  # # #     mkdir -p /usr/local/lib/R/site-library && \
+  # # #     chown root:staff /usr/local/lib/R/site-library && \
+  # # #     chmod g+wx /usr/local/lib/R/site-library && \
+  # # #     ## Fix library path
+  # # #     echo "R_LIBS_USER='/usr/local/lib/R/site-library'" >> /usr/local/lib/R/etc/Renviron && \
+  # # #     echo "R_LIBS=\${R_LIBS-'/usr/local/lib/R/site-library:/usr/local/lib/R/library:/usr/lib/R/library'}" >> /usr/local/lib/R/etc/Renviron && \
+  # # #     ## install packages from date-locked MRAN snapshot of CRAN
+  # # #     [ -z "$BUILD_DATE" ] && BUILD_DATE=$(TZ="America/Los_Angeles" date -I) || true && \
+  # # #     MRAN=https://mran.microsoft.com/snapshot/${BUILD_DATE} && \
+  # # #     echo MRAN=$MRAN >> /etc/environment && \
+  # # #     export MRAN=$MRAN && \
+  # # #     echo "options(repos = c(CRAN='$MRAN'), download.file.method = 'libcurl')" >> /usr/local/lib/R/etc/Rprofile.site && \
+  # # #     ## Use littler installation scripts
+  # # #     Rscript -e "install.packages(c('littler', 'docopt'), repo = '$MRAN')" && \
+  # # #     ln -s /usr/local/lib/R/site-library/littler/examples/install2.r /usr/local/bin/install2.r && \
+  # # #     ln -s /usr/local/lib/R/site-library/littler/examples/installGithub.r /usr/local/bin/installGithub.r && \
+  # # #     ln -s /usr/local/lib/R/site-library/littler/bin/r /usr/local/bin/r
+
+  # # #    ## install r packages, bioconductor, etc ##
+  # # #    ADD rpackages.R /tmp/
+  # # #    RUN R -f /tmp/rpackages.R && \
+  # # #    ## install fishplot ##
+  # # #    cd /tmp/ && \
+  # # #     wget https://github.com/chrisamiller/fishplot/archive/v0.4.tar.gz && \
+  # # #     mv v0.4.tar.gz fishplot_0.4.tar.gz && \
+  # # #     R CMD INSTALL fishplot_0.4.tar.gz && \
+  # # #     cd && rm -rf /tmp/fishplot_0.4.tar.gz
+
+  # # #    ## Clean up
+  # # #    RUN cd / && \
+  # # #    rm -rf /tmp/* && \
+  # # #    apt-get autoremove -y && \
+  # # #    apt-get autoclean -y && \
+  # # #    rm -rf /var/lib/apt/lists/* && \
+  # # #    apt-get clean
+
+  # # # #################################
+  # # # # Python 2 and 3, plus packages
+
+  # # # # Configure environment
+  # # # ENV CONDA_DIR /opt/conda
+  # # # ENV PATH $CONDA_DIR/bin:$PATH
+
+  # # # # Install conda
+  # # # RUN cd /tmp && \
+  # # #     mkdir -p $CONDA_DIR && \
+  # # #     curl -s https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh -o miniconda.sh && \
+  # # #     /bin/bash miniconda.sh -f -b -p $CONDA_DIR && \
+  # # #     rm miniconda.sh && \
+  # # #     $CONDA_DIR/bin/conda config --system --add channels conda-forge && \
+  # # #     $CONDA_DIR/bin/conda config --system --set auto_update_conda false && \
+  # # #     conda clean -tipsy
+
+  # # # # Install Python 3 packages available through pip
+  # # # RUN conda install --yes 'pip' && \
+  # # #     conda clean -tipsy && \
+  # # #     #dependencies sometimes get weird - installing each on it's own line seems to help
+  # # #     pip install numpy==1.13.0 && \
+  # # #     pip install scipy==0.19.0 && \
+  # # #     pip install cruzdb==0.5.6 && \
+  # # #     pip install cython==0.25.2 && \
+  # # #     pip install pyensembl==1.1.0 && \
+  # # #     pip install pyfaidx==0.4.9.2 && \
+  # # #     pip install pybedtools==0.7.10 && \
+  # # #     pip install cyvcf2==0.7.4 && \
+  # # #     pip install intervaltree_bio==1.0.1 && \
+  # # #     pip install pandas==0.20.2 && \
+  # # #     pip install scipy==0.19.0 && \
+  # # #     pip install pysam==0.11.2.2 && \
+  # # #     pip install seaborn==0.7.1 && \
+  # # #     pip install scikit-learn==0.18.2 && \
+  # # #     pip install svviz==1.6.1
+
+  # # # # Install Python 2
+  # # # RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 'pip' && \
+  # # #     conda clean -tipsy && \
+  # # #     /bin/bash -c "source activate python2 && \
+  # # #     #dependencies sometimes get weird - installing each on it's own line seems to help
+  # # #     pip install numpy==1.13.0 && \
+  # # #     pip install scipy==0.19.0 && \
+  # # #     pip install cruzdb==0.5.6 && \
+  # # #     pip install cython==0.25.2 && \
+  # # #     pip install pyensembl==1.1.0 && \
+  # # #     pip install pyfaidx==0.4.9.2 && \
+  # # #     pip install pybedtools==0.7.10 && \
+  # # #     pip install cyvcf2==0.7.4 && \
+  # # #     pip install intervaltree_bio==1.0.1 && \
+  # # #     pip install pandas==0.20.2 && \
+  # # #     pip install scipy==0.19.0 && \
+  # # #     pip install pysam==0.11.2.2 && \
+  # # #     pip install seaborn==0.7.1 && \
+  # # #     pip install scikit-learn==0.18.2 && \
+  # # #     pip install openpyxl==2.4.8 && \
+  # # #     source deactivate"
+
+  # # # COPY tsv2xlsx.py /usr/bin/tsv2xlsx.py
+
+  # # # needed for MGI data mounts
+  # # RUN apt-get update && apt-get install -y libnss-sss && apt-get clean all
+
+  # # #set timezone to CDT
+  # # #LSF: Java bug that need to change the /etc/timezone.
+  # # #/etc/localtime is not enough.
+  # # # RUN ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime && \
+  # # #     echo "America/Chicago" > /etc/timezone && \
+  # # #     dpkg-reconfigure --frontend noninteractive tzdata
+
+  # # #UUID is needed to be set for some applications
+  # # RUN apt-get update && apt-get install -y dbus && apt-get clean all
+  # # RUN dbus-uuidgen >/etc/machine-id
+
+  # # # WORKS TO HERE
+  # # ENV PATH /opt/conda/bin:$PATH
+
+  # # RUN apt-get update --fix-missing && apt-get install -y wget bzip2 ca-certificates \
+  # #     libglib2.0-0 libxext6 libsm6 libxrender1 \
+  # #     git mercurial subversion
+
+  # # RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda2-4.5.11-Linux-x86_64.sh -O ~/miniconda.sh && \
+  # #     /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+  # #     rm ~/miniconda.sh && \
+  # #     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+  # #     echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
+  # #     echo "conda activate base" >> ~/.bashrc
+
+  # # RUN apt-get install -y curl grep sed dpkg && \
+  # #     TINI_VERSION=`curl https://github.com/krallin/tini/releases/latest | grep -o "/v.*\"" | sed 's:^..\(.*\).$:\1:'` && \
+  # #     curl -L "https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini_${TINI_VERSION}.deb" > tini.deb && \
+  # #     dpkg -i tini.deb && \
+  # #     rm tini.deb && \
+  # #     apt-get clean
+  # # RUN conda install -c bioconda sambamba
+
+  # # # WORKDIR /opt
+
+  # # # RUN apt-get update && apt-get install -y \
+  # # # 	autoconf \
+  # # # 	automake \
+  # # # 	make \
+  # # # 	g++ \
+  # # # 	gcc \
+  # # # 	build-essential \
+  # # # 	zlib1g-dev \
+  # # # 	libgsl0-dev \
+  # # # 	perl \
+  # # # 	curl \
+  # # # 	git \
+  # # # 	wget \
+  # # # 	unzip \
+  # # # 	tabix \
+  # # # 	libncurses5-dev
+
+  # # # RUN wget https://github.com/ldc-developers/ldc/releases/download/v0.17.1/ldc2-0.17.1-linux-x86_64.tar.xz && \
+  # # #   tar xJf ldc2-0.17.1-linux-x86_64.tar.xz
+
+  # # # ENV PATH=/opt/ldc2-0.17.1-linux-x86_64/bin/:$PATH
+  # # # ENV LIBRARY_PATH=/opt/ldc2-0.17.1-linux-x86_64/lib/
+
+  # # # #RUN wget https://github.com/biod/sambamba/releases/download/v0.7.0/sambamba-0.7.0-linux-static.gz && \
+  # # # tar xJf sambamba-0.7.0-linux-static.gz
+
+  # # # RUN git clone --recursive https://github.com/lomereiter/sambamba.git && cd WHERE && make
+  # # RUN conda install -c bioconda samtools
+  # # ## bioconductor R install
+  # # # nuke cache dirs before installing pkgs; tip from Dirk E fixes broken img
+  # # RUN rm -f /var/lib/dpkg/available && rm -rf  /var/cache/apt/*
+
+  # # # same set of packages for both devel and release
+  # # RUN apt-get update && \
+  # # 	apt-get -y --no-install-recommends install --fix-missing \
+  # # 	gdb \
+  # # 	libxml2-dev \
+  # # 	python-pip \
+  # # 	libz-dev \
+  # # 	liblzma-dev \
+  # # 	libbz2-dev \
+  # # 	libpng-dev \
+  # # 	libmariadb-client-lgpl-dev \
+  # # 	&& rm -rf /var/lib/apt/lists/*
+
+  # # # issues with '/var/lib/dpkg/available' not found
+  # # # this will recreate
+  # # RUN dpkg --clear-avail
+
+  # # # # Add bioc user as requested
+  # # # RUN useradd -ms /bin/bash -d /home/bioc bioc \
+  # # # 	&& echo "bioc:bioc" | chpasswd && adduser bioc sudo
+  # # # USER bioc
+  # # # RUN mkdir -p /home/bioc/R/library && \
+  # # # 	echo "R_LIBS=/usr/local/lib/R/host-site-library:~/R/library" | cat > /home/bioc/.Renviron
+  # # # USER root
+  # # # RUN echo "R_LIBS=/usr/local/lib/R/host-site-library:\${R_LIBS}" > /usr/local/lib/R/etc/Renviron.site \
+  # # # 	&& echo "R_LIBS_USER=''" >> /usr/local/lib/R/etc/Renviron.site \
+  # # # 	&& echo "options(defaultPackages=c(getOption('defaultPackages'),'BiocManager'))" >> /usr/local/lib/R/etc/Rprofile.site
+
+  # # # # add R packages test
+  # # # RUN R -e "install.packages('methods',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+  # # # RUN R -e "install.packages('jsonlite',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+  # # # RUN R -e "install.packages('tseries',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+  #RSEM
+  #RUN cd /opt/
+  #RUN git clone https://github.com/deweylab/RSEM.git && cd RSEM && make && make install
+  #ENV PATH /opt/RSEM:$PATH
+
+  # # # # install skewer
+  # # # RUN \
+  # # #   wget -c https://downloads.sourceforge.net/project/skewer/Binaries/skewer-0.2.2-linux-x86_64 && \
+  # # #   chmod +x skewer-0.2.2-linux-x86_64 && \
+  # # #   cp skewer-0.2.2-linux-x86_64 /usr/local/bin/skewer
+
+  # # # run update and install necessary tools
+  # # RUN apt-get update -y && apt-get install -y \
+  # #     build-essential \
+  # # RUN apt-get install -y software-properties-common
+  # # RUN add-apt-repository -y ppa:jonathonf/python-3.6
+  # # RUN apt-get update && apt-get install -y python3.6
+  #
+    ### ^^^ BUILDS INDEPENDENTLY VALIDATED ABOVE THIS POINT ^^^ ###
+    ### Last successful build 2020-01-14 15:26 CST              ###
+    #
+    #
+    ### TESTING ###
+    ### Installs below this point are not individually validated and my require dependencies from above
+    # multiqc
+    ## Set the locale
+    ## https://stackoverflow.com/questions/28405902/how-to-set-the-locale-inside-a-debian-ubuntu-docker-container#28406007
+    #
+  RUN pip install -U multiqc
+
+  ##############
+  ### simNGS ###
+  ##############
+  #
+  #RUN apt-get update -qq
+  #RUN apt-get install -qq --no-install-recommends --allow-unauthenticated \
+  #    libblas-dev \
+  #    liblapack-dev \
+  #    make \
+  #    tar \
+  #    wget
+  #RUN cd /opt && wget --no-check-certificate #https://www.ebi.ac.uk/goldman-srv/simNGS/current/simNGS.tgz && tar -xvzf #simNGS.tgz
+  #RUN cd /opt/simNGS/src && make -f Makefile.linux
+  #ENV PATH="/opt/simNGS/bin:${PATH}"
+  #
+  RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install(
+  #
+  # WORKS TO HERE [2020-09-21]
+  #
+  # # GISTIC 2.0
+  # RUN mkdir -p /opt/GISTIC2 \
+  #     && cd /opt/GISTIC2 \
+  #     && wget --no-check-certificate ftp://ftp.broadinstitute.org/pub/GISTIC2.0/GISTIC_2_0_23.tar.gz \
+  #     && tar --owner=root --group=root -vxf GISTIC_2_0_23.tar.gz
+  # RUN cd /opt/GISTIC2/MCR_Installer \
+  #     && unzip MCRInstaller.zip \
+  #     && ./install -mode silent -agreeToLicense yes -destinationFolder /opt/GISTIC2
+  # RUN cd /opt/GISTIC2 \
+  #     && wget --no-check-certificate ftp://ftp.broadinstitute.org/pub/GISTIC2.0/hg19.mat
+  # ENV PATH="/opt/GISTIC2/:${PATH}"
+  # RUN chown -R root:root /opt/GISTIC2
+  # ENV MCR_ROOT=/opt/GISTIC2/MATLAB_Compiler_Runtime
+  #
+
+  #
+  #RUN conda install -c bioconda mirge3
+  #
+  #RUN conda create -n py2 python=2.7
+  #RUN echo "source activate py2" > ~/.bashrc
+  #ENV PATH /opt/conda/envs/py2/bin:$PATH
+  #
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # ichorCNA
+  ##
+  ## linux dependencies
+  RUN apt-get update \
+     && apt-get install -y \
+     libcurl4-openssl-dev \
+     libssl-dev \
+     libxml2-dev
+  #RUN rm /usr/lib/x86_64-linux-gnu/libcurl.so.4
+  #RUN ln -s /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0 /usr/lib/x86_64-linux-gnu/libcurl.so.4
+  ##
+  ## R dependencies
+  RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("HMMcopy"); BiocManager::install("GenomeInfoDb"); BiocManager::install("GenomicRanges");'
+  ##
+  ## git clone install
+  RUN cd /opt \
+      && git clone https://github.com/broadinstitute/ichorCNA.git \
+      && cd ichorCNA \
+      && R CMD INSTALL . \
+      && cd /opt
+  ##
+  #RUN echo "source activate py2" > ~/.bashrc
+  #ENV PATH /opt/conda/envs/py2/bin:$PATH
+*** [[file:docker/rna_Dockerfile][RNA docker]]
+:PROPERTIES:
+:header-args:bash: :tangle ./docker/rna_Dockerfile
+:ID:       1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
+:END:
+:LOGBOOK:
+CLOCK: [2022-06-28 Tue 07:55]--[2022-06-28 Tue 15:55] =>  8:00
+:END:
+**** Preamble
+#+begin_src bash
+FROM jeszyman/biotools:1.0.2
+################################################################################
+################################################################################
+###                                                                          ###
+###         Dockerfile to build an RNA-focused docker image                  ###
+###                                                                          ###
+################################################################################
+################################################################################
+
+#################
+###   Notes   ###
+#################
+#
+# After build, the image will be pushed to the dockerhub as
+# jeszyman/rna
+# (https://hub.docker.com/repository/docker/jeszyman/rna)
+
+#+end_src
+**** Conda
+#+begin_src bash
+RUN conda install -c bioconda kallisto
+RUN conda install -c bioconda rsem
+RUN conda install -c bioconda star
+RUN conda install -c bioconda subread
+RUN conda install -c bioconda salmon
+#+end_src
+**** R and Bioconductor
+#+begin_src bash
+RUN R -e 'install.packages("BiocManager"); \
+          BiocManager::install(); \
+          BiocManager::install(c("DESeq2", \
+                                 "edgeR", \
+                                 "fgsea", \
+                                 "limma", \
+                                 "tximport"));'
+
+#+end_src
+**** Custom installs
+#+begin_src bash
+RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl
+
+RUN /bin/bash
+
+RUN cd /opt/mirdeep2 && perl install.pl
+
+ENV PATH="/opt/mirdeep2/bin:${PATH}"
+#+end_src
+*** [[file:docker/atac_Dockerfile][ATAC-seq docker]]
+:PROPERTIES:
+:header-args:bash: :tangle ./docker/atac_Dockerfile :tangle-mode (identity #o555)
+:ID:       57458bd3-005f-4342-ada7-58c55a74d7d0
+:END:
+:LOGBOOK:
+CLOCK: [2022-08-30 Tue 11:43]--[2022-08-30 Tue 11:57] =>  0:14
+:END:
+**** Preamble
+#+begin_src bash
+FROM jeszyman/biotools:1.0.2
+#########1#########2#########3#########4#########5#########6#########7#########8
+###                                                                          ###
+###                  Dockerfile for ATAC-seq Related Software                ###
+###                                                                          ###
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+#################
+###   Notes   ###
+#################
+
+# After build, the image will be pushed to dockerhub as jeszyman/atac
+# (https://hub.docker.com/repository/docker/jeszyman/atac)
+
+#+end_src
+**** Apt
+#+begin_src bash
+
+###############
+###   APT   ###
+###############
+
+# Update
+RUN apt-get -y update && apt-get upgrade -y
+
+# Linux prerequisites for ATACseqQC
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
+    libgsl-dev \
+    libcurl4-openssl-dev
+#+end_src
+**** Conda
+#+begin_src bash
+#################
+###   Conda   ###
+#################
+
+RUN conda install -c bioconda macs2
+
+#+end_src
+**** R and bioconductor
+#+begin_src bash
+##############################
+###   R and Bioconductor   ###
+##############################
+
+# CRAN
+RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
+
+# Bioconductor
+RUN R -e 'install.packages("BiocManager"); \
+          BiocManager::install(); \
+          BiocManager::install(c("ATACseqQC", \
+                                 "ChIPpeakAnno", \
+                                 "ChIPseeker", \
+                                 "clusterProfiler", \
+                                 "csaw"));'
+
+#+end_src
+**** Custom installs
+#+begin_src bash
+###########################
+###   Custom Installs   ###
+###########################
+
+# Homer
+RUN mkdir /opt/homer
+RUN cd /opt/homer
+RUN wget http://homer.ucsd.edu/homer/configureHomer.pl -O /opt/homer/configureHomer.pl
+RUN perl /opt/homer/configureHomer.pl -install
+ENV PATH="${PATH}:/opt/homer/bin/"
+RUN perl /opt/homer/.//configureHomer.pl -install mouse-p
+
+#+end_src
+****                                                                    :dev:
+get updated bowtie 2 with multithread indexing (>2.2.6?)
+https://www.biostars.org/p/219541/
+*** cfDNA WGS
+:PROPERTIES:
+:header-args:bash: :tangle ./docker/cfdna_wgs_Dockerfile
+:ID:       b10eb670-a855-4591-a74c-b458cb5f0581
+:END:
+**** Preamble
+#+begin_src bash
+FROM jeszyman/biotools:1.0.2
+
+#################
+###   Notes   ###
+#################
+#
+# After build, the image will be pushed to the dockerhub as
+# jeszyman/cfdna_wgs
+# (https://hub.docker.com/repository/docker/jeszyman/cfdna_wgs)
+
+#+end_src
+**** IchorCNA
+#+begin_src bash
+
+#
+RUN cd /opt && \
+    git clone https://github.com/shahcompbio/hmmcopy_utils.git && \
+    cd hmmcopy_utils && \
+    cmake . && \
+    make
+
+#
+# ichorCNA
+##
+## linux dependencies
+RUN apt-get update \
+   && apt-get install -y \
+   libcurl4-openssl-dev \
+   libssl-dev \
+   libxml2-dev
+#RUN rm /usr/lib/x86_64-linux-gnu/libcurl.so.4
+#RUN ln -s /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0 /usr/lib/x86_64-linux-gnu/libcurl.so.4
+##
+## R dependencies
+RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("HMMcopy"); BiocManager::install("GenomeInfoDb"); BiocManager::install("GenomicRanges");'
+##
+## git clone install
+RUN cd /opt \
+    && git clone https://github.com/broadinstitute/ichorCNA.git \
+    && cd ichorCNA \
+    && R CMD INSTALL . \
+    && cd /opt
+##
+
+#+end_src
+** Make singularity container
+#+begin_src bash
+#!/usr/bin/env bash
+#
+###   SCRIPT NAME   ###
+#
+
+# Notes
+# ...
+
+# Setup
+
+set -e # enable exit on error
+set -u # unset variables are errors
+set -o pipefail # failures can occur anywhere in pipeline
+
+# Variables
+
+readonly blah=$1
+blue=$(tput setaf 4)
+
+# Functions
+
+usage()
+{
+    printf "
+           ${blue}Script to do blah \n
+    usage:  blah\n
+"
+    exit 1
+}
+
+main()
+{
+    [[ $# -ne 2 ]] && usage
+    echo "$blah"
+    normal=$(tput sgr0)
+    printf "%40s\n" "${blue}This text is bluenormal"
+}
+
+# Run
+
+main "$@"
+#+end_src
+
+#+begin_src bash
+singularity pull /mnt/ris/aadel/jeszyman/sing_containers/biotools.sif docker://jeszyman/biotools
+#+end_src
+>>>>>>> 2dedbba (.)
 ** Processes                                                      :hierarchy:
 *** Bioinformatics process flat list                                   :flat:
 **** Get TSS
@@ -1408,33 +2940,27 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
     - https://ascopubs.org/doi/full/10.1200/PO.19.00204
 **** cfDNA tissue of origin discovery
 :PROPERTIES:
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
 :ID:       47c4ed56-1dea-48dc-bb25-ddbb0a4cd359
 :END:
 - https://www.frontiersin.org/articles/10.3389/fgene.2021.671057/full
 - https://onlinelibrary.wiley.com/doi/10.1002/ctm2.177
 - https://insight.jci.org/articles/view/153559#SEC4
-
-***** cfDNA window protection score
-
 **** cfDNA window protection score
-
 :PROPERTIES:
 :ID:       2b5a4f91-873a-4c79-a265-f528c52f06bc
 :END:
 - [[file:~/data/career/golkaram2022.pdf]]
 
-***** Compare gene expression across species
+**** Compare gene expression across species
 https://www.google.com/search?q=biostars+mouse+human+homology+match+genes&oq=biostars+mouse+human+homology+match+genes&aqs=chrome..69i57.9457j0j1&sourceid=chrome&ie=UTF-8
-***** Copy-neutral loss of heterozygosity
+**** Copy-neutral loss of heterozygosity
 https://www.biostars.org/p/254848/#:~:text=%22The%20B%2DAllele%20Frequency%20is,alleles%20(e.g.%20AB).%22
-***** Determine sequencing coverage
-=======
+**** Determine sequencing coverage
+
 **** Loss of heterozygosity
 https://www.sciencedirect.com/science/article/pii/S0016508522010861?via%3Dihub
 https://www.biostars.org/p/254848/#:~:text=%22The%20B%2DAllele%20Frequency%20is,alleles%20(e.g.%20AB).%22
 **** Determine sequencing coverage
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
 :PROPERTIES:
 :ID:       7ec3083a-b152-4ab2-b4f8-5fb9bb5ba068
 :END:
@@ -1446,21 +2972,21 @@ https://www.biostars.org/p/254848/#:~:text=%22The%20B%2DAllele%20Frequency%20is,
   - [[mu4e:msgid:33C61570-8F28-4ED8-B061-60E315F153D8@wustl.edu][Coverage for WGS]]
 - need depth plots depth (y) vs. 10kb bin x smooth across genome
   - https://www.biostars.org/p/104063/
-<<<<<<< HEAD
+
 ***** Fusion calling
 - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-021-08094-z
 ***** Machine learning of whole genome sequencing data
-=======
+
 **** Fusion calling
 - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-021-08094-z
 **** Machine learning of whole genome sequencing data
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
+
 :PROPERTIES:
 :ID:       38c00ba1-299f-4a0d-959e-58845d12c712
 :END:
 - cite:mathios2021
 - cite:widman2022
-<<<<<<< HEAD
+
 ***** Make bwa index                                               :smk_rule:
 - Snakemake
   #+begin_src snakemake
@@ -1493,7 +3019,7 @@ https://aacrjournals.org/cancerdiscovery/article/10/4/552/2575/Impaired-Death-Re
 https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-022-01050-w#Sec25
 https://www.nature.com/articles/nature12477
 ***** Nucleic acid sequence alignment
-=======
+
 **** Multiome ATAC + gene expression
 :PROPERTIES:
 :ID:       8859ad56-d367-4000-9895-7dc9baf41756
@@ -1555,7 +3081,6 @@ assembly. J. Hum. Genet., 56, 406–414.
 - HISAT2
 
 **** Mappability
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
 :PROPERTIES:
 :ID:       347d4cc0-a25d-4636-96d4-65e6319022df
 :END:
@@ -1565,9 +3090,7 @@ assembly. J. Hum. Genet., 56, 406–414.
 ***** Mappability
 =======
 **** Pathway encoding and diagramming
-=======
-**** Pathway encoding and diagramming
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
+
 :PROPERTIES:
 :ID:       d84cf649-32f4-46e6-b041-4a8a76b31ffc
 :END:
@@ -1590,7 +3113,7 @@ CLOCK: [2022-02-22 Tue 08:00]--[2022-02-22 Tue 09:45] =>  1:45
 - cite:wikipathways
 - [[id:69bfa728-e149-4b8a-9863-347630f86bc4][wikipathways biotool]]
 - [[id:17c865dc-765c-496d-b5c7-60d3d3439de3][pathvisio biotool]]
-***** Sequencing testing, modeling, and read simulation
+**** Sequencing testing, modeling, and read simulation
 :PROPERTIES:
 :ID:       f44b9dce-d7fa-4b6a-9949-49ff3c02547c
 :END:
@@ -1631,7 +3154,7 @@ CLOCK: [2022-02-22 Tue 08:00]--[2022-02-22 Tue 09:45] =>  1:45
 #     sambamba view -f sam -t 30 $1 | shuf -n $2 > $3/${base}_${2}_sample
 # }
 
-****** modeling
+***** modeling
 :PROPERTIES:
 :ID:       00983e26-ec16-4f68-be0d-2f59eb31def4
 :END:
@@ -1639,7 +3162,7 @@ CLOCK: [2022-02-22 Tue 08:00]--[2022-02-22 Tue 09:45] =>  1:45
 - https://www.ebi.ac.uk/biomodels-main/
 - https://precision.fda.gov/challenges/
 - Synthetic biology- cite:caschera2014
-****** Generating Simulated Reads
+***** Generating Simulated Reads
 :PROPERTIES:
 :ID:       8877C684-C217-4E7C-8E19-3D972A4015B2
 =======
@@ -1658,102 +3181,6 @@ CLOCK: [2022-02-22 Tue 08:00]--[2022-02-22 Tue 09:45] =>  1:45
 - cite:wikipathways
 - [[id:69bfa728-e149-4b8a-9863-347630f86bc4][wikipathways biotool]]
 - [[id:17c865dc-765c-496d-b5c7-60d3d3439de3][pathvisio biotool]]
-**** Sequencing testing, modeling, and read simulation
-:PROPERTIES:
-:ID:       f44b9dce-d7fa-4b6a-9949-49ff3c02547c
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
-:END:
-https://www.sciencedirect.com/science/article/pii/S1525157822002872?via%3Dihub
-- Read simulation
-  - https://medium.com/computational-biology/a-simple-introduction-to-read-simulators-bbeff4f0c0c6
-  - RNA-seq reads https://rdrr.io/bioc/polyester/
-  - https://github.com/lh3/wgsim
-- variant simulator http://bioinform.github.io/varsim/
-- Downsample
-  - at fastq
-    - https://www.biostars.org/p/6544/
-  - at bam
-    - subsample function for reads instead of fraction
-- Reference
-  - [[https://www.reddit.com/r/bioinformatics/comments/c313uk/what_are_some_common_tasks_that_i_should_brush_up/][reddit: What are some common tasks that I should brush up on, that pertain to NGS?]]
-# #https://www.biostars.org/p/76791/
-# function SubSample {
-# FACTOR=$(samtools idxstats $1 | cut -f3 | awk -v COUNT=$2 'BEGIN {total=0} {total += $1} END {print COUNT/total}')
-# }
-# SubSample $localdata/bams/lib080.dedup.bam
-# if [[ $FACTOR > 1 ]]
-#   then
-#   echo '[ERROR]: Requested number of reads exceeds total read count in' $1 '-- exiting' && exit 1
-# fi
-
-<<<<<<< HEAD
-Generating Simulated Reads
-First, we need a small set of sample read data. A number of tools, including ArtificialFastqGenerator, and SimSeq, will generate artificial or simulated sequence data for you. For this tutorial, I chose to use the wgsim tool (created by Heng Li, also the creator of SAMtools).
-***** Simulate sequencing reads
-#+begin_src bash
-cd ~/data
-source ~/repos/mpnst/bin/setup.sh
-docker_interactive
-bioinformatics-toolkit
-which simNGS
-cd /home/jeszyman/data
-ls
-mkdir -p /home/jeszyman/data/simNGS-runfiles
-wget --directory-prefix=/home/jeszyman/data/ref/simNGS-runfiles \
-     --no-check-certificate \
-     --no-directories \
-     --accept "*.runfile" \
-     --recursive --level=3 \
-     --no-clobber https://www.ebi.ac.uk/goldman-srv/simNGS/runfiles5/HiSeq/
-cat /home/jeszyman/data/ref/hg19.fa | simNGS \
-                                          --paired paired /home/jeszyman/data/ref/simNGS-runfiles/s_4_4x.runfile > test.fq
-
-#+end_src
-***** Transcription factor binding site prediciton
-https://www.nature.com/articles/s41592-019-0511-y
-***** Variant interpretation
-https://www.nature.com/articles/s43018-022-00379-w
-***** Whole-genome sequencing
-:PROPERTIES:
-:ID:       ccab4617-0399-4ba3-828e-b5fbbb972ba1
-:END:
-- https://www.nature.com/articles/s41467-018-06159-4
-- cite:campbell2020
-- https://www.nejm.org/doi/10.1056/NEJMoa2024534?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub++0pubmed
-- duplication rate as a measure of lib complexity
-***** Workflows
-=======
-# sambamba view -s $FACTOR -t 2 -f bam -l 5 $1
-
-# }
-
-# export -f SubSample
-
-# ls *.bam | parallel "SubSample {} 50000000 > {.}_subsampled.bam"
-
-    - https://bioinformatics.stackexchange.com/questions/402/how-can-i-downsample-a-bam-file-while-keeping-both-reads-in-pairs
-    - (no pair preservation) https://www.biostars.org/p/44527/#126428 https://www.biostars.org/p/145820/
-    - w/ sambamba # bam_sample(){
-#     base=`basename -s .bam $1`
-#     sambamba view -f sam -t 30 $1 | shuf -n $2 > $3/${base}_${2}_sample
-# }
-
-***** modeling
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
-:PROPERTIES:
-:ID:       00983e26-ec16-4f68-be0d-2f59eb31def4
-:END:
-- http://www.nytimes.com/2012/07/21/science/in-a-first-an-entire-organism-is-simulated-by-software.html?_r=2
-- https://www.ebi.ac.uk/biomodels-main/
-- https://precision.fda.gov/challenges/
-- Synthetic biology- cite:caschera2014
-***** Generating Simulated Reads
-:PROPERTIES:
-:ID:       8877C684-C217-4E7C-8E19-3D972A4015B2
-:END:
-
-Generating Simulated Reads
-First, we need a small set of sample read data. A number of tools, including ArtificialFastqGenerator, and SimSeq, will generate artificial or simulated sequence data for you. For this tutorial, I chose to use the wgsim tool (created by Heng Li, also the creator of SAMtools).
 **** Transcription factor binding site prediciton
 https://www.nature.com/articles/s41592-019-0511-y
 **** Simulate sequencing reads
@@ -1792,26 +3219,23 @@ cat /home/jeszyman/data/ref/hg19.fa | simNGS \
 =======
 #+end_src
 **** Whole-genome sequencing
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
 :PROPERTIES:
 :ID:       ccab4617-0399-4ba3-828e-b5fbbb972ba1
 :END:
-<<<<<<< HEAD
 https://singularity.lbl.gov/install-linux
 
-***** cfDNA from nonterminal mouse blood draws
+**** cfDNA from nonterminal mouse blood draws
 :PROPERTIES:
 :ID:       2e475e89-40a2-4359-903d-6e590f4ab8a0
 :END:
   - https://www.frontiersin.org/articles/10.3389/fgene.2018.00006/full#T3
   - https://www.nature.com/articles/cr2017121.pdf?origin=ppub
   - https://clincancerres.aacrjournals.org/content/23/20/6305?ijkey=46368653e37c96739922e66f2f6ae51379b550f3&keytype2=tf_ipsecsha
-=======
 - https://www.nature.com/articles/s41467-018-06159-4
 - cite:campbell2020
 - https://www.nejm.org/doi/10.1056/NEJMoa2024534?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub++0pubmed
 - duplication rate as a measure of lib complexity
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
+
 **** Differential expression
 :PROPERTIES:
 :ID:       ee030cef-74d4-435d-8228-b85f0e6203db
@@ -2360,7 +3784,7 @@ https://www.datacamp.com/
 :PROPERTIES:
 :ID:       69F82D91-6DE6-4332-AD0A-7ADF25263858
 :END:
-<<<<<<< HEAD
+
 https://www.nature.com/articles/s41467-019-11591-1
 - cite:stuart2019
 [[id:992de4dc-775e-41f0-a70a-e38c99b87265][Single cell methylation sequencing]]
@@ -13242,9 +14666,13 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+<<<<<<< HEAD
 - https://www.nature.com/articles/s43018-022-00467-x#Sec8
 - https://bioinfocore.com/blog/
 - https://www.reddit.com/r/bioinformatics/comments/ys65uy/lessons_learned_from_a_bioinformatics_msc/
+=======
+https://www.reddit.com/r/bioinformatics/comments/xoltse/golden_rules_of_data_analysis/
+>>>>>>> 2dedbba (.)
 https://www.nature.com/articles/s41588-022-01179-9
 https://aacrjournals.org/cancerdiscovery/article/doi/10.1158/2159-8290.CD-22-0200/708156/Proteogenomic-markers-of-chemotherapy-resistance
 - multi-omics population disease characterizations
