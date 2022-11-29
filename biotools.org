@@ -11409,12 +11409,9 @@ RUN mkdir /opt/picard-2.18.1/ \
 :header-args:bash: :tangle ./docker/rna_Dockerfile
 :ID:       1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
 :END:
-:LOGBOOK:
-CLOCK: [2022-06-28 Tue 07:55]--[2022-06-28 Tue 15:55] =>  8:00
-:END:
 **** Preamble
 #+begin_src bash
-FROM jeszyman/biotools:1.0.2
+FROM jeszyman/biotools:2.0.0
 ################################################################################
 ################################################################################
 ###                                                                          ###
@@ -11449,6 +11446,10 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "fgsea", \
                                  "limma", \
                                  "tximport"));'
+
+#+end_src
+#+begin_src bash
+RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
 
 #+end_src
 **** Custom installs
