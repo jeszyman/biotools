@@ -1,0 +1,20 @@
+.PHONY: all
+
+all: mkdirs \
+git_setup \
+run_an_export
+
+mkdirs:
+	mkdir -p config
+	mkdir -p scripts
+	mkdir -p test/inputs
+	mkdir -p workflow
+
+git_setup:
+	git init
+	curl 'https://raw.githubusercontent.com/jeszyman/basecamp/master/resources/git/jeszyman_gitignore' > .gitignore
+	curl 'https://raw.githubusercontent.com/jeszyman/basecamp/master/tools/git/pre-commit' > .git/hooks/precommit_sizecheck
+	chmod +x .git/hooks/precommit_sizecheck
+
+run_an_export:
+	/usr/local/bin/emacs -Q --batch --load ~/.emacs.d/export.el --eval "(progn (find-file \"/tmp/test.org\") (org-id-goto \"e29070d4-1360-4fe4-ad37-f2615c529174\") (org-org-export-to-org nil t))"
