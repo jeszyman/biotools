@@ -5,6 +5,215 @@
 :header-args:bash: :tangle-mode (identity #o555)
 :CUSTOM_ID: b03025b7-4b60-4196-8d7f-d947c7d64b28
 :END:
+https://www.cancergenomics.org/cgc_webinars_and_special_semin.php
+https://cancergenomics.org/meetings/2022_annual_meeting_presentati.php
+https://www.reddit.com/r/bioinformatics/comments/13py5j8/folks_who_send_their_samples_out_for_sequencing/
+https://bioconductor.org/packages/release/BiocViews.html#___ChIPSeq
+
+** Scientific Project Template
+:PROPERTIES:
+:export_file_name: ./resources/org/sciproj.org
+:ID:       7996b375-0fcb-4fdf-a77e-634508145b52
+:END:
+*** Scientific Project Template
+:PROPERTIES:
+:LOGGING: nil
+:header-args: :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
+:TODO: TODO DEBUG(d) TEST(t) REFACTOR(r) DOCUMENT(d) BLOCKED(b&) | DONE DELEGATED
+:END:
+**** Project Administration
+***** Bash
+:PROPERTIES:
+:header-args:bash: :tangle ./config/bash_src
+:END:
+#+begin_src bash
+<#/home/jeszyman/repos/biotools/biotools.org:bioinfo_sh_wrap()#>
+#+end_src
+***** Emacs
+- See in PROPERTIES, software development TODO states
+
+***** Python and snakemake
+****** Common snakefile sections
+******* Variable naming
+#+name: variable_naming
+#+begin_src snakemake
+
+#+end_src
+******* Load packages
+#+name: load_packages
+#+begin_src snakemake
+
+#+end_src
+******* Load configuration
+#+name: load_config
+#+begin_src snakemake
+
+#+end_src
+******* Functions
+
+******* Include statements
+#+name: include
+#+begin_src snakemake
+
+#+end_src
+****** Environmental YAMLs
+****** Configuration YAMLS
+******* Common
+:PROPERTIES:
+:header-args:bash: :tangle ./config/common.yaml
+:END:
+***** R
+:PROPERTIES:
+:header-args:r: :tangle ./tools/source.R
+:END:
+**** Biological model
+**** Inputs and data model
+***** [[file:workflows/data.smk][Snakefile]]
+**** Methods
+**** Results
+***** [[file:workflows/results.smk][Snakefile]]
+***** Report
+**** Development
+**** Ideas
+**** Reference
+** Coordinate-based genomics visualization
+- motif tracks https://bioconductor.org/packages/release/bioc/vignettes/motifStack/inst/doc/motifStack_HTML.html
+- plotgardener
+- soGGi https://bioconductor.org/packages/release/bioc/vignettes/soGGi/inst/doc/soggi.pdf
+- aggregate signal based
+  - https://bioconductor.org/packages/release/bioc/vignettes/metagene2/inst/doc/metagene2.html
+  - https://bioconductor.org/packages/release/bioc/vignettes/chromstaR/inst/doc/chromstaR.pdf
+  - https://bioconductor.org/packages/release/bioc/vignettes/CoverageView/inst/doc/CoverageView.pdf
+  - https://bioconductor.org/packages/release/bioc/vignettes/profileplyr/inst/doc/profileplyr.html
+- specific signal-based
+  - https://www.bioconductor.org/packages/release/bioc/vignettes/wiggleplotr/inst/doc/wiggleplotr.html
+  - gviz
+    - https://bioconductor.org/packages/devel/bioc/vignettes/Gviz/inst/doc/Gviz.html
+    - https://rockefelleruniversity.github.io/RU_VisualizingGenomicsData/exercises/answers/Viz_part1_answers.html
+    - https://bioconductor.org/packages/release/bioc/vignettes/GenVisR/inst/doc/Intro.html
+  - https://bioconductor.org/packages/release/bioc/vignettes/soGGi/inst/doc/soggi.pdf
+  - https://phanstiellab.github.io/plotgardener/reference/plotSignal.html
+** Bioinformatic shell functions
+:PROPERTIES:
+:ID:       2e51c010-1e25-4fc3-acc5-aefd490164be
+:END:
+#+name: bioinfo_sh_wrap
+#+begin_src org :noweb yes
+<#bioinfo_sh#>
+#+end_src
+#+name: bioinfo_sh
+#+begin_src bash
+# Functions
+check_mnt(){
+  [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
+    cat <<EOF
+Usage: check_mnt <DIRECTORY>
+Checks if directory is a mount point (must be top directory of mtn).
+EOF
+    return
+  }
+    local directory="${1}"
+    if mountpoint -q "$directory"; then
+        echo "The directory $directory is a mountpoint."
+    else
+        echo "The directory $directory is not a mountpoint."
+    fi
+}
+
+function conda_update() {
+      [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
+    cat <<EOF
+Usage: conda_update <ENV YAML>
+Updates a conda environment yaml file using mamba
+EOF
+    return
+      }
+      local file="${1}"
+      eval "$(command conda \"shell.bash\" \"hook\" 2> /dev/null)"
+      conda activate base
+      mamba env update --file $file
+}
+
+smk_draw(){
+  [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
+    cat <<EOF
+Usage: smk_draw <CONFIG FILE> <SNAKEFILE>
+Implements snakemake's rulegraph to make a DAG. DAG is saved in ./resources/<SNAKEFILE BASENAME>.pdf and .png
+EOF
+    return
+  }
+    local configfile="${1}"
+    local snakefile="${2}"
+    local snakefile_basename="$(basename "$snakefile")"
+    local out_pdf="./resources/${snakefile_basename%.*}_smk.pdf"
+    local out_png="${out_pdf%.*}.png"
+    snakemake --configfile "$configfile" \
+              --snakefile "$snakefile" \
+              --cores 1 \
+              --rerun-incomplete \
+              --dry-run \
+              --rulegraph | tee >(dot -Tpdf > "$out_pdf") | dot -Tpng > "$out_png"
+}
+
+smk_dry(){
+    local configfile="${1}"
+    local snakefile="${2}"
+    snakemake \
+        --configfile $configfile \
+        --cores 4 \
+        --dry-run \
+        --rerun-incomplete \
+        --snakefile $snakefile
+}
+
+smk_forced(){
+    local configfile="${1}"
+    local snakefile="${2}"
+    local cores=$(nproc)
+    snakemake \
+        --configfile "$configfile" \
+        --cores "$cores" \
+        --forceall \
+        --rerun-incomplete \
+        --snakefile "$snakefile"
+}
+
+smk_run(){
+  [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
+    cat <<EOF
+Usage: smk_run <CONFIGFILE> <SNAKEFILE>
+Launches a snakemake run with common parameters
+(keep-going, rerun-incomplete, use all available cores)
+EOF
+    return
+  }
+    local configfile="${1}"
+    local snakefile="${2}"
+    local cores=$(nproc)
+    snakemake \
+        --configfile "$configfile" \
+        --cores "$cores" \
+        --keep-going \
+        --rerun-incomplete \
+        --snakefile "$snakefile"
+}
+
+# Tangle the specified org file using Emacs and org-mode
+# Usage: tangle <org_file>
+tangle() {
+  [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
+    cat <<EOF
+Usage: tangle <ORG FILE>
+Tangle's org-mode file code using a non-interactive emacs batch instance
+EOF
+    return
+  }
+    local org_file="$1"
+    /usr/bin/emacs --batch -l ~/.emacs.d/tangle.el -l org -eval "(org-babel-tangle-file \"$org_file\")"
+}
+
+#+end_src
+
 ** Local YAS
 ** Bioinformatics project :template:
 :PROPERTIES:
@@ -307,6 +516,8 @@ fetch variable inputs
 ** Processes                                                      :hierarchy:
 https://www.google.com/search?q=%22samtools+depth%22+%22wgs%22&oq=%22samtools+depth%22+%22wgs%22&aqs=chrome..69i57.25710j0j4&sourceid=chrome-mobile&ie=UTF-8
 *** 0 Bioinformatics process flat list                                 :flat:
+**** Sequencing depth
+- samtools for depth https://www.biostars.org/p/356937/
 **** Sequence reverse compliment in shell
 https://bioinformatics.stackexchange.com/questions/7458/what-is-a-quick-way-to-find-the-reverse-complement-in-bash
 **** ctDNA burden by cfDNA degragation
@@ -1633,16 +1844,16 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 :ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
 :CUSTOM_ID: de9c6398-4ffe-48bf-9ef9-31028edf9873
 :END:
-- https://www.pnas.org/doi/10.1073/pnas.2220982120
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9251329/
 - [[file:~/data/career/golkaram2022.pdf]]
-- https://www.medrxiv.org/content/10.1101/2021.09.30.21264176v1.full
 - cite:an2023
+- cite:zhou2023
+- cite:guo2022
 - cite:zhitnyuk2022
-- cite:zhou2022
-- cite:zhou2021
+- cite:zhou2022 - fragma
+- cite:moldovan2021
+- cite:zhou2021 - jaggedness
 - cite:jiang2020motif
-- jaggedness?
+
 
 **** cfDNA fragmentomics
 - [[file:~/library/alizadeh2023.pptx]]
@@ -2358,7 +2569,13 @@ https://www.nature.com/articles/s43018-022-00379-w
 :CUSTOM_ID: ccab4617-0399-4ba3-828e-b5fbbb972ba1
 :END:
 https://singularity.lbl.gov/install-linux
-
+*** Biomarkers
+**** Biomarker visualizations
+:PROPERTIES:
+:ID:       c0359d9c-246a-41fb-a9b4-05ea5cb546ab
+:END:
+- [[file:~/repos/biotools/biotools.org::*Bioinformatics visualizations][Bioinformatics visualizations]]
+https://www.nature.com/articles/s41467-023-38407-7
 *** Bioinformatics visualization
 :PROPERTIES:
 :ID:       DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
@@ -2367,6 +2584,7 @@ https://singularity.lbl.gov/install-linux
 :LOGBOOK:
 CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
 :END:
+https://www.sciencedirect.com/science/article/pii/S1074761320305045?via%3Dihub
 - tikz sbgn diagrams: https://github.com/Adrienrougny/sbgntikz/
 - https://www.reddit.com/r/bioinformatics/comments/chnt75/guidelines_for_workflow_visualization/
 https://www.reddit.com/r/bioinformatics/comments/tgzeya/t_sne_graphs_for_data_visualization/
@@ -2477,6 +2695,7 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 
 *** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 *** Bioinformatics pipelines and project management
+- https://www.reddit.com/r/bioinformatics/comments/12cb99z/what_are_some_good_examples_of_wellengineered/
 - https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424
 - http://byronjsmith.com/make-bml/
 *** Common bioinformatics file manipulation
@@ -2845,6 +3064,14 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
 - chromhhm track annotation
   - https://genome.ucsc.edu/cgi-bin/hgTrackUi?db=mm10&g=encode3RenChromHmm
   - http://enhancer.sdsc.edu/enhancer_export/ENCODE/chromHMM/pooled/
+***** Region or locus-based enrichment analysis
+:PROPERTIES:
+:ID:       12393aa3-d318-4ba6-8183-6e3a175d3ba4
+:END:
+- GREAT http://bejerano.stanford.edu/great/public/html/index.php
+- Lola
+  - https://academic.oup.com/bioinformatics/article/32/4/587/1743969
+  - https://bioconductor.org/packages/release/bioc/vignettes/LOLA/inst/doc/usingLOLACore.html
 ***** Chromatin accessibility profiling methods
 :PROPERTIES:
 :ID:       f600cd95-723e-4893-8b3f-0634d8905920
@@ -3066,17 +3293,15 @@ https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigC
 :ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
 :CUSTOM_ID: 22e31d06-f5df-427e-bd70-3a2ccd3f47ec
 :END:
-- [[https://gdc.cancer.gov/about-data/publications/ATACseq-AWG][outputs example]]
-- https://bmccancer.biomedcentral.com/articles/10.1186/s12885-021-08362-x
-- https://rockefelleruniversity.github.io/RU_ATAC_Workshop.html
-- https://github.com/maxplanck-ie/snakepipes/tree/master/snakePipes/workflows/ATAC-seq
-
-- [[https://www.cell.com/cell-reports/pdf/S2211-1247(21)01550-3.pdf]]
+****** [[id:12393aa3-d318-4ba6-8183-6e3a175d3ba4][Region or locus-based enrichment analysis]]
 ****** Method-establishing papers
 - cite:buenrostro2015
 - cite:corces2017
 ****** Experimental design
 ****** Method guides, tutorials, and best practice
+- https://fonseca.lab.mcgill.ca/resources/20220810_ATAC_Analysis_Demo/guide.html
+- https://rockefelleruniversity.github.io/RU_ATAC_Workshop.html
+- https://github.com/maxplanck-ie/snakepipes/tree/master/snakePipes/workflows/ATAC-seq
 - cite:reske20s20
   - https://github.com/reskejak/ATAC-seq
 - https://github.com/crazyhottommy/pyflow-ATACseq/blob/master/Snakefile
@@ -3115,23 +3340,23 @@ https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigC
 - cite:buenrostro2015
 - for tissue
   - cite:corces2017
-****** [[id:fe58011b-ca46-4e45-9c4e-d4780fbfa115][ATAC-seq QC]]
-****** ATAC-seq Alignment parameters
+****** [[id:fe58011b-ca46-4e45-9c4e-d4780fbfa115][Quality control]]
+****** Alignment parameters
   - https://www.nature.com/articles/ng.3844#Sec14https://www.sciencedirect.com/science/article/pii/S1074761316304393?via%3Dihub#mmc1
   - https://www.pnas.org/content/114/13/E2776
   - https://informatics.fas.harvard.edu/atac-seq-guidelines.html#alignments
   - https://ars.els-cdn.com/content/image/1-s2.0-S1074761316304393-mmc1.pdf
 - Devon recommending filtering to 120 bp or lower  https://www.biostars.org/p/447927/
-****** [[id:1c56c6ad-e0f8-47db-8d69-3782b7ed1e8b][ATAC-seq peak calling]]
-****** ATAC-seq peak annotation
+****** [[id:1c56c6ad-e0f8-47db-8d69-3782b7ed1e8b][Peak calling]]
+****** Peak annotation
 - [[id:a4cf29e3-7fa6-4ea2-a538-f59ec450cc7b][ChIPseeker]]
 ****** [[id:17f978bc-f2f2-497d-a8f1-b1d47927380f][Differential chromatin accessibility]]
-****** ATAC-seq data integration
+****** Data integration
 https://www.nature.com/articles/s41590-019-0312-6/figures/2
 - Integration
   - atac-seq and mirna-seq https://www.sciencedirect.com/science/article/pii/S193459091730320X?via%3Dihub
   - ATAC-seq and miRNA-seq cite:abernathy2017
-****** ATAC-seq footprinting
+****** Footprinting
 - https://github.com/Zhang-lab/ATAC-seq_QC_analysis/blob/master/documents/ifr_documentation.md
 - cite:bentsen2020
   - https://github.com/loosolab/TOBIAS
@@ -3300,7 +3525,7 @@ consensusToCount = soGGi:::runConsensusRegions(GRangesList(reducedConsensus), "n
 consensusToCount
 #+end_src
 
-****** ATAC-seq motifs
+****** Motifs
 - [[./biotools.org_20220906_122531.png]]
 - Motif analysis
   - cite:minnoye2021
@@ -3313,7 +3538,9 @@ consensusToCount
   - https://meme-suite.org/meme/
   - example of homer-jaspar method https://www.sciencedirect.com/science/article/pii/S1535610817302040?via%3Dihub
   - cite:sun2019atac
-****** ATAC-seq visualizations / figures                             :scifig:
+****** Tables
+- [[https://gdc.cancer.gov/about-data/publications/ATACseq-AWG][outputs example]]
+****** Visualizations / figures                                      :scifig:
 - highlight visualizations on ucsc or igv
   - dump beds and narrowpeaks directly into ucsc
     - https://genome.ucsc.edu/cgi-bin/hgCustom
@@ -3362,7 +3589,7 @@ consensusToCount
   - https://www.bioconductor.org/packages/devel/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.html
 - cite:wilson2019
 - cite:wang2018amd
-****** part of [[id:ae0363f3-379e-4521-9184-cbc0d46501cd][Chromatin accessibility profiling]]
+****** Part of [[id:ae0363f3-379e-4521-9184-cbc0d46501cd][Chromatin accessibility profiling]]
 ****** General reference
 - https://www.sciencedirect.com/science/article/pii/S2666166720302768
 https://bioinformatics-core-shared-training.github.io/cruk-autumn-school-2017/ChIP/Materials/Lectures/Lecture5_Peak%20Calling_SS.pdf
@@ -3398,6 +3625,7 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666684/
 :ID:       2597b54c-972a-43c3-9630-0e542ba90eeb
 :CUSTOM_ID: 2597b54c-972a-43c3-9630-0e542ba90eeb
 :END:
+https://www.nature.com/articles/s41467-023-36383-6
 https://www.nature.com/articles/s41576-023-00586-w
 - https://www.nature.com/articles/s41591-020-0844-1
 - cite:griffith2015
@@ -3553,6 +3781,8 @@ https://www.embopress.org/doi/full/10.15252/msb.20188746
   - Slingshot
   - TSCAN
   - Wishbone
+*** Sequence motif analysis
+https://meme-suite.org/meme/
 *** Gene expression
 **** Transcriptomics
 :PROPERTIES:
@@ -4670,6 +4900,8 @@ https://www.biostars.org/p/428905/
 :ID:       91d46e60-eec3-48c7-97f1-b53eb1559b3f
 :CUSTOM_ID: 91d46e60-eec3-48c7-97f1-b53eb1559b3f
 :END:
+- cite:reimand2019
+- https://old.reddit.com/r/bioinformatics/comments/r7hzoq/annual_ingenuity_subscription_sticker_shock_and/
 - https://www.sciencedirect.com/science/article/pii/S2666166721004755
 - https://hbctraining.github.io/Training-modules/DGE-functional-analysis/lessons/02_functional_analysis.html
 
@@ -5129,8 +5361,8 @@ https://www.nature.com/articles/s41416-022-01881-9
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :CUSTOM_ID: 0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
-https://www.sitcancer.org/research/jitc-2/jitc/collections/liquid-biopsies
-https://www.nature.com/articles/s41586-023-05776-4
+- https://www.sitcancer.org/research/jitc-2/jitc/collections/liquid-biopsies
+- https://www.nature.com/articles/s41586-023-05776-4
 - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02710-1#Sec10
 - https://elifesciences.org/articles/71569
 - https://insight.jci.org/articles/view/159590/pdf
@@ -6338,6 +6570,9 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 https://www.sciencedirect.com/science/article/pii/S1097276515003032
 https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 - http://www.visantnet.org/visantnet.html
+*** Bioinformatics visualizations
+https://www.reddit.com/r/bioinformatics/comments/12ddk5r/what_genomics_plot_types_are_appealing_to_wet/
+- [[id:c0359d9c-246a-41fb-a9b4-05ea5cb546ab][Biomarker visualizations]]
 *** Probability and statistics related to bioinformatics
 :PROPERTIES:
 :ID:       1768b182-858a-46f8-97a8-4cd9747a2361
@@ -6511,7 +6746,8 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
 :CUSTOM_ID: 228D364B-48C8-49E4-9B00-FBFD52384623
 :END:
-
+https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_and_analysis_tutorials/
+https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_and_analysis_tutorials/
 - http://xena.ucsc.edu/
 - https://www.mdpi.com/1099-4300/22/6/627
 - https://www.sciencedirect.com/science/article/pii/S2589004222015486
@@ -6557,7 +6793,7 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 - Kitano H (2002) Systems biology: A brief overview. Science 295: 1662–1664.
 - Ehrenberg M, Elf J, Aurell E, Sandberg R, Tegner J (2003) Systems biology is taking off. Genome Res 13: 2377–2380.
 - http://www.springer.com/us/book/9780387989921
-**** LINK TO [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][Co-expression]]
+**** [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][Co-expression]]
 :PROPERTIES:
 :ID:       632d1c7d-aecc-4ad5-85ad-0f26571e454d
 :CUSTOM_ID: 632d1c7d-aecc-4ad5-85ad-0f26571e454d
@@ -6662,6 +6898,8 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :CUSTOM_ID: 1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
+**** rGREAT
+https://www.bioconductor.org/packages/release/bioc/vignettes/rGREAT/inst/doc/local-GREAT.html
 **** bismark
 https://www.bioinformatics.babraham.ac.uk/projects/bismark/Bismark_User_Guide.pdf
 - https://github.com/FelixKrueger/Bismark/issues/241
@@ -9565,7 +9803,7 @@ https://www.biostars.org/p/219541/
 
 *** Truseq small adapters
 - supercite:illumina2016truseq_small
-** References, databases, and data sets
+** References, databases, standards, file types, and data sets
 :PROPERTIES:
 :ID:       FCBA0863-010A-448C-A33C-941D2AA45AD5
 :CUSTOM_ID: FCBA0863-010A-448C-A33C-941D2AA45AD5
@@ -10082,6 +10320,7 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 :ID:       4a86acd3-db60-4a63-979e-43e34070e7c7
 :CUSTOM_ID: 4a86acd3-db60-4a63-979e-43e34070e7c7
 :END:
+
 - fasta
   - ("genomic" fasta .fna == .fa)
 ***** fastq
@@ -10099,6 +10338,8 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 :ID:       6DB65B82-D88C-43EA-9D2B-169D9184C9D5
 :CUSTOM_ID: 6DB65B82-D88C-43EA-9D2B-169D9184C9D5
 :END:
+**** SAM
+https://www.biostars.org/p/356811/
 **** CIGAR- a subformat in SAM w/ three operations
 :PROPERTIES:
 :ID:       A664A1C3-9130-400D-BE32-D7D58CF80537
@@ -12154,33 +12395,7 @@ Gene set
 ***** [[id:acb9d298-c357-4468-95b1-df9f5549437e][Common bioinformatics pipeline repository structure and function]]
 
 #+transclude: [[id:acb9d298-c357-4468-95b1-df9f5549437e]] :only-contents
-**** Makefile
-:PROPERTIES:
-:header-args:bash: :tangle ./tools/biopipe_makefile
-:END:
-#+begin_src bash
-.PHONY: all
 
-all: mkdirs \
-git_setup \
-run_an_export
-
-mkdirs:
-	mkdir -p config
-	mkdir -p scripts
-	mkdir -p test/inputs
-	mkdir -p workflow
-
-git_setup:
-	git init
-	curl 'https://raw.githubusercontent.com/jeszyman/basecamp/master/resources/git/jeszyman_gitignore' > .gitignore
-	curl 'https://raw.githubusercontent.com/jeszyman/basecamp/master/tools/git/pre-commit' > .git/hooks/precommit_sizecheck
-	chmod +x .git/hooks/precommit_sizecheck
-
-run_an_export:
-	/usr/local/bin/emacs -Q --batch --load ~/.emacs.d/export.el --eval "(progn (find-file \"/tmp/test.org\") (org-id-goto \"e29070d4-1360-4fe4-ad37-f2615c529174\") (org-org-export-to-org nil t))"
-
-#+end_src
 *** General Reference                                                   :ref:
 - Reference
   - [[id:F0EB00AD-7256-4726-8C2F-E2132878B039][Scientific project]]
@@ -12859,6 +13074,8 @@ CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :CUSTOM_ID: 98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://www.reddit.com/r/bioinformatics/comments/12402xq/what_are_the_struggles_that_bioinformatician_face/
+- https://www.reddit.com/r/bioinformatics/comments/13i5mgf/we_have_got_a_pin_up_board_in_our_bioinfo_lab_i/
 - https://hpc.nih.gov/apps/
 - https://wikis.utexas.edu/display/bioiteam/MultiQC+-+fastQC+summary+tool+--+GVA2021
 - https://www.youtube.com/playlist?list=PLEEE2A91B09B77B4A

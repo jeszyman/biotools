@@ -1,0 +1,31 @@
+# Created 2023-06-09 Fri 09:44
+#+title: Scientific Project Template
+#+author: Jeffrey Szymanski
+* Scientific Project Template
+** Project Administration
+*** Bash
+*** Emacs
+- See in PROPERTIES, software development TODO states
+
+*** Python and snakemake
+**** Common snakefile sections
+***** Variable naming
+***** Load packages
+***** Load configuration
+***** Functions
+
+***** Include statements
+**** Environmental YAMLs
+**** Configuration YAMLS
+***** Common
+*** R
+** Biological model
+** Inputs and data model
+*** [[file:workflows/data.smk][Snakefile]]
+** Methods
+** Results
+*** [[file:workflows/results.smk][Snakefile]]
+*** Report
+** Development
+** Ideas
+** Reference
