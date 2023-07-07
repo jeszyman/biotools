@@ -4,24 +4,101 @@
 * Scientific Project Template
 ** Project Administration
 *** Bash
+**** Src
+:PROPERTIES:
+:header-args:bash: :tangle ./config/bash_src
+:END:
+
 *** Emacs
-- See in PROPERTIES, software development TODO states
-
-*** Python and snakemake
-**** Common snakefile sections
-***** Variable naming
-***** Load packages
-***** Load configuration
-***** Functions
-
-***** Include statements
+#+TODO: TODO TEST(t) DEBUG(d) REFACTOR(r) DOCUMENT(d) BLOCKED(b&) WAITING(w&) | DONE DELEGATED
+*** Python
 **** Environmental YAMLs
 **** Configuration YAMLS
 ***** Common
 *** R
+*** Snakemake
+**** Configuration YAMLs
+***** Common
+:PROPERTIES:
+:header-args:bash: :tangle ./config/int_common.yaml
+:END:
+**** Variable naming
+#+name: variable_naming
+#+begin_src snakemake
+
+###########################
+###   Variable Naming   ###
+###########################
+
+#+end_src
+**** Load packages
+#+name: load_packages
+
+#+begin_src snakemake
+
+#####################################
+###   Import Necessary Packages   ###
+#####################################
+
+from snakemake.logging import logger
+import numpy as np
+import pandas as pd
+import re
+import socket
+import sys
+
+#+end_src
+**** Load configuration
+#+name: load_configuration
+#+begin_src snakemake
+##############################
+###   Load Configuration   ###
+##############################
+
+configfile: "config/common.yaml"
+
+hostname = socket.gethostname()
+config_path = "config/" + hostname + ".yaml"
+
+# Check if the configuration file exists:
+if os.path.isfile(config_path):
+    configfile: config_path
+
+#+end_src
+**** Functions
+***** Sample lists
+#+name: sample_lists
+#+begin_src snakemake
+
+#+end_src
+**** Include statements
+#+begin_src snakemake
+
+##############################
+###   Include Statements   ###
+##############################
+
+# e.g.
+# include: cardiac_repo + "/rna-seq/workflow/rna.smk"
+#+end_src
 ** Biological model
 ** Inputs and data model
 *** [[file:workflows/data.smk][Snakefile]]
+:PROPERTIES:
+:header-args:snakemake: :tangle ./workflow/data.smk :comments org
+:END:
+**** [[file:resources/data_smk.pdf][Rulegraph]]
+#+ATTR_ORG :width 600px
+file:resources/data_smk.png
+**** Preamble
+**** Load packages
+**** Variable naming
+**** Onstart
+**** Functions
+**** All rule
+**** On success
+**** Development
+**** Ideas
 ** Methods
 ** Results
 *** [[file:workflows/results.smk][Snakefile]]

@@ -3,80 +3,22 @@
 :CREATED:  [2020-07-02 Thu 13:14]
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :header-args:bash: :tangle-mode (identity #o555)
-:CUSTOM_ID: b03025b7-4b60-4196-8d7f-d947c7d64b28
 :END:
+https://www.nature.com/articles/s42003-023-04791-5
 https://www.cancergenomics.org/cgc_webinars_and_special_semin.php
 https://cancergenomics.org/meetings/2022_annual_meeting_presentati.php
 https://www.reddit.com/r/bioinformatics/comments/13py5j8/folks_who_send_their_samples_out_for_sequencing/
 https://bioconductor.org/packages/release/BiocViews.html#___ChIPSeq
 
-** Scientific Project Template
+** <<<Integrated Genomics Viewer>>> (<<<IGV>>>)
 :PROPERTIES:
-:export_file_name: ./resources/org/sciproj.org
-:ID:       7996b375-0fcb-4fdf-a77e-634508145b52
+:ID:       917062AC-32E8-41F5-A511-84AA7B1504B0
 :END:
-*** Scientific Project Template
-:PROPERTIES:
-:LOGGING: nil
-:header-args: :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
-:TODO: TODO DEBUG(d) TEST(t) REFACTOR(r) DOCUMENT(d) BLOCKED(b&) | DONE DELEGATED
-:END:
-**** Project Administration
-***** Bash
-:PROPERTIES:
-:header-args:bash: :tangle ./config/bash_src
-:END:
-#+begin_src bash
-<#/home/jeszyman/repos/biotools/biotools.org:bioinfo_sh_wrap()#>
-#+end_src
-***** Emacs
-- See in PROPERTIES, software development TODO states
 
-***** Python and snakemake
-****** Common snakefile sections
-******* Variable naming
-#+name: variable_naming
-#+begin_src snakemake
-
-#+end_src
-******* Load packages
-#+name: load_packages
-#+begin_src snakemake
-
-#+end_src
-******* Load configuration
-#+name: load_config
-#+begin_src snakemake
-
-#+end_src
-******* Functions
-
-******* Include statements
-#+name: include
-#+begin_src snakemake
-
-#+end_src
-****** Environmental YAMLs
-****** Configuration YAMLS
-******* Common
-:PROPERTIES:
-:header-args:bash: :tangle ./config/common.yaml
-:END:
-***** R
-:PROPERTIES:
-:header-args:r: :tangle ./tools/source.R
-:END:
-**** Biological model
-**** Inputs and data model
-***** [[file:workflows/data.smk][Snakefile]]
-**** Methods
-**** Results
-***** [[file:workflows/results.smk][Snakefile]]
-***** Report
-**** Development
-**** Ideas
-**** Reference
-** Coordinate-based genomics visualization
+- cite:robinson2017
+https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Giraud_visualisation-IGV_TP_EBA-2014-10.pdf
+[[http://software.broadinstitute.org/software/igv/UserGuide][User Guide]]
+** Coordinate-based genomics visualization tracks
 - motif tracks https://bioconductor.org/packages/release/bioc/vignettes/motifStack/inst/doc/motifStack_HTML.html
 - plotgardener
 - soGGi https://bioconductor.org/packages/release/bioc/vignettes/soGGi/inst/doc/soggi.pdf
@@ -215,301 +157,6 @@ EOF
 #+end_src
 
 ** Local YAS
-** Bioinformatics project :template:
-:PROPERTIES:
-:ID:       9fa5d69b-1dd1-41f3-b129-3c33ebd118cc
-header-args: :tangle-mode (identity #o755) :mkdirp yes :noweb yes :comments org
-:END:
-*** Project administration
-**** Code functions and source files
-***** R
-:PROPERTIES:
-:header-args:r: :tangle ./tools/R/source.R
-:END:
-#+begin_src R
-#+end_src
-***** Shell
-:PROPERTIES:
-:header-args:bash: :tangle ./tools/R/source.sh
-:END:
-#+begin_src bash
-#+end_src
-
-**** Run menu
-:PROPERTIES:
-:ID:       24dc829c-1027-47e0-b9b1-af51f533906c
-:header-args:python: :tangle ./tools/python/menu.py
-:END:
-#+begin_src python
-#!/usr/bin/env python3
-import os
-import sp
-import yaml
-
-def call_shell_function(function_name, repo_dir):
-    script_path = f"{repo_dir}/tools/shell/source.sh"
-    command = f'source {script_path}; {function_name}'
-    sp.run(command, shell=True, executable='/bin/bash')
-
-# Load the configuration from the YAML file
-with open('config.yaml', 'r') as f:
-    config = yaml.safe_load(f)
-
-# Get the repo_dir from the configuration
-repo_dir = config['repo_dir']
-
-
-def shell_while_loop():
-    command = ('while sleep 2; do /usr/bin/emacs --batch -l org -eval '
-               '\'(org-babel-tangle-file "card-rad-bio.org")\' && '
-               'snakemake --dry-run --configfile config/${HOSTNAME}.yaml '
-               '--cores 1 --snakefile workflow/int.smk; done')
-    try:
-        sp.run(command, shell=True, executable='/bin/bash', check=True)
-    except KeyboardInterrupt:
-        print("\nLoop interrupted. Returning to menu.")
-
-def submenu():
-    while True:
-        print("\nSubmenu")
-        print("1. Option 1")
-        print("2. Option 2")
-        print("b. Back to main menu")
-
-        choice = input("Enter number of choice: ")
-
-        if choice == '1':
-            print("Executing option 1 in submenu")
-        elif choice == '2':
-            print("Executing option 2 in submenu")
-        elif choice.lower() == 'b':
-            print("Returning to main menu")
-            break
-        else:
-            print("Invalid choice")
-
-def main():
-    while True:
-        print("\nMPNST Repo Menu")
-        print("1. Update conda")
-        print("2. Execute function two")
-        print("3. Open submenu")
-        print("e Exit")
-
-        choice = input("Enter number of choice: ")
-
-        if choice == '1':
-            call_shell_function('conda_update')
-        elif choice == '2':
-            call_shell_function('function_two')
-        elif choice == '3':
-            submenu()
-        elif choice.lower() == 'e':
-            print("Exiting.")
-            break
-        else:
-            print("Invalid choice")
-
-if __name__ == '__main__':
-    main()
-
-#+end_src
-
-**** Configuration YAMLs
-***** Common
-:PROPERTIES:
-:header-args:yaml: :tangle .config/main.yaml
-:END:
-#+begin_src yaml
-repo_dir: #TEMPLATE#
-#+end_src
-**** Environmental YAMLs
-:PROPERTIES:
-:header-args:yaml: :tangle #TEMPLATE#
-:END:
-#+begin_src yaml
-name: #TEMPLATE#
-channels:
-  - conda-forge
-  - bioconda
-
-dependencies:
-#+end_src
-**** Common snakefile sections
-***** Load packages
-#+name: load_packages
-#+begin_src snakemake
-#####################################
-###   Import necessary packages   ###
-#####################################
-
-import numpy as np
-import pandas as pd
-import re
-import socket
-import sys
-
-#+end_src
-
-***** Variable naming
-#+name: variable_naming
-#+begin_src snakemake
-
-###########################
-###   Variable naming   ###
-###########################
-
-#--- Directly from configuration YAML ---#
-
-#--- Specific file paths ---#
-
-#--- By directory structure ---#
-
-# |-- Repository directory
-#   |-- scripts
-#   |-- workflows
-# |-- Data directory
-#   |-- analysis
-#     |-- atac
-#     |-- qc
-#     |-- rna
-#   |-- benchmark
-#   |-- inputs
-#   |-- log
-#   |-- ref
-#   |-- results
-
-#--- Parameters, miscellaneous ---#
-
-#+end_src
-
-**** Development :dev:
-**** Ideas :ideas:
-**** Reference :ref:
-- [[id:9fa5d69b-1dd1-41f3-b129-3c33ebd118cc][Bioinformatics project template]]
-*** Biological model
-*** Data model
-**** [[file:workflows/data.smk][Snakefile]]
-:PROPERTIES:
-:header-args:snakemake: :tangle ./workflows/data.smk
-:END:
-***** Preamble
-#+begin_src snakemake
-#TEMPLATE#
-#+end_src
-***** #TEMPLATE# Link to Load packages
-***** #TEMPLATE# Link to variable naming
-***** Onstart
-fetch variable inputs
-***** Functions
-***** All rule
-***** Ingest inputs from local
-***** Build master database tables
-***** Data logic checks
-***** Build specialized tables and lists
-***** Make symbolic links
-***** On success
-***** Development :dev:
-:PROPERTIES:
-:header-args:snakemake: :tangle no
-:END:
-***** Ideas :ideas:
-:PROPERTIES:
-:header-args:snakemake: :tangle no
-:END:
-***** Reference :ref:
-:PROPERTIES:
-:header-args:snakemake: :tangle no
-:END:
-*** Methods
-**** Main snakefile
-:PROPERTIES:
-:header-args:snakemake: :tangle ./workflows/#TEMPLATE#
-:END:
-***** Preamble
-#+begin_src snakemake
-#TEMPLATE#
-#+end_src
-***** #TEMPLATE# Link to Load packages
-***** #TEMPLATE# Link to variable naming
-***** Development                                                       :dev:
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-***** Ideas                                                           :ideas:
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-***** Reference                                                         :ref:
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-
-**** Bioinformatics
-**** Development :dev:
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-**** Ideas :ideas:
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-**** Reference :ref:
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-*** Results
-**** Snakefile
-:PROPERTIES:
-:header-args:snakemake: :tangle ./workflow/results.smk
-:END:
-***** Preamble
-#+begin_src snakemake
-#TEMPLATE#
-#+end_src
-***** #TEMPLATE# Link to Load packages
-***** #TEMPLATE# Link to variable naming
-***** Functions
-***** All rule
-***** On success
-***** Development                                                       :dev:
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-***** Ideas                                                           :ideas:
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-***** Reference                                                         :ref:
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-
-**** Running results report
-:PROPERTIES:
-:ID: #TEMPLATE#
-:export_options: #TEMPLATE#
-:export_file_name: /tmp/#TEMPLATE#.pdf
-:export_file_title: #TEMPLATE#
-:export_author: Jeffrey Szymanski
-:export_date:
-:export_latex_class: empty
-:export_latex_header: \usepackage{/home/jeszyman/repos/latex/sty/report}
-:CUSTOM_ID: #TEMPLATE#
-:END:
-***** LaTeX Preamble                                                 :ignore:
-\newcommand{\datadir}{#TEMPLATE#}
-\setcounter{secnumdepth}{0}
-\vspace{5mm}
-\hfill Last compiled {{{time(%Y-%m-%d)}}}.
-\setcounter{tocdepth}{2}
-\tableofcontents
-*** READMEs
-*** Development :dev:
-*** Ideas :ideas:
-*** Reference :ref:
-- [[id:9fa5d69b-1dd1-41f3-b129-3c33ebd118cc][Bioinformatics project template]]
-
 ** Snakemake demo                                                      :demo:
 ** Glossary
 -
@@ -526,13 +173,11 @@ https://www.nature.com/articles/s41467-021-22463-y#Sec2
 :PROPERTIES:
 :CREATED:  [2020-12-20 Sun 16:45]
 :ID:       61aac189-1770-4d80-a367-e7c39b46e0d1
-:CUSTOM_ID: 61aac189-1770-4d80-a367-e7c39b46e0d1
 :END:
 **** Adaptive TCR-beta immunosequencing
 :PROPERTIES:
 :CREATED:  [2020-12-20 Sun 16:45]
 :ID:       61aac189-1770-4d80-a367-e7c39b46e0d1
-:CUSTOM_ID: 61aac189-1770-4d80-a367-e7c39b46e0d1
 :END:
 
 **** [#Y] Assess library complexity
@@ -542,7 +187,6 @@ https://www.nature.com/articles/s41467-021-22463-y#Sec2
 **** ATAC-seq peak calling
 :PROPERTIES:
 :ID:       1c56c6ad-e0f8-47db-8d69-3782b7ed1e8b
-:CUSTOM_ID: 1c56c6ad-e0f8-47db-8d69-3782b7ed1e8b
 :END:
 - https://www.encodeproject.org/software/idr/
 - Devon recommending against MACS2 https://www.biostars.org/p/447927/
@@ -555,7 +199,6 @@ https://www.nature.com/articles/s41467-021-22463-y#Sec2
 **** ATAC-seq QC
 :PROPERTIES:
 :ID:       fe58011b-ca46-4e45-9c4e-d4780fbfa115
-:CUSTOM_ID: fe58011b-ca46-4e45-9c4e-d4780fbfa115
 :END:
 - [X] 80% unique mapping, 50 mil reads per cite:yan2020atac
 - https://docs.google.com/document/d/1f0Cm4vRyDQDu0bMehHD7P7KOMxTOP-HiNoIvL1VcBt8/edit
@@ -634,7 +277,6 @@ RUN chmod +x QC.sh
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
 :header-args:bash: :tangle ./docker/biotools_Dockerfile
-:CUSTOM_ID: 7ed344ce-373c-4f9e-b24f-87b57374e1a0
 :END:
 :LOGBOOK:
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:19] =>  1:00
@@ -1373,7 +1015,6 @@ RUN mkdir /opt/picard-2.18.1/ \
 :PROPERTIES:
 :header-args:bash: :tangle ./docker/rna_Dockerfile
 :ID:       1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
-:CUSTOM_ID: 1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
 :END:
 :LOGBOOK:
 CLOCK: [2022-06-28 Tue 07:55]--[2022-06-28 Tue 15:55] =>  8:00
@@ -1794,11 +1435,10 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 **** cfDNA copy number calling
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
-:CUSTOM_ID: 21d876e8-8646-4773-91c1-c4385c3218c7
 :END:
+- [[#0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 - https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-023-01171-w
 - has LOH on seq panel w/ custom pipeline  - https://www.sciencedirect.com/science/article/pii/S0923753419454604?pes=vor#ec0010
-
 - https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-020-00735-4#Sec12
 - snv based with ABSOLUTE https://www.nature.com/articles/nbt.2203#Sec12
   - https://bioconductor.org/packages/devel/bioc/vignettes/PureCN/inst/doc/PureCN.pdf
@@ -1842,9 +1482,9 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 **** cfDNA fragment end motif analysis
 :PROPERTIES:
 :ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
-:CUSTOM_ID: de9c6398-4ffe-48bf-9ef9-31028edf9873
 :END:
 - [[file:~/data/career/golkaram2022.pdf]]
+- [[#0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 - cite:an2023
 - cite:zhou2023
 - cite:guo2022
@@ -1856,6 +1496,7 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 
 
 **** cfDNA fragmentomics
+- fragmentomics from targeted panel [[https://www.annalsofoncology.org/article/S0923-7534(23)00724-X/fulltext]]
 - [[file:~/library/alizadeh2023.pptx]]
 - cite:lo2021
 - Inferred gene expression
@@ -1894,14 +1535,12 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 **** cfDNA inferred tissue gene expression
 :PROPERTIES:
 :ID:       dd8b334b-e431-4709-8485-bf0dda1760a5
-:CUSTOM_ID: dd8b334b-e431-4709-8485-bf0dda1760a5
 :END:
 https://www.nature.com/articles/ng.3648
 cite:foda2022
 **** cfDNA from nonterminal mouse blood draws
 :PROPERTIES:
 :ID:       2e475e89-40a2-4359-903d-6e590f4ab8a0
-:CUSTOM_ID: 2e475e89-40a2-4359-903d-6e590f4ab8a0
 :END:
   - https://www.frontiersin.org/articles/10.3389/fgene.2018.00006/full#T3
   - https://www.nature.com/articles/cr2017121.pdf?origin=ppub
@@ -1938,7 +1577,6 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 **** cfDNA nucleosome profiling
 :PROPERTIES:
 :ID:       c4dde8d6-1a02-42c7-a6b6-786b757fcad1
-:CUSTOM_ID: c4dde8d6-1a02-42c7-a6b6-786b757fcad1
 :END:
 -
 - https://www.nature.com/articles/s41467-022-35076-w
@@ -1965,7 +1603,6 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
 **** cfDNA tissue of origin discovery
 :PROPERTIES:
 :ID:       47c4ed56-1dea-48dc-bb25-ddbb0a4cd359
-:CUSTOM_ID: 47c4ed56-1dea-48dc-bb25-ddbb0a4cd359
 :END:
 - https://www.frontiersin.org/articles/10.3389/fgene.2021.671057/full
 - https://onlinelibrary.wiley.com/doi/10.1002/ctm2.177
@@ -1973,7 +1610,6 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
 **** cfDNA window protection score
 :PROPERTIES:
 :ID:       2b5a4f91-873a-4c79-a265-f528c52f06bc
-:CUSTOM_ID: 2b5a4f91-873a-4c79-a265-f528c52f06bc
 :END:
 - [[file:~/data/career/golkaram2022.pdf]]
 
@@ -1990,7 +1626,6 @@ https://stackoverflow.com/questions/59701903/what-does-0-mean-in-the-r-model-mat
 **** Determine sequencing coverage
 :PROPERTIES:
 :ID:       7ec3083a-b152-4ab2-b4f8-5fb9bb5ba068
-:CUSTOM_ID: 7ec3083a-b152-4ab2-b4f8-5fb9bb5ba068
 :END:
 - https://support.illumina.com/downloads/sequencing_coverage_calculator.html
 - idea- manual w/ R, awk
@@ -2008,7 +1643,6 @@ https://stackoverflow.com/questions/59701903/what-does-0-mean-in-the-r-model-mat
 **** Differential chromatin accessibility
 :PROPERTIES:
 :ID:       17f978bc-f2f2-497d-a8f1-b1d47927380f
-:CUSTOM_ID: 17f978bc-f2f2-497d-a8f1-b1d47927380f
 :END:
 - Reske
   - https://github.com/reskejak/ATAC-seq/blob/a7c3ba9a024030eb985e1a7d17ddb4d089446041/ATACseq_workflow.txt
@@ -2037,7 +1671,6 @@ https://stackoverflow.com/questions/59701903/what-does-0-mean-in-the-r-model-mat
 **** Differential expression
 :PROPERTIES:
 :ID:       ee030cef-74d4-435d-8228-b85f0e6203db
-:CUSTOM_ID: ee030cef-74d4-435d-8228-b85f0e6203db
 :END:
 
 cite:buschmann2016
@@ -2087,7 +1720,6 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6954399/
 ***** time course
 :PROPERTIES:
 :ID:       43f1772e-f8ce-4f6b-a4bd-d35d381b89c9
-:CUSTOM_ID: 43f1772e-f8ce-4f6b-a4bd-d35d381b89c9
 :END:
   - cite:spies2017
   - https://support.bioconductor.org/p/65676/#66860
@@ -2099,14 +1731,12 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6954399/
 ***** experimental design
 :PROPERTIES:
 :ID:       4b9eee0d-4dd2-4b31-a5c2-873663443671
-:CUSTOM_ID: 4b9eee0d-4dd2-4b31-a5c2-873663443671
 :END:
   - cite:mccarthy2012
   - https://angus.readthedocs.io/en/2016/_static/DifferentialExpressionBasics_NGS2016_ID.pdf
 ***** specialized DE datasets
 :PROPERTIES:
 :ID:       722cd834-2504-4ae0-84ef-58554fa4da32
-:CUSTOM_ID: 722cd834-2504-4ae0-84ef-58554fa4da32
 :END:
 - long non-coding- https://europepmc.org/article/PMC/6058388
 - transcript / isoform DE
@@ -2116,7 +1746,6 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6954399/
 ***** tutorials
 :PROPERTIES:
 :ID:       9bd06c29-45ba-42b8-b048-27b83a0fa47d
-:CUSTOM_ID: 9bd06c29-45ba-42b8-b048-27b83a0fa47d
 :END:
 - http://master.bioconductor.org/packages/release/workflows/html/rnaseqGene.html
 - https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
@@ -2125,7 +1754,6 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6954399/
 ***** statistical models
 :PROPERTIES:
 :ID:       8a788e6c-3899-4e6f-bf09-9c96d110aeaa
-:CUSTOM_ID: 8a788e6c-3899-4e6f-bf09-9c96d110aeaa
 :END:
 
 - overdispersion makes working under Poisson assumption prone to high false positives b/c sampling error underestimated
@@ -2158,7 +1786,6 @@ doi:10.2202/1544-6115.1637.
 ***** Methods and tools
 :PROPERTIES:
 :ID:       68BB9D3D-5879-4F2E-904B-54F70EAD2B5A
-:CUSTOM_ID: 68BB9D3D-5879-4F2E-904B-54F70EAD2B5A
 :END:
 - count-based
   - negative binomial
@@ -2186,7 +1813,6 @@ doi:10.2202/1544-6115.1637.
 ***** outputs
 :PROPERTIES:
 :ID:       48db2c9c-5d17-4438-aa40-43816245c490
-:CUSTOM_ID: 48db2c9c-5d17-4438-aa40-43816245c490
 :END:
   - log fold change
     - https://www.biostars.org/p/101727/
@@ -2195,7 +1821,6 @@ doi:10.2202/1544-6115.1637.
 ***** Notes
 :PROPERTIES:
 :ID:       558011C7-FB50-435E-B130-E3485CC25B90
-:CUSTOM_ID: 558011C7-FB50-435E-B130-E3485CC25B90
 :END:
 - cite:anders2010
 - https://pubmed.ncbi.nlm.nih.gov/22931062/
@@ -2205,7 +1830,6 @@ doi:10.2202/1544-6115.1637.
 **** DNA-seq pre-alignment processing and QC
 :PROPERTIES:
 :ID:       719b2017-4ec6-44dd-8e91-a677bc6654bd
-:CUSTOM_ID: 719b2017-4ec6-44dd-8e91-a677bc6654bd
 :END:
 - https://github.com/najoshi/sickle
 **** Fusion calling
@@ -2284,7 +1908,6 @@ bwa index -p $2 -a bwtsw $3
 **** Mappability
 :PROPERTIES:
 :ID:       347d4cc0-a25d-4636-96d4-65e6319022df
-:CUSTOM_ID: 347d4cc0-a25d-4636-96d4-65e6319022df
 :END:
 - http://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig
 - cite:derrien2012
@@ -2294,7 +1917,6 @@ bwa index -p $2 -a bwtsw $3
 **** methylation sequencing
 :PROPERTIES:
 :ID:       d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6
-:CUSTOM_ID: d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6
 :END:
 - https://nf-co.re/methylseq/output
 - https://clinicalepigeneticsjournal.biomedcentral.com/articles/10.1186/s13148-019-0795-x#Sec8
@@ -2305,7 +1927,6 @@ https://www.nature.com/articles/nature23891
 **** Multiome ATAC + gene expression
 :PROPERTIES:
 :ID:       8859ad56-d367-4000-9895-7dc9baf41756
-:CUSTOM_ID: 8859ad56-d367-4000-9895-7dc9baf41756
 :END:
 https://www.10xgenomics.com/products/single-cell-multiome-atac-plus-gene-expression
 **** Mutation and expression signatures
@@ -2321,7 +1942,6 @@ https://www.neb.com/-/media/nebus/files/application-notes/technote_nebnext_enzym
 **** Nucleic acid sequence alignment
 :PROPERTIES:
 :ID:       326ecd60-8cd4-4815-a389-967b2c3fef0a
-:CUSTOM_ID: 326ecd60-8cd4-4815-a389-967b2c3fef0a
 :END:
 - fastas for sequence alignment
   - https://lh3.github.io/2017/11/13/which-human-reference-genome-to-use
@@ -2370,7 +1990,6 @@ assembly. J. Hum. Genet., 56, 406–414.
 **** Omics integration
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
-:CUSTOM_ID: 00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
 :END:
 https://www-nature-com-s.caas.cn/articles/s41568-021-00408-3?error=cookies_not_supported&code=ad37411b-42f4-4689-9a3b-1605f1f40eaf
 https://www.sciencedirect.com/science/article/pii/S2666379122000258?via%3Dihub
@@ -2400,7 +2019,6 @@ https://www.nature.com/articles/d41586-021-01994-w
 ***** Omics integration
 :PROPERTIES:
 :ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
-:CUSTOM_ID: 00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
 :END:
 https://www-nature-com-s.caas.cn/articles/s41568-021-00408-3?error=cookies_not_supported&code=ad37411b-42f4-4689-9a3b-1605f1f40eaf
 https://www.sciencedirect.com/science/article/pii/S2666379122000258?via%3Dihub
@@ -2456,7 +2074,6 @@ CLOCK: [2022-02-22 Tue 08:00]--[2022-02-22 Tue 09:45] =>  1:45
 **** Sequencing testing, modeling, and read simulation
 :PROPERTIES:
 :ID:       f44b9dce-d7fa-4b6a-9949-49ff3c02547c
-:CUSTOM_ID: f44b9dce-d7fa-4b6a-9949-49ff3c02547c
 :END:
 - Read simulation
   - https://medium.com/computational-biology/a-simple-introduction-to-read-simulators-bbeff4f0c0c6
@@ -2498,7 +2115,6 @@ CLOCK: [2022-02-22 Tue 08:00]--[2022-02-22 Tue 09:45] =>  1:45
 ***** modeling
 :PROPERTIES:
 :ID:       00983e26-ec16-4f68-be0d-2f59eb31def4
-:CUSTOM_ID: 00983e26-ec16-4f68-be0d-2f59eb31def4
 :END:
 - http://www.nytimes.com/2012/07/21/science/in-a-first-an-entire-organism-is-simulated-by-software.html?_r=2
 - https://www.ebi.ac.uk/biomodels-main/
@@ -2566,11 +2182,10 @@ https://www.nature.com/articles/s43018-022-00379-w
 **** Whole-genome sequencing
 :PROPERTIES:
 :ID:       ccab4617-0399-4ba3-828e-b5fbbb972ba1
-:CUSTOM_ID: ccab4617-0399-4ba3-828e-b5fbbb972ba1
 :END:
 https://singularity.lbl.gov/install-linux
 *** Biomarkers
-**** Biomarker visualizations
+**** Visualizations
 :PROPERTIES:
 :ID:       c0359d9c-246a-41fb-a9b4-05ea5cb546ab
 :END:
@@ -2579,11 +2194,38 @@ https://www.nature.com/articles/s41467-023-38407-7
 *** Bioinformatics visualization
 :PROPERTIES:
 :ID:       DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
-:CUSTOM_ID: DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
 :END:
 :LOGBOOK:
 CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
 :END:
+**** Unfiled
+https://www.nature.com/articles/s43018-023-00572-5
+https://www.reddit.com/r/bioinformatics/comments/tgzeya/t_sne_graphs_for_data_visualization/
+- ideogram /karyotye https://bioinformatics.stackexchange.com/questions/3600/how-to-make-chromosome-color-maps-for-bed-ranges
+- GEDI SOMs https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1007034#sec002
+- https://currentprotocols.onlinelibrary.wiley.com/doi/10.1002/cpz1.252
+- https://genviz.org/module-03-genvisr/0003/02/01/waterfall_GenVisR/
+- upset
+    - https://www.nature.com/articles/nmeth.3033
+    - https://github.com/hms-dbmi/UpSetR
+- https://cran.r-project.org/web/packages/chromoMap/vignettes/chromoMap.html#Data-based_annotation_plots
+- https://sites.google.com/view/williamgilks/computational-analysis-of-whole-genome-sequencing-data/flow-chart-in-latex
+- https://www.photopea.com/
+- General reference
+  - http://genviz.org/
+- By content
+  - pathvisio https://www.pathvisio.org/documentation/tutorials/tutorial-1/
+  - svviz [[http://svviz.readthedocs.io/en/latest/install.html][documentation]]
+  - https://genome.sph.umich.edu/wiki/LocusZoom_Standalone
+  - http://miso.readthedocs.io/en/fastmiso/sashimi.html
+  - https://www.fusioncharts.com/resources/chart-primers/radar-chart
+  - https://github.com/Adrienrougny/sbgntikz/
+- [[id:1DA3ABC0-79B0-4CED-B926-22B37840379D][LINK TO Data Visualization]]
+  - Examples
+    - https://cmdcolin.github.io/awesome-genome-visualization/
+  - https://bioinfogp.cnb.csic.es/tools/venny/
+- Experimental design [[./biotools.org_20220817_135339.png]]
+
 https://www.sciencedirect.com/science/article/pii/S1074761320305045?via%3Dihub
 - tikz sbgn diagrams: https://github.com/Adrienrougny/sbgntikz/
 - https://www.reddit.com/r/bioinformatics/comments/chnt75/guidelines_for_workflow_visualization/
@@ -2612,10 +2254,10 @@ https://www.reddit.com/r/bioinformatics/comments/tgzeya/t_sne_graphs_for_data_vi
     - https://cmdcolin.github.io/awesome-genome-visualization/
   - https://bioinfogp.cnb.csic.es/tools/venny/
 
+
 **** Heatmaps
 :PROPERTIES:
 :ID:       a259c668-737b-4ca3-9994-a9ce8afa01db
-:CUSTOM_ID: a259c668-737b-4ca3-9994-a9ce8afa01db
 :END:
 - https://slowkow.com/notes/pheatmap-tutorial/#quantile-breaks
 - https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
@@ -2628,70 +2270,13 @@ https://www.reddit.com/r/bioinformatics/comments/tgzeya/t_sne_graphs_for_data_vi
 **** <<<Integrated Genomics Viewer>>> (<<<IGV>>>)
 :PROPERTIES:
 :ID:       917062AC-32E8-41F5-A511-84AA7B1504B0
-:CUSTOM_ID: 917062AC-32E8-41F5-A511-84AA7B1504B0
 :END:
 
 - cite:robinson2017
 https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Giraud_visualisation-IGV_TP_EBA-2014-10.pdf
 [[http://software.broadinstitute.org/software/igv/UserGuide][User Guide]]
 
-**** Bioinformatics visualizations
-:PROPERTIES:
-:ID:       DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
-:CUSTOM_ID: DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
-:END:
-:LOGBOOK:
-CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
-:END:
-https://www.reddit.com/r/bioinformatics/comments/tgzeya/t_sne_graphs_for_data_visualization/
-- ideogram /karyotye https://bioinformatics.stackexchange.com/questions/3600/how-to-make-chromosome-color-maps-for-bed-ranges
-- GEDI SOMs https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1007034#sec002
-- https://currentprotocols.onlinelibrary.wiley.com/doi/10.1002/cpz1.252
-- https://genviz.org/module-03-genvisr/0003/02/01/waterfall_GenVisR/
-- upset
-    - https://www.nature.com/articles/nmeth.3033
-    - https://github.com/hms-dbmi/UpSetR
-- https://cran.r-project.org/web/packages/chromoMap/vignettes/chromoMap.html#Data-based_annotation_plots
-- https://sites.google.com/view/williamgilks/computational-analysis-of-whole-genome-sequencing-data/flow-chart-in-latex
-- https://www.photopea.com/
-- General reference
-  - http://genviz.org/
-- By content
-  - pathvisio https://www.pathvisio.org/documentation/tutorials/tutorial-1/
-  - svviz [[http://svviz.readthedocs.io/en/latest/install.html][documentation]]
-  - https://genome.sph.umich.edu/wiki/LocusZoom_Standalone
-  - http://miso.readthedocs.io/en/fastmiso/sashimi.html
-  - https://www.fusioncharts.com/resources/chart-primers/radar-chart
-  - https://github.com/Adrienrougny/sbgntikz/
-- [[id:1DA3ABC0-79B0-4CED-B926-22B37840379D][LINK TO Data Visualization]]
-  - Examples
-    - https://cmdcolin.github.io/awesome-genome-visualization/
-  - https://bioinfogp.cnb.csic.es/tools/venny/
-- Experimental design [[./biotools.org_20220817_135339.png]]
-***** Heatmaps
-:PROPERTIES:
-:ID:       a259c668-737b-4ca3-9994-a9ce8afa01db
-:CUSTOM_ID: a259c668-737b-4ca3-9994-a9ce8afa01db
-:END:
-- https://github.com/kevinblighe/E-MTAB-6141
-- https://stackoverflow.com/questions/31677923/set-0-point-for-pheatmap-in-r
-- https://slowkow.com/notes/pheatmap-tutorial/#quantile-breaks
-- https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
-- https://slowkow.com/notes/pheatmap-tutorial/
-- heatmaps
-  - https://www.biostars.org/p/287512/
-  - https://support.bioconductor.org/p/93424/
-- https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
-- cite:lucas2020 fig3c
-***** <<<Integrated Genomics Viewer>>> (<<<IGV>>>)
-:PROPERTIES:
-:ID:       917062AC-32E8-41F5-A511-84AA7B1504B0
-:CUSTOM_ID: 917062AC-32E8-41F5-A511-84AA7B1504B0
-:END:
 
-- cite:robinson2017
-https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Giraud_visualisation-IGV_TP_EBA-2014-10.pdf
-[[http://software.broadinstitute.org/software/igv/UserGuide][User Guide]]
 
 *** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 *** Bioinformatics pipelines and project management
@@ -2701,7 +2286,6 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 *** Common bioinformatics file manipulation
 :PROPERTIES:
 :ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
-:CUSTOM_ID: c0c0ee28-2e41-41a7-9a3b-ae195117a93e
 :END:
 - https://bioinf.shenwei.me/seqkit/usage/#pair
 - https://www.google.com/search?q=annotate+bed+file+with+gene+names
@@ -2755,13 +2339,11 @@ https://pubmed.ncbi.nlm.nih.gov/35311178/
 ***** fusions
 :PROPERTIES:
 :ID:       0ea6c74e-bcf8-44c2-b4c3-e725d930d4a3
-:CUSTOM_ID: 0ea6c74e-bcf8-44c2-b4c3-e725d930d4a3
 :END:
   - cite:melsted2017
 ****** Gene Fusion Detection
 :PROPERTIES:
 :ID:       492e0fad-ced4-407b-8913-80f3a0ac1202
-:CUSTOM_ID: 492e0fad-ced4-407b-8913-80f3a0ac1202
 :END:
 :PROPERTIES:
 :ID:       778C7C81-34E7-4BAE-94F9-5C33318BFDA5
@@ -2781,7 +2363,6 @@ https://pubmed.ncbi.nlm.nih.gov/35311178/
 :PROPERTIES:
 :CREATED:  [2019-02-25 Mon 13:16]
 :ID:       951F10BC-E844-45C5-8CB4-4FA8756D9F85
-:CUSTOM_ID: 951F10BC-E844-45C5-8CB4-4FA8756D9F85
 :END:
 
 - are combined rna-seq alignment methods just sum of runs?
@@ -2800,7 +2381,6 @@ https://pubmed.ncbi.nlm.nih.gov/35311178/
 :PROPERTIES:
 :CREATED:  [2019-03-13 Wed 10:11]
 :ID:       58F7BED2-DED1-4911-9E8C-104E12126A73
-:CUSTOM_ID: 58F7BED2-DED1-4911-9E8C-104E12126A73
 :END:
 :LOGBOOK:
 CLOCK: [2019-03-14 Thu 07:49]--[2019-03-14 Thu 08:45] =>  0:56
@@ -2838,7 +2418,6 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 ***** Broad Calling variants in RNAseq
 :PROPERTIES:
 :ID:       DA64BC88-8BD6-40DF-9D80-5596BFA4D643
-:CUSTOM_ID: DA64BC88-8BD6-40DF-9D80-5596BFA4D643
 :END:
 
 https://software.broadinstitute.org/gatk/documentation/article?id=3891
@@ -2846,7 +2425,6 @@ https://software.broadinstitute.org/gatk/documentation/article?id=3891
 :PROPERTIES:
 :CREATED:  [2019-06-25 Tue 09:05]
 :ID:       96634f32-b19a-4390-8e50-e942abd35f90
-:CUSTOM_ID: 96634f32-b19a-4390-8e50-e942abd35f90
 :END:
 :LOGBOOK:
 CLOCK: [2019-07-09 Tue 09:19]--[2019-07-09 Tue 09:25] =>  0:06
@@ -2868,7 +2446,6 @@ CLOCK: [2019-06-26 Wed 13:35]--[2019-06-26 Wed 13:59] =>  0:24
 :PROPERTIES:
 :CREATED:  [2019-02-25 Mon 13:16]
 :ID:       951F10BC-E844-45C5-8CB4-4FA8756D9F85
-:CUSTOM_ID: 951F10BC-E844-45C5-8CB4-4FA8756D9F85
 :END:
 
 - are combined rna-seq alignment methods just sum of runs?
@@ -2887,7 +2464,6 @@ CLOCK: [2019-06-26 Wed 13:35]--[2019-06-26 Wed 13:59] =>  0:24
 :PROPERTIES:
 :CREATED:  [2019-03-13 Wed 10:11]
 :ID:       58F7BED2-DED1-4911-9E8C-104E12126A73
-:CUSTOM_ID: 58F7BED2-DED1-4911-9E8C-104E12126A73
 :END:
 :LOGBOOK:
 CLOCK: [2019-03-14 Thu 07:49]--[2019-03-14 Thu 08:45] =>  0:56
@@ -2926,7 +2502,6 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :PROPERTIES:
 :CREATED:  [2019-10-30 Wed 10:52]
 :ID:       079e398f-e3b0-49c4-92da-9b4f6a73684c
-:CUSTOM_ID: 079e398f-e3b0-49c4-92da-9b4f6a73684c
 :END:
 - [[id:32afbe10-0469-4969-8b8e-1ee14b4101d2][Science of cardiac epigenetics]]
 - cite:smith2017
@@ -2965,7 +2540,6 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 **** ChIP-seq
 :PROPERTIES:
 :ID:       4c8cbcad-4523-4883-b041-a8eb548f01ac
-:CUSTOM_ID: 4c8cbcad-4523-4883-b041-a8eb548f01ac
 :END:
 https://github.com/crazyhottommy/ChIP-seq-analysis/blob/master/part2_Preparing-ChIP-seq-count-table.md
 https://www.bioconductor.org/help/course-materials/2016/CSAMA/lab-5-chipseq/Epigenetics.html
@@ -2979,7 +2553,6 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
 :PROPERTIES:
 :CREATED:  [2019-05-29 Wed 14:46]
 :ID:       b8db46d3-8329-4fef-82b1-4d99c2c9312b
-:CUSTOM_ID: b8db46d3-8329-4fef-82b1-4d99c2c9312b
 :END:
 - https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/medip-seq-dip-seq.html
 - cite:shen2018
@@ -3040,14 +2613,12 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
 :PROPERTIES:
 :CREATED:  [2021-01-18 Mon 09:45]
 :ID:       b612a1b1-2c01-49c3-a20c-5a890fa1a6e5
-:CUSTOM_ID: b612a1b1-2c01-49c3-a20c-5a890fa1a6e5
 :END:
 - cut and run - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302505/
   - cite:bakhoum2021
 **** transcription factor enrichment
 :PROPERTIES:
 :ID:       809e1a39-2a8e-46ec-863c-d7b03511fcfb
-:CUSTOM_ID: 809e1a39-2a8e-46ec-863c-d7b03511fcfb
 :END:
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4009616/
 - https://science.sciencemag.org/content/352/6288/aad3018
@@ -3056,8 +2627,8 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
 **** Chromatin accessibility profiling
 :PROPERTIES:
 :ID:       ae0363f3-379e-4521-9184-cbc0d46501cd
-:CUSTOM_ID: ae0363f3-379e-4521-9184-cbc0d46501cd
 :END:
+- cite:minnoye2021
 - [[id:8ca221b7-b51a-4382-9844-5d8ba7193ff6][Chromatin accessibility biology]]
 - [[id:22e31d06-f5df-427e-bd70-3a2ccd3f47ec][ATAC-seq]]
 - [[id:17f978bc-f2f2-497d-a8f1-b1d47927380f][Differential chromatin accessibility]]
@@ -3075,7 +2646,6 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
 ***** Chromatin accessibility profiling methods
 :PROPERTIES:
 :ID:       f600cd95-723e-4893-8b3f-0634d8905920
-:CUSTOM_ID: f600cd95-723e-4893-8b3f-0634d8905920
 :END:
 - cite:minnoye2021
 - [[id:22e31d06-f5df-427e-bd70-3a2ccd3f47ec][ATAC-seq]]
@@ -3086,7 +2656,6 @@ https://www.nature.com/articles/s41588-018-0091-2
 ************* Chemical- NextBio, see Webster,15ref Kupershmidt,10
 :PROPERTIES:
 :ID:       f9f486c9-cd9b-401a-a3c0-523a5d09d92b
-:CUSTOM_ID: f9f486c9-cd9b-401a-a3c0-523a5d09d92b
 :END:
   - extracellular
     - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5426982/
@@ -3190,7 +2759,6 @@ https://www.nature.com/articles/s41588-018-0091-2
 ************* Allele-specific Expression
 :PROPERTIES:
 :ID:       96C367A3-FEEB-4F6F-975A-A08A172FD277
-:CUSTOM_ID: 96C367A3-FEEB-4F6F-975A-A08A172FD277
 :END:
 
 
@@ -3198,7 +2766,6 @@ https://www.nature.com/articles/s41588-018-0091-2
 :PROPERTIES:
 :CREATED:  [2019-06-25 Tue 09:05]
 :ID:       96634f32-b19a-4390-8e50-e942abd35f90
-:CUSTOM_ID: 96634f32-b19a-4390-8e50-e942abd35f90
 :END:
 :LOGBOOK:
 CLOCK: [2019-07-09 Tue 09:19]--[2019-07-09 Tue 09:25] =>  0:06
@@ -3225,7 +2792,6 @@ https://www.bioconductor.org/packages/devel/bioc/vignettes/SummarizedExperiment/
 ************ Gene Set Enrichment
 :PROPERTIES:
 :ID:       87734999-3139-4343-A323-925416811B12
-:CUSTOM_ID: 87734999-3139-4343-A323-925416811B12
 :END:
 https://www.pathwaycommons.org/guide/primers/data_analysis/gsea/#:~:text=The%20GSEA%20enrichment%20score%20(S,sets%20one%20at%20a%20time.
 - https://www.reddit.com/r/bioinformatics/comments/66374x/gsea_vs_go_enrichment/
@@ -3233,7 +2799,6 @@ https://www.pathwaycommons.org/guide/primers/data_analysis/gsea/#:~:text=The%20G
 ************* [[http://www.bioconductor.org/packages/release/bioc/html/gage.html][GAGE]] (generally applicable gene-set enrichment for pathway analysis)
 :PROPERTIES:
 :ID:       441F7686-9969-4F8D-8092-C4429377214C
-:CUSTOM_ID: 441F7686-9969-4F8D-8092-C4429377214C
 :END:
 
 [[file:~/Box%20Sync/comp_bio/gsea_template/][Folder]]
@@ -3243,7 +2808,6 @@ https://www.pathwaycommons.org/guide/primers/data_analysis/gsea/#:~:text=The%20G
 ************** RNA-Seq Workflow Example
 :PROPERTIES:
 :ID:       B687F931-3A5E-4CD0-B2B7-30DF026E0AB9
-:CUSTOM_ID: B687F931-3A5E-4CD0-B2B7-30DF026E0AB9
 :END:
 
 [[file:~/Box%20Sync/comp_bio/gsea_template/][Folder]]
@@ -3253,7 +2817,6 @@ https://www.pathwaycommons.org/guide/primers/data_analysis/gsea/#:~:text=The%20G
 ************** RNA-Seq Workflow Example
 :PROPERTIES:
 :ID:       B687F931-3A5E-4CD0-B2B7-30DF026E0AB9
-:CUSTOM_ID: B687F931-3A5E-4CD0-B2B7-30DF026E0AB9
 :END:
 
 [[file:~/Box%20Sync/comp_bio/gsea_template/][Folder]]
@@ -3262,7 +2825,6 @@ https://www.pathwaycommons.org/guide/primers/data_analysis/gsea/#:~:text=The%20G
 ************* Commercial
 :PROPERTIES:
 :ID:       417416B5-0169-41CA-8FCE-4D6E440C7E3A
-:CUSTOM_ID: 417416B5-0169-41CA-8FCE-4D6E440C7E3A
 :END:
 
 http://www.ingenuity.com/
@@ -3273,7 +2835,6 @@ https://www.datacamp.com/
 ************ Genotype-Phenotype Associations
 :PROPERTIES:
 :ID:       69F82D91-6DE6-4332-AD0A-7ADF25263858
-:CUSTOM_ID: 69F82D91-6DE6-4332-AD0A-7ADF25263858
 :END:
 
 https://www.nature.com/articles/s41467-019-11591-1
@@ -3291,7 +2852,6 @@ https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigC
 ***** ATAC-seq
 :PROPERTIES:
 :ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
-:CUSTOM_ID: 22e31d06-f5df-427e-bd70-3a2ccd3f47ec
 :END:
 ****** [[id:12393aa3-d318-4ba6-8183-6e3a175d3ba4][Region or locus-based enrichment analysis]]
 ****** Method-establishing papers
@@ -3623,7 +3183,6 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666684/
 *** Single-cell methods
 :PROPERTIES:
 :ID:       2597b54c-972a-43c3-9630-0e542ba90eeb
-:CUSTOM_ID: 2597b54c-972a-43c3-9630-0e542ba90eeb
 :END:
 https://www.nature.com/articles/s41467-023-36383-6
 https://www.nature.com/articles/s41576-023-00586-w
@@ -3643,13 +3202,11 @@ https://www.nature.com/articles/s41576-023-00586-w
 ********** single-nucleus RNA-seq
 :PROPERTIES:
 :ID:       1149b091-eabe-4137-a3e9-222f21bfdd57
-:CUSTOM_ID: 1149b091-eabe-4137-a3e9-222f21bfdd57
 :END:
 - https://www.nature.com/articles/s41591-020-0844-1
 **** Jointly defining cell states from singl-cell multi-omic and spatial tanscriptomic datasest
 :PROPERTIES:
 :ID:       76cd9647-825f-46b4-9344-b7b95049f2f6
-:CUSTOM_ID: 76cd9647-825f-46b4-9344-b7b95049f2f6
 :END:
 :LOGBOOK:
 CLOCK: [2021-11-02 Tue 11:01]--[2021-11-02 Tue 11:26] =>  0:25
@@ -3678,7 +3235,6 @@ CLOCK: [2021-11-02 Tue 11:01]--[2021-11-02 Tue 11:26] =>  0:25
 **** Single cell methylation sequencing
 :PROPERTIES:
 :ID:       992de4dc-775e-41f0-a70a-e38c99b87265
-:CUSTOM_ID: 992de4dc-775e-41f0-a70a-e38c99b87265
 :END:
 https://www.nature.com/articles/nmeth.3035
 https://www.nature.com/articles/s41467-018-03149-4
@@ -3688,7 +3244,6 @@ https://www.nature.com/articles/s41467-018-03149-4
 **** single-nucleus RNA-seq
 :PROPERTIES:
 :ID:       1149b091-eabe-4137-a3e9-222f21bfdd57
-:CUSTOM_ID: 1149b091-eabe-4137-a3e9-222f21bfdd57
 :END:
 - cite:grindberg2013
 - https://www.nature.com/articles/s41591-020-0844-1
@@ -3696,7 +3251,6 @@ https://www.nature.com/articles/s41467-018-03149-4
 **** single-cell RNA sequencing (scRNA-seq)
 :PROPERTIES:
 :ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
-:CUSTOM_ID: 2bbeb644-af54-4f07-80ad-3584e1e21b04
 :END:
 - trajectory inference
   - Monocle 2
@@ -3787,12 +3341,10 @@ https://meme-suite.org/meme/
 **** Transcriptomics
 :PROPERTIES:
 :ID:       b9db0398-4481-4502-abb0-bd9edcd353f2
-:CUSTOM_ID: b9db0398-4481-4502-abb0-bd9edcd353f2
 :END:
 **** Microarray
 :PROPERTIES:
 :ID:       294edcbb-f306-4f94-9eba-e8a1c7c512f1
-:CUSTOM_ID: 294edcbb-f306-4f94-9eba-e8a1c7c512f1
 :END:
 - cite:lee2004
 - cite:nguyen2002
@@ -3800,18 +3352,15 @@ https://meme-suite.org/meme/
 :PROPERTIES:
 :ID:       4206be38-8d3c-43c4-a5c7-ca6a8bd8361a
 :CREATED:  [2021-02-17 Wed 09:08]
-:CUSTOM_ID: 4206be38-8d3c-43c4-a5c7-ca6a8bd8361a
 :END:
 ***** Platform and Workflows
 :PROPERTIES:
 :ID:       b7c65054-f648-4579-9c5f-7bedbe272b5c
-:CUSTOM_ID: b7c65054-f648-4579-9c5f-7bedbe272b5c
 :END:
 ***** [[id:386d899a-9208-4d5c-93d8-3750b22d9748][RNA bench methods]]
 ***** RNA-seq experimental design
 :PROPERTIES:
 :ID:       19780d7c-afa7-4195-b1f9-df9c563de303
-:CUSTOM_ID: 19780d7c-afa7-4195-b1f9-df9c563de303
 :END:
 - spike-ins
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4538800/
@@ -3879,7 +3428,6 @@ https://meme-suite.org/meme/
 ****** Design
 :PROPERTIES:
 :ID:       4e8a8446-e84d-4c4f-8bd8-45ee611337b5
-:CUSTOM_ID: 4e8a8446-e84d-4c4f-8bd8-45ee611337b5
 :END:
 - spike-ins
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4538800/
@@ -3893,17 +3441,14 @@ https://meme-suite.org/meme/
 ***** [[id:7BF989EC-4DA7-4B0C-AAA9-0175156447FF][RNA extraction, solubilization, and isolation]]
 :PROPERTIES:
 :ID:       b477ff77-85e8-4613-9bea-a703de899817
-:CUSTOM_ID: b477ff77-85e8-4613-9bea-a703de899817
 :END:
 ***** [[id:4E23127E-4ED6-4802-A03C-4103AA8CAF29][RNA Quality and Quantification]]
 :PROPERTIES:
 :ID:       f8fb2eb4-e4dd-40f4-9ca6-f0582f4a3aac
-:CUSTOM_ID: f8fb2eb4-e4dd-40f4-9ca6-f0582f4a3aac
 :END:
 ***** Library preparation
 :PROPERTIES:
 :ID:       2111e30d-9183-40de-948e-3f76b70905d8
-:CUSTOM_ID: 2111e30d-9183-40de-948e-3f76b70905d8
 :END:
   - common kits
     - RNA exome
@@ -3946,32 +3491,27 @@ https://meme-suite.org/meme/
 ***** [[id:3BC41E6A-00D3-4498-A48C-463F68CFD76B][Massively parallel sequencing]]
 :PROPERTIES:
 :ID:       68056b25-1413-4bda-a1f2-6610e92c6765
-:CUSTOM_ID: 68056b25-1413-4bda-a1f2-6610e92c6765
 :END:
 ***** [[id:1EE731A3-83DD-46AF-B988-2311307C335F][Raw sequence quality control]]
 :PROPERTIES:
 :ID:       7cc53256-8b7b-4c93-aaa5-2a35e41b7319
-:CUSTOM_ID: 7cc53256-8b7b-4c93-aaa5-2a35e41b7319
 :END:
 ***** Alignment and pseudoalignment
 ****** [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][Nucleic acid sequence alignment]]
 :PROPERTIES:
 :ID:       542988fa-307f-454e-927e-ee6a17187265
-:CUSTOM_ID: 542988fa-307f-454e-927e-ee6a17187265
 :END:
 ****** Pseudoalignment
 - https://www.reddit.com/r/bioinformatics/comments/uv1hu9/what_are_the_pros_and_cons_of_pseudo_alignment/
 ****** Read annotation
 :PROPERTIES:
 :ID:       8e435b88-6895-4e75-a728-cfdaa272bddb
-:CUSTOM_ID: 8e435b88-6895-4e75-a728-cfdaa272bddb
 :END:
 - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-015-1308-8
 - https://github.com/griffithlab/rnaseq_tutorial/wiki/Annotation
 ***** Quantification and normalization
 :PROPERTIES:
 :ID:       853dd34c-27be-4be8-9794-19f04a1e22b0
-:CUSTOM_ID: 853dd34c-27be-4be8-9794-19f04a1e22b0
 :END:
 - via spike or replicate with RUVs https://www.nature.com/articles/nbt.2931?error=cookies_not_supported&code=a01fb01e-6702-4e1e-96da-1dbad752e672
 - https://www.reneshbedre.com/blog/expression_units.html
@@ -4040,7 +3580,6 @@ by spike-in  Jiang,L., Schlesinger,F., Davis,C.A., Zhang,Y., Li,R., Salit,M., Gi
 ****** featureCounts in Rsubread
 :PROPERTIES:
 :ID:       0FB3EE5E-DD17-4438-BF35-011555A41DF9
-:CUSTOM_ID: 0FB3EE5E-DD17-4438-BF35-011555A41DF9
 :END:
 
 [[http://www.rdocumentation.org/packages/Rsubread/functions/featureCounts][nice featureCounts manual]]
@@ -4048,13 +3587,11 @@ by spike-in  Jiang,L., Schlesinger,F., Davis,C.A., Zhang,Y., Li,R., Salit,M., Gi
 ****** [#Y] summarizeOverlaps in GenomicAlignments
 :PROPERTIES:
 :ID:       16408005-913F-4675-BA61-B7594A3FB4EC
-:CUSTOM_ID: 16408005-913F-4675-BA61-B7594A3FB4EC
 :END:
 
 ****** HTseq-count
 :PROPERTIES:
 :ID:       E2262D77-424F-4943-8DA4-5649B2F0B4B2
-:CUSTOM_ID: E2262D77-424F-4943-8DA4-5649B2F0B4B2
 :END:
 
 [[file:~/Box%20Sync/comp_bio/Anders,15%20HTSeq%20a%20python%20framework%20to%20work%20with%20high%20throughput%20sequencing%20data.pdf][Anders,15 HTSeq a python framework to work with high throughput
@@ -4068,7 +3605,6 @@ Not on cluster
 ******* Prerequisites
 :PROPERTIES:
 :ID:       D5102869-0833-4513-A716-69D44892FDDF
-:CUSTOM_ID: D5102869-0833-4513-A716-69D44892FDDF
 :END:
 
 - samtools sort (to postion)
@@ -4076,7 +3612,6 @@ Not on cluster
 ******* [[http://www-huber.embl.de/HTSeq/doc/count.html#count][website]]
 :PROPERTIES:
 :ID:       6B7F3881-DA7D-4700-BC30-9EF83150D916
-:CUSTOM_ID: 6B7F3881-DA7D-4700-BC30-9EF83150D916
 :END:
 
 htseq-count [options] <alignment_file> <gff_file>
@@ -4103,7 +3638,6 @@ Important options
 ****** Expression Level Abundance, Normalization Units
 :PROPERTIES:
 :ID:       D4BFCCCA-8BBC-4D23-B71B-F8C2ED6287E3
-:CUSTOM_ID: D4BFCCCA-8BBC-4D23-B71B-F8C2ED6287E3
 :END:
 https://ro-che.info/articles/2016-11-28-rna-seq-normalization
 R/FPKM and C/TPM are "local" to the sample while TMM must be recalculated with different sample set
@@ -4111,13 +3645,11 @@ R/FPKM and C/TPM are "local" to the sample while TMM must be recalculated with d
 ******* Raw- required input for DE analyses
 :PROPERTIES:
 :ID:       82A81565-9333-4E40-806E-474399BD73C4
-:CUSTOM_ID: 82A81565-9333-4E40-806E-474399BD73C4
 :END:
 
 ******* R/FPKM
 :PROPERTIES:
 :ID:       9D6324B7-D9A2-44ED-A54F-B0C0C8DCECE2
-:CUSTOM_ID: 9D6324B7-D9A2-44ED-A54F-B0C0C8DCECE2
 :END:
 https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/
 - normalization for library size (i.e. sequencing depth) and transcript length
@@ -4132,7 +3664,6 @@ https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-e
 ******* CPM (counts per million) / TPM
 :PROPERTIES:
 :ID:       8C3481E5-B350-4D9D-A44C-DAB17FAEE1C6
-:CUSTOM_ID: 8C3481E5-B350-4D9D-A44C-DAB17FAEE1C6
 :END:
 
   -   - see Wagner G.P., Kin K., and Lynch V.J. Measurement of mRNA abundance using RNA-seq data: RPKM measure is inconsistent among samples. Theory Biosci 131(4):281–285, 2012.=
@@ -4145,7 +3676,6 @@ https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-e
 ******* TMM (trimmed mean of M values)
 :PROPERTIES:
 :ID:       544B0EAB-4594-404B-9C83-B951E2244CFE
-:CUSTOM_ID: 544B0EAB-4594-404B-9C83-B951E2244CFE
 :END:
 
 -attempts to normalize this problem:
@@ -4154,7 +3684,6 @@ https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-e
 ***** RNA-seq quality control
 :PROPERTIES:
 :ID:       e6cbde1b-22c3-4a23-b99e-d9d4fe0a6b95
-:CUSTOM_ID: e6cbde1b-22c3-4a23-b99e-d9d4fe0a6b95
 :END:
 - https://www.reddit.com/r/bioinformatics/comments/ufuk46/question_transcriptome_quality_assessments/
 
@@ -4172,7 +3701,6 @@ https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-e
 ******* [[http://www-huber.embl.de/HTSeq/doc/count.html#count][website]]
 :PROPERTIES:
 :ID:       6B7F3881-DA7D-4700-BC30-9EF83150D916
-:CUSTOM_ID: 6B7F3881-DA7D-4700-BC30-9EF83150D916
 :END:
 
 htseq-count [options] <alignment_file> <gff_file>
@@ -4198,7 +3726,6 @@ Important options
 ****** Basic counting script
 :PROPERTIES:
 :ID:       AE616985-EA77-4CF0-8FEA-60FF56A04AC3
-:CUSTOM_ID: AE616985-EA77-4CF0-8FEA-60FF56A04AC3
 :END:
 
 counting is computationally intensive- script HTseq and
@@ -4207,7 +3734,6 @@ variabilize RNA seq workflow- make into function
 ***** RNA-seq exploratory data analysis
 :PROPERTIES:
 :ID:       77d2a559-9858-453a-83c5-a646bbf473a3
-:CUSTOM_ID: 77d2a559-9858-453a-83c5-a646bbf473a3
 :END:
 - https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
 - https://www.reddit.com/r/bioinformatics/comments/u1hsjy/great_thread_on_the_importance_of_eda_and/
@@ -4242,7 +3768,6 @@ phenotypes with genetic marker data. Genet. Epidemiol., 31(Suppl.
 ****** Clustering
 :PROPERTIES:
 :ID:       22a6e4a4-60c2-44cf-8e5a-3ff351a02aa3
-:CUSTOM_ID: 22a6e4a4-60c2-44cf-8e5a-3ff351a02aa3
 :END:
 https://old.reddit.com/r/AskStatistics/comments/qcxb6c/evaluation_of_clustering_rand_index_and_nmi_i_do/
 https://developers.google.com/machine-learning/clustering/clustering-algorithms
@@ -4260,7 +3785,6 @@ https://www.biostars.org/p/287512/
 ***** RNA-seq visualization
 :PROPERTIES:
 :ID:       b1351d51-3ac1-4193-b944-850c44a903fd
-:CUSTOM_ID: b1351d51-3ac1-4193-b944-850c44a903fd
 :END:
 - http://gepia.cancer-pku.cn/
 - [[id:DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF][visualization tools]]
@@ -4337,7 +3861,6 @@ https://www.biostars.org/p/287512/
 ****** small RNA sequencing
 :PROPERTIES:
 :ID:       fd462ab0-6aaf-4732-953b-141ad5e2ee72
-:CUSTOM_ID: fd462ab0-6aaf-4732-953b-141ad5e2ee72
 :END:
 - cite:giraldez2018
 - https://link.springer.com/protocol/10.1007%2F978-1-4939-9042-9_4
@@ -4345,7 +3868,6 @@ https://www.biostars.org/p/287512/
 ******* General reference
 :PROPERTIES:
 :ID:       65a85f59-afd5-4c6b-a785-9b6269cc7a51
-:CUSTOM_ID: 65a85f59-afd5-4c6b-a785-9b6269cc7a51
 :END:
 - miRQC cite:mestdagh2014
 - cite:mehta2014
@@ -4358,13 +3880,11 @@ https://www.biostars.org/p/287512/
 ******* QC
 :PROPERTIES:
 :ID:       fc7aeeb1-d387-4379-be37-46ebf1244cd7
-:CUSTOM_ID: fc7aeeb1-d387-4379-be37-46ebf1244cd7
 :END:
 https://exrna.org/resources/data/data-quality-control-standards/
 ******* Pre-processing
 :PROPERTIES:
 :ID:       0c7d62b9-6ef4-43d1-8e21-c3aa536125bd
-:CUSTOM_ID: 0c7d62b9-6ef4-43d1-8e21-c3aa536125bd
 :END:
 - read filtering
   - adapter trimming
@@ -4379,12 +3899,10 @@ https://exrna.org/resources/data/data-quality-control-standards/
 ******* [[id:51e5d70c-4a62-4960-880e-56f050194a0a][LINK TO Extracellular RNA biology]]
 :PROPERTIES:
 :ID:       49a0e52b-0bda-4237-8bab-ff2db54cf26d
-:CUSTOM_ID: 49a0e52b-0bda-4237-8bab-ff2db54cf26d
 :END:
 ******* Design
 :PROPERTIES:
 :ID:       4e8a8446-e84d-4c4f-8bd8-45ee611337b5
-:CUSTOM_ID: 4e8a8446-e84d-4c4f-8bd8-45ee611337b5
 :END:
 - read length
 - spike-ins
@@ -4399,17 +3917,14 @@ https://exrna.org/resources/data/data-quality-control-standards/
 ******* [[id:b2873d1a-837b-4927-b8cf-8a27e42d7bea][LINK TO small RNA extraction]]
 :PROPERTIES:
 :ID:       dfc3a8a2-e4c4-4043-af71-2db93128c18e
-:CUSTOM_ID: dfc3a8a2-e4c4-4043-af71-2db93128c18e
 :END:
 ******* [[id:4E23127E-4ED6-4802-A03C-4103AA8CAF29][LINK TO RNA Quality and Quantification]]
 :PROPERTIES:
 :ID:       4df90313-39e4-44ed-83cd-b98453e18358
-:CUSTOM_ID: 4df90313-39e4-44ed-83cd-b98453e18358
 :END:
 ******* small RNA library preparation
 :PROPERTIES:
 :ID:       71289eeb-a929-44bd-a46e-a0c3dcd7a8f4
-:CUSTOM_ID: 71289eeb-a929-44bd-a46e-a0c3dcd7a8f4
 :END:
 - cite:wong2019
 - cite:coenen-stass2018
@@ -4431,12 +3946,10 @@ https://exrna.org/resources/data/data-quality-control-standards/
 ******* [[id:3BC41E6A-00D3-4498-A48C-463F68CFD76B][LINK TO Massively parallel sequencing]]
 :PROPERTIES:
 :ID:       6584c294-78b9-42e5-a25b-28a069e112d8
-:CUSTOM_ID: 6584c294-78b9-42e5-a25b-28a069e112d8
 :END:
 ******* Bioinformatics
 :PROPERTIES:
 :ID:       f46e278c-dd38-4603-9fa2-a973823e1333
-:CUSTOM_ID: f46e278c-dd38-4603-9fa2-a973823e1333
 :END:
 - alignment to miRbase needs to be more conservative to avoid mismatches
 - cite:buschmann2016
@@ -4444,7 +3957,6 @@ https://exrna.org/resources/data/data-quality-control-standards/
 ******** Pre-processing
 :PROPERTIES:
 :ID:       0c7d62b9-6ef4-43d1-8e21-c3aa536125bd
-:CUSTOM_ID: 0c7d62b9-6ef4-43d1-8e21-c3aa536125bd
 :END:
 - read filtering
   - adapter trimming
@@ -4459,24 +3971,20 @@ https://exrna.org/resources/data/data-quality-control-standards/
 ******** Alignment
 :PROPERTIES:
 :ID:       d657a691-e338-44ad-96e4-47b4b18a03d2
-:CUSTOM_ID: d657a691-e338-44ad-96e4-47b4b18a03d2
 :END:
 - alignment to miRbase needs to be more conservative to avoid mismatches
 ******** QC
 :PROPERTIES:
 :ID:       fc7aeeb1-d387-4379-be37-46ebf1244cd7
-:CUSTOM_ID: fc7aeeb1-d387-4379-be37-46ebf1244cd7
 :END:
 https://exrna.org/resources/data/data-quality-control-standards/
 ******** [[id:853dd34c-27be-4be8-9794-19f04a1e22b0][LINK TO Quantification and normalization]]
 :PROPERTIES:
 :ID:       9a349ccd-3d29-46b7-b4fa-71693d32c674
-:CUSTOM_ID: 9a349ccd-3d29-46b7-b4fa-71693d32c674
 :END:
 ******** [[id:ee030cef-74d4-435d-8228-b85f0e6203db][LINK TO Differential expression]]
 :PROPERTIES:
 :ID:       56d53b46-2a62-4777-b5c7-eedbc306d4b4
-:CUSTOM_ID: 56d53b46-2a62-4777-b5c7-eedbc306d4b4
 :END:
 cite:buschmann2016
 "y. Even though comparisons of software
@@ -4505,13 +4013,11 @@ choice. On"
 ******** Functional analysis
 :PROPERTIES:
 :ID:       e597d527-5538-4f69-bd28-a24a70969317
-:CUSTOM_ID: e597d527-5538-4f69-bd28-a24a70969317
 :END:
 cite:buschmann2016 pg6011
 ******** Integrated tools
 :PROPERTIES:
 :ID:       07055c47-6e24-4f59-bce4-0ab91a7f5377
-:CUSTOM_ID: 07055c47-6e24-4f59-bce4-0ab91a7f5377
 :END:
 - miRDeep2 / miRDeep
   - cite:friedlander2012
@@ -4536,12 +4042,10 @@ cite:buschmann2016 pg6011
 ******* Applications
 :PROPERTIES:
 :ID:       55212621-170f-41aa-b9b5-b1c00385ffe6
-:CUSTOM_ID: 55212621-170f-41aa-b9b5-b1c00385ffe6
 :END:
 ******** Extracellular RNA bioinformatics
 :PROPERTIES:
 :ID:       cbf67ef7-39ec-45ec-b599-cdc0e8590cf7
-:CUSTOM_ID: cbf67ef7-39ec-45ec-b599-cdc0e8590cf7
 :END:
 - spike ins use
   - cite:godoy2019
@@ -4576,7 +4080,6 @@ cite:buschmann2016 pg6011
 ******** miRNA-seq
 :PROPERTIES:
 :ID:       903f32d8-bd13-496c-8d5c-26a63455936a
-:CUSTOM_ID: 903f32d8-bd13-496c-8d5c-26a63455936a
 :END:
 :LOGBOOK:
 CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
@@ -4627,7 +4130,6 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 ******* General reference
 :PROPERTIES:
 :ID:       65a85f59-afd5-4c6b-a785-9b6269cc7a51
-:CUSTOM_ID: 65a85f59-afd5-4c6b-a785-9b6269cc7a51
 :END:
 - miRQC cite:mestdagh2014
 - cite:mehta2014
@@ -4640,7 +4142,6 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 ******* Integrated miRNA-mRNA analysis
 :PROPERTIES:
 :ID:       82aafb6f-63a8-4ab7-867a-9add0e0c224a
-:CUSTOM_ID: 82aafb6f-63a8-4ab7-867a-9add0e0c224a
 :END:
 - [[id:903f32d8-bd13-496c-8d5c-26a63455936a][LINK TO miRNA-seq]]
 - example papers
@@ -4650,7 +4151,6 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 ***** Methods by tissue source or isolation
 :PROPERTIES:
 :ID:       4d4a89d1-e039-4a89-b968-81c80f38d884
-:CUSTOM_ID: 4d4a89d1-e039-4a89-b968-81c80f38d884
 :END:
 ****** Salivary
   - https://pubmed.ncbi.nlm.nih.gov/28303895/
@@ -4750,7 +4250,6 @@ CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 ***** Nacent RNA sequencing
 :PROPERTIES:
 :ID:       7b2235be-1f01-4e51-9de9-adbdfc016b36
-:CUSTOM_ID: 7b2235be-1f01-4e51-9de9-adbdfc016b36
 :END:
 :LOGBOOK:
 CLOCK: [2022-06-06 Mon 10:45]--[2022-06-06 Mon 11:25] =>  0:40
@@ -4775,7 +4274,6 @@ CLOCK: [2022-06-03 Fri 08:56]--[2022-06-03 Fri 09:31] =>  0:35
 ****** Pipeline Comparisons
 :PROPERTIES:
 :ID:       7B9AD35F-1511-4CB2-BB5A-0989EFEAADF3
-:CUSTOM_ID: 7B9AD35F-1511-4CB2-BB5A-0989EFEAADF3
 :END:
 [[file:~/Box%20Sync/library/Fonseca,14%20RNA%20seq%20gene%20profiling%20a%20systematic%20empirical%20comparison.PDF][Fonseca,14 RNA seq gene profiling a systematic empirical comparison]]
 [[file:~/Box%20Sync/library/Sigurgeirsson,14%20Analysis%20of%20stranded%20information%20using%20an%20automated%20procedure%20for%20strand%20specific%20RNA%20sequencing.pdf][Sigurgeirsson,14 Analysis of stranded information using an automated procedure for strand specific RNA sequencing]]
@@ -4784,12 +4282,10 @@ CLOCK: [2022-06-03 Fri 08:56]--[2022-06-03 Fri 09:31] =>  0:35
 :PROPERTIES:
 :CREATED:  [2020-08-05 Wed 08:36]
 :ID:       1a1d5b73-8070-402a-9f26-e147d66ca081
-:CUSTOM_ID: 1a1d5b73-8070-402a-9f26-e147d66ca081
 :END:
 ******* CIBERSORTx
 :PROPERTIES:
 :ID:       bb55c105-5977-4a01-802e-4bc1838f58bb
-:CUSTOM_ID: bb55c105-5977-4a01-802e-4bc1838f58bb
 :END:
 
 https://www.biostars.org/p/428905/
@@ -4803,12 +4299,10 @@ https://www.biostars.org/p/428905/
 :PROPERTIES:
 :CREATED:  [2020-08-05 Wed 08:36]
 :ID:       1a1d5b73-8070-402a-9f26-e147d66ca081
-:CUSTOM_ID: 1a1d5b73-8070-402a-9f26-e147d66ca081
 :END:
 ******* CIBERSORTx
 :PROPERTIES:
 :ID:       bb55c105-5977-4a01-802e-4bc1838f58bb
-:CUSTOM_ID: bb55c105-5977-4a01-802e-4bc1838f58bb
 :END:
 
 https://www.biostars.org/p/428905/
@@ -4839,7 +4333,6 @@ https://www.biostars.org/p/428905/
 ******** eQTL (expression quantitative trait loci) mapping
 :PROPERTIES:
 :ID:       2CA85A6B-7B1E-4A38-96AA-717847A59168
-:CUSTOM_ID: 2CA85A6B-7B1E-4A38-96AA-717847A59168
 :END:
 - identifies genetic variants that explain variation in gene expression
 - w/ RNA-seq via splAdder
@@ -4848,7 +4341,6 @@ https://www.biostars.org/p/428905/
 **** Spatial transcriptomics
 :PROPERTIES:
 :ID:       053daf71-9f9f-4b5e-b400-222c4d24afea
-:CUSTOM_ID: 053daf71-9f9f-4b5e-b400-222c4d24afea
 :END:
 - scopus
 - https://www.nature.com/articles/s41592-019-0548-y
@@ -4898,8 +4390,8 @@ https://www.biostars.org/p/428905/
 **** Co-expression / pathway enrichment
 :PROPERTIES:
 :ID:       91d46e60-eec3-48c7-97f1-b53eb1559b3f
-:CUSTOM_ID: 91d46e60-eec3-48c7-97f1-b53eb1559b3f
 :END:
+[[https://www.reddit.com/r/bioinformatics/comments/13vk8r5/comparing_gsea_results_between_different_species/][clusterprofiler term to gene]]
 - cite:reimand2019
 - https://old.reddit.com/r/bioinformatics/comments/r7hzoq/annual_ingenuity_subscription_sticker_shock_and/
 - https://www.sciencedirect.com/science/article/pii/S2666166721004755
@@ -4935,7 +4427,6 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 ****** Methods and associated tools
 :PROPERTIES:
 :ID:       d11cda99-d3a3-4549-a828-d065c6979c5d
-:CUSTOM_ID: d11cda99-d3a3-4549-a828-d065c6979c5d
 :END:
 - [[id:948289d8-3a77-471a-b068-0507285e0bac][wgcna]]
   - wgcna
@@ -5013,7 +4504,6 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 ***** Databases
 :PROPERTIES:
 :ID:       f7eed3be-f505-451c-b191-1a58373fb180
-:CUSTOM_ID: f7eed3be-f505-451c-b191-1a58373fb180
 :END:
 - [[id:c79bfe84-0f15-474e-8a22-1f210605ed5a][MSigDB]]
 - https://academic.oup.com/bioinformatics/article/33/3/414/2875813
@@ -5035,7 +4525,6 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 ***** Gene co-expression visualization
 :PROPERTIES:
 :ID:       fe3baa6c-d28e-48c4-91b1-0539e01a4cb1
-:CUSTOM_ID: fe3baa6c-d28e-48c4-91b1-0539e01a4cb1
 :END:
 - Need ssGSEA / GSVA for pathway heatmap https://bioconductor.org/packages/release/bioc/vignettes/GSVA/inst/doc/GSVA.html
 - [[https://enrichmentmap.readthedocs.io/en/docs-2.2/QuickStartGuide.html][enrichement map]]
@@ -5061,7 +4550,6 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 ***** General reference
 :PROPERTIES:
 :ID:       98048a64-6bd5-4107-ab7e-573b57758f12
-:CUSTOM_ID: 98048a64-6bd5-4107-ab7e-573b57758f12
 :END:
 - cite:maleki2020
 - [[id:2CA85A6B-7B1E-4A38-96AA-717847A59168][QTL mapping]]
@@ -5082,7 +4570,6 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 ***** Methods and associated tools
 :PROPERTIES:
 :ID:       d11cda99-d3a3-4549-a828-d065c6979c5d
-:CUSTOM_ID: d11cda99-d3a3-4549-a828-d065c6979c5d
 :END:
 - https://maayanlab.cloud/Enrichr/
 - [[id:2CA85A6B-7B1E-4A38-96AA-717847A59168][QTL mapping]]
@@ -5184,7 +4671,6 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 ***** General reference
 :PROPERTIES:
 :ID:       98048a64-6bd5-4107-ab7e-573b57758f12
-:CUSTOM_ID: 98048a64-6bd5-4107-ab7e-573b57758f12
 :END:
 - https://yulab-smu.top/biomedical-knowledge-mining-book/enrichment-overview.html
 - pathway annotation and conservation
@@ -5202,7 +4688,6 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 ***** Time course
 :PROPERTIES:
 :ID:       43f1772e-f8ce-4f6b-a4bd-d35d381b89c9
-:CUSTOM_ID: 43f1772e-f8ce-4f6b-a4bd-d35d381b89c9
 :END:
   - cite:spies2017
   - https://support.bioconductor.org/p/65676/#66860
@@ -5214,7 +4699,6 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 **** General reference
 :PROPERTIES:
 :ID:       70491293-d832-4947-b1bd-a0f4ae066c17
-:CUSTOM_ID: 70491293-d832-4947-b1bd-a0f4ae066c17
 :END:
 - https://www.cell.com/fulltext/S0092-8674%2812%2901226-3
 - http://gepia.cancer-pku.cn/
@@ -5243,7 +4727,6 @@ https://yulab-smu.top/biomedical-knowledge-mining-book/index.html
 ***** Ideas
 :PROPERTIES:
 :ID:       B5E9166C-CB80-4578-BD90-1E694B46F192
-:CUSTOM_ID: B5E9166C-CB80-4578-BD90-1E694B46F192
 :END:
 - http://gepia.cancer-pku.cn/
 [[http://bioinf.wehi.edu.au/marray/jsm2005/lab4/lab4.html][A limma workflow to try]]
@@ -5254,7 +4737,6 @@ see Love,16 section "Rich visualization and reporting of results"
 ****** Pipeline Comparisons
 :PROPERTIES:
 :ID:       7B9AD35F-1511-4CB2-BB5A-0989EFEAADF3
-:CUSTOM_ID: 7B9AD35F-1511-4CB2-BB5A-0989EFEAADF3
 :END:
 >>>>>>> e60be068dcbc8c18477fc28e00ee3b742dcf0110
 
@@ -5267,7 +4749,6 @@ see Love,16 section "Rich visualization and reporting of results"
 *** Immunoprofiling and immunophenotyping
 :PROPERTIES:
 :ID:       7bb87c84-6b06-44ef-9a1d-1bb9b9e57295
-:CUSTOM_ID: 7bb87c84-6b06-44ef-9a1d-1bb9b9e57295
 :END:
 - https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0213684
 - methods
@@ -5278,7 +4759,6 @@ see Love,16 section "Rich visualization and reporting of results"
 :PROPERTIES:
 :CREATED:  [2019-10-03 Thu 10:22]
 :ID:       e07fee1b-d7fd-42ce-9639-ff803cfc9c8e
-:CUSTOM_ID: e07fee1b-d7fd-42ce-9639-ff803cfc9c8e
 :END:
 :LOGBOOK:
 CLOCK: [2020-02-13 Thu 11:25]--[2020-02-13 Thu 11:33] =>  0:08
@@ -5325,7 +4805,6 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :CREATED:  [2019-10-30 Wed 10:52]
 :ID:       a143e3d0-35b3-4579-8831-9710791e0a6a
-:CUSTOM_ID: a143e3d0-35b3-4579-8831-9710791e0a6a
 :END:
 - cite:liu2019a
 - cite:papalexi2018 - immune cell heterogeneity by scRNAseq
@@ -5333,12 +4812,10 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 **** Cytometry
 :PROPERTIES:
 :ID:       b7b36cba-0d4d-41b0-ae5d-79b0f0f67d2e
-:CUSTOM_ID: b7b36cba-0d4d-41b0-ae5d-79b0f0f67d2e
 :END:
 ***** CyTOF
 :PROPERTIES:
 :ID:       881d23a0-c943-47ac-9bf5-ef965f8a80e3
-:CUSTOM_ID: 881d23a0-c943-47ac-9bf5-ef965f8a80e3
 :END:
 - CATALYST
   - https://www.bioconductor.org/packages/release/bioc/html/CATALYST.html
@@ -5359,7 +4836,6 @@ https://www.nature.com/articles/s41416-022-01881-9
 **** Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
-:CUSTOM_ID: 0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
 - https://www.sitcancer.org/research/jitc-2/jitc/collections/liquid-biopsies
 - https://www.nature.com/articles/s41586-023-05776-4
@@ -5371,7 +4847,6 @@ https://www.nature.com/articles/s41416-022-01881-9
 ***** Integrated hybrid capture and genome-wide- MAESTRO
 :PROPERTIES:
 :ID:       55b77210-fcb6-438d-a546-0c3605f6f5c4
-:CUSTOM_ID: 55b77210-fcb6-438d-a546-0c3605f6f5c4
 :END:
 cite:gydush2022
 ***** Promenent research groups
@@ -5380,7 +4855,6 @@ cite:gydush2022
 ****** Landau Group
 :PROPERTIES:
 :ID:       b4b2a35f-e59a-4e84-995e-ca16d7fd190d
-:CUSTOM_ID: b4b2a35f-e59a-4e84-995e-ca16d7fd190d
 :END:
 cite:widman2022
 ***** [[id:dd8b334b-e431-4709-8485-bf0dda1760a5][cfDNA inferred tissue gene expression]]
@@ -5435,7 +4909,6 @@ cite:lieber2016mechanisms
 ********* Human Pathological Translocations
 :PROPERTIES:
 :ID:       92C7145A-9535-4E74-B4FF-88A90EE6A78F
-:CUSTOM_ID: 92C7145A-9535-4E74-B4FF-88A90EE6A78F
 :END:
 
 cite:lipson2012identification
@@ -5451,13 +4924,11 @@ cite:wheeler2013human
 ********* [[Clinical Fusion Protein Databases]]
 :PROPERTIES:
 :ID:       4AE77A12-C491-4590-9F8B-6C6EC4077242
-:CUSTOM_ID: 4AE77A12-C491-4590-9F8B-6C6EC4077242
 :END:
 
 ********* Clinical RNA-seq Assays to Detect Fusion Proteins
 :PROPERTIES:
 :ID:       9786E312-B8BC-4F14-BAF2-C9B682703FB7
-:CUSTOM_ID: 9786E312-B8BC-4F14-BAF2-C9B682703FB7
 :END:
 
 cite:beadling16_multip_amplic_approac_detec_gene
@@ -5470,7 +4941,6 @@ cite:scolnick2015efficient
 ********** Specific Cancers
 :PROPERTIES:
 :ID:       E44CCF9D-6D9A-4F01-B90F-929D038CF4F4
-:CUSTOM_ID: E44CCF9D-6D9A-4F01-B90F-929D038CF4F4
 :END:
 
 cite:alves2015next
@@ -5486,14 +4956,12 @@ cite:duncavage2012targeted
 ********* [[FISH]]
 :PROPERTIES:
 :ID:       F54BB35F-3BAA-4AA9-928C-18FAB543D7C6
-:CUSTOM_ID: F54BB35F-3BAA-4AA9-928C-18FAB543D7C6
 :END:
 
 
 ********* Post-Alignment Analysis Programs
 :PROPERTIES:
 :ID:       EC14669D-1B71-45FD-9D4D-62E405CE6917
-:CUSTOM_ID: EC14669D-1B71-45FD-9D4D-62E405CE6917
 :END:
 
 https://rdrr.io/bioc/chimera/man/starReads.html
@@ -5505,7 +4973,6 @@ cite:chimera_r
 ******* Variant Calling
 :PROPERTIES:
 :ID:       E3637686-6560-4088-9784-0A601F39C34D
-:CUSTOM_ID: E3637686-6560-4088-9784-0A601F39C34D
 :END:
 https://pubmed.ncbi.nlm.nih.gov/36063163/
 https://pubmed.ncbi.nlm.nih.gov/33580225/
@@ -5527,13 +4994,11 @@ http://swog.org/Visitors/Fall13GpMtg/plenary/03-Corless-SWOG-Genomics-TM-ver1.pd
 ******** GATK Tool Set
 :PROPERTIES:
 :ID:       B4100085-BD16-442F-9AB8-586241CD897A
-:CUSTOM_ID: B4100085-BD16-442F-9AB8-586241CD897A
 :END:
 
 ********* GATK UnifiedGenotyper
 :PROPERTIES:
 :ID:       0D7356A4-E139-4BDF-BD6B-4170C15531F9
-:CUSTOM_ID: 0D7356A4-E139-4BDF-BD6B-4170C15531F9
 :END:
 
 - one of several GATK variant discovery tools
@@ -5542,7 +5007,6 @@ http://swog.org/Visitors/Fall13GpMtg/plenary/03-Corless-SWOG-Genomics-TM-ver1.pd
 CLOSED: [2016-12-05 Mon 14:22]
 :PROPERTIES:
 :ID:       E38AAAE9-DB89-42C8-9CE3-C18003F720D3
-:CUSTOM_ID: E38AAAE9-DB89-42C8-9CE3-C18003F720D3
 :END:
 
 - resuem here https://software.broadinstitute.org/gatk/documentation/quickstart.php
@@ -5553,18 +5017,15 @@ CLOSED: [2016-12-05 Mon 14:22]
 ******* sequence variation
 :PROPERTIES:
 :ID:       ec437673-e697-4c0d-a65f-46aec2641ed2
-:CUSTOM_ID: ec437673-e697-4c0d-a65f-46aec2641ed2
 :END:
 - https://ai.googleblog.com/2020/09/improving-accuracy-of-genomic-analysis.html?m=1
 ******** variant calling
 :PROPERTIES:
 :ID:       743b5990-53e6-4cce-8adc-a9d766d1c5e2
-:CUSTOM_ID: 743b5990-53e6-4cce-8adc-a9d766d1c5e2
 :END:
 ********* SCNA variants
 :PROPERTIES:
 :ID:       179ce37c-f8cf-44b3-872b-e32677bcb49c
-:CUSTOM_ID: 179ce37c-f8cf-44b3-872b-e32677bcb49c
 :END:
 - SCNAs
   - https://pmbio.org/module-05-somatic/0005/04/02/Somatic_CNV_FilteringAnnotationReview/
@@ -5584,7 +5045,6 @@ CLOSED: [2016-12-05 Mon 14:22]
 :PROPERTIES:
 :CREATED:  [2019-05-29 Wed 14:46]
 :ID:       0206fb96-8785-47fb-87ca-1f597de0ee85
-:CUSTOM_ID: 0206fb96-8785-47fb-87ca-1f597de0ee85
 :END:
 :LOGBOOK:
 CLOCK: [2019-10-10 Thu 15:45]--[2019-10-10 Thu 15:53] =>  0:08
@@ -5612,7 +5072,6 @@ CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 ******* [[id:5738AF1F-8621-40C3-AF80-0C396CDC889B][LINK TO Clinical NGS]]
 :PROPERTIES:
 :ID:       413414a5-651d-4d43-82c8-a6bb13de8ca3
-:CUSTOM_ID: 413414a5-651d-4d43-82c8-a6bb13de8ca3
 :END:
 ******* DNA break mapping
 >>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
@@ -5638,7 +5097,6 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 ******* Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
-:CUSTOM_ID: 0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
 - https://www.nature.com/collections/haffgaicaf
 - https://www.sciencedirect.com/science/article/pii/S0890850819303883#fig1
@@ -5654,7 +5112,6 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGrblWQxQHrNZrMjzpGmzjqDNGX
 ******** Landau Group
 :PROPERTIES:
 :ID:       b4b2a35f-e59a-4e84-995e-ca16d7fd190d
-:CUSTOM_ID: b4b2a35f-e59a-4e84-995e-ca16d7fd190d
 :END:
 cite:widman2022
 
@@ -5690,7 +5147,6 @@ cite:widman2022
 ******* cfRNA
 :PROPERTIES:
 :ID:       f4d64349-0202-41e5-9143-39de3dd63d90
-:CUSTOM_ID: f4d64349-0202-41e5-9143-39de3dd63d90
 :END:
 https://oaepublishstorage.blob.core.windows.net/b918d521-af58-4cf0-bc57-db03c5c43f33/4446.pdf
 https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFgqmWTzSTxFbqlqjBLnzFsWT
@@ -5703,7 +5159,6 @@ https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
 ****** Allele-specific expression
 :PROPERTIES:
 :ID:       a52b4ca3-c3ca-4aec-b68a-01c1de39fc8a
-:CUSTOM_ID: a52b4ca3-c3ca-4aec-b68a-01c1de39fc8a
 :END:
 
 - https://github.com/secastel/allelecounter
@@ -5711,7 +5166,6 @@ https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
 ****** Alternative splicing
 :PROPERTIES:
 :ID:       eba855e5-ce0e-4318-894d-4942f7e2fe45
-:CUSTOM_ID: eba855e5-ce0e-4318-894d-4942f7e2fe45
 :END:
 - w/ RNA-seq via splAdder
   - https://github.com/ratschlab/spladder
@@ -5719,7 +5173,6 @@ https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
 ****** Setup common reference files
 :PROPERTIES:
 :ID:       813ed980-1c55-44d7-84d8-67afdad2e5bc
-:CUSTOM_ID: 813ed980-1c55-44d7-84d8-67afdad2e5bc
 :END:
   #+name: setup_common_references
   #+begin_src bash
@@ -5772,7 +5225,6 @@ https://www.reddit.com/r/bioinformatics/comments/te1f5w/what_is_important_to_kno
 ****** Massively parallel sequencing
 :PROPERTIES:
 :ID:       3BC41E6A-00D3-4498-A48C-463F68CFD76B
-:CUSTOM_ID: 3BC41E6A-00D3-4498-A48C-463F68CFD76B
 :END:
 :LOGBOOK:
 CLOCK: [2022-06-03 Fri 08:33]--[2022-06-03 Fri 08:40] =>  0:07
@@ -5784,7 +5236,6 @@ http://tucf.com/htseq_GenomicSeq_DataSheet.pdf
 ******* General reference
 :PROPERTIES:
 :ID:       8438f135-bfc1-4d5e-8a02-f594a1d0773a
-:CUSTOM_ID: 8438f135-bfc1-4d5e-8a02-f594a1d0773a
 :END:
 - https://www.youtube.com/user/IlluminaInc/playlists
 - https://docs.nvidia.com/clara/parabricks/v3.0/index.html#
@@ -5794,7 +5245,6 @@ http://tucf.com/htseq_GenomicSeq_DataSheet.pdf
 ******* High Throughput Sequencing Platforms
 :PROPERTIES:
 :ID:       DF6FFA19-8867-49AC-947D-FD57B403761A
-:CUSTOM_ID: DF6FFA19-8867-49AC-947D-FD57B403761A
 :END:
 - https://www.broadinstitute.org/genome-sequencing/broadillumina-genome-analyzer-boot-camp
 - commercial sequencing entities
@@ -5818,13 +5268,11 @@ http://tucf.com/htseq_GenomicSeq_DataSheet.pdf
 ******** Ion Torrent
 :PROPERTIES:
 :ID:       EC631BCD-1A9B-4B8B-877E-7861C27D948B
-:CUSTOM_ID: EC631BCD-1A9B-4B8B-877E-7861C27D948B
 :END:
 
 ******** Illumina
 :PROPERTIES:
 :ID:       D1A3EF94-7933-4854-99ED-C63DE8F7741D
-:CUSTOM_ID: D1A3EF94-7933-4854-99ED-C63DE8F7741D
 :END:
 - https://www.reddit.com/r/bioinformatics/comments/uxm1s7/novaseq_2dye_v_hiseq_4dye_sequencing_differences/
 - adapters
@@ -5857,7 +5305,6 @@ https://support.illumina.com/bulletins/2016/07/what-is-nucleotide-diversity-and-
 ********* Illumina TruSeq
 :PROPERTIES:
 :ID:       3CE663C4-BF37-4E2E-9A0D-0E822241D05E
-:CUSTOM_ID: 3CE663C4-BF37-4E2E-9A0D-0E822241D05E
 :END:
 - https://www.google.com/search?q=illumina+truseq+indexes
 - See Kukurba,15
@@ -5873,13 +5320,11 @@ https://support.illumina.com/bulletins/2016/07/what-is-nucleotide-diversity-and-
 ********** Removal of rRNA and tRNA
 :PROPERTIES:
 :ID:       D509473A-536B-46D2-8639-22DC19DF41E2
-:CUSTOM_ID: D509473A-536B-46D2-8639-22DC19DF41E2
 :END:
 ******* [[id:f44b9dce-d7fa-4b6a-9949-49ff3c02547c][Sequencing testing, modeling, and read simulation]]
 ******* Adapter and probe design and processing
 :PROPERTIES:
 :ID:       8f0a09c6-2a68-425c-91a9-4d09866c8ae2
-:CUSTOM_ID: 8f0a09c6-2a68-425c-91a9-4d09866c8ae2
 :END:
 - https://en.wikipedia.org/wiki/Edit_distance
 https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-017-4428-5#Sec5
@@ -5890,14 +5335,12 @@ https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-017-4428-5#Sec5
 ******* Library preparation
 :PROPERTIES:
 :ID:       cae4df04-eb04-4148-88a3-798be945a9fd
-:CUSTOM_ID: cae4df04-eb04-4148-88a3-798be945a9fd
 :END:
 - https://www.future-science.com/doi/10.2144/000114133
 - [[http://genomebiology.biomedcentral.com/articles/10.1186/gb-2011-12-2-r18][amplification bias]]
 ******* Sequencing errors
 :PROPERTIES:
 :ID:       008673aa-98af-4ffb-89d9-cde43ededa83
-:CUSTOM_ID: 008673aa-98af-4ffb-89d9-cde43ededa83
 :END:
 - seq error correction
   - as an information model, propogation of errors, random vs. nonrandom
@@ -5913,7 +5356,6 @@ https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-017-4428-5#Sec5
 :PROPERTIES:
 :ID:       1EE731A3-83DD-46AF-B988-2311307C335F
 :CREATED:  [2020-10-14 Wed 08:47]
-:CUSTOM_ID: 1EE731A3-83DD-46AF-B988-2311307C335F
 :END:
 :LOGBOOK:
 CLOCK: [2020-10-13 Tue 14:00]--[2020-10-13 Tue 14:47] =>  0:47
@@ -6049,7 +5491,6 @@ data analysis. PLoS One, 8, e85024.
 ******* DNA-seq
 :PROPERTIES:
 :ID:       728e8984-696f-4531-8e76-bf6d78bfa3b7
-:CUSTOM_ID: 728e8984-696f-4531-8e76-bf6d78bfa3b7
 :END:
 - https://www.nature.com/articles/s41586-021-03894-5
 - index, adapter, barcode
@@ -6085,14 +5526,12 @@ data analysis. PLoS One, 8, e85024.
 ******** Paired tumor-normal sequencing
 :PROPERTIES:
 :ID:       0496ac54-3250-4fd3-9681-c880aaa296b2
-:CUSTOM_ID: 0496ac54-3250-4fd3-9681-c880aaa296b2
 :END:
 - https://github.com/mskcc/facets
 ******** Tumor-only whole exome sequencing
 :PROPERTIES:
 :CREATED:  [2021-05-01 Sat 07:26]
 :ID:       eed43327-3a0c-4f7b-9886-855a88afa02d
-:CUSTOM_ID: eed43327-3a0c-4f7b-9886-855a88afa02d
 :END:
 - https://ascopubs.org/doi/full/10.1200/CCI.19.00130
 - https://www.cell.com/cell-reports/pdfExtended/S2211-1247(18)31635-8
@@ -6102,7 +5541,6 @@ data analysis. PLoS One, 8, e85024.
 ******** DNA Bioinformatics
 :PROPERTIES:
 :ID:       1C24E3B6-CE16-47C8-8D7B-95EB530560F1
-:CUSTOM_ID: 1C24E3B6-CE16-47C8-8D7B-95EB530560F1
 :END:
 
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4669575/
@@ -6120,7 +5558,6 @@ data analysis. PLoS One, 8, e85024.
 ********* Post-alignment Samtools
 :PROPERTIES:
 :ID:       2D153E08-9F4A-4564-ACA7-5B4932D1022B
-:CUSTOM_ID: 2D153E08-9F4A-4564-ACA7-5B4932D1022B
 :END:
 
 - nice header review https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
@@ -6146,7 +5583,6 @@ data analysis. PLoS One, 8, e85024.
 ********* Ideas
 :PROPERTIES:
 :ID:       F6511EA3-A5B4-455E-99F1-D536EE81F22D
-:CUSTOM_ID: F6511EA3-A5B4-455E-99F1-D536EE81F22D
 :END:
 
 - [[http://zvfak.blogspot.com/2012/02/samtools-in-parallel.html][run in parallel]]
@@ -6156,19 +5592,16 @@ data analysis. PLoS One, 8, e85024.
 ********* Exome Sequencing Pipeline
 :PROPERTIES:
 :ID:       57992D53-D767-4E44-9E3F-B4A05E5B4EF1
-:CUSTOM_ID: 57992D53-D767-4E44-9E3F-B4A05E5B4EF1
 :END:
 
 ********* Specialized Applications
 :PROPERTIES:
 :ID:       7A9FC47A-2E9E-46D5-8E3E-E7C7C5C5AD9E
-:CUSTOM_ID: 7A9FC47A-2E9E-46D5-8E3E-E7C7C5C5AD9E
 :END:
 
 ********** Detecting Internal Tandem Duplications
 :PROPERTIES:
 :ID:       4B340D6D-E38D-42E5-AD1F-3CB0BDF62545
-:CUSTOM_ID: 4B340D6D-E38D-42E5-AD1F-3CB0BDF62545
 :END:
 
 [[file:~/Box%20Sync/library/Spencer,12%20Detection%20of%20FLT3%20ITD%20in%20short%20read%20length%20NGS.pdf][Spencer,12 Detection of FLT3 ITD in short read length NGS]]
@@ -6176,7 +5609,6 @@ data analysis. PLoS One, 8, e85024.
 ********* DNA Alignment
 :PROPERTIES:
 :ID:       B2F17B06-C1BA-487A-93EC-D9737584BC0E
-:CUSTOM_ID: B2F17B06-C1BA-487A-93EC-D9737584BC0E
 :END:
 
 - https://www.youtube.com/watch?v=4n7NPk5lwbI
@@ -6191,7 +5623,6 @@ data analysis. PLoS One, 8, e85024.
 ********** Novoalign
 :PROPERTIES:
 :ID:       22097A02-1E18-40BD-BA2F-0D3BC645F0D5
-:CUSTOM_ID: 22097A02-1E18-40BD-BA2F-0D3BC645F0D5
 :END:
 
 - cite:Novocraft
@@ -6200,7 +5631,6 @@ data analysis. PLoS One, 8, e85024.
 ********** BWA
 :PROPERTIES:
 :ID:       83F91393-2108-4785-9696-BDE8EC09FA88
-:CUSTOM_ID: 83F91393-2108-4785-9696-BDE8EC09FA88
 :END:
 
 https://bioinformatics.stackexchange.com/questions/2955/is-there-a-more-elegant-solution-to-the-bwa-mem-paired-reads-have-different-nam
@@ -6235,19 +5665,16 @@ noncoding, known mis-spliced, mitochondrial, x/y in mixed sex, unannotated
 ********** Inspection
 :PROPERTIES:
 :ID:       07602EB8-5EFD-4179-9F55-320190ECE670
-:CUSTOM_ID: 07602EB8-5EFD-4179-9F55-320190ECE670
 :END:
 
 ********** Processing
 :PROPERTIES:
 :ID:       2A4B2B42-C088-4479-BC65-670CC8377D39
-:CUSTOM_ID: 2A4B2B42-C088-4479-BC65-670CC8377D39
 :END:
 
 ********** FASTX-Toolkit
 :PROPERTIES:
 :ID:       8169C9DC-FDB6-473E-9B54-E154261186EA
-:CUSTOM_ID: 8169C9DC-FDB6-473E-9B54-E154261186EA
 :END:
 
   - [[http://hannonlab.cshl.edu/fastx_toolkit/commandline.html][documentation]]
@@ -6261,7 +5688,6 @@ noncoding, known mis-spliced, mitochondrial, x/y in mixed sex, unannotated
 ********* Broad Best Practices for Variant Discovery in DNAseq
 :PROPERTIES:
 :ID:       850AA38C-75E9-42E2-8DEE-61F4950BCFDE
-:CUSTOM_ID: 850AA38C-75E9-42E2-8DEE-61F4950BCFDE
 :END:
 
 https://software.broadinstitute.org/gatk/documentation/topic?name=methods
@@ -6269,7 +5695,6 @@ https://software.broadinstitute.org/gatk/documentation/topic?name=methods
 ******** aligned sequence qc
 :PROPERTIES:
 :ID:       1165bc2b-9373-4313-94bd-2a1d7be34fb8
-:CUSTOM_ID: 1165bc2b-9373-4313-94bd-2a1d7be34fb8
 :END:
 - https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
 - coverage
@@ -6278,7 +5703,6 @@ https://software.broadinstitute.org/gatk/documentation/topic?name=methods
 ********* coverage and depth
 :PROPERTIES:
 :ID:       a4dcf0d6-1619-4f82-989d-2bd599cdf061
-:CUSTOM_ID: a4dcf0d6-1619-4f82-989d-2bd599cdf061
 :END:
 - https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/hiseq-x-30x-coverage-technical-note-770-2014-042.pdf
 - https://www.biostars.org/p/331957/
@@ -6287,7 +5711,6 @@ https://software.broadinstitute.org/gatk/documentation/topic?name=methods
 ******** capture probes and barcoding
 :PROPERTIES:
 :ID:       675eba72-76e5-4b49-81e9-37bdc02cce9b
-:CUSTOM_ID: 675eba72-76e5-4b49-81e9-37bdc02cce9b
 :END:
 https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
 https://support.illumina.com/bulletins/2018/08/understanding-unique-dual-indexes--udi--and-associated-library-p.html
@@ -6337,7 +5760,6 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
 ****** Code associated with sequence reference builds
 :PROPERTIES:
 :ID:       767e5e30-8490-4cda-8018-8b0bd91c4ef3
-:CUSTOM_ID: 767e5e30-8490-4cda-8018-8b0bd91c4ef3
 :END:
 - need wget for github-             'https://raw.githubusercontent.com/Boyle-Lab/Blacklist/blob/master/lists/mm10-blacklist.v2.bed.gz')
 #+begin_src bash
@@ -6401,7 +5823,6 @@ https://academic.oup.com/genetics/article/216/2/353/6066178
 ******* Sequence similarity and patterns
 :PROPERTIES:
 :ID:       508ac0df-9d93-4455-a451-cb876f83498d
-:CUSTOM_ID: 508ac0df-9d93-4455-a451-cb876f83498d
 :END:
 - https://www.nature.com/articles/nature12477
 
@@ -6556,7 +5977,6 @@ RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
 :PROPERTIES:
 :CREATED:  [2020-10-08 Thu 09:15]
 :ID:       fce92cb5-cf68-4944-b2f4-eff55996ec5f
-:CUSTOM_ID: fce92cb5-cf68-4944-b2f4-eff55996ec5f
 :END:
 https://www.sciencedirect.com/science/article/pii/S1097276515003032
 https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
@@ -6565,7 +5985,6 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 :PROPERTIES:
 :CREATED:  [2020-10-08 Thu 09:15]
 :ID:       fce92cb5-cf68-4944-b2f4-eff55996ec5f
-:CUSTOM_ID: fce92cb5-cf68-4944-b2f4-eff55996ec5f
 :END:
 https://www.sciencedirect.com/science/article/pii/S1097276515003032
 https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
@@ -6576,7 +5995,6 @@ https://www.reddit.com/r/bioinformatics/comments/12ddk5r/what_genomics_plot_type
 *** Probability and statistics related to bioinformatics
 :PROPERTIES:
 :ID:       1768b182-858a-46f8-97a8-4cd9747a2361
-:CUSTOM_ID: 1768b182-858a-46f8-97a8-4cd9747a2361
 :END:
 - https://www.reddit.com/r/bioinformatics/comments/teeywx/advicebooks_for_getting_started_on_mathematical/
 [[id:ee66da5b-aa64-4535-af72-5d98976871ff][clinical prediction models]]
@@ -6590,7 +6008,6 @@ https://www.reddit.com/r/bioinformatics/comments/12ddk5r/what_genomics_plot_type
 **** Clustering and cluster analysis
 :PROPERTIES:
 :ID:       5372195f-b5fd-41da-8020-a87533c6e74a
-:CUSTOM_ID: 5372195f-b5fd-41da-8020-a87533c6e74a
 :END:
 https://stackoverflow.com/questions/42674102/extracting-members-of-cluster-pheatmap
 https://www.datanovia.com/en/lessons/determining-the-optimal-number-of-clusters-3-must-know-methods/
@@ -6605,7 +6022,6 @@ https://www.reddit.com/r/statistics/comments/t3ok40/q_is_there_any_difference_be
 *** Proteomics
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
-:CUSTOM_ID: e01aba61-2ea4-4235-a237-b0b90b49f153
 :END:
 https://bioone.org/journals/radiation-research/volume-198/issue-6/RADE-22-00074.1/Prediction-of-Total-Body-and-Partial-Body-Exposures-to-Radiation/10.1667/RADE-22-00074.1.short
 https://www.kavrakilab.org/nci-1u01ca258512-01.html
@@ -6653,7 +6069,6 @@ Mass Spectrometry
 **** SOMAscan
 :PROPERTIES:
 :ID:       89b4ec6d-992d-4551-81da-19011597732a
-:CUSTOM_ID: 89b4ec6d-992d-4551-81da-19011597732a
 :END:
 :LOGBOOK:
 CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
@@ -6675,7 +6090,6 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 **** Proteomics
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
-:CUSTOM_ID: e01aba61-2ea4-4235-a237-b0b90b49f153
 :END:
 https://ashpublications.org/blood/article/doi/10.1182/blood.2022016033/486036/Proteomic-and-Phosphoproteomic-Landscapes-of-Acute
 https://www.science.org/doi/10.1126/science.abj1541
@@ -6722,7 +6136,6 @@ Mass Spectrometry
 ***** SOMAscan
 :PROPERTIES:
 :ID:       89b4ec6d-992d-4551-81da-19011597732a
-:CUSTOM_ID: 89b4ec6d-992d-4551-81da-19011597732a
 :END:
 :LOGBOOK:
 CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
@@ -6744,7 +6157,6 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 *** Systems biology
 :PROPERTIES:
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
-:CUSTOM_ID: 228D364B-48C8-49E4-9B00-FBFD52384623
 :END:
 https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_and_analysis_tutorials/
 https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_and_analysis_tutorials/
@@ -6796,12 +6208,10 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 **** [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][Co-expression]]
 :PROPERTIES:
 :ID:       632d1c7d-aecc-4ad5-85ad-0f26571e454d
-:CUSTOM_ID: 632d1c7d-aecc-4ad5-85ad-0f26571e454d
 :END:
 **** [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
 :PROPERTIES:
 :ID:       34a99004-090f-44c6-a721-f5f1054e5b1f
-:CUSTOM_ID: 34a99004-090f-44c6-a721-f5f1054e5b1f
 :END:
 - iPANDA
   - https://www.nature.com/articles/ncomms13427#Sec10
@@ -6822,7 +6232,6 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 **** Systems biology
 :PROPERTIES:
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
-:CUSTOM_ID: 228D364B-48C8-49E4-9B00-FBFD52384623
 :END:
 - cite:sanchez-vega2018
 - https://www.sciencedirect.com/science/article/pii/S2666166721004755
@@ -6869,12 +6278,10 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 ***** LINK TO [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][Co-expression]]
 :PROPERTIES:
 :ID:       632d1c7d-aecc-4ad5-85ad-0f26571e454d
-:CUSTOM_ID: 632d1c7d-aecc-4ad5-85ad-0f26571e454d
 :END:
 ***** [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
 :PROPERTIES:
 :ID:       34a99004-090f-44c6-a721-f5f1054e5b1f
-:CUSTOM_ID: 34a99004-090f-44c6-a721-f5f1054e5b1f
 :END:
 - JCO top cited biomarker studies
       - with cfDNA copy number
@@ -6896,7 +6303,6 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 *** 0 Bioinformatics software flat list
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
-:CUSTOM_ID: 1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
 **** rGREAT
 https://www.bioconductor.org/packages/release/bioc/vignettes/rGREAT/inst/doc/local-GREAT.html
@@ -6918,7 +6324,6 @@ https://www.nature.com/articles/nmeth.1828
 :repo:
 :doc:
 :paper:
-:CUSTOM_ID: a5b73c70-3f1f-4018-92b2-bfdcaed53cf5
 :END:
 - ATAC fraction of reads in peaks
 - http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/ATACseqQCWorkshop__ATACseqQC_workshop/
@@ -6929,7 +6334,6 @@ https://www.nature.com/articles/nmeth.1828
 :PROPERTIES:
 :ID:       52363054-5138-419c-8d45-4ec9b0b02b24
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 52363054-5138-419c-8d45-4ec9b0b02b24
 :END:
 - http://seqanswers.com/forums/archive/index.php/t-87619.html
 - https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbmap-guide/
@@ -6946,7 +6350,6 @@ https://support.illumina.com/content/dam/illumina-support/documents/documentatio
 :PROPERTIES:
 :ID:       0be280ad-47b6-42f4-8a65-4fadadf4940b
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 0be280ad-47b6-42f4-8a65-4fadadf4940b
 :END:
 - https://bedops.altius.org/forum/index.php?topic=20.0
 - https://bedops.readthedocs.io/en/latest/index.html
@@ -6956,7 +6359,6 @@ https://support.illumina.com/content/dam/illumina-support/documents/documentatio
 :paper: cite:quinlan2010       |
 :CREATED:  [2021-09-01 Wed 13:42]
 :ID:       05f314e8-f402-45cb-ac1f-e3dece4f3114
-:CUSTOM_ID: 05f314e8-f402-45cb-ac1f-e3dece4f3114
 :END:
 
 **** BiocParallel :biotool:
@@ -6964,21 +6366,18 @@ https://bioconductor.org/packages/devel/bioc/vignettes/BiocParallel/inst/doc/Int
 **** biscuit
 :PROPERTIES:
 :ID:       5e9e8bfa-ac9e-4103-9cc5-7123337b4e24
-:CUSTOM_ID: 5e9e8bfa-ac9e-4103-9cc5-7123337b4e24
 :END:
 https://github.com/genome/docker-biscuit
 **** BLAT                                                           :biotool:
 :PROPERTIES:
 :ID:       6e44c130-0eaa-4e44-8c12-c7c8125ab9ec
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 6e44c130-0eaa-4e44-8c12-c7c8125ab9ec
 :END:
   - https://www.youtube.com/watch?v=E6DDNGDXH8A
 **** bowtie2                                                        :biotool:
 :PROPERTIES:
 :ID:       8883a37b-867c-4c19-8e9c-2b46004125a1
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 8883a37b-867c-4c19-8e9c-2b46004125a1
 :END:
 | bowtie2 |   |   | [[https://sourceforge.net/projects/bowtie-bio/files/][src]] | [[http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer][doc]] |   |   |
 - [[https://currentprotocols.onlinelibrary.wiley.com/doi/10.1002/0471250953.bi1107s32][protocol paper]]
@@ -6990,7 +6389,6 @@ https://www.biostars.org/p/270090/
 :PROPERTIES:
 :ID:       74ef57cd-c44a-4f28-b4a1-5a54a82ce5a3
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 74ef57cd-c44a-4f28-b4a1-5a54a82ce5a3
 :END:
 https://github.com/Illumina/canvas
 
@@ -7004,7 +6402,6 @@ https://github.com/Illumina/canvas
 **** ChIPseeker :biotool:
 :PROPERTIES:
 :ID:       a4cf29e3-7fa6-4ea2-a538-f59ec450cc7b
-:CUSTOM_ID: a4cf29e3-7fa6-4ea2-a538-f59ec450cc7b
 :END:
 - [[https://rdrr.io/bioc/ChIPseeker/man/annotatePeak.html][rdrr ChIPseeker]]
 - [[https://bioconductor.org/packages/devel/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.html#:~:text=ChIPseeker%20is%20an%20R%20package,peaks%20binding%20to%20TSS%20regions.&text=Moreover%2C%20it%20supports%20evaluating%20significant%20overlap%20among%20ChIP%2Dseq%20datasets][ChIPseeker vignette]].
@@ -7013,7 +6410,6 @@ https://github.com/Illumina/canvas
 :PROPERTIES:
 :ID:       6fdb7ece-efbb-4523-a7a5-7dd594d199dd
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 6fdb7ece-efbb-4523-a7a5-7dd594d199dd
 :END:
 - https://www.cell.com/cell/fulltext/S0092-8674(21)01061-8?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867421010618%3Fshowall%3Dtrue
 - https://ecotyper.stanford.edu/
@@ -7021,7 +6417,6 @@ https://github.com/Illumina/canvas
 **** clusterProfiler
 :PROPERTIES:
 :ID:       8e4c1fb8-cd52-4fac-900a-4b6e6eb5a28a
-:CUSTOM_ID: 8e4c1fb8-cd52-4fac-900a-4b6e6eb5a28a
 :END:
 - https://learn.gencore.bio.nyu.edu/rna-seq-analysis/gene-set-enrichment-analysis/
 - https://yulab-smu.top/biomedical-knowledge-mining-book/enrichment-overview.html
@@ -7029,7 +6424,6 @@ https://github.com/Illumina/canvas
 :PROPERTIES:
 :ID:       b471102b-2e5a-4d67-97e6-b03cf4d923b9
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: b471102b-2e5a-4d67-97e6-b03cf4d923b9
 :END:
 
 
@@ -7092,7 +6486,6 @@ cnvkit.py batch /duo4/mpnst/downsample-bam/pn*.sorted.bam /duo4/mpnst/downsample
 :PROPERTIES:
 :ID:       af78e4e0-a184-480f-95ac-ce9a0db35246
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: af78e4e0-a184-480f-95ac-ce9a0db35246
 :END:
 
 - https://www.biostars.org/p/286187/#286507
@@ -7100,7 +6493,6 @@ cnvkit.py batch /duo4/mpnst/downsample-bam/pn*.sorted.bam /duo4/mpnst/downsample
 :PROPERTIES:
 :ID:       46cf789e-d185-46da-bb32-8cf6113f3425
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 46cf789e-d185-46da-bb32-8cf6113f3425
 :END:
 - [[http://manual.cytoscape.org/en/stable/index.html][documentation]]
 - https://stackoverflow.com/questions/tagged/cytoscape
@@ -7114,7 +6506,6 @@ https://www.biostars.org/p/497108/
 :PROPERTIES:
 :ID:       2F642F69-A9C8-46DA-BE31-783AC8D4F4B6
 :CREATED:  [2021-01-27 Wed 07:00]
-:CUSTOM_ID: 2F642F69-A9C8-46DA-BE31-783AC8D4F4B6
 :END:
 - https://rstudio-pubs-static.s3.amazonaws.com/329027_593046fb6d7a427da6b2c538caf601e1.html
 - remove factor levels https://support.bioconductor.org/p/61875/
@@ -7150,7 +6541,6 @@ https://www.biostars.org/p/497108/
 :PROPERTIES:
 :ID:       5C8E2A3B-2C16-4FB3-9F86-5A1D8AD4802F
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 5C8E2A3B-2C16-4FB3-9F86-5A1D8AD4802F
 :END:
 - vignettes
   - [[https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#exploratory-analysis-and-visualization][gene workflow 19]]
@@ -7160,7 +6550,6 @@ CLOSED: [2016-06-27 Mon 14:45]
 :PROPERTIES:
 :ID:       791A1ABC-4138-4CD2-82AE-63905C053571
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 791A1ABC-4138-4CD2-82AE-63905C053571
 :END:
 :LOGBOOK:
 CLOCK: [2016-06-27 Mon 10:22]--[2016-06-27 Mon 10:37] =>  0:15
@@ -7176,7 +6565,6 @@ CLOSED: [2016-06-27 Mon 14:45]
 :PROPERTIES:
 :ID:       CC047BA0-35A3-420B-BB60-CA1AA7AE275B
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: CC047BA0-35A3-420B-BB60-CA1AA7AE275B
 :END:
 
 https://software.rc.fas.harvard.edu/ngsdata/workshops/2015_March/DESeq2_fruitfly.html
@@ -7186,7 +6574,6 @@ CLOSED: [2016-06-28 Tue 13:48]
 :PROPERTIES:
 :ID:       97126EA4-E1CD-4CD5-9746-A7C9393DF712
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 97126EA4-E1CD-4CD5-9746-A7C9393DF712
 :END:
 
 http://www.gettinggeneticsdone.com/2015/12/tutorial-rna-seq-differential.html
@@ -7195,7 +6582,6 @@ http://www.gettinggeneticsdone.com/2015/12/tutorial-rna-seq-differential.html
 :PROPERTIES:
 :ID:       61BDAC0E-3F02-482A-868E-93AC26B33361
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 61BDAC0E-3F02-482A-868E-93AC26B33361
 :END:
 :LOGBOOK:
 CLOCK: [2016-06-22 Wed 11:15]--[2016-06-22 Wed 11:40] =>  0:25
@@ -7209,21 +6595,18 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 :PROPERTIES:
 :ID:       ABBDC255-8B16-4598-AA75-6D0ADAD3E48E
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: ABBDC255-8B16-4598-AA75-6D0ADAD3E48E
 :END:
 
 ******** Input data
 :PROPERTIES:
 :ID:       71704A3E-FEE2-4363-BA67-4CA68D516375
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 71704A3E-FEE2-4363-BA67-4CA68D516375
 :END:
 
 ********* SummarizedExperiment input
 :PROPERTIES:
 :ID:       F4CCA76E-3FBE-4E20-B6DE-69FB848D7123
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: F4CCA76E-3FBE-4E20-B6DE-69FB848D7123
 :END:
 
 - DESeqDataSet
@@ -7237,7 +6620,6 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 :PROPERTIES:
 :ID:       1D88E488-4AFA-4A0F-A994-3C1664B5D156
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 1D88E488-4AFA-4A0F-A994-3C1664B5D156
 :END:
 
 - by DESeq2
@@ -7250,14 +6632,12 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 :PROPERTIES:
 :ID:       B87063F9-4578-440B-BF94-9DF134AF438A
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: B87063F9-4578-440B-BF94-9DF134AF438A
 :END:
 
 ********* MA-plot
 :PROPERTIES:
 :ID:       BBEB1ADB-F328-4B7B-807D-F8C158D60083
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: BBEB1ADB-F328-4B7B-807D-F8C158D60083
 :END:
 
 - useful to look at how the DESeq2 function shrinkage performed
@@ -7268,7 +6648,6 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 :PROPERTIES:
 :ID:       CB3647FE-90B2-47AD-8E89-AA206A6C207F
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: CB3647FE-90B2-47AD-8E89-AA206A6C207F
 :END:
 
 - plotCounts will give counts normalized by sequencing depth for a specific gene
@@ -7277,7 +6656,6 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 :PROPERTIES:
 :ID:       F28D686F-0E61-42C9-81DB-6BD581223377
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: F28D686F-0E61-42C9-81DB-6BD581223377
 :END:
 
 - all samples w/ zero counts
@@ -7288,21 +6666,18 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 :PROPERTIES:
 :ID:       8CE69F91-1AFB-477A-996A-95212336AD6D
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 8CE69F91-1AFB-477A-996A-95212336AD6D
 :END:
 
 ******* Data transformations and visualization
 :PROPERTIES:
 :ID:       99C0CCAA-43A0-4E37-8C72-98617C51D928
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 99C0CCAA-43A0-4E37-8C72-98617C51D928
 :END:
 
 ******** Count data transformations
 :PROPERTIES:
 :ID:       3E7192A1-175C-4D3A-A5E7-08D6CC64DCEC
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 3E7192A1-175C-4D3A-A5E7-08D6CC64DCEC
 :END:
 
 - transformations for EDA
@@ -7316,7 +6691,6 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 :PROPERTIES:
 :ID:       BFA60D58-A2E6-49F4-9912-2CF15D0BD356
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: BFA60D58-A2E6-49F4-9912-2CF15D0BD356
 :END:
 
 - blind to sample information is default
@@ -7326,14 +6700,12 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 :PROPERTIES:
 :ID:       7A2DB9FE-8DE5-481A-9C1A-4F26DC867582
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 7A2DB9FE-8DE5-481A-9C1A-4F26DC867582
 :END:
 
 ******** Contrasts
 :PROPERTIES:
 :ID:       A6AC8C5D-8828-4B96-BDB4-760B1F0DE0BA
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: A6AC8C5D-8828-4B96-BDB4-760B1F0DE0BA
 :END:
 
 - Contrast
@@ -7344,14 +6716,12 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 :PROPERTIES:
 :ID:       E2EE7973-FFB1-4842-83E8-665DCCA8F2C9
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: E2EE7973-FFB1-4842-83E8-665DCCA8F2C9
 :END:
 
 ******** Likelihood ratio test
 :PROPERTIES:
 :ID:       F15FCEE5-B88F-4712-B3B1-03C576F8E44F
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: F15FCEE5-B88F-4712-B3B1-03C576F8E44F
 :END:
 
 - Wald test asks if log2 fold change b/w groups is zero based on mean and SE
@@ -7363,7 +6733,6 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 :PROPERTIES:
 :ID:       682697F8-D316-4A04-9B6D-8BCB0261DE15
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 682697F8-D316-4A04-9B6D-8BCB0261DE15
 :END:
 
 - Cook's distance- for how much single sample is influencing fitting coefficients
@@ -7376,7 +6745,6 @@ CLOCK: [2016-06-20 Mon 12:21]--[2016-06-20 Mon 12:23] =>  0:02
 :PROPERTIES:
 :ID:       0778E394-2A3A-4952-9126-668AC8162D3A
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 0778E394-2A3A-4952-9126-668AC8162D3A
 :END:
 
 results function maximizes p values less than * over quantiles of mean normalized counts
@@ -7385,224 +6753,192 @@ results function maximizes p values less than * over quantiles of mean normalize
 :PROPERTIES:
 :ID:       70E0F04B-9D6B-4C11-A34E-6EE2FB008185
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 70E0F04B-9D6B-4C11-A34E-6EE2FB008185
 :END:
 
 ******** Access to all calculated values
 :PROPERTIES:
 :ID:       60580A3B-7A73-45A0-984F-0E83E5B6F2EC
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 60580A3B-7A73-45A0-984F-0E83E5B6F2EC
 :END:
 
 ******** Sample-/gene-dependent normalization factors
 :PROPERTIES:
 :ID:       BB95C4F2-763B-447D-A840-372588D43C79
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: BB95C4F2-763B-447D-A840-372588D43C79
 :END:
 
 ******** “Model matrix not full rank”
 :PROPERTIES:
 :ID:       7F14D356-858D-46DD-9044-C1A6CD2F8A08
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 7F14D356-858D-46DD-9044-C1A6CD2F8A08
 :END:
 
 ********* Linear combinations
 :PROPERTIES:
 :ID:       D9625DD4-D506-4E43-836D-9E0CDDCB9A79
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: D9625DD4-D506-4E43-836D-9E0CDDCB9A79
 :END:
 
 ********* Levels without samples
 :PROPERTIES:
 :ID:       E65BA44B-FBA9-4A05-93B0-1246608C3754
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: E65BA44B-FBA9-4A05-93B0-1246608C3754
 :END:
 
 ******* Theory behind DESeq2
 :PROPERTIES:
 :ID:       C0765E52-718B-4771-9ECC-3689EE7CAA21
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: C0765E52-718B-4771-9ECC-3689EE7CAA21
 :END:
 
 ******** The DESeq2 model
 :PROPERTIES:
 :ID:       08949A97-2A7C-4D21-A9EB-811440E003A8
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 08949A97-2A7C-4D21-A9EB-811440E003A8
 :END:
 
 ******** Changes compared to the DESeq package
 :PROPERTIES:
 :ID:       41E50955-4ADF-4560-ACD0-86F58F544033
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 41E50955-4ADF-4560-ACD0-86F58F544033
 :END:
 
 ******** Methods changes since the 2014 DESeq2 paper
 :PROPERTIES:
 :ID:       1D28C489-FF28-4112-B9B9-70C09D382608
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 1D28C489-FF28-4112-B9B9-70C09D382608
 :END:
 
 ******** Count outlier detection
 :PROPERTIES:
 :ID:       14989EE3-4903-4FCB-A270-E3BAFFCD6EFA
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 14989EE3-4903-4FCB-A270-E3BAFFCD6EFA
 :END:
 
 ******** Contrasts
 :PROPERTIES:
 :ID:       45C7C99A-DC18-4293-9381-878DE892D84A
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 45C7C99A-DC18-4293-9381-878DE892D84A
 :END:
 
 ******** Expanded model matrices
 :PROPERTIES:
 :ID:       FBAAB9AE-7D25-43A5-9363-766F84F32198
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: FBAAB9AE-7D25-43A5-9363-766F84F32198
 :END:
 
 ******** Independent filtering and multiple testing
 :PROPERTIES:
 :ID:       EB54BD27-FD99-45DD-B671-8BBEB06857FE
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: EB54BD27-FD99-45DD-B671-8BBEB06857FE
 :END:
 
 ********* Filtering criteria
 :PROPERTIES:
 :ID:       4705CA0F-C007-4503-A898-74E946304812
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 4705CA0F-C007-4503-A898-74E946304812
 :END:
 
 ********* Why does it work?
 :PROPERTIES:
 :ID:       BA1FC087-AAF6-4116-9B86-0B0B4BBC5FDB
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: BA1FC087-AAF6-4116-9B86-0B0B4BBC5FDB
 :END:
 
 ******* Frequently asked questions
 :PROPERTIES:
 :ID:       7A2CF9E1-0C06-45FF-9637-C085CC6F15A0
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 7A2CF9E1-0C06-45FF-9637-C085CC6F15A0
 :END:
 
 ******** How can I get support for DESeq2?
 :PROPERTIES:
 :ID:       B5ADEA5D-15C6-4449-B15F-908E63118B76
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: B5ADEA5D-15C6-4449-B15F-908E63118B76
 :END:
 
 ******** Why are some pvalues set to NA?
 :PROPERTIES:
 :ID:       3D889B88-07E4-4D2C-91F1-58CCF54C9C2C
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 3D889B88-07E4-4D2C-91F1-58CCF54C9C2C
 :END:
 
 ******** How can I get unfiltered DESeq results?
 :PROPERTIES:
 :ID:       A4107221-A74A-4E79-AC6E-057F5CAB86DF
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: A4107221-A74A-4E79-AC6E-057F5CAB86DF
 :END:
 
 ******** How do I use the variance stabilized or rlog transformed data for differential testing?
 :PROPERTIES:
 :ID:       F6C4F4CE-03E9-46FC-8F9A-EF915DF7FEF2
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: F6C4F4CE-03E9-46FC-8F9A-EF915DF7FEF2
 :END:
 
 ******** Can I use DESeq2 to analyze paired samples?
 :PROPERTIES:
 :ID:       DA9671DE-23CE-4603-9077-0F8576CEECBF
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: DA9671DE-23CE-4603-9077-0F8576CEECBF
 :END:
 
 ******** If I have multiple groups, should I run all together or split into pairs of groups?
 :PROPERTIES:
 :ID:       5384671F-9FF2-4589-80E4-7B6E7AA681FF
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 5384671F-9FF2-4589-80E4-7B6E7AA681FF
 :END:
 
 ******** Can I run DESeq2 to contrast the levels of 100 groups?
 :PROPERTIES:
 :ID:       355A5DC0-1A35-4315-8DEB-4C2275EA9A7C
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 355A5DC0-1A35-4315-8DEB-4C2275EA9A7C
 :END:
 
 ******** Can I use DESeq2 to analyze a dataset without replicates?
 :PROPERTIES:
 :ID:       4AF6174D-0E98-4139-89B6-2E2AB1B13BA4
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 4AF6174D-0E98-4139-89B6-2E2AB1B13BA4
 :END:
 
 ******** How can I include a continuous covariate in the design formula?
 :PROPERTIES:
 :ID:       BBFFFE10-B8CF-4E66-9BA9-B78B0DA2FAF9
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: BBFFFE10-B8CF-4E66-9BA9-B78B0DA2FAF9
 :END:
 
 ******** Will the log fold change shrinkage “overshrink” large differences?
 :PROPERTIES:
 :ID:       01210C6E-221E-403D-AE9C-63946B83F9A4
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 01210C6E-221E-403D-AE9C-63946B83F9A4
 :END:
 
 ******** I ran a likelihood ratio test, but results() only gives me one comparison
 :PROPERTIES:
 :ID:       76AC2A68-59B8-4E92-B384-822B8CE0DD7B
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 76AC2A68-59B8-4E92-B384-822B8CE0DD7B
 :END:
 
 ******** What are the exact steps performed by DESeq()?
 :PROPERTIES:
 :ID:       74C55B19-7DAA-4357-8F15-179AF2645CFF
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 74C55B19-7DAA-4357-8F15-179AF2645CFF
 :END:
 
 ******** Is there an official Galaxy tool for DESeq2
 :PROPERTIES:
 :ID:       5A4CB62B-A91F-467F-AA52-B8D1C66D9D28
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 5A4CB62B-A91F-467F-AA52-B8D1C66D9D28
 :END:
 
 ******** I want to benchmark DESeq2 comparing to other DE tools.
 :PROPERTIES:
 :ID:       9B564504-8E91-4921-87D8-3AE89F5F6E2F
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 9B564504-8E91-4921-87D8-3AE89F5F6E2F
 :END:
 
 ******* SessionInfo
 :PROPERTIES:
 :ID:       626CE66C-E3D7-4D09-BEDC-27812DB3689B
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 626CE66C-E3D7-4D09-BEDC-27812DB3689B
 :END:
 
 [[file:~/Box%20Sync/comp_bio/Love,14%20Beginners%20guide%20to%20using%20the%20DESeq2%20package.pdf][Love,14 Beginners guide to using the DESeq2 package]]
@@ -7621,14 +6957,12 @@ A negative binomial GLM
 :PROPERTIES:
 :CREATED:  [2021-09-13 Mon 07:29]
 :ID:       7cbebba6-1707-41ea-aad4-ca697b99b03a
-:CUSTOM_ID: 7cbebba6-1707-41ea-aad4-ca697b99b03a
 :END:
 https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSeq.pdf
 **** edgeR                                                          :biotool:
 :PROPERTIES:
 :ID:       32BB77F2-0283-4A52-86AC-CDF2CB6A7315
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 32BB77F2-0283-4A52-86AC-CDF2CB6A7315
 :END:
 | edgeR | diff express |   |   | [[https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf][vignette]] |   | cite:robinson2010 |
 - GLM asking whether exons are used proportionally across experiment conditions
@@ -7646,7 +6980,6 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFgtGDXpvjWgzHdQjhXHVlSvf
 :PROPERTIES:
 :ID:       1db0ffb6-25b7-4c97-9aa0-263b8c96373b
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 1db0ffb6-25b7-4c97-9aa0-263b8c96373b
 :END:
 - [[https://www.scopus.com/results/citedbyresults.uri?sort=cp-f&cite=2-s2.0-85063257542&src=s&nlo=&nlr=&nls=&imp=t&sid=f566de7056a65b814af39a1c988abbfb&sot=cite&sdt=a&sl=0&origin=resultslist&offset=21&txGid=1f850b1319595ca2e1efdc578c6f60bb&isValidNewDocSearchRedirection=false][scopus citing exceRpt]]
 - cite:rozowsky2019
@@ -7700,7 +7033,6 @@ https://www.biostars.org/p/13270/
 :PROPERTIES:
 :doc: https://github.com/seqan/flexbar/wiki/Manual
 :ID:       5c20daf7-d02e-4447-bd1e-f991e1366c48
-:CUSTOM_ID: 5c20daf7-d02e-4447-bd1e-f991e1366c48
 :END:
 | flexbar |   |   |   | [[https://github.com/seqan/flexbar/wiki/Manual][doc]] |   | cite:roehr2017 |
 
@@ -7710,7 +7042,6 @@ https://www.biostars.org/p/13270/
 :PROPERTIES:
 :ID:       9b222d1c-ab61-450c-8b77-a98ec3213867
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 9b222d1c-ab61-450c-8b77-a98ec3213867
 :END:
 | GAGE | enrichment | express |   |   | [[https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-10-161][paper]] |   |
 - https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
@@ -7723,7 +7054,6 @@ https://www.biostars.org/p/13270/
 **** Genomic Alignments
 :PROPERTIES:
 :ID:       608b8cb2-4c77-4a9b-bc6a-24470bb572b0
-:CUSTOM_ID: 608b8cb2-4c77-4a9b-bc6a-24470bb572b0
 :END:
 - see [[id:78b22803-f843-41f2-9390-d621caae82c0][Genomic Ranges]]
 - summarizeOverlaps https://bioconductor.org/packages/release/bioc/vignettes/GenomicAlignments/inst/doc/summarizeOverlaps.pdf
@@ -7731,7 +7061,6 @@ https://www.biostars.org/p/13270/
 :PROPERTIES:
 :CREATED:  [2021-09-13 Mon 07:29]
 :ID:       78b22803-f843-41f2-9390-d621caae82c0
-:CUSTOM_ID: 78b22803-f843-41f2-9390-d621caae82c0
 :END:
 - https://bioconductor.github.io/BiocWorkshops/solving-common-bioinformatic-challenges-using-genomicranges.html
 - https://rstudio-pubs-static.s3.amazonaws.com/142838_0374b144401c449eb17ed5c2c70cb513.html#grangeslist-multiple-interval-range-features
@@ -7746,7 +7075,6 @@ https://www.biostars.org/p/13270/
 **** giggle
 :PROPERTIES:
 :ID:       a4e2adcd-f921-4aef-a808-866147b6db8a
-:CUSTOM_ID: a4e2adcd-f921-4aef-a808-866147b6db8a
 :END:
 - https://github.com/ryanlayer/giggle
 - https://www.nature.com/articles/nmeth.4556
@@ -7756,7 +7084,6 @@ https://www.biostars.org/p/13270/
 :doc:  [[http://portals.broadinstitute.org/cgi-bin/cancer/publications/pub_paper.cgi?mode=view&paper_id=216&p=t][site]]
 :ID:       4f0b84ab-1dec-45c9-a7d4-bdce41e13150
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 4f0b84ab-1dec-45c9-a7d4-bdce41e13150
 :END:
 https://www.genepattern.org/file-formats-guide
 
@@ -7777,7 +7104,6 @@ segmentation file column 6 is log2(x)-1 of the copy number, so
 :PROPERTIES:
 :ID:       D68E1182-1F7B-4160-A6DD-BD2635F8085F
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: D68E1182-1F7B-4160-A6DD-BD2635F8085F
 :END:
 - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1674-0#Sec8
 - https://bioconductor.org/packages/release/bioc/vignettes/fgsea/inst/doc/geseca-tutorial.html#analysis-of-time-course-data
@@ -7844,7 +7170,6 @@ segmentation file column 6 is log2(x)-1 of the copy number, so
 :paper: | [[https://www.nature.com/articles/s41467-017-00965-y][paper]] | cite:adalsteinsson2017 |
 :ID:       8c535c38-9310-4fd0-a8fe-c300639493da
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 8c535c38-9310-4fd0-a8fe-c300639493da
 :END:
 "Briefly, the genome was divided into T non-overlapping windows, or bins, of 1 Mb. Aligned reads were counted based on overlap within each bin using the tools in HMMcopy Suite (http://compbio.bccrc.ca/software/hmmcopy/). The read counts were then normalized to correct for GC content and mappability biases, and then CNAs and tumor fraction were estimated using HMMcopy R package18. "
 
@@ -7873,7 +7198,6 @@ https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzE
 :paper:  cite:zhang2014a        |
 :ID:       7519d47f-18e8-4a28-be11-9d081b68b52d
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 7519d47f-18e8-4a28-be11-9d081b68b52d
 :END:
   - cite:zhang2016
     - [[http://apps.webofknowledge.com/summary.do?product=WOS&parentProduct=WOS&search_mode=CitingArticles&qid=2&SID=6ERcSCYD7iSBCZMtAM7&&page=1&action=changePageSize&pageSize=50][WOS citing]]- no cfRNA yet
@@ -7893,7 +7217,6 @@ https://genome.ucsc.edu/cgi-bin/hgLiftOver
 :CREATED:  [2021-09-13 Mon 07:29]
 :use: differential expression
 :paper:  | count   |      |          | [[https://dx.doi.org/10.1093%2Fnar%2Fgkv007][paper]] |                        |
-:CUSTOM_ID: 3283b8b2-fc42-4a71-a8e9-7dbdd7ab62ce
 :END:
 - https://www.coursera.org/lecture/bioconductor/limma-aoNwW
 - [[file:~/Box%20Sync/comp_bio/RNA-seq/Ritchie,15%20limma%20powers%20differential%20expression%20analysis%20for%20RNA%20sequencing%20and%20microarray%20results.pdf][Ritchie,15 limma powers differential expression analysis for RNA sequencing and microarray results]]
@@ -7905,7 +7228,6 @@ https://genome.ucsc.edu/cgi-bin/hgLiftOver
 :PROPERTIES:
 :ID:       15C1AE68-19D2-4FBD-B51E-DA37C605F0D7
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 15C1AE68-19D2-4FBD-B51E-DA37C605F0D7
 :END:
 
 - concepts
@@ -7919,14 +7241,12 @@ https://genome.ucsc.edu/cgi-bin/hgLiftOver
 :PROPERTIES:
 :ID:       D1B28C0A-9AAD-4245-BE85-61300CE4A02B
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: D1B28C0A-9AAD-4245-BE85-61300CE4A02B
 :END:
 
 ****** WEHI example ([[file:~/Box%20Sync/comp_bio/RNA-seq/wehi_limma_example/wehi_limma_example.Rproj][Rproject]], [[file:~/Box%20Sync/comp_bio/RNA-seq/wehi_limma_example/wehi_limma_example.R][Rscript]]), [[http://bioinf.wehi.edu.au/RNAseqCaseStudy/][link]]
 :PROPERTIES:
 :ID:       1E96E985-8BD2-4D8F-AC88-FB509B99F513
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 1E96E985-8BD2-4D8F-AC88-FB509B99F513
 :END:
 :LOGBOOK:
 CLOCK: [2016-05-10 Tue 15:46]--[2016-05-10 Tue 16:05] =>  0:19
@@ -7938,14 +7258,12 @@ CLOCK: [2016-05-09 Mon 12:25]--[2016-05-09 Mon 13:13] =>  0:48
 :PROPERTIES:
 :ID:       817998EF-31AD-4A22-BF91-ACF72A1C29E5
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 817998EF-31AD-4A22-BF91-ACF72A1C29E5
 :END:
 
 ******* 18.1 [[file:~/Box%20Sync/comp_bio/limma_voom_template/yoruba_hapmap/][Profiles of Yoruba HapMap]]
 :PROPERTIES:
 :ID:       1E8CAB25-19C2-4745-B157-FA46D84549CD
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 1E8CAB25-19C2-4745-B157-FA46D84549CD
 :END:
 
 ******** DONE Read
@@ -7953,13 +7271,11 @@ CLOSED: [2016-06-30 Thu 11:22]
 :PROPERTIES:
 :ID:       91CBDFB8-17EB-4F2D-B2A4-58F656C64332
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 91CBDFB8-17EB-4F2D-B2A4-58F656C64332
 :END:
 
 ******** Work through code
 :PROPERTIES:
 :ID:       374ef56d-7a1a-4c40-ade8-f4acafd37602
-:CUSTOM_ID: 374ef56d-7a1a-4c40-ade8-f4acafd37602
 :END:
 
 :PROPERTIES:
@@ -7977,7 +7293,6 @@ Another use of the voom plot-  what you are failing to do completely in the voom
 :PROPERTIES:
 :CREATED:  [2021-09-13 Mon 07:29]
 :ID:       75ca7513-8f01-4819-a813-f9459f447483
-:CUSTOM_ID: 75ca7513-8f01-4819-a813-f9459f447483
 :END:
 - macs2 shift - https://www.biostars.org/p/207318/
 - https://github.com/macs3-project/MACS/blob/master/docs/callpeak.md
@@ -8016,7 +7331,6 @@ chr1 3120443 3120560 118 3120499 6.00 7.58942 5.43209 5.03290 ct01_aut_blk_ddp_o
 ***** Published MACS2 commands for ATAC-seq
 :PROPERTIES:
 :ID:       496e62cd-3138-4120-a499-a10246ce77b5
-:CUSTOM_ID: 496e62cd-3138-4120-a499-a10246ce77b5
 :END:
 - cite:corces2017 macs2 callpeak --nomodel --nolambda --keep-dup all --call-summits
 - cite:corces2018 macs2 callpeak --shift -75--extsize 150 --nomodel --call-summits --nolambda --keep-dup all -p 0.01
@@ -8025,7 +7339,6 @@ chr1 3120443 3120560 118 3120499 6.00 7.58942 5.43209 5.03290 ct01_aut_blk_ddp_o
 **** msigdbr
 :PROPERTIES:
 :ID:       edf39ef6-df91-40c2-a71a-c612d60b5582
-:CUSTOM_ID: edf39ef6-df91-40c2-a71a-c612d60b5582
 :END:
 [[id:c79bfe84-0f15-474e-8a22-1f210605ed5a][MSigDB]]
 https://cran.r-project.org/web/packages/msigdbr/vignettes/msigdbr-intro.html
@@ -8037,7 +7350,6 @@ https://cran.r-project.org/web/packages/msigdbr/vignettes/msigdbr-intro.html
 :use: sequencing QC
 :repo: [[https://github.com/ewels/MultiQC][github]]
 :doc: | [[https://multiqc.info/docs/][doc]]      |       |                        |
-:CUSTOM_ID: 066d50fc-5407-4c80-a6ca-2534f37ae043
 :END:
 https://cran.r-project.org/web/packages/TidyMultiqc/index.html
 **** NCBI Genome Workbench
@@ -8047,7 +7359,6 @@ https://www.ncbi.nlm.nih.gov/tools/gbench/
 **** NDEx :biotool:
 :PROPERTIES:
 :ID:       784895e5-0c94-4458-9cfb-f52759718ab3
-:CUSTOM_ID: 784895e5-0c94-4458-9cfb-f52759718ab3
 :END:
 - [[id:d84cf649-32f4-46e6-b041-4a8a76b31ffc][Pathway encoding]]
 - https://www.ndexbio.org/#/
@@ -8056,7 +7367,6 @@ https://www.ncbi.nlm.nih.gov/tools/gbench/
 :PROPERTIES:
 :CREATED:  [2019-12-27 Fri 14:48]
 :ID:       6116d262-9ca8-430b-b385-65e1a7fc0a70
-:CUSTOM_ID: 6116d262-9ca8-430b-b385-65e1a7fc0a70
 :END:
 :LOGBOOK:
 CLOCK: [2020-01-30 Thu 13:00]--[2020-01-30 Thu 14:04] =>  1:04
@@ -8128,7 +7438,6 @@ https://www.pnas.org/content/115/4/E743.long
 :PROPERTIES:
 :ID:       17c865dc-765c-496d-b5c7-60d3d3439de3
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 17c865dc-765c-496d-b5c7-60d3d3439de3
 :END:
 - https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004085
 - [[id:d84cf649-32f4-46e6-b041-4a8a76b31ffc][Pathway encoding]]
@@ -8143,7 +7452,6 @@ https://www.pnas.org/content/115/4/E743.long
 :ID:       9e48626d-47e1-477a-8b79-eff41f7974b8
 :CREATED:  [2021-09-13 Mon 07:29]
 :doc:  [[https://broadinstitute.github.io/picard/index.html][doc]]
-:CUSTOM_ID: 9e48626d-47e1-477a-8b79-eff41f7974b8
 :END:
 **** polyester                                                      :biotool:
 :PROPERTIES:
@@ -8152,14 +7460,12 @@ https://www.pnas.org/content/115/4/E743.long
 :substrate: fasta,gtf
 :use: rna-seq simulation
 :doc:  [[http://bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html][vignette]]
-:CUSTOM_ID: 065725b4-43d3-48d4-a4e2-3ca5c1e1e6fd
 :END:
   - https://www.bioconductor.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester.html
 
 **** preseq :biotool:
 :PROPERTIES:
 :ID:       6d8cbcc0-2651-4c51-991e-639dbc81ea66
-:CUSTOM_ID: 6d8cbcc0-2651-4c51-991e-639dbc81ea66
 :END:
 - http://smithlabresearch.org/manuals/preseqmanual.pdf
 - library complexity- preseqr http://smithlabresearch.org/manuals/preseqmanual.pdf
@@ -8180,7 +7486,6 @@ https://www.pnas.org/content/115/4/E743.long
 :substrate: bam
 :repo: [[https://github.com/deweylab/RSEM][repo]]
 :paper: |          | [[https://doi.org/10.1186/1471-2105-12-323][paper]] | cite:li2011            |
-:CUSTOM_ID: 85db5c34-b5fd-4b6c-bdb7-88263e553ba3
 :END:
 -
 - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
@@ -8207,7 +7512,6 @@ https://www.pnas.org/content/115/4/E743.long
 :paper:    [[https://doi.org/10.1038/nmeth.4197][paper]] | cite:patro2017
 :ID:       c0d79be1-f887-460e-9142-4d43c6632126
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: c0d79be1-f887-460e-9142-4d43c6632126
 :END:
 - see [[id:a0923938-4021-44cd-a8f3-94c0eb10cdb5][table of tools]]
 - https://www.biostars.org/p/397086/
@@ -8231,7 +7535,6 @@ https://www.pnas.org/content/115/4/E743.long
 :ID:       0a3acec7-f4d1-4cd1-b3c8-7ec769715cc1
 :CREATED:  [2021-09-13 Mon 07:29]
 :doc:  [[http://www.htslib.org/doc/samtools.html][online]]
-:CUSTOM_ID: 0a3acec7-f4d1-4cd1-b3c8-7ec769715cc1
 :END:
 - https://bioinformatics.stackexchange.com/questions/18538/samtools-sort-most-efficient-memory-and-thread-settings-for-many-samples-on-a-c
 - [[http://barcwiki.wi.mit.edu/wiki/SOPs/miningSAMBAM][some common Samtools tasks]]
@@ -8293,7 +7596,6 @@ https://www.biostars.org/p/9465609/
 :CREATED:  [2021-09-13 Mon 07:29]
 :paper:  cite:dobin2019
 :doc:  [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]
-:CUSTOM_ID: d1d5d554-57c4-4b9c-8385-2bb72369375e
 :END:
 - used in [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][alignment]]
 - star-rsem pipeline
@@ -8303,14 +7605,12 @@ https://www.biostars.org/p/9465609/
 :doc:  [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]
 :ID:       db678422-a644-4298-b962-33657a5dee7e
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: db678422-a644-4298-b962-33657a5dee7e
 :END:
 notes- https://www.biostars.org/p/251018/
 **** Trim Galore                                                    :biotool:
 :PROPERTIES:
 :ID:       3e4ca528-a604-4bfe-b235-2052e6d2d4a9
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 3e4ca528-a604-4bfe-b235-2052e6d2d4a9
 :END:
 -
   - wrapper for Cutadapt and FastQC
@@ -8329,7 +7629,6 @@ https://www.biostars.org/p/478810/
 :doi:  [[http://dx.doi.org/10.12688/f1000research.7563.1][paper]]
 :ID:       a5d4a32f-764b-4930-80e9-2a6e8d562ae8
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: a5d4a32f-764b-4930-80e9-2a6e8d562ae8
 :END:
 #+begin_src R
 saveDb()
@@ -8341,7 +7640,6 @@ saveDb()
 :paper: [[https://doi.org/10.1186/1471-2105-9-559][paper]]
 :ID:       948289d8-3a77-471a-b068-0507285e0bac
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 948289d8-3a77-471a-b068-0507285e0bac
 :END:
 - visualization
   - example
@@ -8673,7 +7971,6 @@ net = blockwiseConsensusModules(
 :PROPERTIES:
 :CREATED:  [2019-03-13 Wed 10:11]
 :ID:       58F7BED2-DED1-4911-9E8C-104E12126A73
-:CUSTOM_ID: 58F7BED2-DED1-4911-9E8C-104E12126A73
 :END:
 :LOGBOOK:
 CLOCK: [2019-03-14 Thu 07:49]--[2019-03-14 Thu 08:45] =>  0:56
@@ -8710,7 +8007,6 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 **** wikipathways :biotool:
 :PROPERTIES:
 :ID:       69bfa728-e149-4b8a-9863-347630f86bc4
-:CUSTOM_ID: 69bfa728-e149-4b8a-9863-347630f86bc4
 :END:
 - uses [[id:17c865dc-765c-496d-b5c7-60d3d3439de3][pathvisio]]
 - cite:wikipathways
@@ -8871,14 +8167,12 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :PROPERTIES:
 :ID:       7cce7be9-b3ac-4127-9a92-71559617588e
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: 7cce7be9-b3ac-4127-9a92-71559617588e
 :END:
 - [[https://www.ebi.ac.uk/services][EMBL-EBI Tools]]
 **** UCSC tools                                                     :biotool:
 :PROPERTIES:
 :ID:       be612cfb-2a75-4935-92fd-85620dcabf92
 :CREATED:  [2021-09-13 Mon 07:29]
-:CUSTOM_ID: be612cfb-2a75-4935-92fd-85620dcabf92
 :END:
 #+begin_src bash
 ls
@@ -8909,7 +8203,6 @@ CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
 :PROPERTIES:
 :ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
 :header-args:bash: :tangle ./docker/biotools_Dockerfile
-:CUSTOM_ID: 7ed344ce-373c-4f9e-b24f-87b57374e1a0
 :END:
 :LOGBOOK:
 CLOCK: [2021-12-09 Thu 16:19]--[2021-12-09 Thu 17:19] =>  1:00
@@ -9658,7 +8951,6 @@ RUN mkdir /opt/picard-2.18.1/ \
 :PROPERTIES:
 :header-args:bash: :tangle ./docker/rna_Dockerfile
 :ID:       1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
-:CUSTOM_ID: 1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
 :END:
 **** Preamble
 #+begin_src bash
@@ -9717,7 +9009,6 @@ ENV PATH="/opt/mirdeep2/bin:${PATH}"
 :PROPERTIES:
 :header-args:bash: :tangle ./docker/atac_Dockerfile :tangle-mode (identity #o555)
 :ID:       57458bd3-005f-4342-ada7-58c55a74d7d0
-:CUSTOM_ID: 57458bd3-005f-4342-ada7-58c55a74d7d0
 :END:
 :LOGBOOK:
 CLOCK: [2022-08-30 Tue 11:43]--[2022-08-30 Tue 11:57] =>  0:14
@@ -9806,7 +9097,6 @@ https://www.biostars.org/p/219541/
 ** References, databases, standards, file types, and data sets
 :PROPERTIES:
 :ID:       FCBA0863-010A-448C-A33C-941D2AA45AD5
-:CUSTOM_ID: FCBA0863-010A-448C-A33C-941D2AA45AD5
 :END:
 - https://www.biostars.org/p/181014/
 - https://www.genomicinformationcommons.org/
@@ -9828,7 +9118,6 @@ https://www.biostars.org/p/219541/
 *** MSigDB
 :PROPERTIES:
 :ID:       c79bfe84-0f15-474e-8a22-1f210605ed5a
-:CUSTOM_ID: c79bfe84-0f15-474e-8a22-1f210605ed5a
 :END:
 - [[id:edf39ef6-df91-40c2-a71a-c612d60b5582][msigdbr]]
 - [[https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp][MSigDB]] [[https://data.broadinstitute.org/gsea-msigdb/msigdb/][data]]
@@ -9836,13 +9125,11 @@ https://www.biostars.org/p/219541/
 *** Chromosome sizes
 :PROPERTIES:
 :ID:       8a50f360-6043-4e19-9620-61f3b957b28a
-:CUSTOM_ID: 8a50f360-6043-4e19-9620-61f3b957b28a
 :END:
   - http://hgdownload.cse.ucsc.edu/goldenpath/mm10/bigZips/mm10.chrom.sizes
 *** Genome reference builds and associated sequences
 :PROPERTIES:
 :ID:       e9e201b5-4a94-4861-8de8-803676c3a37f
-:CUSTOM_ID: e9e201b5-4a94-4861-8de8-803676c3a37f
 :END:
 - UCSC is chr, ensembl is NOT
 - https://gatk.broadinstitute.org/hc/en-us/articles/360035890951-Human-genome-reference-builds-GRCh38-or-hg38-b37-hg19
@@ -9850,18 +9137,15 @@ https://www.biostars.org/p/219541/
 *** By substrate
 :PROPERTIES:
 :ID:       ffe7a0f8-5e6d-45ff-adec-efbba7c44783
-:CUSTOM_ID: ffe7a0f8-5e6d-45ff-adec-efbba7c44783
 :END:
 **** RNA
 :PROPERTIES:
 :ID:       59c43aa9-cfa1-4e03-b5fb-25c74f626352
-:CUSTOM_ID: 59c43aa9-cfa1-4e03-b5fb-25c74f626352
 :END:
 cite:consortium2020
 *** Adapter sequences
 :PROPERTIES:
 :ID:       cf2ea58e-8751-4d90-ab08-a63445925c89
-:CUSTOM_ID: cf2ea58e-8751-4d90-ab08-a63445925c89
 :END:
 - http://www.science.smith.edu/cmbs/wp-content/uploads/sites/36/2020/01/illumina-adapter-sequences-1000000002694-11.pdf
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5759201/
@@ -9870,23 +9154,19 @@ cite:consortium2020
 *** [[id:c0c0ee28-2e41-41a7-9a3b-ae195117a93e][LINK TO common bioinformatics file manipulation]]
 :PROPERTIES:
 :ID:       fc44f2e8-c32f-4169-ba9c-5032a35327a6
-:CUSTOM_ID: fc44f2e8-c32f-4169-ba9c-5032a35327a6
 :END:
 *** [[id:767e5e30-8490-4cda-8018-8b0bd91c4ef3][LINK TO Code associated with sequence reference builds]]
 :PROPERTIES:
 :ID:       a7a6c48c-f2a5-478e-858d-c99ebd9be027
-:CUSTOM_ID: a7a6c48c-f2a5-478e-858d-c99ebd9be027
 :END:
 *** By organism
 :PROPERTIES:
 :CREATED:  [2020-10-26 Mon 12:18]
 :ID:       33638cdf-113c-4248-aff4-b0d8ea7cbc09
-:CUSTOM_ID: 33638cdf-113c-4248-aff4-b0d8ea7cbc09
 :END:
 **** Rat
 :PROPERTIES:
 :ID:       f4ff99c8-9149-4183-89ff-56a09e68943b
-:CUSTOM_ID: f4ff99c8-9149-4183-89ff-56a09e68943b
 :END:
 - Genome assemblies
   - https://www.ncbi.nlm.nih.gov/assembly/organism/10116/latest/
@@ -9897,13 +9177,11 @@ cite:consortium2020
 **** human
 :PROPERTIES:
 :ID:       8a910eca-5f96-4a74-ad3e-efc6eb748b7c
-:CUSTOM_ID: 8a910eca-5f96-4a74-ad3e-efc6eb748b7c
 :END:
 - http://browser.1000genomes.org/index.html
 **** mouse
 :PROPERTIES:
 :ID:       23fc30cd-7e45-4333-8740-1d8ec0755dab
-:CUSTOM_ID: 23fc30cd-7e45-4333-8740-1d8ec0755dab
 :END:
 - https://github.com/czbiohub/tabula-muris
 - [[http://www.informatics.jax.org/vocab/gene_ontology][jax mouse gene ontology browser]]
@@ -9912,7 +9190,6 @@ cite:consortium2020
 *** by data type
 :PROPERTIES:
 :ID:       5f2913ae-1f4a-44d5-90e2-9ee045c37b78
-:CUSTOM_ID: 5f2913ae-1f4a-44d5-90e2-9ee045c37b78
 :END:
 - extracellular RNA
   - https://exrna.org/resources/data/
@@ -9926,7 +9203,6 @@ cite:consortium2020
 *** reference data
 :PROPERTIES:
 :ID:       4dc2f252-12fe-409e-bef0-aab2d765de7a
-:CUSTOM_ID: 4dc2f252-12fe-409e-bef0-aab2d765de7a
 :END:
 - homology
   - http://bioinf.wehi.edu.au/MSigDB/
@@ -9971,7 +9247,6 @@ cite:consortium2020
 *** individual subject / sample level data
 :PROPERTIES:
 :ID:       55d196dd-c99f-4ce8-b8e6-290b778e15b3
-:CUSTOM_ID: 55d196dd-c99f-4ce8-b8e6-290b778e15b3
 :END:
 - [[https://www.ebi.ac.uk/ena][European Nucleotide Archive]]
 - https://www.ncbi.nlm.nih.gov/geo/
@@ -9991,7 +9266,6 @@ cite:consortium2020
 **** GDC: Genomic Data Commons
 :PROPERTIES:
 :ID:       99eace6a-6b4e-4acf-9381-1b48a59a4b61
-:CUSTOM_ID: 99eace6a-6b4e-4acf-9381-1b48a59a4b61
 :END:
 - [[https://gdc.cancer.gov/][NCI Genomic Data Commons]]
   - [[https://docs.gdc.cancer.gov/][GDC documentation]]
@@ -10005,7 +9279,6 @@ cite:consortium2020
 *** sequence variation
 :PROPERTIES:
 :ID:       629e512e-60ac-4283-bc0e-028b8cad3dcc
-:CUSTOM_ID: 629e512e-60ac-4283-bc0e-028b8cad3dcc
 :END:
 - [[http://firebrowse.org/?cohort=ACC&download_dialog=true][firehose]]
 - http://browser.1000genomes.org/index.html
@@ -10031,7 +9304,6 @@ cite:consortium2020
 *** gene expression
 :PROPERTIES:
 :ID:       333ebad6-9ed4-4d5b-a50e-f9fe9a8c3a92
-:CUSTOM_ID: 333ebad6-9ed4-4d5b-a50e-f9fe9a8c3a92
 :END:
 https://www.nature.com/articles/s41598-020-72664-6
 - https://github.com/czbiohub/tabula-muris
@@ -10054,7 +9326,6 @@ https://www.nature.com/articles/s41598-020-72664-6
 :PROPERTIES:
 :CREATED:  [2020-07-02 Thu 13:18]
 :ID:       7b386a21-a6b8-49d1-ad4b-f5976bf30666
-:CUSTOM_ID: 7b386a21-a6b8-49d1-ad4b-f5976bf30666
 :END:
 :LOGBOOK:
 CLOCK: [2020-07-02 Thu 13:19]--[2020-07-02 Thu 13:29] =>  0:10
@@ -10067,7 +9338,6 @@ CLOCK: [2020-07-02 Thu 13:19]--[2020-07-02 Thu 13:29] =>  0:10
 *** Sequence Databases and Data Sets
 :PROPERTIES:
 :ID:       C137CB28-0517-4A98-8FB4-6D312DDBC325
-:CUSTOM_ID: C137CB28-0517-4A98-8FB4-6D312DDBC325
 :END:
 - https://tabula-muris.ds.czbiohub.org/
 - [[http://www.mitomap.org/MITOMAP][MITOMAP human mitochondrial genome]]
@@ -10084,7 +9354,6 @@ CLOCK: [2020-07-02 Thu 13:19]--[2020-07-02 Thu 13:29] =>  0:10
 **** Stored on neuro server at G:/reference
 :PROPERTIES:
 :ID:       F08101C9-F675-4A35-B9A8-D0159FD74AFF
-:CUSTOM_ID: F08101C9-F675-4A35-B9A8-D0159FD74AFF
 :END:
 
 - mouse
@@ -10095,7 +9364,6 @@ CLOCK: [2020-07-02 Thu 13:19]--[2020-07-02 Thu 13:29] =>  0:10
 **** Genomes
 :PROPERTIES:
 :ID:       277AAE94-CFE5-400E-B5B9-291677A513D0
-:CUSTOM_ID: 277AAE94-CFE5-400E-B5B9-291677A513D0
 :END:
 - https://gatk.broadinstitute.org/hc/en-us/articles/360035890951-Human-genome-reference-builds-GRCh38-or-hg38-b37-hg19#:~:text=The%20latest%20build%20of%20the,the%20repertoire%20of%20ALT%20contigs.
 - [[https://www.biostars.org/p/4405/][reasons to avoid soft-masked genomes for alignment]]
@@ -10105,7 +9373,6 @@ CLOCK: [2020-07-02 Thu 13:19]--[2020-07-02 Thu 13:29] =>  0:10
 ***** Custom Genomes
 :PROPERTIES:
 :ID:       F5506BF8-8A6E-4949-9F5E-15B21511E87E
-:CUSTOM_ID: F5506BF8-8A6E-4949-9F5E-15B21511E87E
 :END:
 
 - No hits for "custom" in cite:star_2.5_dobin or cite:dobin2015mapping
@@ -10123,13 +9390,11 @@ https://support.bioconductor.org/p/66379/
 ****** Generating a Custom Genome
 :PROPERTIES:
 :ID:       11F1FF38-7F23-4B81-AEA3-AA760DC62C9F
-:CUSTOM_ID: 11F1FF38-7F23-4B81-AEA3-AA760DC62C9F
 :END:
 
 ******* Trial w/ EWSR1-FLLI1
 :PROPERTIES:
 :ID:       D293BED1-C843-476E-891B-E8FEFB4917F3
-:CUSTOM_ID: D293BED1-C843-476E-891B-E8FEFB4917F3
 :END:
 
 - Looking for help
@@ -10157,7 +9422,6 @@ https://support.bioconductor.org/p/66379/
 ***** Human genome builds
 :PROPERTIES:
 :ID:       D0BD8791-0AE3-472E-A346-C0DD0D79AFD9
-:CUSTOM_ID: D0BD8791-0AE3-472E-A346-C0DD0D79AFD9
 :END:
 
 - [[http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/][Human hg38]]
@@ -10168,7 +9432,6 @@ https://support.bioconductor.org/p/66379/
 ****** hg19
 :PROPERTIES:
 :ID:       5a7cdb22-c982-4daa-b0ef-799f7347a683
-:CUSTOM_ID: 5a7cdb22-c982-4daa-b0ef-799f7347a683
 :END:
 :LOGBOOK:
 CLOCK: [2020-10-05 Mon 13:24]--[2020-10-05 Mon 13:31] =>  0:07
@@ -10179,7 +9442,6 @@ CLOCK: [2020-10-05 Mon 13:24]--[2020-10-05 Mon 13:31] =>  0:07
 ****** Ensembl GRCh37 fastas
 :PROPERTIES:
 :ID:       B6066026-81E3-49F3-9A0E-C5E610CB86AB
-:CUSTOM_ID: B6066026-81E3-49F3-9A0E-C5E610CB86AB
 :END:
 
 [[ftp://ftp.ensembl.org/pub/grch37/current/fasta/homo_sapiens/dna/README][Readme]]
@@ -10192,7 +9454,6 @@ https://www.biostars.org/p/122305/
 ***** by Institute
 :PROPERTIES:
 :ID:       48D2EFA9-39A0-4D5F-8AFA-4726E9488D60
-:CUSTOM_ID: 48D2EFA9-39A0-4D5F-8AFA-4726E9488D60
 :END:
 
     - genome reference consortium
@@ -10208,7 +9469,6 @@ https://www.biostars.org/p/122305/
 ***** 37=hg19 sort of
 :PROPERTIES:
 :ID:       604441C8-6BCE-426F-9DE9-5D960F75C3D3
-:CUSTOM_ID: 604441C8-6BCE-426F-9DE9-5D960F75C3D3
 :END:
 
 https://www.biostars.org/p/123767/
@@ -10223,13 +9483,11 @@ https://wiki.dnanexus.com/Scientific-Notes/human-genome
 ***** [[http://www.ncbi.nlm.nih.gov/projects/genome/assembly/grc/mouse/][GRC GR/scratch/jeszyman/f/scratch/jeszyman/fishseq/set1/S14-43147_2_sequence.fastq ishseq/set1/S14-43147_2_sequence.fastq Cm38]]
 :PROPERTIES:
 :ID:       A57F0012-6870-4F79-92A3-C580DB1D33AD
-:CUSTOM_ID: A57F0012-6870-4F79-92A3-C580DB1D33AD
 :END:
 
 ***** [[http://useast.ensembl.org/info/data/ftp/index.html?redirect=no][Ensembl]]
 :PROPERTIES:
 :ID:       D18360E5-0B07-4AB6-92F6-D4B717A2E159
-:CUSTOM_ID: D18360E5-0B07-4AB6-92F6-D4B717A2E159
 :END:
 
 ******
@@ -10260,7 +9518,6 @@ https://wiki.dnanexus.com/Scientific-Notes/human-genome
 *** Clinical Fusion Protein Databases
 :PROPERTIES:
 :ID:       51EC0C78-7164-43CA-97B1-1FF2205B46A7
-:CUSTOM_ID: 51EC0C78-7164-43CA-97B1-1FF2205B46A7
 :END:
 
 chimer-
@@ -10275,7 +9532,6 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 *** Other Databases and Data Sets
 :PROPERTIES:
 :ID:       396F7A49-ACB4-4F81-8C73-ACC907207BB8
-:CUSTOM_ID: 396F7A49-ACB4-4F81-8C73-ACC907207BB8
 :END:
 - DGIdb
   - - https://pubmed.ncbi.nlm.nih.gov/33237278/
@@ -10290,7 +9546,6 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 *** Bioinformatics File Formats
 :PROPERTIES:
 :ID:       5e2c4e39-99bc-4cc8-86a6-c39bea5ac2d8
-:CUSTOM_ID: 5e2c4e39-99bc-4cc8-86a6-c39bea5ac2d8
 :END:
 - https://genome.ucsc.edu/FAQ/FAQformat.html#format4
 - [[https://genome.ucsc.edu/FAQ/FAQformat.html#format1][Nucleic acid data formats]]
@@ -10318,7 +9573,6 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 **** Sequence file formats
 :PROPERTIES:
 :ID:       4a86acd3-db60-4a63-979e-43e34070e7c7
-:CUSTOM_ID: 4a86acd3-db60-4a63-979e-43e34070e7c7
 :END:
 
 - fasta
@@ -10326,7 +9580,6 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 ***** fastq
 :PROPERTIES:
 :ID:       59bc8f81-cf57-4e56-a5ff-3b0ff4095a91
-:CUSTOM_ID: 59bc8f81-cf57-4e56-a5ff-3b0ff4095a91
 :END:
 - https://en.wikipedia.org/wiki/FASTQ_format
 - [[https://www.biostars.org/p/198143/][get sequencer type from fastq header]]
@@ -10336,14 +9589,12 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
 **** .bed
 :PROPERTIES:
 :ID:       6DB65B82-D88C-43EA-9D2B-169D9184C9D5
-:CUSTOM_ID: 6DB65B82-D88C-43EA-9D2B-169D9184C9D5
 :END:
 **** SAM
 https://www.biostars.org/p/356811/
 **** CIGAR- a subformat in SAM w/ three operations
 :PROPERTIES:
 :ID:       A664A1C3-9130-400D-BE32-D7D58CF80537
-:CUSTOM_ID: A664A1C3-9130-400D-BE32-D7D58CF80537
 :END:
 
 Original CIGAR
@@ -10367,7 +9618,6 @@ mandatory
 **** Sequence alignment/Map format specification (.sam/.bam)
 :PROPERTIES:
 :ID:       44889954-63D8-4416-9F28-0691ECF99A9B
-:CUSTOM_ID: 44889954-63D8-4416-9F28-0691ECF99A9B
 :END:
 - [[https://genome.sph.umich.edu/wiki/SAM][nice visualization of fields]]
 - cite:samspec2017
@@ -10739,7 +9989,6 @@ https://pubs.rsc.org/en/content/articlelanding/2020/cs/d0cs00647e
 *** Setup common reference files
 :PROPERTIES:
 :ID:       813ed980-1c55-44d7-84d8-67afdad2e5bc
-:CUSTOM_ID: 813ed980-1c55-44d7-84d8-67afdad2e5bc
 :END:
   #+name: setup_common_references
   #+begin_src bash
@@ -10785,1930 +10034,7 @@ done
 # get readmes
 #########1#########2#########3#########4#########5#########6#########7#########8
 #+end_src
-** Bioinformatics pipeline                               :mod:biopipe:career:
-:PROPERTIES:
-:ID:       271b4d5f-727e-496e-b835-8fe9f8655655
-:CUSTOM_ID: 271b4d5f-727e-496e-b835-8fe9f8655655
-:END:
-externalize test environments while in initial dev
-*** Processes                                                     :hierarchy:
-**** Flat                                                              :flat:
-***** Initial build                                                 :process:
-:PROPERTIES:
-:ID:       1a8d792b-9621-42a8-80c9-399b6065630a
-:CUSTOM_ID: 1a8d792b-9621-42a8-80c9-399b6065630a
-:END:
-- [X] Insert [[id:2a6a5dac-151e-42e8-a80a-74f77ad0d4ca][Template]] and remove org id
-- [X] [[id:f9bc78fb-826f-4148-a62f-336454f6c1b1][Git repository setup]]
-- [X] Make initial [[*README][README]]
-
-***** Project stable version update                                 :process:
-:PROPERTIES:
-:logging: nil
-:reset_check_boxes: t
-:noblocking: t
-:ID:       f6717c79-64ce-4b16-b455-649df2ba20fd
-:CUSTOM_ID: f6717c79-64ce-4b16-b455-649df2ba20fd
-:END:
-
-
-- [ ] Update :dev: header
-- [ ] Update to most recent [[id:2a6a5dac-151e-42e8-a80a-74f77ad0d4ca][Template]]
-- [ ] Delete tangled files and re-run pipeline
-- [ ] Make new DAG
-- [ ] Update README and export
-- [ ] Push to new stable branch
-  - (git push origin <source branch>:<dest branch>)
-
-***** Snakemake install and setup
-
-- via mambaforge https://snakemake.readthedocs.io/en/stable/tutorial/setup.html
-  #+begin_src bash
-conda init bash
-/bin/bash
-conda activate base
-conda install -n base -c conda-forge mamba
-y
-mamba create -c conda-forge -c bioconda -n snakemake snakemake
-y
-conda activate snakemake
-snakemake --help
-#+end_src
-- via miniconda
-  - [[https://docs.anaconda.com/anaconda/install/multi-user/][install multi-user miniconda]]
-- add singularity
-  -
-
-***** Run
-
-  --lint
-  --rulegraph
-  - https://www.google.com/search?q=snakemake+run+specific+rule
-  - docker - https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html?highlight=docker#running-jobs-in-containers
-- syntax for running shell https://stackoverflow.com/questions/45553762/recommended-way-to-do-multiple-shell-commands-with-shell/49533645#49533645
-- https://stackoverflow.com/questions/17126996/emacs-mode-for-snakemake
-- check md5 https://stackoverflow.com/questions/65907256/snakemake-use-checksums-instead-of-timestamps
-
-***** Writing snakefiles
-
-https://stackoverflow.com/questions/50413374/glob-wildcards-on-multiple-directories-with-different-file-names
-- Input functions
-  - https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/09-input_functions/index.html
-- [[id:f20681eb-de70-4540-a9ba-63de0c800321][Python dictionaries]]
-- https://stackoverflow.com/questions/56042158/snakemake-correct-syntax-for-accessing-dictionary-values
-- python dict for names https://stackoverflow.com/questions/50413374/glob-wildcards-on-multiple-directories-with-different-file-names
-- Run rule on all files in dir https://snakemake.readthedocs.io/en/stable/project_info/faq.html#how-do-i-run-my-rule-on-all-files-of-a-certain-directory
-- To pass character vector to R snakemake rule https://stackoverflow.com/questions/13840207/character-vector-as-an-argument-to-r-script
-- R package management in snakemake rules
-  - https://github.com/lachlandeer/snakemake-econ-r
-- https://lachlandeer.github.io/snakemake-econ-r-tutorial/logging-output-and-errors.html
-- https://stackoverflow.com/questions/69483414/unspecified-syntax-error-in-snakemake-rule
-- test workflow output- https://stackoverflow.com/questions/50198628/snakemake-confusion-on-how-to-access-config-files-properly
-- workaround for using snakemake vars in shell script https://stackoverflow.com/a/49533645/6106936
-- https://github.com/snakemake/snakemake/issues/971
-- Configuration files
-  - [[id:2d51112e-b2a4-41c5-bbd9-d9fc85cc59c5][YAML document markup language]]
-  - Using config variables
-    - https://lachlandeer.github.io/snakemake-econ-r-tutorial/config-files.html
-  - can do multiple config files- see https://stackoverflow.com/questions/62696099/snakemake-multiple-config-files
-
-*** Style and best practices checklist
-:PROPERTIES:
-:ID:       3924c49e-5296-4fcd-8994-9b62a5bbf772
-:logging:  nil
-:CUSTOM_ID: 3924c49e-5296-4fcd-8994-9b62a5bbf772
-:END:
-- Always int tests to allow reference from exp repos
-- Avoid dynamically determined inputs and  function calls in rules
-- inputs mostly flat with some  dir-level inputs
-
-- Org file per [[id:2a6a5dac-151e-42e8-a80a-74f77ad0d4ca][Template]]
-- Configuration yaml
-  - Required parameters
-    - default container
-- File, directory, and variable naming
-  - Names common across repos and snakefiles, to be referenced directly from config:
-    - datadir
-    - logdir
-  - All inputs and outputs to a single local data directory. This directory is common across snakefiles and pipelines and therefore naming within must be unique.
-  - Outputs to flat list of subdirectories by {file type}-{smk}-{step}
-  - Output file names as {identifier}_{smk}_{step}.{suffix}
-  - Simplify parameter names as much as possible in configuration YAMLs and operational snakefiles. Construct naming logic within the integration snakefile.
-- Snakefile and org file structure
-  - Per rule
-    - Conform to [[id:5ac79198-801a-4ab9-82df-88402cb63e4d][bash]] and [[id:928c57a9-dd2b-427b-b1c4-191e6321d133][R]] rule YAS
-  - Inputs
-    - Use tabular configuration for samples
-  - README
-    - Include Change log
-    - Update at least at stable version
-  - Integration testing snakefile
-    - Contains all extraneous commands not relevant to focus of repo (symlinking, etc)
-    - Preamble
-      - Define initial samples
-      - Make readable file check
-      - Symlink sample files from inputs using a python library
-      - Define task-specific workflow directory structure
-    - All rule has output of every content-specific snakefile. Intermediate rules are commented out.
-  - Resources
-    - Generate and link to DAG
-- Development and updates
-  - Trunk-based development via git and github
-  - Stable release branches are creatd for external use.
-    - Follow semantic versioning
-    - Brach named as stable.<SEM VAR>
-  - Version 1 is a minimum working example using only data in test/inputs
-
-*** Bioinformatics research project orgfile :template:
-:PROPERTIES:
-:ID:       2a6a5dac-151e-42e8-a80a-74f77ad0d4ca
-:export_file_name: ./resources/bioinformatics_research_project_orgfile_template.org
-:CUSTOM_ID: 2a6a5dac-151e-42e8-a80a-74f77ad0d4ca
-:END:
-**** TODO Repository setup and administration
-***** TODO [[id:1a8d792b-9621-42a8-80c9-399b6065630a][Bioinformatics pipeline initial build]]
-***** Setup of inputs for integration testing
-****** [[file:test/inputs/libraries.tsv][Libraries table]]
-***** Dockerfile
-**** Snakemake configuration YAML
-#+begin_src bash :tangle ./config/int_test.yaml
-
-#+end_src
-**** [[./workflow/int_test.smk][Integration testing]] :smk:
-:PROPERTIES:
-:header-args:snakemake: :tangle ./workflow/int_test :tangle-mode (identity #o555))
-:END:
-***** Preamble
-#+begin_src snakemake
-
-#########1#########2#########3#########4#########5#########6#########7#########8
-###                                                                          ###
-###               Integration testing snakefile for <REPO>                   ###
-###                                                                          ###
-#########1#########2#########3#########4#########5#########6#########7#########8
-
-###   Load required packages   ###
-
-import numpy as np
-import os
-import pandas as pd
-import re
-
-#+end_src
-***** Variable naming
-#+begin_src snakemake
-
-###   Variable naming   ###
-
-#+end_src
-***** Functions
-#+begin_src snakemake
-
-###   Functions   ###
-
-def make_library_dictionary(tsv_path, col):
-    lib_in = pd.read_table(tsv_path)
-    readable = []
-    for x in lib_in[col]:
-        readable.append(os.access(x, os.R_OK))
-    lib_in['readable']=readable
-    lib = lib_in[lib_in.readable == True]
-    lib_dict = dict(zip(lib['library'], lib[col]))
-    return lib_dict
-
-test = make_library_dictionary("~/repos/cfdna-wgs/test/inputs/cna_libraries.tsv","bam_file")
-test
-#+end_src
-***** All rule
-#+begin_src snakemake
-
-###   Rules   ###
-
-rule all:
-    input:
-
-#+end_src
-***** Benchmark aggregation
-- Snakemake
-  #+begin_src snakemake
-
-###   Benchmark   ###
-#+begin_src snakemake
-
-onsuccess:
-    shell("""
-        bash {cfdna_wgs_scriptdir}/agg_bench.sh {benchdir} {qcdir}/agg_bench.tsv
-        """)
-#+end_src
-
-#+begin_src bash :tangle ./scripts/agg_bench.sh
-# For unit testing
-indir="test/benchmark"
-output="test/analysis/qc/bench_agg.tsv"
-
-if [ -f $output ]; then rm $output; fi
-
-for file in $indir/*
-do
-    base=$(basename $file)
-    cat $file | awk -v OFS='\t' -v var=$base 'NR>1 {print var,$0}' >> $output
-done
-
-sed -i '1i\process\tfloat_sec\trun_time\tmax_rss\tmax_vms\tmax_uss\tmax_pss\tio_in\tio_out\tmean_load\tcpu_time' $output
-
-#+end_src
-
-
-***** Symlink input fastqs
-#+begin_src snakemake
-rule symlink_inputs:
-    container: default_container,
-    input:
-        lambda wildcards: cfdna_wgs_lib_dict[wildcards.library],
-    output:
-        read1 = cfdna_wgs_fastqs + "/{library}_raw_R1.fastq.gz",
-        read2 = cfdna_wgs_fastqs + "/{library}_raw_R2.fastq.gz",
-    params:
-        outdir = cfdna_wgs_fastqs,
-        script = cfdna_wgs_scriptdir + "/symlink.sh",
-    shell:
-        """
-        {params.script} \
-        {input} \
-        {output.read1} \
-        {output.read2} \
-        {params.outdir}
-        """
-#+end_src
-#+begin_src bash :tangle ./scripts/symlink.sh
-#!/usr/bin/env bash
-set -o errexit   # abort on nonzero exitstatus
-set -o nounset   # abort on unbound variable
-set -o pipefail  # don't hide errors within pipes
-
-# Script variables
-input_read1="${1}"
-output_read1="${2}"
-output_read2="${3}"
-outdir="${4}"
-
-mkdir -p $outdir
-
-input_read2="$(echo $input_read1 | sed "s/_R1/_R2/g")"
-
-ln -sf --relative ${input_read1} ${output_read1}
-ln -sf --relative ${input_read2} ${output_read2}
-#+end_src
-
-
-***** Includes statements
-#+begin_src snakemake
-include:
-#+end_src
-
-**** [[*Operating snakemake file org-mode tree (YAS)][Operating snakemake file org-mode tree (YAS)]] :smk:
-**** README
-:PROPERTIES:
-:export_file_name: ./readme.md
-:export_file_options: toc:nil
-:END:
-Directory Structure
-#+begin_example
--- Main
-   |-- config
-   |-- resources
-   |-- results
-   |-- test
-       |-- inputs
-   |-- tools
-   |-- workflow
-       |-- scripts
-#+end_example
-
-***** Pipeline Directed Acyclic Graphs
-***** Prerequisites for local integration testing
-- See configuation file (./config/int_test.yaml) for required parameters and versioned singularity container
-***** Changelog
-- [DATE] CHANGE.
-**** Development
-**** Ideas
-**** Refernece
-*** Local YAS                                                          :flat:
-:PROPERTIES:
-:ID:       ce85a21e-466f-43d0-ad13-3cd21497bfc3
-:CUSTOM_ID: ce85a21e-466f-43d0-ad13-3cd21497bfc3
-:END:
-**** Bash rule
-:PROPERTIES:
-:ID:       5ac79198-801a-4ab9-82df-88402cb63e4d
-:CUSTOM_ID: 5ac79198-801a-4ab9-82df-88402cb63e4d
-:END:
-#+name: smk.rule.bash
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule.bash
-# -*- mode: snippet -*-
-# key: smk.rule.bash
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (org-current-level) ?*)` ${12: <RULE DESCRIPTIVE ORG NAME>}    :smk_rule:
-- [[./workflow/${1: <SNAKEFILE BASENAME>}.smk::rule $3_$4][Snakemake] $0
-  ,#+begin_src snakemake
-# ${2:<DESCRIPTIVE COMMENT>}
-rule ${3: <SNAKEFILE ID>}_${4:<RULE WORKFLOW NAME>}:
-    benchmark: logdir + "/{$7}_$3_$4.benchmark.txt",
-    container: $3_container,
-    input: ${5: <INPUT PATH PARAMETER>} + "/${6: <INPUT PATH PREFIX>}/{${7: <UNIT ID>}}_${8:<INPUT SUFFIX}",
-    log: logdir + "/{$7}_$3_$4.log",
-    output: ${9: <OUTPUT PATH PARAMETER>} + "/${10: <OUTPUT PATH PREFIX>}/{$7}_${11:<OUTPUT SUFFIX}",
-    params:
-        script = $3_scriptdir + "/$4.sh",
-        threads = $3_threads,
-    shell:
-        """
-        {params.script} \
-        {input} \
-        {output} &> {log}
-        """
-,#+end_src
-- [[file:./scripts/${4:$(downcase yas-text)}.sh][Shell script]]
-  ,#+begin_src bash :tangle ./scripts/${4:$(downcase yas-text)}.sh
-#!/usr/bin/env bash
-input=\$1
-output=\$2
-,#+end_src
-#+end_src
-**** bioinfo.config.common.sh
-
-=======
-cd ~/snakemake-tutorial/
-
-conda activate snakemake-tutorial
-
-
-snakemake -p --cores 2 sorted_reads/{A,B}.bam
-#    --dry-run \
-
-snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
-
-expand("sorted_reads/{sample}.bam", sample=SAMPLES)
-
-snakemake -p --cores 2 plots/quals.svg
-
-snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
-
-snakemake --cores 20 --forceall --summary
-
-snakemake --cores 20 --forceall
-
-conda install pygraphviz
-
-snakemake --report report.html
-
-open report.html
-
-snakemake --cores 20 --forceall
-#+end_src
-- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
-
-**** bioinfo.config.host.sh
-:PROPERTIES:
-:ID:       2cdacb39-2dd0-405d-a4fb-c1cdd4004344
-:CUSTOM_ID: 2cdacb39-2dd0-405d-a4fb-c1cdd4004344
-:END:
-
-#+name: bioinfo.config.host.sh
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.host.sh
-# -*- mode: snippet -*-
-# key: bioinfo.config.host.sh
-# expand-env: ((yas-indent-line 'fixed))
-# --
-,#+begin_src bash :noweb yes :tangle ./config/${1:HOSTNAME}.sh
-<<bash_cmdline_script_preamble>>
-#########1#########2#########3#########4#########5#########6#########7#########8
-
-#
-###   Bash configuration sourcing script for $1   ###
-#
-
-# Define host-local absolute variables
-data_dir="${2:LOCAL DATA DIRECTORY}"
-mntpt="${3:MOUNT POINT PATH}"
-repo="${4:REPO PATH}"
-threads=${5:THREADS}
-
-# ADD ADDITIONAL NOWEBS
-
-#
-echo "Setup complete for $(basename "\${repo}") on $HOSTNAME"
-
-,#+end_src
-#+end_src
-
-**** Data
-
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.data
-  # -*- mode: snippet -*-
-  # key: bioinfo.data
-  # expand-env: ((yas-indent-line 'none))
-  # --
-  `(make-string (1+ (org-current-level)) ?*)` Data
-#+end_src
-
-**** Integration testing
-
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk_int
-# -*- mode: snippet -*-
-# key: smk_int
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (org-current-level) ?*)` [[file:./workflow/int_test.smk][Snakefile]]:smk:
-:PROPERTIES:
-:header-args:snakemake: :tangle ./workflow/int_test.smk
-:END:
-`(make-string (+ 1 (org-current-level)) ?*)` Preamble
-,#+begin_src snakemake
-# Python setup
-import numpy as np
-import pandas as pd
-import re
-,#+end_src
-`(make-string (+ 1 (org-current-level)) ?*)` All rule
-`(make-string (+ 1 (org-current-level)) ?*)` Symlink fastqs
-`(make-string (+ 1 (org-current-level)) ?*)` Includes statements
-#+end_src
-
-**** [[id:61f0fe69-ab73-416d-b078-9c94a053520a][Local variables]]
-**** Make Rule
-
-#+name: smk.rule
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule
-# -*- mode: snippet -*-
-# key: smk.rule
-# expand-env: ((yas-indent-line 'none))
-# --
-smk.rule.${1:$$(yas-choose-value '("bash" "r"))}
-#+end_src
-
-**** Operating snakemake file org-mode tree (YAS)
-:PROPERTIES:
-:ID:       8a7cdf48-a132-45e9-a5da-18e2d5fad643
-:CUSTOM_ID: 8a7cdf48-a132-45e9-a5da-18e2d5fad643
-:END:
-#+name: smk
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk
-# -*- mode: snippet -*-
-# key: smk
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (org-current-level) ?*)` [[file:./workflow/$2.smk][Snakefile]]:smk:
-:PROPERTIES:
-:header-args:snakemake: :tangle ./workflow/${2: SNAKEFILE NAME}.smk
-:END:
-`(make-string (+ 1 (org-current-level)) ?*)` Smk preamble
-,#+begin_src snakemake
-
-,#+end_src
-`(make-string (+ 1 (org-current-level)) ?*)` Smk rules
-`(make-string (+ 2 (org-current-level)) ?*)` All rule
-,#+begin_src snakemake
-rule all:
-    input:
-
-,#+end_src
-- add rules with smk.rule
-`(make-string (+ 1 (org-current-level)) ?*)` Dev
-:PROPERTIES:
-:header-args:snakemake: :tangle no
-:END:
-`(make-string (+ 2 (org-current-level)) ?*)` Ideas
-:PROPERTIES:
-:header-args:snakemake: :tangle no
-:END:
-#+end_src
-
-**** R rule smk.rule.r
-:PROPERTIES:
-:ID:       928c57a9-dd2b-427b-b1c4-191e6321d133
-:CUSTOM_ID: 928c57a9-dd2b-427b-b1c4-191e6321d133
-:END:
-#+name: smk.rule.r
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/smk.rule.r
-# -*- mode: snippet -*-
-# key: smk.rule.r
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (org-current-level) ?*)` ${12: <RULE DESCRIPTIVE ORG NAME>}    :smk_rule:
-- [[./workflow/${1: <SNAKEFILE BASENAME>}.smk::rule $3_$4][Snakemake] $0
-  ,#+begin_src snakemake
-# ${2:<DESCRIPTIVE COMMENT>}
-rule ${3: <SNAKEFILE ID>}_${4:<RULE WORKFLOW NAME>}:
-    benchmark: logdir + "/{$7}_$3_$4.benchmark.txt",
-    container: $3_container,
-    input: ${5: <INPUT PATH PARAMETER>} + "/${6: <INPUT PATH PREFIX>}/{${7: <UNIT ID>}}_${8:<INPUT SUFFIX}",
-    log: logdir + "/{$7}_$3_$4.log",
-    output: ${9: <OUTPUT PATH PARAMETER>} + "/${10: <OUTPUT PATH PREFIX>}/{$7}_${11:<OUTPUT SUFFIX}",
-    params:
-        script = $3_scriptdir + "/$4.R",
-    shell:
-        """
-        Rscript {params.script} \
-        {input} \
-        {output} \
-        > {log} 2>&1
-        """
-,#+end_src
-- [[file:./scripts/${4:$(downcase yas-text)}.R][Rscript]]
-  ,#+begin_src R :tangle ./scripts/${4:$(downcase yas-text)}.R
-#!/usr/bin/env Rscript
-
-args = commandArgs(trailingOnly = TRUE)
-= args[1]
-,#+end_src
-#+end_src
-
-**** sdf:smk_rule:
-
-- Snakemake
-#+begin_src snakemake
-rule Symbol’s function definition is void: string-replace:
-    input:
-    output:
-    shell:
-        """
-        scripts/Symbol’s function definition is void: string-replace.sh
-        """
-#+end_src
-- [[file:./workflows/scripts/Symbol’s function definition is void: string-replace.sh][Base script]]
-,  #+begin_src bash :tangle ./workflows/scripts/Symbol’s function definition is void: string-replace.sh
-#!/usr/bin/env bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-###
-###    SCRIPT TITLE   ###
-###
-
-#+end_src
-
-*** Rename by dict                                                 :smk_rule:
-
-- Snakemake
-#+begin_src snakemake
-rule rename:
-    params:
-        old_sample_id=lambda wcs: sampledict[wcs.f],
-    output:
-        read1=config["fq_symlink_dir"] + "/{f}_R1.fastq.gz",
-        read2=config["fq_symlink_dir"] + "/{f}_R2.fastq.gz",
-    shell:
-        """
-        if [ -f {output.read1} ]; then \\rm {output.read1}; fi
-        if [ -f {output.read2} ]; then \\rm {output.read2}; fi
-        ln -s --relative "{config[raw_fq_dir]}/{params.old_sample_id}_R1.fastq.gz" {output.read1}
-        ln -s --relative "{config[raw_fq_dir]}/{params.old_sample_id}_R2.fastq.gz" {output.read2}
-        """
-#+end_src
-
-*** Scripts                                                            :flat:
-**** Check run conditions for integration testing
-
-#+begin_src bash
-#!/usr/bin/env bash
-
-repo=$1
-mntpt=$2
-sif_dir=$3
-
-# Check for parameters, return usage if empty
-if [ $# -ne 3 ];
-then
-    printf "\n usage: repo_startup.sh <REPO PATH> <RIS MOUNT PT> <SINGULARITY CONTAINER DIR>
-    \n Repo development helper script to check run conditions for integration testing
-    \n "
-else
-
-    # Check mount point
-    if grep -qs $mntpt /proc/mounts; then
-        echo "RIS storage mounted."
-    else
-        echo "RIS storage NOT mounted, exiting."
-        exit 1
-    fi
-
-    # Check singularity container
-    if [ -r $sif_dir/atac.sif ]; then
-        echo "Local SIF file present"
-    else
-        echo "No local SIF file found"
-        exit 1
-    fi
-
-    # Check singularity container up-to-date
-    if [ /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif -nt $sif_dir/atac.sif ]; then
-        echo "Local SIF is out of date. Updating ..."
-        cp /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif $sif_dir/atac.sif
-    else
-        echo "Local SIF file is up to date"
-    fi
-
-    cur_branch=$(git branch | head -n 1)
-    echo "Current branch is $cur_branch"
-fi
-#+end_src
-
-**** Dry run
-:PROPERTIES:
-:ID:       c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
-:CUSTOM_ID: c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
-:END:
-
-#+begin_src bash :tangle ./tools/shell/smk_dry_run.sh
-#  Note: This code block transcluded from code blocks in the Emacs Org-mode
-#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
-#  Changes made directly to this region will be overwritten by transclusion from
-#  the source blocks in that file.
-
-# Check for parameters and return usage
-if [ "$#" -ne 2 ];
-then
-    printf "\n usage: smk_dry_run.sh <SMK CONFIG YAML> <SMK FILE>
-    \n Script for snakemake dry run.
-    \n Will not test singularity container is working
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 \
-        --cores 1 \
-        --dry-run \
-        --forceall \
-        --printshellcmds \
-        --use-singularity \
-        --snakefile $2
-fi
-#+end_src
-
-**** Draw rulegraph
-:PROPERTIES:
-:ID:       78a99954-1d5d-4e09-87a4-6690f28f4519
-:CUSTOM_ID: 78a99954-1d5d-4e09-87a4-6690f28f4519
-:END:
-
-#+begin_src bash :tangle ./tools/shell/smk_draw.sh
-#  Note: This code block transcluded from code blocks in the Emacs Org-mode
-#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
-#  Changes made directly to this region will be overwritten by transclusion from
-#  the source blocks in that file.
-
-# Check for parameters and return usage
-if [ "$#" -ne 3 ];
-then
-    printf "\n usage: smk_dry_run.sh config_file smk_file pdf_loc
-    \n Draws the rulegraph for a snakemake file at pdf_loc
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    png=$(echo $3 | sed 's/.pdf/.png/g')
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 \
-        --cores 1 \
-        --rulegraph \
-        --snakefile $2 | dot -Tpdf > $3
-    #
-    snakemake \
-        --configfile $1 \
-        --cores 1 \
-        --rulegraph \
-        --snakefile $2 | dot -Tpng > $png
-fi
-#+end_src
-
-**** TODO [#D] Normal run
-:PROPERTIES:
-:effort:   00:30
-:ID:       3adf72d3-aa35-4a3d-8eba-0df075c52e26
-:CUSTOM_ID: 3adf72d3-aa35-4a3d-8eba-0df075c52e26
-:END:
-
-- [ ] needs a cores option w/ default
-#+begin_src bash :tangle ./tools/shell/smk_run.sh
-#  Note: This code block transcluded from code blocks in the Emacs Org-mode
-#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
-#  Changes made directly to this region will be overwritten by transclusion from
-#  the source blocks in that file.
-
-# Check for parameters, return usage if empty
-if [ "$#" -ne 2 ];
-then
-    printf "\n usage: smk_forced_run.sh <SMK CONFIG YAML> <SMK FILE>
-    \n Script to complete an normal run of a snakefile
-    \n Assumes
-    - Singularity container specified in config
-    - a mount point at /mnt
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 --cores 4 \
-        --use-singularity \
-        --printshellcmds \
-        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
-        --rerun-incomplete \
-        --resources mem_mb=6000 \
-        --snakefile $2 \
-        --verbose
-fi
-#+end_src
-
-**** Forced run
-:PROPERTIES:
-:ID:       c2a25d2f-05bb-4eda-920f-e2d9fa768de6
-:CUSTOM_ID: c2a25d2f-05bb-4eda-920f-e2d9fa768de6
-:END:
-
-#+begin_src bash :tangle ./tools/shell/smk_forced_run.sh
-#  Note: This code block transcluded from code blocks in the Emacs Org-mode
-#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
-#  Changes made directly to this region will be overwritten by transclusion from
-#  the source blocks in that file.
-
-# Check for parameters and return usage
-if [ "$#" -ne 2 ];
-then
-    printf "\n usage: smk_forced_run.sh config_file smk_file
-    \n Script to complete forced run of snakefile.
-    \n Assumes
-    - Singularity container specified in config
-    - a mount point at /mnt
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 --cores 4 \
-        --use-singularity \
-        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
-        --forceall \
-        --printshellcmds \
-        --rerun-incomplete \
-        --snakefile $2 \
-        --verbose
-fi
-#+end_src
-
-**** Development
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-
-- https://unix.stackexchange.com/questions/10646/repeat-a-unix-command-every-x-seconds-forever
-- ?
-  #+begin_src bash
-#!/bin/bash
-#
-#############################################################################
-###              BIOINFORMATICS PROJECT COMMON SETUP SCRIPT               ###
-#############################################################################
-#
-###############
-### SCRIPTS ###
-###############
-#
-# Interactive docker initialization
-docker_interactive() {
-  repo="USER INPUT"
-  read -p "repo name: " repo
-  case $HOSTNAME in
-      (radonc-cancerbio) docker run -it \
-                                -v /media/:/media/ \
-                                -v /home/:/home/ \
-                          -u $(id -u ${USER}) \
-                          jeszyman/$repo \
-                          /bin/bash;;
-      (jeszyman-*) docker run -it \
-                          -v /home/:/home/ \
-                          -u $(id -u ${USER}) \
-                          jeszyman/$repo \
-                          /bin/bash;;
-      (acl*) docker run -it \
-                    -v /drive3/:/drive3/ \
-                    -v /duo4/:/duo4/ \
-                    -v /home/:/home/ \
-                    -u $(id -u ${USER}) \
-                    jeszyman/$repo \
-                    /bin/bash;;
-      (ACL*) docker run -it \
-                    -v /home/:/home/ \
-                    -v /duo4/:/duo4/ \
-                    -u $(id -u ${USER}):$(id -g ${USER}) \
-                    -h=${HOSTNAME} \
-                    jeszyman/$repo \
-                    /bin/bash;;
-      (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker(jeszyman/'"$repo"')' /bin/bash;;
-  esac
-}
-#
-#
-echo "Biotools setup completed successfully"
-#
-############################################################################
-#
-#############
-### IDEAS ###
-#############
-# # identifies server in docker containers
-# server_ask() {
-#     echo -n "Choose your server: "
-#     read SERVER
-#     SERVER="${SERVER:=chaudhuri-roche}"
-# }
-# # check if inside docker
-# if [ -f /.dockerenv ];then
-#     dockercontainer=yes
-#     echo "Your are in a docker container"
-# else
-#     dockercontainer=no
-#     echo "Not in docker"
-#     # setup NON-docker variables
-#     shopt -s nocasematch
-#     case $HOSTNAME in
-#         (radonc-cancerbio) server_home="/home/jeszyman" ;;
-#         (jeszyman-*) server_home="/home/jeszyman" ;;
-#         (acl*) server_home="/home/jszymanski" ;;
-#         (virtual-workstation*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
-#         (blade*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
-#     esac
-#     projectdir=$server_home"/repos/$project"
-#     localdata="$server_home/data/$project/"
-#     unset $SERVER
-# fi
-# #
-# case $dockercontainer in
-#     (yes) server_ask ;;
-#     (no) ;;
-# esac
-# #
-# case $SERVER in
-#     (chaudhuri-roche) projectdir=/drive3/users/jszymanski/repos/$project
-#                       localdata=/drive3/users/jszymanski/data/$project;;
-#     (NA) ;;
-# esac
-#
-#IDEAS
-### DEPENDENCIES ###
-#declare -a software=(
-#"rclone"
-# #DOES NOT RETURN ON MGI                     "docker"
-# #"git"
-# "bash"
-# )
-# for i in "${software[@]}"; do
-# if command -v $i >/dev/null 2>&1 ; then
-#     echo "$i installed"
-# else
-#     echo "$i not found, exiting"
-#     exit 1
-# fi
-# done
-
-#+end_src
-- example [[id:8263e3b1-3ba4-4c4f-8d39-9dd9bb06e2bb][publish to box]]
-  #+begin_src bash
-#!/usr/bin/env bash
-git pull &&
-    git add -A &&
-    git commit -m "minor changes" &&
-    git push
-
-git branch
-git branch stable4.1
-git checkout stable4.1
-git merge master
-git push origin stable4.1
-git checkout master
-#+end_src
-
-***** Dev
-
-#+begin_src bash
-#!/bin/bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-
-####################################
-###   Choose and Run Snakefile   ###
-####################################
-
-# Setup
-#set -euxov pipefail
-
-source config/${HOSTNAME}.sh
-echo "The following `*.smk` archives were found; select one:"
-
-# set the prompt used by select, replacing "#?"
-PS3="Use number to select an option"
-
-select filename in ./workflow/*.smk
-
-do
-    if [[ "$filename" == "" ]]
-    then
-        echo "'$REPLY' is not a valid number"
-        continue
-    fi
-    echo $filename
-    select run_option in dry_run normal force_final force_all
-    do
-        echo selected $run_option
-        case $run_option in
-            dry_run)
-                source activate snakemake
-                snakemake \
-                    --configfile config/${HOSTNAME}.yaml \
-                    --cores $threads \
-                    --directory ${repo} \
-                    --dry-run \
-                    --rerun-incomplete \
-                    --singularity-args "--bind $mntpt:$mntpt" \
-                    --use-singularity \
-                    --snakefile $filename
-                ;;
-            normal)
-                source activate snakemake
-                select nohup_option in no yes
-                do
-                    case $nohup_option in
-                        no)
-                            snakemake \
-                                --configfile config/${HOSTNAME}.yaml \
-                                --cores $threads \
-                                --directory ${repo} \
-                                --singularity-args "--bind $mntpt:$mntpt" \
-                                --use-singularity \
-                                --snakefile $filename
-                            ;;
-                        yes)
-                            nohup snakemake \
-                                  --configfile config/${HOSTNAME}.yaml \
-                                  --cores $threads \
-                                  --directory ${repo} \
-                                  --singularity-args "--bind $mntpt:$mntpt" \
-                                  --use-singularity \
-                                  --snakefile $filename
-                            ;;
-                    esac
-                done
-                ;;
-            force_final)
-                source activate snakemake
-                select nohup_option in no yes
-                do
-                    case $nohup_option in
-                        no)
-                            snakemake \
-                                --configfile config/${HOSTNAME}.yaml \
-                                --cores $threads \
-                                --directory ${repo} \
-                                --force \
-                                --singularity-args "--bind $mntpt:$mntpt" \
-                                --use-singularity \
-                                --snakefile $filename
-                            ;;
-                        yes)
-                            nohup snakemake \
-                                  --configfile config/${HOSTNAME}.yaml \
-                                  --cores $threads \
-                                  --directory ${repo} \
-                                  --force \
-                                  --singularity-args "--bind $mntpt:$mntpt" \
-                                  --use-singularity \
-                                  --snakefile $filename
-                            ;;
-                    esac
-                done
-                ;;
-            force_all)
-                source activate snakemake
-                select nohup_option in no yes
-                do
-                    case $nohup_option in
-                        no)
-
-                snakemake \
-                    --configfile config/${HOSTNAME}.yaml \
-                    --cores $threads \
-                    --directory ${repo} \
-                    -F \
-                    --singularity-args "--bind $mntpt:$mntpt" \
-                    --use-singularity \
-                    --snakefile $filename
-                                            ;;
-                        yes)
-                nohup snakemake \
-                    --configfile config/${HOSTNAME}.yaml \
-                    --cores $threads \
-                    --directory ${repo} \
-                    -F \
-                    --singularity-args "--bind $mntpt:$mntpt" \
-                    --use-singularity \
-                    --snakefile $filename
-                            ;;
-                    esac
-                done
-                ;;
-        esac
-        break
-    done
-    break
-done
-#+end_src
-
-**** Examples
-
-- https://github.com/jeszyman/exrna
-- https://github.com/jeszyman/cfdna-wgs
-- https://github.com/jeszyman/cappseq
-- https://github.com/jeszyman/cfdna-frag
-- https://github.com/jeszyman/atac-seq
-
-**** [[https://snakemake.readthedocs.io/en/stable/index.html][Documentation]]
-
-- https://snakemake-wrappers.readthedocs.io/en/stable/wrappers.html
-- [[Snakemake Tutorial][Snakemake Tutorial]]
-
-**** General reference
-
-- https://github.com/aomlomics/tourmaline
-- https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
-- https://swcarpentry.github.io/r-novice-inflammation/05-cmdline/index.html
-- https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
-- #+PROPERTY: header-args:bash :tangle-mode (identity #o777)
-- ideas
-  `(make-string (+ 2 (org-current-level)) ?*)` Run commands
-  ,#+begin_src bash
-  conda activate snakemake
-
-  snakemake \
-    --cores $threads \
-    --printshellcmds \
-    --snakefile workflow/$1
-  ,#+end_src
-- Standards and best practice
-  - https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html#snakefiles-best-practices
-- Wildcards
-  - https://edwards.flinders.edu.au/wildcards-in-snakemake/
-- https://endrebak.gitbooks.io/the-snakemake-book/content/
-- https://academic.oup.com/bioinformatics/article/28/19/2520/290322
-- https://www.biostars.org/p/9469533/
-- https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
-- https://stackoverflow.com/questions/54400171/how-to-use-list-in-snakemake-tabular-configuration-for-describing-of-sequencing
-- https://github.com/ngs-docs/2020-ggg-201b-rnaseq/blob/latest/rnaseq-workflow.Rmd
-- https://angus.readthedocs.io/en/2019/snakemake_for_automation.html
-- https://pages.charlesreid1.com/how-do-i-snakemake/converting/
-- http://ivory.idyll.org/blog/2020-snakemake-hacks-collections-files.html
-- http://origin.research.jetbrains.org/files/material/5ec245b4e907c.pdf
-- https://f1000research.com/articles/10-33/v2
-- [ ] https://lachlandeer.github.io/snakemake-econ-r-tutorial/config-files.html
-- https://github.com/snakemake-workflows/rna-seq-star-deseq2/blob/master/workflow/rules/diffexp.smk
-- https://github.com/csoneson/ARMOR
-- https://github.com/slowkow/snakefiles/blob/master/kallisto/Snakefile
-- https://lachlandeer.github.io/snakemake-econ-r-tutorial/initial-steps-with-snakemake.html
-- for repos, git ignore the singularity build
-- https://github.com/EnvGen/snakemake-workflows
-
-***** Tutorials and guides
-
-- https://reproducibility.sschmeier.com/index.html
-- a tutorial
-  #+begin_src bash
-source ~/repos/biotools/src/functions.sh
-docker_interactive
-biotools
-
-#
-mkdir -p /tmp/snakemake-tutorial
-cd /tmp/snakemake-tutorial
-#
-wget https://github.com/snakemake/snakemake-tutorial-data/archive/v5.24.1.tar.gz
-#
-tar --wildcards -xf v5.24.1.tar.gz --strip 1 "*/data" "*/environment.yaml"
-ls
-
-#
-snakemake --help
-
-snakemake -np mapped_reads/A.bam
-#+end_src
-- another tutorial
-  #+begin_src bash
-sudo apt-get install singularity-container
-
-cd ~/snakemake-tutorial/
-
-conda activate snakemake-tutorial
-
-
-snakemake -p --cores 2 sorted_reads/{A,B}.bam
-#    --dry-run \
-
-snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
-
-expand("sorted_reads/{sample}.bam", sample=SAMPLES)
-
-snakemake -p --cores 2 plots/quals.svg
-
-snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
-
-snakemake --cores 20 --forceall --summary
-
-snakemake --cores 20 --forceall
-
-conda install pygraphviz
-
-snakemake --report report.html
-
-open report.html
-
-snakemake --cores 20 --forceall
-#+end_src
-- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
-
-**** Examples
-
-- https://github.com/vari-bbc/rnaseq_workflow/blob/master/Snakefile
-- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
-- https://github.com/yztxwd/rna-seq-standard-pipeline/tree/c19a9e27216b86d3dbfdaed7228aeff59f869383
-- https://github.com/porchard/ATACseq-Snakemake/blob/master/src/Snakefile
-- https://github.com/zhxiaokang/RASflow
-- https://github.com/EthanHolleman
-- https://www.biostars.org/p/406385/
-- https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
-- https://github.com/lachlandeer/snakemake-econ-r
-
-**** Config
-
-
-:PROPERTIES:
-:ID:       5120c9dd-8e0b-4b2c-8c77-a89f271a48e4
-:END:
-
-#+name: bioinfo.config.common.sh
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.common.sh
-# -*- mode: snippet -*-
-# key: bioinfo.config.common.sh
-# expand-env: ((yas-indent-line 'fixed))
-# --
-,#+name: bash_common_config
-,#+begin_src bash :noweb yes :tangle ./config/common.sh
-#!/bin/bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-#
-
-# Check git file hook is read-able
-if [ -r "${repo}/.git/hooks/precommit" ]; then
-   echo "Git size check is read-able"
-else
-    echo
-    "Git size check is not read-able"
-    exit 1
-fi
-
-# Check mount point
-if grep -qs $mntpt /proc/mounts; then
-    echo "RIS storage mounted."
-else
-    echo "RIS storage NOT mounted, exiting."
-    exit 1
-fi
-
-# Check singularity container
-if [ -r $sif_dir/atac.sif ]; then
-    echo "Local SIF file present"
-else
-    echo "No local SIF file found"
-fi
-    fi
-}
-#+end_src
-
-**** bioinfo.launch.docker
-
-#+name: bioinfo.launch.docker
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
-  # -*- mode: snippet -*-
-  # key: bioinfo.launch.docker
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src bash
-  #!/bin/bash
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-
-  # Notes: This block build from bioinfo.launch.docker at
-  #  ce85a21e-466f-43d0-ad13-3cd21497bfc3
-
-  # Function to launch an interactive docker session
-
-  ,#+end_src
-#+end_src
-
-**** bioinfo.setup.bash
-
-#+name: bioinfo.setup.bash
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
-  # -*- mode: snippet -*-
-  # key: bioinfo.setup.bash
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  `(make-string (1+ (org-current-level)) ?*)` Bash
-  Potential YAS to run:
-  bioinfo.config.host.sh
-  bioinfo.config.main.sh
-  ris.mount
-  $0
-#+end_src
-
-**** bioinfo.config.main.R
-
-#+name: bioinfo.config.main.R
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
-  # -*- mode: snippet -*-
-  # key: bioinfo.config.main.R
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src R :noweb yes :tangle ./config/main.R
-  #!/usr/bin/env Rscript
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  # Repository-local, relative variables
-  $0
-
-  # Pull in from other repositories
-  ##
-  ## Basecamp
-  <<./basecamp/basecamp.org:basecamp_r_setup_wrapper()>>
-
-  ##
-  ## Biotools
-  <<./biotools/biotools.org:biotools_r_setup_wrapper()>>
-
-  ,#+end_src
-#+end_src
-
-**** bioinfo.config.local.R
-
-#+name: bioinfo.config.local.R
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
-  # -*- mode: snippet -*-
-  # key: bioinfo.config.local.R
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src R :noweb yes :tangle ./config/${1:HOSTNAME}.R
-  #!/usr/bin/env Rscript
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  # Repository-local, host-absolute variables
-  data_dir = file.path("${2:DATA_DIR}")
-  source("./config/main.R")
-  $0
-  ,#+end_src
-#+end_src
-
-**** bioinfo.bash.script
-
-#+name: bioinfo.bash.script
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
-  # -*- mode: snippet -*-
-  # key: bioinfo.bash.script
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  #!/bin/bash
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  ### ${1:SCRIPT NAME} ###
-  #
-  # Notes:
-  ## This script assumes your your bash sessin is running within the repository docker container (see ./)
-  ## This script calls relative varibles and assumes you have sourced an appriopriate configuration file (see ./config)
-#+end_src
-
-**** UPDATE_ON_USE bioinfo.setup
-CLOSED: [2021-12-09 Thu 12:38]
-:PROPERTIES:
-:ID:       dbd3c67c-e33b-42d8-800d-705292d3c372
-:CUSTOM_ID: dbd3c67c-e33b-42d8-800d-705292d3c372
-:END:
-
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
-# -*- mode: snippet -*-
-# key: bioinfo.setup
-# expand-env: ((yas-indent-line 'none))
-# --
-`(concat "*" (make-string (org-current-level) ?*))` Setup
-`(concat "**" (make-string (org-current-level) ?*))` Bash
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-- Local (by $HOSTNAME)
-- Common
-  ,#+begin_src bash :tangle ./config/common.sh
-,#+end_src
-`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
-- Command line
-  ,#+name: bash_preamble_cmd
-  ,#+begin_src bash
-if [[ -f ./config/\${HOSTNAME}.sh ]];
-then source ./config/\${HOSTNAME}.sh
-else
-    echo "No config file found for \${HOSTNAME}"
-    exit 1
-fi
-,#+end_src
-- Snakemake
-`(concat "**" (make-string (org-current-level) ?*))` TODO Box and rclone
-`(concat "**" (make-string (org-current-level) ?*))` TODO Docker and singularity
-`(concat "***" (make-string (org-current-level) ?*))` Processes
-1. Write
-   ,#+begin_src fundamental :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
-,#+end_src
-2. Build
-3. Make singularity container from docker container
-`(concat "**" (make-string (org-current-level) ?*))` TODO Emacs and Org-mode
-- [ ] Run minimal YAS
-  bioinfo.setup
-  bioinfo.inputs
-  bioinfo.data
-  locvars
-- [ ] Add
-  - to main reference section
-    - Bioinformatics project [[6acdcddf-d693-40f2-a3ae-9703bad56043][module headline]] and [[tag:{bioinfo}][instances]]
-  - to Local variables
-    ,#+TODO: WAITING(w@) TODO(t) INPROCESS(p) | CLOSEOUT DONE(d!) DELEGATED(@) CANCELED(@)
-    ,#+property: header-args:R    :session *PROJECT_NAME*
-`(concat "**" (make-string (org-current-level) ?*))` TODO Local data directory and WashU RIS Storage processes
-- Mount
-- Create directory structure
-  ,#+begin_src bash
-  <<bash_preamble>>
-  ,#+end_src
-`(concat "**" (make-string (org-current-level) ?*))` R
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
-`(concat "**" (make-string (org-current-level) ?*))` TODO Repository, git, and github
-- [ ] ensure [[file:.git/hooks/pre-commit]]
-- [ ] Create repository structure
-  ,#+begin_src bash
-mkdir -p "\${repo}/config"
-mkdir -p "\${repo}/resources"
-mkdir -p "\${repo}/results"
-mkdir -p "\${repo}/src"
-mkdir -p "\${repo}/workflow/scripts"
-,#+end_src
-`(concat "***" (make-string (org-current-level) ?*))` README
-`(concat "**" (make-string (org-current-level) ?*))` Snakemake
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-`(concat "***" (make-string (org-current-level) ?*))` TODO Run commands
-#+end_src
-
-**** bioinfo.inputs
-:PROPERTIES:
-:ID:       d6bb61c9-8b10-4460-b987-0a6c678d2ddb
-:CUSTOM_ID: d6bb61c9-8b10-4460-b987-0a6c678d2ddb
-:END:
-
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
-# -*- mode: snippet -*-
-# key: bioinfo.inputs
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (1+ (org-current-level)) ?*)` Inputs
-,#+name: input_table
-|basename|dirname|get_class|model_class|origin
-`(concat "**" (make-string (org-current-level) ?*))` Manually created input tables
-- (names must end in _input)
--
-#+end_src
-
-*** [[id:a8b27140-4b9e-40c5-86ab-ee5afeae723f][snakemake]]
-*** Development                                                         :dev:
-#+begin_src bash :tangle ./tools/shell/rm_test_results.sh
-#!/usr/bin/env bash
-
-shopt -s extglob
-cd ./test
-rm -rf !(inputs)
-cd ../
-
-#+end_src
-- Command line
-  #+name: bash_cmdline_script_preamble
-  #+begin_src bash :noweb yes
-#!/usr/bin/env bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-#
-# Notes:
-#  This script is tangled from source code in the PROJECT_ID.org file
-#  Therefore any changes to this compiled file in place will likely be reverted
-#  by a subsequent tangle operation.
-#
-#  This script assumes you are running from the repository main directory in
-#  order to source the appriopriate configuation file.
-
-# Load bash configuation
-if [ -f ./config/${HOSTNAME}.sh ]; then
-    source ./config/${HOSTNAME}.sh
-else
-    echo "No bash config found. Are you running from repo main dir?"
-fi
-#+end_src
-echo "Integration testing passed, do you want to erase results files?" &&
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) \rm -rf test/fastq; break;;
-        No ) exit;;
-    esac
-done
-
-- single pipe per repo
-#+begin_src R :noweb yes :tangle ./workflow/scripts/make_final.R
-#########1#########2#########3#########4#########5#########6#########7#########8
-args <- commandArgs(trailingOnly = TRUE)
-input_rdata = args[1]
-output_rdata = args[2]
-library(tidyverse)
-
-#################################
-###   Make final data model   ###
-#################################
-
-load(input_rdata)
-
-###   Additions   ###
-
-participants_add = participants_input
-specimens_add = specimens_input
-isolates_add = isolates_input
-sequencing_runs_add = sequencing_runs_input
-libraries_add = libraries_input
-
-###   Modifications and Deletions   ###
-
-# This is a manual, post-hoc adjustment based on final peak count PCA
-participants = participants_add
-participants$cohort_id[which(participants$part_id == "ms009")] = "sham"
-participants$cohort_id[which(participants$part_id == "ms015")] = "ir48h"
-
-specimens = specimens_add
-isolates = isolates_add
-sequencing_runs = sequencing_runs_add
-libraries = libraries_add
-
-libraries_full = libraries %>%
-  left_join(sequencing_runs, by = "run_id") %>%
-  left_join(isolates, by = "iso_id") %>%
-  left_join(specimens, by = "spec_id") %>%
-  left_join(participants, by = "part_id")
-
-save(
-  participants_input,
-  specimens_input,
-  isolates_input,
-  sequencing_runs_input,
-  libraries_input,
-  participants_add,
-  specimens_add,
-  isolates_add,
-  sequencing_runs_add,
-  libraries_add,
-  participants,
-  specimens,
-  isolates,
-  sequencing_runs,
-  libraries, libraries_full, file = output_rdata)
-#+end_src
-
-**** Prioritized
-
-- [ ] update [[id:3924c49e-5296-4fcd-8994-9b62a5bbf772][best practices checklist]]
-
-**** Ideas
-
-- Repo declutter script-
-  - Cat org file, find tangles,make array, for array, remove to trash
-  - And maybe tangle from command line
-- snakemake linting https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html#:~:text=Try%20to%20keep%20filenames%20short,a%20workflow%2Frules%2Fcommon.
-- [X] Use boolean setters where appriopriate
-      - /E.g./
-        - in config: call_variants: false
-        - and in rule all:         lambda wildcards: "analysis/09a_variant_annot/all.merged.filt.PASS.snpeff.vcf.gz.tbi" if config["call_variants"] else [],
-- Add data validation and sanity checks in int testing
-    - Setup an in-repository test environment to perform integration testing, preferably with known positive / negative samples
-- [ ] Commits - follow [[https://www.conventionalcommits.org/en/v1.0.0/][conventional commits]]
-- https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#benchmark-rules
-template as makefile
-additional best practices
-benchmarking
-email setup
-code links by name via org-ref - ref:deepTools_plotCoverage
-- version 1 as minimum viable product: https://en.wikipedia.org/wiki/Minimum_viable_product
-
-***** Inputs
-:PROPERTIES:
-:ID:       35978130-f228-4805-b1cb-0ffdf410f174
-:CUSTOM_ID: 35978130-f228-4805-b1cb-0ffdf410f174
-:END:
-
-****** Table of inputs
-:PROPERTIES:
-:ID:       26c7d292-db75-4c5d-b4de-01cc5d5d9c18
-:CUSTOM_ID: 26c7d292-db75-4c5d-b4de-01cc5d5d9c18
-:END:
-
-#+name: inputs
-| basename | class | origin |
-|----------+-------+--------|
-|          |       |        |
-
-
-filename | class | r_name | box_path | http |
-basename|path|
-4. https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html see multiext
-
-***** Ideas
-
-- tangle in org text as snakefile comments https://eschulte.github.io/babel-dev/DONE-tangle-entire-org-mode-file-in-comments.html
-- parse yaml for shell https://mikefarah.gitbook.io/yq/
-- email notices
-- lock emacs buffer regions with successful run
-
-***** Ideas
-
-- tangle in org text as snakefile comments https://eschulte.github.io/babel-dev/DONE-tangle-entire-org-mode-file-in-comments.html
-- parse yaml for shell https://mikefarah.gitbook.io/yq/
-- email notices
-- lock emacs buffer regions with successful run
-**** Common intro
-:PROPERTIES:
-:ID:       6213753d-2b4d-4877-ad8c-8d8d09db4471
-:CUSTOM_ID: 6213753d-2b4d-4877-ad8c-8d8d09db4471
-:END:
-
-Workflow
-
-I use a core set of tools and data structures to perform and document common bioinformatics and data science tasks.
-
-Using the same tools and strucutres, each task should be entirely generalized and reproducible.
-
-These tools are
-Docker - software install and versioning
-Snakemake - workflow documentation
-Git - file level version control
-R - statistics and data visualizations
-Latex - text files
-
-Fig # generalized workflow
-Inputs -> preprocessing
-             -> bioinformatics pipelines
-                    -> initial outputs
-                    -> analysis tables and figures
-                    -> report - publication quality figures and writeup
-
-Each workflow is validated on test data, and then associated with a biotools git repository commit and docker image commit.
-
-Projects using these workflows are run on a specific repository and docker commit to ensure reproducibility.
-
-Rna-seq for de and pathways
-Quantification and normalization salmon
-Differential expression
-Gene set
-
-**** Ideas
-***** [[id:acb9d298-c357-4468-95b1-df9f5549437e][Common bioinformatics pipeline repository structure and function]]
-
-#+transclude: [[id:acb9d298-c357-4468-95b1-df9f5549437e]] :only-contents
-
-*** General Reference                                                   :ref:
-- Reference
-  - [[id:F0EB00AD-7256-4726-8C2F-E2132878B039][Scientific project]]
-  - [[id:1b76247d-7f3c-4cd9-87df-9053e790e5c8][Scientific Manuscript writing and submission]]
-- https://en.wikipedia.org/wiki/Minimum_viable_product
-
-**** [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][Git]]
-**** [[id:a8b27140-4b9e-40c5-86ab-ee5afeae723f][snakemake]]
-**** Examples
-
-- https://github.com/vari-bbc/rnaseq_workflow/blob/master/Snakefile
-- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
-- https://github.com/yztxwd/rna-seq-standard-pipeline/tree/c19a9e27216b86d3dbfdaed7228aeff59f869383
-- https://github.com/porchard/ATACseq-Snakemake/blob/master/src/Snakefile
-- https://github.com/zhxiaokang/RASflow
-- https://github.com/EthanHolleman
-- https://www.biostars.org/p/406385/
-- https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
-- https://github.com/lachlandeer/snakemake-econ-r
-**** General Reference
-:PROPERTIES:
-:ID:       c68a6456-411b-4cb1-a112-119d9919d19d
-:CUSTOM_ID: c68a6456-411b-4cb1-a112-119d9919d19d
-:END:
-
-- [[https://www.biostars.org/p/190366/][Biostars Forum:Good Habit for Bioinformatics Analyst or Scientist]]
-- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
-Bioinformatics project design principles
-
-Simplicity
-Don't create without a purpose
-
-Consistency
-
-Transparency
-
-Reproducibility
-
-
-- https://github.com/dslp/dslp-repo-template
-- https://drivendata.github.io/cookiecutter-data-science/#directory-structure
-- [[tag:biocollab]]
-- Bioinformatics project mod [[tag:{bioinfo}][instances]]
-- [X] Setup
-  1. [X] Run insert.mod yas
-  2. [X] Org-mode
-     - [X] Properties- ID
-- https://www.reddit.com/r/MachineLearning/comments/s65icb/discussion_how_do_you_organize_a_data_science/
-- https://www.biostars.org/p/190366/
-- https://github.com/jkitchin/ox-ipynb
-- https://help.osf.io/hc/en-us/articles/360019931133-Creating-a-data-management-plan-DMP-document
-
-***** MGI bioinformatics workshop
-:PROPERTIES:
-:ID:       fd71110c-0923-48a9-b1a1-704973535fe5
-:CUSTOM_ID: fd71110c-0923-48a9-b1a1-704973535fe5
-:END:
-
-https://github.com/genome/bfx-workshop/blob/master/README.md#communications
-
-****** DONE MGI bioinformatics workshop
-CLOSED: [2021-02-01 Mon 10:38] SCHEDULED: <2021-02-01 Mon 10:00>
-:PROPERTIES:
-:ID:       986a87c0-7a7d-4f31-a6c8-4dcea09a74c8
-:CUSTOM_ID: 986a87c0-7a7d-4f31-a6c8-4dcea09a74c8
-:END:
-:LOGBOOK:
-CLOCK: [2021-02-01 Mon 10:05]--[2021-02-01 Mon 10:14] =>  0:09
-CLOCK: [2021-01-25 Mon 10:34]--[2021-01-25 Mon 10:39] =>  0:05
-:END:
-- https://mail.google.com/mail/u/0/#inbox/FMfcgxwLsSgRxQhMclSgxvkznlgrGMXq
-- [2021-02-01 Mon] RIS
-  -
-- [2021-01-25 Mon] Bisulfite sequencing
-  -
-
-***** Notes
-:PROPERTIES:
-:ID:       2ed8a040-d768-4a78-9b14-6347b2c68c97
-:CUSTOM_ID: 2ed8a040-d768-4a78-9b14-6347b2c68c97
-:END:
-
-- makefile not appriopriate here- not a compiled process
-
-***** Ideas
-:PROPERTIES:
-:ID:       ad9ce310-42cf-4e7f-8d1b-3556e1b8d48c
-:CUSTOM_ID: ad9ce310-42cf-4e7f-8d1b-3556e1b8d48c
-:END:
-
-- Ideas - clone in from a repo of this mod
-  - create test data set for on repo dev
-  - data model dictionary
-  - data model graphic
-
-- Project organization and setup
-  - Run scripts perform final execution
-    - Example
-      1. Source .. config
-      2. Run startup
-      3. Execute 1
-      4. Execute 2
-      5. Run cleanup
-    - Run scripts check for input and output variables
-  - Config
-  - Src
-    - Scripts are written with relative variables.
-    - Scripts depend on parameters defined in configuration files
-    - Src Scripts and functions exclude variable checking, etc
-    - Functions
-- Incorporate R docker
--
-  #+begin_src bash :tangle ./tools/shell/biocollab_vars.sh
-#!/bin/bash
-# Get variables
-project="USER INPUT"
-repos_dir="USER INPUT"
-read -p "Project name: " project
-read -p "Repositories main directory: " repos_dir
-repos_dir="${repos_dir:=home/jeszyman/repos}"
-project_dir=$(echo "$project" | sed 's/_/-/')
-
-echo Project is $project
-echo Project directory is $project_dir
-echo Repo will be cloned to $repos_dir
-
-# Clone
-cd "${repos_dir}"
-
-git clone git@github.com:jeszyman/biocollab "${project_dir}" && echo "cloned"
-
-
-echo "project=$project" >> "${project_dir}/config/main"
-echo "project_dir=$project_dir" >> "${project_dir}/config/main"
-#ln -s ${repos_dir}/basecamp "${repos_dir}/${project_dir}"/
-# Add symlinks
-#wait
-#ln -s ${repos_dir}/basecamp "${repos_dir}/${project_dir}"/
-#ln -s "${repos_dir}/biotools" "${repos_dir}/${project_dir}/"
-#ln -s "${repos_dir}/latex" "${repos_dir}/${project_dir}/"
-
-#mv "${repos_dir}/${project_dir}/biocollab.org" "${repos_dir}/${project_dir}/${project_id}.org"
-
-#ln -s "${repos_dir}/${project_dir}/${project_id}.org" "${repos_dir}/org/"
-
-#+end_src
-
-***** bioinformatics pipeline
-:PROPERTIES:
-:CREATED:  [2019-04-26 Fri 10:32]
-:ID:       333E498B-E0EA-460C-95EC-1931ACE19473
-:CUSTOM_ID: 333E498B-E0EA-460C-95EC-1931ACE19473
-:END:
-:LOGBOOK:
-CLOCK: [2019-10-07 Mon 17:04]--[2019-10-07 Mon 17:34] =>  0:30
-CLOCK: [2019-09-27 Fri 16:24]--[2019-09-27 Fri 16:36] =>  0:12
-CLOCK: [2019-08-30 Fri 10:11]--[2019-08-30 Fri 10:24] =>  0:13
-CLOCK: [2019-08-27 Tue 16:18]--[2019-08-27 Tue 16:34] =>  0:16
-CLOCK: [2019-08-14 Wed 11:45]--[2019-08-14 Wed 11:54] =>  0:09
-CLOCK: [2019-07-09 Tue 14:45]--[2019-07-09 Tue 15:31] =>  0:46
-CLOCK: [2019-07-08 Mon 10:28]--[2019-07-08 Mon 10:50] =>  0:22
-CLOCK: [2019-07-08 Mon 08:17]--[2019-07-08 Mon 09:27] =>  1:10
-CLOCK: [2019-07-05 Fri 20:59]--[2019-07-05 Fri 21:00] =>  0:01
-CLOCK: [2019-07-05 Fri 20:48]--[2019-07-05 Fri 20:53] =>  0:05
-CLOCK: [2019-06-25 Tue 09:22]--[2019-06-25 Tue 09:37] =>  0:15
-CLOCK: [2019-06-03 Mon 18:26]--[2019-06-03 Mon 18:40] =>  0:14
-CLOCK: [2019-06-25 Tue 08:00]--[2019-06-25 Tue 08:26] =>  0:26
-CLOCK: [2019-06-23 Sun 09:29]--[2019-06-23 Sun 10:01] =>  0:32
-CLOCK: [2019-06-21 Fri 15:45]--[2019-06-21 Fri 17:30] =>  1:45
-:END:
-#+PROPERTY: LOGGING nil
-
-
-https://www.reddit.com/r/orgmode/comments/fj7xcm/reproducible_research_interleaving_disparate/
-- [ ] module instance startup- upon initial entry into work heading of a module
-  - identify and invoke most specific applicable module
-  - invoke module hierarchy
-- [ ] module instance subsequent entry- push unnecessary data out of attention
-  - convert any free text to org-items
-  - organize org-items
-    - delete if possible, else
-    - place in export, else
-    - place in reference tree, else
-    - place in ideas, else
-    - place in work tree
-      - tree must have checkbox at highest level
-      - if sublevels have checkboxes, higher levels need counter
-- [ ] setup repository artifact [0/0]
-  - github and local
-  - Dockerfile
-  - org file
-- [ ] build docker image
-  - first, build dockerfile commands into fat bioinformatics-toolkit container
-  - then parse out the necessary components into a repo-specific dockerfile
-  - push REPO to github
-- [ ] closeout
-  - [ ] update mod- consolidate and functionalize common tasks
-  - [ ] export
-- biopipe
-  - link to dockerfile
-  - link to shell script
-  - project setup
-    - local shell scripts and dockerfiles w/ symlink to repo site
-      - how to git symlinks? https://www.google.com/search?q=git+symbolic+links
-      - https://www.google.com/search?q=git+store+symbolic+links
-- reference
-  - concepts
-    - [[id:ED45C725-4F3D-4B22-BC6E-0995294DA131][computational biology and bioinformatics]]
-  - platform
-    - [[id:cd560390-aa1e-4c9e-8317-08610e5de42a][linux]]
-    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
-    - [[id:6116d262-9ca8-430b-b385-65e1a7fc0a70][nextflow]]
-    - [[id:FB8FF6B1-C6BD-4272-AC15-05BB15DF609B][emacs]] [[id:B171BCE2-2FF8-45C6-8958-8799B349E1B0][orgmode]]
-    - [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][github]]
-  - [[~/repos/.emacs.d/snippets/org-mode/biopipe][YAS]]
-  - [[id:333E498B-E0EA-460C-95EC-1931ACE19473][mod]]
-    - attributes
-      | isa | module                     |
-      | isa | work module                |
-      | isa | engineering module         |
-      | isa | code module                |
-      | isa | process development module |
-  - principles and philosophy
-    - antifragility
-    - minimization
-    - transparency
-    - reproducibility
-    - efficiency
-    - ?intpretabilty? - code logging, etc
-  - best practices
-    - each tool install as standalone
-    - Version control - git / github
-    - File organization
-      - https://libraries.mit.edu/data-management/
-      - See [[file:~/maintenance.org::Information Maintenance][information maintenance]] Organization -> File tree structure
-    - https://github.com/kylelobo/The-Documentation-Compendium/
-    - http://www.broadinstitute.org/gatk/guide/best-practices
-      best practices include recording everything
-      record of all commands
-      record of all software versions
-      see Emacs, rpubs.com, sessionInfo and knitR
-    - [[http://www.nature.com/sdata/for-authors/submission-guidelines][Nature data submission guidelines]]
-    - https://kieranhealy.org/resources/
-    - http://kieranhealy.org/files/misc/workflow-apps.pdf
-    - see Anders,13
-    - no docker in docker for dev- confuses vols, etc. instead add emacs to each container and have local repos of .emacs and org
-    - prefer binaries over source- only real advantage to source is custom build
-  - stack
-    - [[id:c28ef36f-5b5c-4789-90da-270e56fc4898][ubuntu]]
-    - [[id:E56ADCB0-F6DD-4D58-8B68-CEDF7DC176E6][git and github]]
-    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
-      - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][docker]]
-        - dockerfile - include current build status in comments
-        - sequencing dockerfile repos
-          - https://github.com/broadinstitte/gtex-pipeline.git
-          - https://hub.docker.com/u/mgibio/
-          - https://hub.docker.com/u/biocontainers
-    - nextflow
-      - https://www.youtube.com/watch?v=jsxTC8pNPUc&t=579s
-      - https://github.com/cbcrg/lncrna-annotation-nf
-      - https://www.nextflow.io/example1.html
-      - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
-      - commands
-        |----------+---------|
-        | function | command |
-        |----------+---------|
-        | <35>     | <35>    |
-        |          |         |
-      - processes
-      - documentation
-    - compendia
-      - [[file:~/Box%20Sync/org/compend.org::*UNIX][UNIX]]
-      - [[file:~/.emacs.d/settings.org::*Emacs][Emacs]]
-      - git
-    - set alias https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
-    - https://github.com/cbcrg/lncrna-annotation-nf
-    - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
-    - https://github.com/bioinformatics-core-shared-training/docker-4-bioinformatics
-    - https://gatkforums.broadinstitute.org/firecloud/discussion/6886/guidelines-for-working-with-docker-images-and-dockerfiles-broadies-only
-    - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker]]
-      - https://www.boynux.com/containers-fat-thin/
-  - examples
-    - https://wiki.cyverse.org/wiki/display/TUT/Biocontainers+for+the+Discovery+Environment
-    - https://blog.bananacoding.com/2016/08/29/how-to-build-bioinformatic-tools-image-for-docker/#.XSvInN-YW02
-  - package managers
-    - bioconda-
-      - EZ to add to dockerfile,
-      - source difficult to understand, but can see sh and yaml- e.g. https://github.com/bioconda/bioconda-recipes/tree/master/recipes/samtools
-      - https://www.nature.com/articles/s41592-018-0046-7
-  - modules
-  - https://www.reddit.com/r/bioinformatics/comments/d260ok/no_your_ten_rules_arent_simple_and_they_wont_fix/
-- ideas
-  - module improvement
-    - work module
-      - focus on minimal work to closeout this objective
-        - move unnecessary work to ideas
-  - https://nextflow-io.github.io/nf-hack18/training.html
-  - Consider more emacs shell work:
-  - add to gatk docker
-    - https://hub.docker.com/u/broadinstitute
-    - https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_cancer_m2_MuTect2.php
-  - optimization
-    - Lock pipe
-    - [[https://www.biostars.org/p/241437/][bioinformatics software distribution]]
-  - extend
-  - [ ] information management- see cite:griffith2015b
-    - https://github.com/genome/gms
-  - https://stackoverflow.com/questions/31578446/running-a-script-inside-a-docker-container-using-shell-script
-  - https://software.broadinstitute.org/gatk/documentation/article?id=11101
-  - https://www.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/whole-genome-sequencing.html
-
-
-
+** [[#271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics pipeline]]
 ** My bioinformatics pipelines
 *** meth seq
 
@@ -12903,7 +10229,6 @@ CLOCK: [2022-04-26 Tue 09:51]--[2022-04-26 Tue 10:10] =>  0:19
 *** [[file:~/repos/cfdna-wgs/cfdna-wgs.org][cfDNA WGS biopipe]]
 :PROPERTIES:
 :ID:       13120759-71db-497c-8ed3-1c58e47a7840
-:CUSTOM_ID: 13120759-71db-497c-8ed3-1c58e47a7840
 :END:
 :LOGBOOK:
 CLOCK: [2022-05-04 Wed 08:12]--[2022-05-04 Wed 08:16] =>  0:04
@@ -12941,12 +10266,10 @@ CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
 ** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][Information Science / Data Science]]
 :PROPERTIES:
 :ID:       014218e1-bb8b-4282-84ec-84354c29b8f5
-:CUSTOM_ID: 014218e1-bb8b-4282-84ec-84354c29b8f5
 :END:
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][Basecamp]]
 :PROPERTIES:
 :ID:       76100c2b-a077-4c21-a398-16d88722e1c6
-:CUSTOM_ID: 76100c2b-a077-4c21-a398-16d88722e1c6
 :END:
 ** Development :dev:
 *** v0.1.0
@@ -12954,7 +10277,6 @@ CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
 *** Ideas
 :PROPERTIES:
 :ID:       1a00532b-6854-48e5-9860-17d62fe1100e
-:CUSTOM_ID: 1a00532b-6854-48e5-9860-17d62fe1100e
 :END:
 - molecular disease signatures
 - https://www.reddit.com/r/commandline/comments/vcs92o/scitopdf_quickly_fetch_science_from_scihub/
@@ -13072,7 +10394,6 @@ CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
-:CUSTOM_ID: 98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
 - https://www.reddit.com/r/bioinformatics/comments/12402xq/what_are_the_struggles_that_bioinformatician_face/
 - https://www.reddit.com/r/bioinformatics/comments/13i5mgf/we_have_got_a_pin_up_board_in_our_bioinfo_lab_i/
@@ -13235,7 +10556,6 @@ https://genome.ucsc.edu/FAQ/index.html
 :PROPERTIES:
 :CREATED:  [2019-04-26 Fri 10:36]
 :ID:       374F30CA-2E80-4CC2-8FD3-5B9BC8083889
-:CUSTOM_ID: 374F30CA-2E80-4CC2-8FD3-5B9BC8083889
 :END:
 - https://www.reddit.com/r/bioinformatics/comments/rc9901/how_do_you_see_the_future_of_computational/
 - https://www.reddit.com/r/bioinformatics/comments/r941br/does_this_learning_path_seem_good_to_become_a/
@@ -13305,7 +10625,6 @@ https://genome.ucsc.edu/FAQ/index.html
 **** Notes
 :PROPERTIES:
 :ID:       90C0571F-2BB4-484B-8C2E-2385AD22A38C
-:CUSTOM_ID: 90C0571F-2BB4-484B-8C2E-2385AD22A38C
 :END:
 
 [[http://onlinelibrary.wiley.com/book/10.1002/0471250953][Current Protocols in Bioinformatics]]
@@ -13316,7 +10635,6 @@ because computation removes redundancy, you will more frequently be at a new, tr
 :PROPERTIES:
 :CREATED:  [2019-05-14 Tue 10:25]
 :ID:       80B5A347-33C6-4FC2-A691-FFAFF3C5D352
-:CUSTOM_ID: 80B5A347-33C6-4FC2-A691-FFAFF3C5D352
 :END:
 
 - https://software.broadinstitute.org/gatk/documentation/topic?name=dictionary&v=3
@@ -13328,6 +10646,5 @@ because computation removes redundancy, you will more frequently be at a new, tr
 *** ENCODE
 :PROPERTIES:
 :ID:       585e27b3-3c79-46d5-aeab-9430251d4318
-:CUSTOM_ID: 585e27b3-3c79-46d5-aeab-9430251d4318
 :END:
 - https://www.annualreviews.org/doi/10.1146/annurev-genom-090413-025448#_i21
