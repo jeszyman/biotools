@@ -1,7 +1,8 @@
-# Created 2023-06-09 Fri 09:44
-#+title: Scientific Project Template
-#+author: Jeffrey Szymanski
-* Scientific Project Template
+* Scientific Project Template :sciproj:
+:PROPERTIES:
+header-args: :tangle-mode (identity #o755) :mkdirp yes :noweb yes :comments org
+:END:
+** TODO Search #TEMPLATE# for needed manual updates
 ** Project Administration
 *** Bash
 **** Src
@@ -30,10 +31,35 @@
 ###   Variable Naming   ###
 ###########################
 
+# ---   Variables Directly From Configuration YAML   --- #
+# ------------------------------------------------------ #
+
+# ---   Specific File Paths   --- #
+# ------------------------------- #
+
+# ---   Directory Structure   --- #
+# ------------------------------- #
+
+# |-- Repository directory
+#   |-- config
+#   |-- resources
+#   |-- scripts
+#   |-- workflows
+
+# |-- Data directory
+#   |-- analysis
+#   |-- benchmark
+#   |-- inputs
+#   |-- log
+#   |-- ref
+#   |-- results
+
+# ---   Miscellaneous   --- #
+# ------------------------- #
+
 #+end_src
 **** Load packages
 #+name: load_packages
-
 #+begin_src snakemake
 
 #####################################
@@ -91,18 +117,118 @@ if os.path.isfile(config_path):
 #+ATTR_ORG :width 600px
 file:resources/data_smk.png
 **** Preamble
-**** Load packages
-**** Variable naming
+#+begin_src snakemake
+#TEMPLATE#
+#+end_src
+**** #TEMPLATE# LINK to Load configuation
+**** #TEMPLATE# LINK to Load packages
+**** #TEMPLATE# LINK to variable naming
 **** Onstart
+#+begin_src snakemake
+#TEMPLATE#
+#+end_src
+**** Functions
+#+begin_src snakemake
+#TEMPLATE#
+#+end_src
+**** All rule
+#+begin_src snakemake
+rule all:
+#TEMPLATE#
+#+end_src
+**** On success
+#+begin_src snakemake
+#TEMPLATE#
+#+end_src
+**** Development
+:PROPERTIES:
+:header-args:snakemake: :tangle no
+:END:
+**** Ideas
+:PROPERTIES:
+:header-args:snakemake: :tangle no
+:END:
+** Methods
+*** Analysis 1
+**** Preamble
+#+begin_src snakemake
+#TEMPLATE#
+#+end_src
+
+
+**** #TEMPLATE# LINK to Load configuration
+#+begin_src snakemake
+<#load_config#>
+#+end_src
+**** #TEMPLATE# LINK to Load packages
+#+begin_src snakemake
+<#load_package#>
+#+end_src
+**** #TEMPLATE# LINK to variable naming
+#+begin_src snakemake
+<#variable_naming#>
+#+end_src
 **** Functions
 **** All rule
+#+begin_src snakemake
+rule all:
+#+end_src
 **** On success
-**** Development
-**** Ideas
-** Methods
+#+begin_src snakemake
+
+#+end_src
+
 ** Results
 *** [[file:workflows/results.smk][Snakefile]]
-*** Report
+:PROPERTIES:
+:header-args:snakemake: :tangle ./workflows/results.smk
+:END:
+**** Preamble
+#+begin_src snakemake
+#TEMPLATE#
+#+end_src
+**** #TEMPLATE# LINK to Load configuration
+#+begin_src snakemake
+<#load_config#>
+#+end_src
+**** #TEMPLATE# LINK to Load packages
+#+begin_src snakemake
+<#load_package#>
+#+end_src
+**** #TEMPLATE# LINK to variable naming
+#+begin_src snakemake
+<#variable_naming#>
+#+end_src
+**** Functions
+**** All rule
+#+begin_src snakemake
+rule all:
+#+end_src
+**** On success
+#+begin_src snakemake
+
+#+end_src
+*** Running results report
+:PROPERTIES:
+:ID: #TEMPLATE#
+:export_options: #TEMPLATE#
+:export_file_name: /tmp/#TEMPLATE#.pdf
+:export_file_title: #TEMPLATE#
+:export_author: Jeffrey Szymanski
+:export_date:
+:export_latex_class: empty
+:export_latex_header: \usepackage{/home/jeszyman/repos/latex/sty/report}
+:END:
+**** LaTeX Preamble                                                  :ignore:
+\newcommand{\datadir}{#TEMPLATE#}
+\setcounter{secnumdepth}{0}
+\vspace{5mm}
+\hfill Last compiled {{{time(%Y-%m-%d)}}}.
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+
 ** Development
 ** Ideas
 ** Reference
+*** [[file:biopipe.org][Scientific project template]]

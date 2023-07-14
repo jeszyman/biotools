@@ -4,38 +4,841 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :header-args:bash: :tangle-mode (identity #o555)
 :END:
-https://www.nature.com/articles/s42003-023-04791-5
-https://www.cancergenomics.org/cgc_webinars_and_special_semin.php
-https://cancergenomics.org/meetings/2022_annual_meeting_presentati.php
-https://www.reddit.com/r/bioinformatics/comments/13py5j8/folks_who_send_their_samples_out_for_sequencing/
-https://bioconductor.org/packages/release/BiocViews.html#___ChIPSeq
+** Scripts
+*** Bash
+**** Check run conditions for integration testing
 
-** <<<Integrated Genomics Viewer>>> (<<<IGV>>>)
+#+begin_src bash
+#!/usr/bin/env bash
+
+repo=$1
+mntpt=$2
+sif_dir=$3
+
+# Check for parameters, return usage if empty
+if [ $# -ne 3 ];
+then
+    printf "\n usage: repo_startup.sh <REPO PATH> <RIS MOUNT PT> <SINGULARITY CONTAINER DIR>
+    \n Repo development helper script to check run conditions for integration testing
+    \n "
+else
+
+    # Check mount point
+    if grep -qs $mntpt /proc/mounts; then
+        echo "RIS storage mounted."
+    else
+        echo "RIS storage NOT mounted, exiting."
+        exit 1
+    fi
+
+    # Check singularity container
+    if [ -r $sif_dir/atac.sif ]; then
+        echo "Local SIF file present"
+    else
+        echo "No local SIF file found"
+        exit 1
+    fi
+
+    # Check singularity container up-to-date
+    if [ /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif -nt $sif_dir/atac.sif ]; then
+        echo "Local SIF is out of date. Updating ..."
+        cp /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif $sif_dir/atac.sif
+    else
+        echo "Local SIF file is up to date"
+    fi
+
+    cur_branch=$(git branch | head -n 1)
+    echo "Current branch is $cur_branch"
+fi
+#+end_src
+
+**** Dry run
 :PROPERTIES:
-:ID:       917062AC-32E8-41F5-A511-84AA7B1504B0
+:ID:       c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
+:CUSTOM_ID: c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
 :END:
 
-- cite:robinson2017
-https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Giraud_visualisation-IGV_TP_EBA-2014-10.pdf
-[[http://software.broadinstitute.org/software/igv/UserGuide][User Guide]]
-** Coordinate-based genomics visualization tracks
-- motif tracks https://bioconductor.org/packages/release/bioc/vignettes/motifStack/inst/doc/motifStack_HTML.html
-- plotgardener
-- soGGi https://bioconductor.org/packages/release/bioc/vignettes/soGGi/inst/doc/soggi.pdf
-- aggregate signal based
-  - https://bioconductor.org/packages/release/bioc/vignettes/metagene2/inst/doc/metagene2.html
-  - https://bioconductor.org/packages/release/bioc/vignettes/chromstaR/inst/doc/chromstaR.pdf
-  - https://bioconductor.org/packages/release/bioc/vignettes/CoverageView/inst/doc/CoverageView.pdf
-  - https://bioconductor.org/packages/release/bioc/vignettes/profileplyr/inst/doc/profileplyr.html
-- specific signal-based
-  - https://www.bioconductor.org/packages/release/bioc/vignettes/wiggleplotr/inst/doc/wiggleplotr.html
-  - gviz
-    - https://bioconductor.org/packages/devel/bioc/vignettes/Gviz/inst/doc/Gviz.html
-    - https://rockefelleruniversity.github.io/RU_VisualizingGenomicsData/exercises/answers/Viz_part1_answers.html
-    - https://bioconductor.org/packages/release/bioc/vignettes/GenVisR/inst/doc/Intro.html
-  - https://bioconductor.org/packages/release/bioc/vignettes/soGGi/inst/doc/soggi.pdf
-  - https://phanstiellab.github.io/plotgardener/reference/plotSignal.html
-** Bioinformatic shell functions
+#+begin_src bash :tangle ./tools/shell/smk_dry_run.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters and return usage
+if [ "$#" -ne 2 ];
+then
+    printf "\n usage: smk_dry_run.sh <SMK CONFIG YAML> <SMK FILE>
+    \n Script for snakemake dry run.
+    \n Will not test singularity container is working
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --dry-run \
+        --forceall \
+        --printshellcmds \
+        --use-singularity \
+        --snakefile $2
+fi
+#+end_src
+
+**** Draw rulegraph
+:PROPERTIES:
+:ID:       78a99954-1d5d-4e09-87a4-6690f28f4519
+:CUSTOM_ID: 78a99954-1d5d-4e09-87a4-6690f28f4519
+:END:
+
+#+begin_src bash :tangle ./tools/shell/smk_draw.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters and return usage
+if [ "$#" -ne 3 ];
+then
+    printf "\n usage: smk_dry_run.sh config_file smk_file pdf_loc
+    \n Draws the rulegraph for a snakemake file at pdf_loc
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    png=$(echo $3 | sed 's/.pdf/.png/g')
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --rulegraph \
+        --snakefile $2 | dot -Tpdf > $3
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --rulegraph \
+        --snakefile $2 | dot -Tpng > $png
+fi
+#+end_src
+
+**** TODO [#D] Normal run
+:PROPERTIES:
+:effort:   00:30
+:ID:       3adf72d3-aa35-4a3d-8eba-0df075c52e26
+:CUSTOM_ID: 3adf72d3-aa35-4a3d-8eba-0df075c52e26
+:END:
+
+- [ ] needs a cores option w/ default
+#+begin_src bash :tangle ./tools/shell/smk_run.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters, return usage if empty
+if [ "$#" -ne 2 ];
+then
+    printf "\n usage: smk_forced_run.sh <SMK CONFIG YAML> <SMK FILE>
+    \n Script to complete an normal run of a snakefile
+    \n Assumes
+    - Singularity container specified in config
+    - a mount point at /mnt
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 --cores 4 \
+        --use-singularity \
+        --printshellcmds \
+        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
+        --rerun-incomplete \
+        --resources mem_mb=6000 \
+        --snakefile $2 \
+        --verbose
+fi
+#+end_src
+
+**** Forced run
+:PROPERTIES:
+:ID:       c2a25d2f-05bb-4eda-920f-e2d9fa768de6
+:CUSTOM_ID: c2a25d2f-05bb-4eda-920f-e2d9fa768de6
+:END:
+
+#+begin_src bash :tangle ./tools/shell/smk_forced_run.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters and return usage
+if [ "$#" -ne 2 ];
+then
+    printf "\n usage: smk_forced_run.sh config_file smk_file
+    \n Script to complete forced run of snakefile.
+    \n Assumes
+    - Singularity container specified in config
+    - a mount point at /mnt
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 --cores 4 \
+        --use-singularity \
+        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
+        --forceall \
+        --printshellcmds \
+        --rerun-incomplete \
+        --snakefile $2 \
+        --verbose
+fi
+#+end_src
+
+**** Development
+:PROPERTIES:
+:header-args: :tangle no
+:END:
+
+- https://unix.stackexchange.com/questions/10646/repeat-a-unix-command-every-x-seconds-forever
+- ?
+  #+begin_src bash
+#!/bin/bash
+#
+#############################################################################
+###              BIOINFORMATICS PROJECT COMMON SETUP SCRIPT               ###
+#############################################################################
+#
+###############
+### SCRIPTS ###
+###############
+#
+# Interactive docker initialization
+docker_interactive() {
+  repo="USER INPUT"
+  read -p "repo name: " repo
+  case $HOSTNAME in
+      (radonc-cancerbio) docker run -it \
+                                -v /media/:/media/ \
+                                -v /home/:/home/ \
+                          -u $(id -u ${USER}) \
+                          jeszyman/$repo \
+                          /bin/bash;;
+      (jeszyman-*) docker run -it \
+                          -v /home/:/home/ \
+                          -u $(id -u ${USER}) \
+                          jeszyman/$repo \
+                          /bin/bash;;
+      (acl*) docker run -it \
+                    -v /drive3/:/drive3/ \
+                    -v /duo4/:/duo4/ \
+                    -v /home/:/home/ \
+                    -u $(id -u ${USER}) \
+                    jeszyman/$repo \
+                    /bin/bash;;
+      (ACL*) docker run -it \
+                    -v /home/:/home/ \
+                    -v /duo4/:/duo4/ \
+                    -u $(id -u ${USER}):$(id -g ${USER}) \
+                    -h=${HOSTNAME} \
+                    jeszyman/$repo \
+                    /bin/bash;;
+      (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker(jeszyman/'"$repo"')' /bin/bash;;
+  esac
+}
+#
+#
+echo "Biotools setup completed successfully"
+#
+############################################################################
+#
+#############
+### IDEAS ###
+#############
+# # identifies server in docker containers
+# server_ask() {
+#     echo -n "Choose your server: "
+#     read SERVER
+#     SERVER="${SERVER:=chaudhuri-roche}"
+# }
+# # check if inside docker
+# if [ -f /.dockerenv ];then
+#     dockercontainer=yes
+#     echo "Your are in a docker container"
+# else
+#     dockercontainer=no
+#     echo "Not in docker"
+#     # setup NON-docker variables
+#     shopt -s nocasematch
+#     case $HOSTNAME in
+#         (radonc-cancerbio) server_home="/home/jeszyman" ;;
+#         (jeszyman-*) server_home="/home/jeszyman" ;;
+#         (acl*) server_home="/home/jszymanski" ;;
+#         (virtual-workstation*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
+#         (blade*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
+#     esac
+#     projectdir=$server_home"/repos/$project"
+#     localdata="$server_home/data/$project/"
+#     unset $SERVER
+# fi
+# #
+# case $dockercontainer in
+#     (yes) server_ask ;;
+#     (no) ;;
+# esac
+# #
+# case $SERVER in
+#     (chaudhuri-roche) projectdir=/drive3/users/jszymanski/repos/$project
+#                       localdata=/drive3/users/jszymanski/data/$project;;
+#     (NA) ;;
+# esac
+#
+#IDEAS
+### DEPENDENCIES ###
+#declare -a software=(
+#"rclone"
+# #DOES NOT RETURN ON MGI                     "docker"
+# #"git"
+# "bash"
+# )
+# for i in "${software[@]}"; do
+# if command -v $i >/dev/null 2>&1 ; then
+#     echo "$i installed"
+# else
+#     echo "$i not found, exiting"
+#     exit 1
+# fi
+# done
+
+#+end_src
+- example [[id:8263e3b1-3ba4-4c4f-8d39-9dd9bb06e2bb][publish to box]]
+  #+begin_src bash
+#!/usr/bin/env bash
+git pull &&
+    git add -A &&
+    git commit -m "minor changes" &&
+    git push
+
+git branch
+git branch stable4.1
+git checkout stable4.1
+git merge master
+git push origin stable4.1
+git checkout master
+#+end_src
+
+***** Dev
+
+#+begin_src bash
+#!/bin/bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+####################################
+###   Choose and Run Snakefile   ###
+####################################
+
+# Setup
+#set -euxov pipefail
+
+source config/${HOSTNAME}.sh
+echo "The following `*.smk` archives were found; select one:"
+
+# set the prompt used by select, replacing "#?"
+PS3="Use number to select an option"
+
+select filename in ./workflow/*.smk
+
+do
+    if [[ "$filename" == "" ]]
+    then
+        echo "'$REPLY' is not a valid number"
+        continue
+    fi
+    echo $filename
+    select run_option in dry_run normal force_final force_all
+    do
+        echo selected $run_option
+        case $run_option in
+            dry_run)
+                source activate snakemake
+                snakemake \
+                    --configfile config/${HOSTNAME}.yaml \
+                    --cores $threads \
+                    --directory ${repo} \
+                    --dry-run \
+                    --rerun-incomplete \
+                    --singularity-args "--bind $mntpt:$mntpt" \
+                    --use-singularity \
+                    --snakefile $filename
+                ;;
+            normal)
+                source activate snakemake
+                select nohup_option in no yes
+                do
+                    case $nohup_option in
+                        no)
+                            snakemake \
+                                --configfile config/${HOSTNAME}.yaml \
+                                --cores $threads \
+                                --directory ${repo} \
+                                --singularity-args "--bind $mntpt:$mntpt" \
+                                --use-singularity \
+                                --snakefile $filename
+                            ;;
+                        yes)
+                            nohup snakemake \
+                                  --configfile config/${HOSTNAME}.yaml \
+                                  --cores $threads \
+                                  --directory ${repo} \
+                                  --singularity-args "--bind $mntpt:$mntpt" \
+                                  --use-singularity \
+                                  --snakefile $filename
+                            ;;
+                    esac
+                done
+                ;;
+            force_final)
+                source activate snakemake
+                select nohup_option in no yes
+                do
+                    case $nohup_option in
+                        no)
+                            snakemake \
+                                --configfile config/${HOSTNAME}.yaml \
+                                --cores $threads \
+                                --directory ${repo} \
+                                --force \
+                                --singularity-args "--bind $mntpt:$mntpt" \
+                                --use-singularity \
+                                --snakefile $filename
+                            ;;
+                        yes)
+                            nohup snakemake \
+                                  --configfile config/${HOSTNAME}.yaml \
+                                  --cores $threads \
+                                  --directory ${repo} \
+                                  --force \
+                                  --singularity-args "--bind $mntpt:$mntpt" \
+                                  --use-singularity \
+                                  --snakefile $filename
+                            ;;
+                    esac
+                done
+                ;;
+            force_all)
+                source activate snakemake
+                select nohup_option in no yes
+                do
+                    case $nohup_option in
+                        no)
+
+                snakemake \
+                    --configfile config/${HOSTNAME}.yaml \
+                    --cores $threads \
+                    --directory ${repo} \
+                    -F \
+                    --singularity-args "--bind $mntpt:$mntpt" \
+                    --use-singularity \
+                    --snakefile $filename
+                                            ;;
+                        yes)
+                nohup snakemake \
+                    --configfile config/${HOSTNAME}.yaml \
+                    --cores $threads \
+                    --directory ${repo} \
+                    -F \
+                    --singularity-args "--bind $mntpt:$mntpt" \
+                    --use-singularity \
+                    --snakefile $filename
+                            ;;
+                    esac
+                done
+                ;;
+        esac
+        break
+    done
+    break
+done
+#+end_src
+
+**** Examples
+
+- https://github.com/jeszyman/exrna
+- https://github.com/jeszyman/cfdna-wgs
+- https://github.com/jeszyman/cappseq
+- https://github.com/jeszyman/cfdna-frag
+- https://github.com/jeszyman/atac-seq
+
+**** [[https://snakemake.readthedocs.io/en/stable/index.html][Documentation]]
+
+- https://snakemake-wrappers.readthedocs.io/en/stable/wrappers.html
+- [[Snakemake Tutorial][Snakemake Tutorial]]
+
+**** General reference
+
+- https://github.com/aomlomics/tourmaline
+- https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
+- https://swcarpentry.github.io/r-novice-inflammation/05-cmdline/index.html
+- https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
+- #+PROPERTY: header-args:bash :tangle-mode (identity #o777)
+- ideas
+  `(make-string (+ 2 (org-current-level)) ?*)` Run commands
+  ,#+begin_src bash
+  conda activate snakemake
+
+  snakemake \
+    --cores $threads \
+    --printshellcmds \
+    --snakefile workflow/$1
+  ,#+end_src
+- Standards and best practice
+  - https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html#snakefiles-best-practices
+- Wildcards
+  - https://edwards.flinders.edu.au/wildcards-in-snakemake/
+- https://endrebak.gitbooks.io/the-snakemake-book/content/
+- https://academic.oup.com/bioinformatics/article/28/19/2520/290322
+- https://www.biostars.org/p/9469533/
+- https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
+- https://stackoverflow.com/questions/54400171/how-to-use-list-in-snakemake-tabular-configuration-for-describing-of-sequencing
+- https://github.com/ngs-docs/2020-ggg-201b-rnaseq/blob/latest/rnaseq-workflow.Rmd
+- https://angus.readthedocs.io/en/2019/snakemake_for_automation.html
+- https://pages.charlesreid1.com/how-do-i-snakemake/converting/
+- http://ivory.idyll.org/blog/2020-snakemake-hacks-collections-files.html
+- http://origin.research.jetbrains.org/files/material/5ec245b4e907c.pdf
+- https://f1000research.com/articles/10-33/v2
+- [ ] https://lachlandeer.github.io/snakemake-econ-r-tutorial/config-files.html
+- https://github.com/snakemake-workflows/rna-seq-star-deseq2/blob/master/workflow/rules/diffexp.smk
+- https://github.com/csoneson/ARMOR
+- https://github.com/slowkow/snakefiles/blob/master/kallisto/Snakefile
+- https://lachlandeer.github.io/snakemake-econ-r-tutorial/initial-steps-with-snakemake.html
+- for repos, git ignore the singularity build
+- https://github.com/EnvGen/snakemake-workflows
+
+***** Tutorials and guides
+
+- https://reproducibility.sschmeier.com/index.html
+- a tutorial
+  #+begin_src bash
+source ~/repos/biotools/src/functions.sh
+docker_interactive
+biotools
+
+#
+mkdir -p /tmp/snakemake-tutorial
+cd /tmp/snakemake-tutorial
+#
+wget https://github.com/snakemake/snakemake-tutorial-data/archive/v5.24.1.tar.gz
+#
+tar --wildcards -xf v5.24.1.tar.gz --strip 1 "*/data" "*/environment.yaml"
+ls
+
+#
+snakemake --help
+
+snakemake -np mapped_reads/A.bam
+#+end_src
+- another tutorial
+  #+begin_src bash
+sudo apt-get install singularity-container
+
+cd ~/snakemake-tutorial/
+
+conda activate snakemake-tutorial
+
+
+snakemake -p --cores 2 sorted_reads/{A,B}.bam
+#    --dry-run \
+
+snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
+
+expand("sorted_reads/{sample}.bam", sample=SAMPLES)
+
+snakemake -p --cores 2 plots/quals.svg
+
+snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
+
+snakemake --cores 20 --forceall --summary
+
+snakemake --cores 20 --forceall
+
+conda install pygraphviz
+
+snakemake --report report.html
+
+open report.html
+
+snakemake --cores 20 --forceall
+#+end_src
+- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
+
+**** Examples
+
+- https://github.com/vari-bbc/rnaseq_workflow/blob/master/Snakefile
+- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
+- https://github.com/yztxwd/rna-seq-standard-pipeline/tree/c19a9e27216b86d3dbfdaed7228aeff59f869383
+- https://github.com/porchard/ATACseq-Snakemake/blob/master/src/Snakefile
+- https://github.com/zhxiaokang/RASflow
+- https://github.com/EthanHolleman
+- https://www.biostars.org/p/406385/
+- https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
+- https://github.com/lachlandeer/snakemake-econ-r
+
+**** Config
+
+
+:PROPERTIES:
+:ID:       5120c9dd-8e0b-4b2c-8c77-a89f271a48e4
+:END:
+
+#+name: bioinfo.config.common.sh
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.common.sh
+# -*- mode: snippet -*-
+# key: bioinfo.config.common.sh
+# expand-env: ((yas-indent-line 'fixed))
+# --
+,#+name: bash_common_config
+,#+begin_src bash :noweb yes :tangle ./config/common.sh
+#!/bin/bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+
+# Check git file hook is read-able
+if [ -r "${repo}/.git/hooks/precommit" ]; then
+   echo "Git size check is read-able"
+else
+    echo
+    "Git size check is not read-able"
+    exit 1
+fi
+
+# Check mount point
+if grep -qs $mntpt /proc/mounts; then
+    echo "RIS storage mounted."
+else
+    echo "RIS storage NOT mounted, exiting."
+    exit 1
+fi
+
+# Check singularity container
+if [ -r $sif_dir/atac.sif ]; then
+    echo "Local SIF file present"
+else
+    echo "No local SIF file found"
+fi
+    fi
+}
+#+end_src
+
+**** bioinfo.launch.docker
+
+#+name: bioinfo.launch.docker
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
+  # -*- mode: snippet -*-
+  # key: bioinfo.launch.docker
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src bash
+  #!/bin/bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+
+  # Notes: This block build from bioinfo.launch.docker at
+  #  ce85a21e-466f-43d0-ad13-3cd21497bfc3
+
+  # Function to launch an interactive docker session
+
+  ,#+end_src
+#+end_src
+
+**** bioinfo.setup.bash
+
+#+name: bioinfo.setup.bash
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
+  # -*- mode: snippet -*-
+  # key: bioinfo.setup.bash
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  `(make-string (1+ (org-current-level)) ?*)` Bash
+  Potential YAS to run:
+  bioinfo.config.host.sh
+  bioinfo.config.main.sh
+  ris.mount
+  $0
+#+end_src
+
+**** bioinfo.config.main.R
+
+#+name: bioinfo.config.main.R
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
+  # -*- mode: snippet -*-
+  # key: bioinfo.config.main.R
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src R :noweb yes :tangle ./config/main.R
+  #!/usr/bin/env Rscript
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # Repository-local, relative variables
+  $0
+
+  # Pull in from other repositories
+  ##
+  ## Basecamp
+  <<./basecamp/basecamp.org:basecamp_r_setup_wrapper()>>
+
+  ##
+  ## Biotools
+  <<./biotools/biotools.org:biotools_r_setup_wrapper()>>
+
+  ,#+end_src
+#+end_src
+
+**** bioinfo.config.local.R
+
+#+name: bioinfo.config.local.R
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
+  # -*- mode: snippet -*-
+  # key: bioinfo.config.local.R
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src R :noweb yes :tangle ./config/${1:HOSTNAME}.R
+  #!/usr/bin/env Rscript
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # Repository-local, host-absolute variables
+  data_dir = file.path("${2:DATA_DIR}")
+  source("./config/main.R")
+  $0
+  ,#+end_src
+#+end_src
+
+**** bioinfo.bash.script
+
+#+name: bioinfo.bash.script
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
+  # -*- mode: snippet -*-
+  # key: bioinfo.bash.script
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  #!/bin/bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  ### ${1:SCRIPT NAME} ###
+  #
+  # Notes:
+  ## This script assumes your your bash sessin is running within the repository docker container (see ./)
+  ## This script calls relative varibles and assumes you have sourced an appriopriate configuration file (see ./config)
+#+end_src
+
+**** UPDATE_ON_USE bioinfo.setup
+CLOSED: [2021-12-09 Thu 12:38]
+:PROPERTIES:
+:ID:       dbd3c67c-e33b-42d8-800d-705292d3c372
+:CUSTOM_ID: dbd3c67c-e33b-42d8-800d-705292d3c372
+:END:
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
+# -*- mode: snippet -*-
+# key: bioinfo.setup
+# expand-env: ((yas-indent-line 'none))
+# --
+`(concat "*" (make-string (org-current-level) ?*))` Setup
+`(concat "**" (make-string (org-current-level) ?*))` Bash
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+- Local (by $HOSTNAME)
+- Common
+  ,#+begin_src bash :tangle ./config/common.sh
+,#+end_src
+`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
+- Command line
+  ,#+name: bash_preamble_cmd
+  ,#+begin_src bash
+if [[ -f ./config/\${HOSTNAME}.sh ]];
+then source ./config/\${HOSTNAME}.sh
+else
+    echo "No config file found for \${HOSTNAME}"
+    exit 1
+fi
+,#+end_src
+- Snakemake
+`(concat "**" (make-string (org-current-level) ?*))` TODO Box and rclone
+`(concat "**" (make-string (org-current-level) ?*))` TODO Docker and singularity
+`(concat "***" (make-string (org-current-level) ?*))` Processes
+1. Write
+   ,#+begin_src fundamental :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
+,#+end_src
+2. Build
+3. Make singularity container from docker container
+`(concat "**" (make-string (org-current-level) ?*))` TODO Emacs and Org-mode
+- [ ] Run minimal YAS
+  bioinfo.setup
+  bioinfo.inputs
+  bioinfo.data
+  locvars
+- [ ] Add
+  - to main reference section
+    - Bioinformatics project [[6acdcddf-d693-40f2-a3ae-9703bad56043][module headline]] and [[tag:{bioinfo}][instances]]
+  - to Local variables
+    ,#+TODO: WAITING(w@) TODO(t) INPROCESS(p) | CLOSEOUT DONE(d!) DELEGATED(@) CANCELED(@)
+    ,#+property: header-args:R    :session *PROJECT_NAME*
+`(concat "**" (make-string (org-current-level) ?*))` TODO Local data directory and WashU RIS Storage processes
+- Mount
+- Create directory structure
+  ,#+begin_src bash
+  <<bash_preamble>>
+  ,#+end_src
+`(concat "**" (make-string (org-current-level) ?*))` R
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
+`(concat "**" (make-string (org-current-level) ?*))` TODO Repository, git, and github
+- [ ] ensure [[file:.git/hooks/pre-commit]]
+- [ ] Create repository structure
+  ,#+begin_src bash
+mkdir -p "\${repo}/config"
+mkdir -p "\${repo}/resources"
+mkdir -p "\${repo}/results"
+mkdir -p "\${repo}/src"
+mkdir -p "\${repo}/workflow/scripts"
+,#+end_src
+`(concat "***" (make-string (org-current-level) ?*))` README
+`(concat "**" (make-string (org-current-level) ?*))` Snakemake
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+`(concat "***" (make-string (org-current-level) ?*))` TODO Run commands
+#+end_src
+
+**** bioinfo.inputs
+:PROPERTIES:
+:ID:       d6bb61c9-8b10-4460-b987-0a6c678d2ddb
+:CUSTOM_ID: d6bb61c9-8b10-4460-b987-0a6c678d2ddb
+:END:
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
+# -*- mode: snippet -*-
+# key: bioinfo.inputs
+# expand-env: ((yas-indent-line 'none))
+# --
+`(make-string (1+ (org-current-level)) ?*)` Inputs
+,#+name: input_table
+|basename|dirname|get_class|model_class|origin
+`(concat "**" (make-string (org-current-level) ?*))` Manually created input tables
+- (names must end in _input)
+-
+#+end_src
+
+
+**** Bioinformatic shell functions
 :PROPERTIES:
 :ID:       2e51c010-1e25-4fc3-acc5-aefd490164be
 :END:
@@ -94,6 +897,7 @@ EOF
               --cores 1 \
               --rerun-incomplete \
               --dry-run \
+              --quiet \
               --rulegraph | tee >(dot -Tpdf > "$out_pdf") | dot -Tpng > "$out_png"
 }
 
@@ -163,6 +967,9 @@ EOF
 ** Processes                                                      :hierarchy:
 https://www.google.com/search?q=%22samtools+depth%22+%22wgs%22&oq=%22samtools+depth%22+%22wgs%22&aqs=chrome..69i57.25710j0j4&sourceid=chrome-mobile&ie=UTF-8
 *** 0 Bioinformatics process flat list                                 :flat:
+**** Send-out sequencing services
+- https://www.reddit.com/r/bioinformatics/comments/13py5j8/folks_who_send_their_samples_out_for_sequencing/
+- [[file:~/repos/org/science.org::#e9f3ca18-6066-414e-92a6-268ee5858407][GTAC]]
 **** Sequencing depth
 - samtools for depth https://www.biostars.org/p/356937/
 **** Sequence reverse compliment in shell
@@ -1672,6 +2479,7 @@ https://stackoverflow.com/questions/59701903/what-does-0-mean-in-the-r-model-mat
 :PROPERTIES:
 :ID:       ee030cef-74d4-435d-8228-b85f0e6203db
 :END:
+https://www.nature.com/articles/s42003-023-04791-5
 
 cite:buschmann2016
 "y. Even though comparisons of software
@@ -2283,6 +3091,8 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 - https://www.reddit.com/r/bioinformatics/comments/12cb99z/what_are_some_good_examples_of_wellengineered/
 - https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424
 - http://byronjsmith.com/make-bml/
+*** Chromatin profiling
+- https://bioconductor.org/packages/release/BiocViews.html#___ChIPSeq
 *** Common bioinformatics file manipulation
 :PROPERTIES:
 :ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
@@ -3353,6 +4163,7 @@ https://meme-suite.org/meme/
 :ID:       4206be38-8d3c-43c4-a5c7-ca6a8bd8361a
 :CREATED:  [2021-02-17 Wed 09:08]
 :END:
+- https://www.nature.com/articles/s42003-023-04791-5
 ***** Platform and Workflows
 :PROPERTIES:
 :ID:       b7c65054-f648-4579-9c5f-7bedbe272b5c
@@ -6299,6 +7110,23 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 *** General reference                                                   :ref:
 - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
 - https://github.com/orgs/genome/repositories?type=all
+*** Coordinate-based genomics visualization tracks
+- motif tracks https://bioconductor.org/packages/release/bioc/vignettes/motifStack/inst/doc/motifStack_HTML.html
+- plotgardener
+- soGGi https://bioconductor.org/packages/release/bioc/vignettes/soGGi/inst/doc/soggi.pdf
+- aggregate signal based
+  - https://bioconductor.org/packages/release/bioc/vignettes/metagene2/inst/doc/metagene2.html
+  - https://bioconductor.org/packages/release/bioc/vignettes/chromstaR/inst/doc/chromstaR.pdf
+  - https://bioconductor.org/packages/release/bioc/vignettes/CoverageView/inst/doc/CoverageView.pdf
+  - https://bioconductor.org/packages/release/bioc/vignettes/profileplyr/inst/doc/profileplyr.html
+- specific signal-based
+  - https://www.bioconductor.org/packages/release/bioc/vignettes/wiggleplotr/inst/doc/wiggleplotr.html
+  - gviz
+    - https://bioconductor.org/packages/devel/bioc/vignettes/Gviz/inst/doc/Gviz.html
+    - https://rockefelleruniversity.github.io/RU_VisualizingGenomicsData/exercises/answers/Viz_part1_answers.html
+    - https://bioconductor.org/packages/release/bioc/vignettes/GenVisR/inst/doc/Intro.html
+  - https://bioconductor.org/packages/release/bioc/vignettes/soGGi/inst/doc/soggi.pdf
+  - https://phanstiellab.github.io/plotgardener/reference/plotSignal.html
 ** Bioinformatics software tools
 *** 0 Bioinformatics software flat list
 :PROPERTIES:
@@ -7514,6 +8342,7 @@ https://www.pnas.org/content/115/4/E743.long
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 - see [[id:a0923938-4021-44cd-a8f3-94c0eb10cdb5][table of tools]]
+- https://support.bioconductor.org/p/9140398/
 - https://www.biostars.org/p/397086/
 - https://www.scopus.com/results/citedbyresults.uri?sort=cp-f&cite=2-s2.0-85014549629&src=s&nlo=&nlr=&nls=&imp=t&sid=b3adb06908021bf68bd2e4cbb741bd78&sot=cite&sdt=a&sl=0&origin=resultslist&offset=1&txGid=8f3b391583118470ef66b945cc173d58
 **** sambamba
@@ -8190,6 +9019,14 @@ wget -r --no-parent --reject "index.html*" -nH --cut-dirs=3 http://genome.ucsc.e
   - https://www.biostars.org/p/19029/
   - http://genome.ucsc.edu/FAQ/FAQreleases.html
   - cite:karolchik2011
+*** <<<Integrated Genomics Viewer>>> (<<<IGV>>>)
+:PROPERTIES:
+:ID:       917062AC-32E8-41F5-A511-84AA7B1504B0
+:END:
+
+- cite:robinson2017
+https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Giraud_visualisation-IGV_TP_EBA-2014-10.pdf
+[[http://software.broadinstitute.org/software/igv/UserGuide][User Guide]]
 ** [[id:d482d49c-9dbe-43cd-a188-b1662a9ce348][Bioinformatics research project module]]
 ** Biotools dockerfiles
 :LOGBOOK:
@@ -9094,6 +9931,16 @@ https://www.biostars.org/p/219541/
 
 *** Truseq small adapters
 - supercite:illumina2016truseq_small
+** Technologies, kits, etc
+*** Truseq RNA Exome
+:PROPERTIES:
+:ID:       5fe9c572-c692-4aad-bb48-8b2fb2b86760
+:END:
+- [[cite:&larson2021]]
+- [[https://www.illumina.com/products/by-type/sequencing-kits/library-prep-kits/truseq-rna-access.html][Illumina link]]
+  - TruSeq RNA Exome kit (Illumina, 20020189) 2x @ 2480
+  - enrichments 2x @ 2995
+  - indexes 2x @ 250
 ** References, databases, standards, file types, and data sets
 :PROPERTIES:
 :ID:       FCBA0863-010A-448C-A33C-941D2AA45AD5
@@ -10390,11 +11237,13 @@ CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
              $repo/data/test \
              demulti_TCCT_R1.fastq
   #+end_src
-** General reference :ref:
+** Reference
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://www.cancergenomics.org/cgc_webinars_and_special_semin.php
+- https://cancergenomics.org/meetings/2022_annual_meeting_presentati.php
 - https://www.reddit.com/r/bioinformatics/comments/12402xq/what_are_the_struggles_that_bioinformatician_face/
 - https://www.reddit.com/r/bioinformatics/comments/13i5mgf/we_have_got_a_pin_up_board_in_our_bioinfo_lab_i/
 - https://hpc.nih.gov/apps/
