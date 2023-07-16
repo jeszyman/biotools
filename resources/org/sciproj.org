@@ -1,6 +1,6 @@
 * Scientific Project Template :sciproj:
 :PROPERTIES:
-header-args: :tangle-mode (identity #o755) :mkdirp yes :noweb yes :comments org
+:header-args: :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
 :END:
 ** TODO Search #TEMPLATE# for needed manual updates?
 ** Project Administration
@@ -9,6 +9,9 @@ header-args: :tangle-mode (identity #o755) :mkdirp yes :noweb yes :comments org
 :PROPERTIES:
 :header-args:bash: :tangle ./config/bash_src
 :END:
+#+begin_src bash
+
+#+end_src
 
 *** Emacs
 #+TODO: TODO TEST(t) DEBUG(d) REFACTOR(r) DOCUMENT(d) BLOCKED(b&) WAITING(w&) | DONE DELEGATED
@@ -120,8 +123,8 @@ file:resources/data_smk.png
 #+begin_src snakemake
 #TEMPLATE#
 #+end_src
-**** #TEMPLATE# LINK to Load configuation
 **** #TEMPLATE# LINK to Load packages
+**** #TEMPLATE# LINK to Load configuation
 **** #TEMPLATE# LINK to variable naming
 **** Onstart
 #+begin_src snakemake
@@ -156,13 +159,13 @@ rule all:
 #+end_src
 
 
-**** #TEMPLATE# LINK to Load configuration
-#+begin_src snakemake
-<#load_config#>
-#+end_src
 **** #TEMPLATE# LINK to Load packages
 #+begin_src snakemake
 <#load_package#>
+#+end_src
+**** #TEMPLATE# LINK to Load configuration
+#+begin_src snakemake
+<#load_config#>
 #+end_src
 **** #TEMPLATE# LINK to variable naming
 #+begin_src snakemake
@@ -187,13 +190,13 @@ rule all:
 #+begin_src snakemake
 #TEMPLATE#
 #+end_src
-**** #TEMPLATE# LINK to Load configuration
-#+begin_src snakemake
-<#load_config#>
-#+end_src
 **** #TEMPLATE# LINK to Load packages
 #+begin_src snakemake
 <#load_package#>
+#+end_src
+**** #TEMPLATE# LINK to Load configuration
+#+begin_src snakemake
+<#load_config#>
 #+end_src
 **** #TEMPLATE# LINK to variable naming
 #+begin_src snakemake

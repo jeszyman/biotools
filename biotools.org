@@ -5,6 +5,8 @@
 :header-args:bash: :tangle-mode (identity #o555)
 :END:
 ** Scripts
+*** R
+**** [[file:~/repos/basecamp/basecamp.org::*R scripts][R scripts in basecamp]]
 *** Bash
 **** Check run conditions for integration testing
 
@@ -641,243 +643,14 @@ fi
 }
 #+end_src
 
-**** bioinfo.launch.docker
-
-#+name: bioinfo.launch.docker
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
-  # -*- mode: snippet -*-
-  # key: bioinfo.launch.docker
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src bash
-  #!/bin/bash
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-
-  # Notes: This block build from bioinfo.launch.docker at
-  #  ce85a21e-466f-43d0-ad13-3cd21497bfc3
-
-  # Function to launch an interactive docker session
-
-  ,#+end_src
-#+end_src
-
-**** bioinfo.setup.bash
-
-#+name: bioinfo.setup.bash
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
-  # -*- mode: snippet -*-
-  # key: bioinfo.setup.bash
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  `(make-string (1+ (org-current-level)) ?*)` Bash
-  Potential YAS to run:
-  bioinfo.config.host.sh
-  bioinfo.config.main.sh
-  ris.mount
-  $0
-#+end_src
-
-**** bioinfo.config.main.R
-
-#+name: bioinfo.config.main.R
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
-  # -*- mode: snippet -*-
-  # key: bioinfo.config.main.R
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src R :noweb yes :tangle ./config/main.R
-  #!/usr/bin/env Rscript
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  # Repository-local, relative variables
-  $0
-
-  # Pull in from other repositories
-  ##
-  ## Basecamp
-  <<./basecamp/basecamp.org:basecamp_r_setup_wrapper()>>
-
-  ##
-  ## Biotools
-  <<./biotools/biotools.org:biotools_r_setup_wrapper()>>
-
-  ,#+end_src
-#+end_src
-
-**** bioinfo.config.local.R
-
-#+name: bioinfo.config.local.R
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
-  # -*- mode: snippet -*-
-  # key: bioinfo.config.local.R
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src R :noweb yes :tangle ./config/${1:HOSTNAME}.R
-  #!/usr/bin/env Rscript
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  # Repository-local, host-absolute variables
-  data_dir = file.path("${2:DATA_DIR}")
-  source("./config/main.R")
-  $0
-  ,#+end_src
-#+end_src
-
-**** bioinfo.bash.script
-
-#+name: bioinfo.bash.script
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
-  # -*- mode: snippet -*-
-  # key: bioinfo.bash.script
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  #!/bin/bash
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  ### ${1:SCRIPT NAME} ###
-  #
-  # Notes:
-  ## This script assumes your your bash sessin is running within the repository docker container (see ./)
-  ## This script calls relative varibles and assumes you have sourced an appriopriate configuration file (see ./config)
-#+end_src
-
-**** UPDATE_ON_USE bioinfo.setup
-CLOSED: [2021-12-09 Thu 12:38]
-:PROPERTIES:
-:ID:       dbd3c67c-e33b-42d8-800d-705292d3c372
-:CUSTOM_ID: dbd3c67c-e33b-42d8-800d-705292d3c372
-:END:
-
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
-# -*- mode: snippet -*-
-# key: bioinfo.setup
-# expand-env: ((yas-indent-line 'none))
-# --
-`(concat "*" (make-string (org-current-level) ?*))` Setup
-`(concat "**" (make-string (org-current-level) ?*))` Bash
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-- Local (by $HOSTNAME)
-- Common
-  ,#+begin_src bash :tangle ./config/common.sh
-,#+end_src
-`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
-- Command line
-  ,#+name: bash_preamble_cmd
-  ,#+begin_src bash
-if [[ -f ./config/\${HOSTNAME}.sh ]];
-then source ./config/\${HOSTNAME}.sh
-else
-    echo "No config file found for \${HOSTNAME}"
-    exit 1
-fi
-,#+end_src
-- Snakemake
-`(concat "**" (make-string (org-current-level) ?*))` TODO Box and rclone
-`(concat "**" (make-string (org-current-level) ?*))` TODO Docker and singularity
-`(concat "***" (make-string (org-current-level) ?*))` Processes
-1. Write
-   ,#+begin_src fundamental :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
-,#+end_src
-2. Build
-3. Make singularity container from docker container
-`(concat "**" (make-string (org-current-level) ?*))` TODO Emacs and Org-mode
-- [ ] Run minimal YAS
-  bioinfo.setup
-  bioinfo.inputs
-  bioinfo.data
-  locvars
-- [ ] Add
-  - to main reference section
-    - Bioinformatics project [[6acdcddf-d693-40f2-a3ae-9703bad56043][module headline]] and [[tag:{bioinfo}][instances]]
-  - to Local variables
-    ,#+TODO: WAITING(w@) TODO(t) INPROCESS(p) | CLOSEOUT DONE(d!) DELEGATED(@) CANCELED(@)
-    ,#+property: header-args:R    :session *PROJECT_NAME*
-`(concat "**" (make-string (org-current-level) ?*))` TODO Local data directory and WashU RIS Storage processes
-- Mount
-- Create directory structure
-  ,#+begin_src bash
-  <<bash_preamble>>
-  ,#+end_src
-`(concat "**" (make-string (org-current-level) ?*))` R
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
-`(concat "**" (make-string (org-current-level) ?*))` TODO Repository, git, and github
-- [ ] ensure [[file:.git/hooks/pre-commit]]
-- [ ] Create repository structure
-  ,#+begin_src bash
-mkdir -p "\${repo}/config"
-mkdir -p "\${repo}/resources"
-mkdir -p "\${repo}/results"
-mkdir -p "\${repo}/src"
-mkdir -p "\${repo}/workflow/scripts"
-,#+end_src
-`(concat "***" (make-string (org-current-level) ?*))` README
-`(concat "**" (make-string (org-current-level) ?*))` Snakemake
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-`(concat "***" (make-string (org-current-level) ?*))` TODO Run commands
-#+end_src
-
-**** bioinfo.inputs
-:PROPERTIES:
-:ID:       d6bb61c9-8b10-4460-b987-0a6c678d2ddb
-:CUSTOM_ID: d6bb61c9-8b10-4460-b987-0a6c678d2ddb
-:END:
-
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
-# -*- mode: snippet -*-
-# key: bioinfo.inputs
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (1+ (org-current-level)) ?*)` Inputs
-,#+name: input_table
-|basename|dirname|get_class|model_class|origin
-`(concat "**" (make-string (org-current-level) ?*))` Manually created input tables
-- (names must end in _input)
--
-#+end_src
-
-
 **** Bioinformatic shell functions
 :PROPERTIES:
+:header-args: :tangle ./lib/bioinformatics_function.sh :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
 :ID:       2e51c010-1e25-4fc3-acc5-aefd490164be
 :END:
-#+name: bioinfo_sh_wrap
-#+begin_src org :noweb yes
-<#bioinfo_sh#>
-#+end_src
-#+name: bioinfo_sh
+
 #+begin_src bash
 # Functions
-check_mnt(){
-  [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
-    cat <<EOF
-Usage: check_mnt <DIRECTORY>
-Checks if directory is a mount point (must be top directory of mtn).
-EOF
-    return
-  }
-    local directory="${1}"
-    if mountpoint -q "$directory"; then
-        echo "The directory $directory is a mountpoint."
-    else
-        echo "The directory $directory is not a mountpoint."
-    fi
-}
-
-function conda_update() {
-      [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
-    cat <<EOF
-Usage: conda_update <ENV YAML>
-Updates a conda environment yaml file using mamba
-EOF
-    return
-      }
-      local file="${1}"
-      eval "$(command conda \"shell.bash\" \"hook\" 2> /dev/null)"
-      conda activate base
-      mamba env update --file $file
-}
 
 smk_draw(){
   [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
@@ -959,8 +732,224 @@ EOF
 }
 
 #+end_src
+***** Check if mount is active
+#+begin_src bash
+
+check_mnt(){
+  [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
+    cat <<EOF
+Usage: check_mnt <DIRECTORY>
+Checks if directory is a mount point (must be top directory of mtn).
+EOF
+    return
+  }
+    local directory="${1}"
+    if mountpoint -q "$directory"; then
+        echo "The directory $directory is a mountpoint."
+    else
+        echo "The directory $directory is not a mountpoint."
+    fi
+}
+
+#+end_src
 
 ** Local YAS
+*** UPDATE_ON_USE bioinfo.setup
+CLOSED: [2021-12-09 Thu 12:38]
+:PROPERTIES:
+:ID:       dbd3c67c-e33b-42d8-800d-705292d3c372
+:CUSTOM_ID: dbd3c67c-e33b-42d8-800d-705292d3c372
+:END:
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
+# -*- mode: snippet -*-
+# key: bioinfo.setup
+# expand-env: ((yas-indent-line 'none))
+# --
+`(concat "*" (make-string (org-current-level) ?*))` Setup
+`(concat "**" (make-string (org-current-level) ?*))` Bash
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+- Local (by $HOSTNAME)
+- Common
+  ,#+begin_src bash :tangle ./config/common.sh
+,#+end_src
+`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
+- Command line
+  ,#+name: bash_preamble_cmd
+  ,#+begin_src bash
+if [[ -f ./config/\${HOSTNAME}.sh ]];
+then source ./config/\${HOSTNAME}.sh
+else
+    echo "No config file found for \${HOSTNAME}"
+    exit 1
+fi
+,#+end_src
+- Snakemake
+`(concat "**" (make-string (org-current-level) ?*))` TODO Box and rclone
+`(concat "**" (make-string (org-current-level) ?*))` TODO Docker and singularity
+`(concat "***" (make-string (org-current-level) ?*))` Processes
+1. Write
+   ,#+begin_src fundamental :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
+,#+end_src
+2. Build
+3. Make singularity container from docker container
+`(concat "**" (make-string (org-current-level) ?*))` TODO Emacs and Org-mode
+- [ ] Run minimal YAS
+  bioinfo.setup
+  bioinfo.inputs
+  bioinfo.data
+  locvars
+- [ ] Add
+  - to main reference section
+    - Bioinformatics project [[6acdcddf-d693-40f2-a3ae-9703bad56043][module headline]] and [[tag:{bioinfo}][instances]]
+  - to Local variables
+    ,#+TODO: WAITING(w@) TODO(t) INPROCESS(p) | CLOSEOUT DONE(d!) DELEGATED(@) CANCELED(@)
+    ,#+property: header-args:R    :session *PROJECT_NAME*
+`(concat "**" (make-string (org-current-level) ?*))` TODO Local data directory and WashU RIS Storage processes
+- Mount
+- Create directory structure
+  ,#+begin_src bash
+  <<bash_preamble>>
+  ,#+end_src
+`(concat "**" (make-string (org-current-level) ?*))` R
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
+`(concat "**" (make-string (org-current-level) ?*))` TODO Repository, git, and github
+- [ ] ensure [[file:.git/hooks/pre-commit]]
+- [ ] Create repository structure
+  ,#+begin_src bash
+mkdir -p "\${repo}/config"
+mkdir -p "\${repo}/resources"
+mkdir -p "\${repo}/results"
+mkdir -p "\${repo}/src"
+mkdir -p "\${repo}/workflow/scripts"
+,#+end_src
+`(concat "***" (make-string (org-current-level) ?*))` README
+`(concat "**" (make-string (org-current-level) ?*))` Snakemake
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+`(concat "***" (make-string (org-current-level) ?*))` TODO Run commands
+#+end_src
+
+*** bioinfo.launch.docker
+
+#+name: bioinfo.launch.docker
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
+  # -*- mode: snippet -*-
+  # key: bioinfo.launch.docker
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src bash
+  #!/bin/bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+
+  # Notes: This block build from bioinfo.launch.docker at
+  #  ce85a21e-466f-43d0-ad13-3cd21497bfc3
+
+  # Function to launch an interactive docker session
+
+  ,#+end_src
+#+end_src
+
+*** bioinfo.setup.bash
+
+#+name: bioinfo.setup.bash
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
+  # -*- mode: snippet -*-
+  # key: bioinfo.setup.bash
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  `(make-string (1+ (org-current-level)) ?*)` Bash
+  Potential YAS to run:
+  bioinfo.config.host.sh
+  bioinfo.config.main.sh
+  ris.mount
+  $0
+#+end_src
+
+*** bioinfo.config.main.R
+
+#+name: bioinfo.config.main.R
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
+  # -*- mode: snippet -*-
+  # key: bioinfo.config.main.R
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src R :noweb yes :tangle ./config/main.R
+  #!/usr/bin/env Rscript
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # Repository-local, relative variables
+  $0
+
+  # Pull in from other repositories
+  ##
+  ## Basecamp
+  <<./basecamp/basecamp.org:basecamp_r_setup_wrapper()>>
+
+  ##
+  ## Biotools
+  <<./biotools/biotools.org:biotools_r_setup_wrapper()>>
+
+  ,#+end_src
+#+end_src
+
+*** bioinfo.config.local.R
+
+#+name: bioinfo.config.local.R
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
+  # -*- mode: snippet -*-
+  # key: bioinfo.config.local.R
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src R :noweb yes :tangle ./config/${1:HOSTNAME}.R
+  #!/usr/bin/env Rscript
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # Repository-local, host-absolute variables
+  data_dir = file.path("${2:DATA_DIR}")
+  source("./config/main.R")
+  $0
+  ,#+end_src
+#+end_src
+
+*** bioinfo.bash.script
+
+#+name: bioinfo.bash.script
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
+  # -*- mode: snippet -*-
+  # key: bioinfo.bash.script
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  #!/bin/bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  ### ${1:SCRIPT NAME} ###
+  #
+  # Notes:
+  ## This script assumes your your bash sessin is running within the repository docker container (see ./)
+  ## This script calls relative varibles and assumes you have sourced an appriopriate configuration file (see ./config)
+#+end_src
+
+*** bioinfo.inputs
+:PROPERTIES:
+:ID:       d6bb61c9-8b10-4460-b987-0a6c678d2ddb
+:CUSTOM_ID: d6bb61c9-8b10-4460-b987-0a6c678d2ddb
+:END:
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
+# -*- mode: snippet -*-
+# key: bioinfo.inputs
+# expand-env: ((yas-indent-line 'none))
+# --
+`(make-string (1+ (org-current-level)) ?*)` Inputs
+,#+name: input_table
+|basename|dirname|get_class|model_class|origin
+`(concat "**" (make-string (org-current-level) ?*))` Manually created input tables
+- (names must end in _input)
+-
+#+end_src
+
 ** Snakemake demo                                                      :demo:
 ** Glossary
 -
@@ -7871,6 +7860,73 @@ https://www.biostars.org/p/13270/
 :ID:       9b222d1c-ab61-450c-8b77-a98ec3213867
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
+#+begin_src R
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+library(gage)
+library(gageData)
+
+data(kegg.sets.rn)
+data(go.sets.rn)
+data(sigmet.idx.rn)
+data(go.subs.rn)
+
+# Subset gene set data to biological processes (BP) and molecular functions, without disease states
+kg_rat = kegg.sets.rn[sigmet.idx.rn]
+go_rat = do.call(c, list(go.sets.rn[go.subs.rn$MF],go.sets.rn[go.subs.rn$BP]))
+
+rat = useMart("ensembl", dataset = "rnorvegicus_gene_ensembl")
+rat_entrez =
+  getBM(attributes = c("ensembl_gene_id", "entrezgene_id"),
+        values = rownames(res_BN3_IW_sham),
+        mart = rat)
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+# Functions
+##
+##
+make_gage_object = function(deseq_res, biomat){
+  df = as.data.frame(deseq_res) %>%
+    rownames_to_column(var = "ensembl_gene_id") %>%
+    left_join(biomat, by = "ensembl_gene_id") %>%
+    filter(!is.na(entrezgene_id))
+  df2 = df %>% pull(log2FoldChange)
+  names(df2) = df$entrezgene_id
+  return(df2)
+  }
+
+run_gage = function(gage_object){
+  go = gage(gage_object,
+            gsets = go_rat,
+            ref = NULL,
+            sample = NULL,
+            same.dir = TRUE,
+            rank.test = TRUE)
+  go_up = as.data.frame(go$greater)
+  go_down = as.data.frame(go$less)
+  #
+  kegg = gage(gage_object,
+              gsets = kg_rat,
+              ref = NULL,
+              sample = NULL,
+              same.dir = FALSE,
+              rank.test = TRUE)
+  kegg = as.data.frame(kegg$greater)
+  #
+  gage_all = list(go_up, go_down, kegg)
+  return(gage_all)
+}
+
+#
+deseq_res_ch3_enrich_list = list(res_BN3_tx_sham, res_SS_tx_sham, res_BN3_SS_sham, res_BN3_SS_tx)
+gage_objects = lapply(deseq_res_ch3_enrich_list, make_gage_object, biomat = rat_entrez)
+gage_results = lapply(gage_objects, run_gage)
+names(gage_results) = c("gage_BN3_tx_sham", "gage_SS_tx_sham", "gage_BN3_SS_sham", "gage_BN3_SS_tx")
+
+save(gage_results,
+     file = "./data/gage_results.RData")
+#+end_src
 | GAGE | enrichment | express |   |   | [[https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-10-161][paper]] |   |
 - https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
 - https://genviz.org/module-04-expression/0004/03/01/pathwayAnalysis/
