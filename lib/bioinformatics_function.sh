@@ -7,20 +7,6 @@
 
 # Functions
 
-function conda_update() {
-      [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
-    cat <<EOF
-Usage: conda_update <ENV YAML>
-Updates a conda environment yaml file using mamba
-EOF
-    return
-      }
-      local file="${1}"
-      eval "$(command conda \"shell.bash\" \"hook\" 2> /dev/null)"
-      conda activate base
-      mamba env update --file $file
-}
-
 smk_draw(){
   [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
     cat <<EOF
@@ -44,10 +30,9 @@ EOF
 }
 
 smk_dry(){
-    local configfile="${1}"
-    local snakefile="${2}"
+    local snakefile="${1}"
     snakemake \
-        --configfile $configfile \
+        --configfile ./config/${HOSTNAME}.yaml \
         --cores 4 \
         --dry-run \
         --rerun-incomplete \
@@ -98,22 +83,4 @@ EOF
   }
     local org_file="$1"
     /usr/bin/emacs --batch -l ~/.emacs.d/tangle.el -l org -eval "(org-babel-tangle-file \"$org_file\")"
-}
-
-# Check if mount is active
-
-check_mnt(){
-  [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
-    cat <<EOF
-Usage: check_mnt <DIRECTORY>
-Checks if directory is a mount point (must be top directory of mtn).
-EOF
-    return
-  }
-    local directory="${1}"
-    if mountpoint -q "$directory"; then
-        echo "The directory $directory is a mountpoint."
-    else
-        echo "The directory $directory is not a mountpoint."
-    fi
 }

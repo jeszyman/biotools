@@ -57,7 +57,6 @@ fi
 **** Dry run
 :PROPERTIES:
 :ID:       c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
-:CUSTOM_ID: c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
 :END:
 
 #+begin_src bash :tangle ./tools/shell/smk_dry_run.sh
@@ -675,10 +674,9 @@ EOF
 }
 
 smk_dry(){
-    local configfile="${1}"
-    local snakefile="${2}"
+    local snakefile="${1}"
     snakemake \
-        --configfile $configfile \
+        --configfile ./config/${HOSTNAME}.yaml \
         --cores 4 \
         --dry-run \
         --rerun-incomplete \
@@ -754,6 +752,15 @@ EOF
 #+end_src
 
 ** Local YAS
+*** r.bioc :yas:
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/ess-mode/r.bioc
+# -*- mode: snippet -*-
+# key: r.bioc
+# expand-env: ((yas-indent-line 'none))
+# --
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+#+end_src
 *** UPDATE_ON_USE bioinfo.setup
 CLOSED: [2021-12-09 Thu 12:38]
 :PROPERTIES:
@@ -2349,6 +2356,7 @@ cite:foda2022
 https://www.biorxiv.org/content/10.1101/2021.10.18.464684v1.full
 **** cfDNA methylation
 - https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext
+- https://academic.oup.com/nargab/article/5/2/lqad048/7188752
 - cite:shen2019cfmedip used in cite:shen2018
 - [[id:d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6][methylation sequencing]]
 - https://jhoonline.biomedcentral.com/articles/10.1186/s13045-020-00933-y
@@ -2464,10 +2472,13 @@ https://stackoverflow.com/questions/59701903/what-does-0-mean-in-the-r-model-mat
   - cite:minnoye2021
   - Complete list of bulk methods in cite:minnoye2021 box 1
 - https://github.com/macs3-project/MACS/blob/master/docs/callpeak.md
-**** Differential expression
+**** Differential gene expression
 :PROPERTIES:
 :ID:       ee030cef-74d4-435d-8228-b85f0e6203db
 :END:
+https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2021/RNAseq/Markdowns/09_Linear_Models.html
+https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/designmatrices.html#design-matrices-with-and-without-intercept-term
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7873980/
 https://www.nature.com/articles/s42003-023-04791-5
 
 cite:buschmann2016
@@ -3340,6 +3351,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :PROPERTIES:
 :ID:       4c8cbcad-4523-4883-b041-a8eb548f01ac
 :END:
+https://rockefelleruniversity.github.io/RU_ChIPseq/
 https://github.com/crazyhottommy/ChIP-seq-analysis/blob/master/part2_Preparing-ChIP-seq-count-table.md
 https://www.bioconductor.org/help/course-materials/2016/CSAMA/lab-5-chipseq/Epigenetics.html
 http://www.guertinlab.org/vignettes/
@@ -4162,6 +4174,10 @@ https://meme-suite.org/meme/
 :PROPERTIES:
 :ID:       19780d7c-afa7-4195-b1f9-df9c563de303
 :END:
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7873980/
+- https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/designmatrices.html#design-matrices-with-and-without-intercept-term
+- https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/designmatrices.html#design-matrices-with-and-without-intercept-term
+- https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2021/RNAseq/Markdowns/09_Linear_Models.html
 - spike-ins
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4538800/
 - validation technologies
@@ -7121,6 +7137,9 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
+**** Gviz
+https://rdrr.io/bioc/Gviz/man/DataTrack-class.html
+https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.html#7_Composite_plots_for_multiple_chromosomes
 **** rGREAT
 https://www.bioconductor.org/packages/release/bioc/vignettes/rGREAT/inst/doc/local-GREAT.html
 **** bismark
@@ -7845,7 +7864,49 @@ https://www.biostars.org/p/13270/
 **** featureCounts
 | featureCounts |   |   |   |   | [[https://watermark.silverchair.com/btt656.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAApgwggKUBgkqhkiG9w0BBwagggKFMIICgQIBADCCAnoGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMofurkoV2NWsQqlelAgEQgIICS7iktDnfv1X3fe1vdQQcXCS09zT549UGvBjDCLHoNebBGfiQi_Eo7ZjUHVH_Yay_p1DlFd4eDeXU4WEX6HTQ-MzPqmtZ6RMGegyEptsqxaLnvr3QfpGO6WRT01dViqp6xya9-CqCRGV3E7F37VruIYzZEFjr-2svIgoRydPyF4pkSzA2hkvwV_g-JT2YSnqboZ5DOGtwZXeMaLKf48_aEpuYemRUx8VqOfM8xnOm4_jumLGd_BBqCCv6brLX8z3WVJpWfJ4YfpJXhemFRt8mSvIsAe9pYXV52W7-psxHlM2ocXzdD_7vLSD7iy1NocDXWLFT5HRH_Cq8NyiRq1s4Mq-QYuvQJFlTxWArVC6vdpE40bDr9slGD6KTJ0DpUQeC52q-aoKJXr9Y7Pi2SDo881eFuJxTWuSuMjxcXStn9MkPKZfcKa10Vu4CdJSSnvJAKAvd4GsshsfCVGCvkgy4ZfEabo5nOZaB82UYC-8AZEpdbD3RtJg1FUQJHDz0tlY-2gZYf2VB3KU1JK4wZcHzn8T8R5BSChB6MjFrRdTZeo3M8-ZIK3eWQGH2vLj8_bPsYlBF-wfj2JzSG3zJGgUUa_rSBzoK8Vvw8k_BPxCq63h6u-k49l-X0o-MO6f8mOdm_YliTT0dWu_ujvlbXMw9AIBrKjwBJncq27EwMOX0shm8nnzPMoPTfOzoekZR2nYTDPayGjHhqkAs6haFAQrI8XAAd0PfbMtW4l54ArULWEH6hCVxzDX8_h8F8oWgOc_3h2ktpbTLNsiX6Bxj][paper]] |   |
 **** fgsea :biotool:
-- https://github.com/ctlab/fgsea/issues/87
+- scoreType
+  - https://github.com/ctlab/fgsea/issues/87
+- ranking metric
+  - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1674-0#Sec8
+- time course data
+  - https://bioconductor.org/packages/release/bioc/vignettes/fgsea/inst/doc/geseca-tutorial.html#analysis-of-time-course-data
+- documentation
+  - tutorial https://bioconductor.org/packages/release/bioc/vignettes/fgsea/inst/doc/fgsea-tutorial.html
+- Gene set enrichment analysis :: coexpression method that determines enrichment of gene sets by the set's genes ranked differential expression positions
+- Historical development
+  - Developed in cite:mootha2003
+  - Proposed in cite:subramanian2005
+- Outputs
+  - ES (enrichment score)- maximum deviantion from zero in random walk of running sums of genes in a list. Corresponds to Kolmogorov-Smirnov
+  - p-value of ES- versus null of permutated gene labels
+  - Leading edge analysis :: "A subset of genes found in the ranking at or just before the maximal ES in a GSEA analysis. This subset of genes often accounts for a pathway being defined as enriched." cite:reimand2019
+- Used in
+  - [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][Used in Co-expression / pathway enrichment process]]
+  - Used in [[id:8e4c1fb8-cd52-4fac-900a-4b6e6eb5a28a][clusterProfiler]]
+- fgsea
+  - https://bioconductor.org/packages/devel/bioc/vignettes/fgsea/inst/doc/fgsea-tutorial.html
+- Ranking metric
+  - -log10(p-value)
+    - https://bioinformatics.stackexchange.com/questions/13443/ranking-metric-in-gsea
+  - sign(logFC) * -log10(pval)
+    - https://support.bioconductor.org/p/85681/
+- [[https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideTEXT.htm#_Consistent_Feature_Identifiers_Acro][documentation]]
+  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/FAQ#Why_does_GSEA_use_a_false_discovery_rate_.28FDR.29_of_0.25_rather_than_the_more_classic_0.05.3F][FDR discussion]]
+  - FAQ
+    - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/FAQ#What_array_platforms_and_organism_species_does_GSEA_support.3F][using for mouse data]]
+  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Using_RNA-seq_Datasets_with_GSEA][RNA-seq data]]
+    - with RNA-seq, use TMM
+  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats][file formats]]
+    - GMT: gene matrix transposed file (*.gmt)
+    - chip files ftp://ftp.broadinstitute.org/pub/gsea/annotations (use ENSEMBL)
+  - [[https://www.gsea-msigdb.org/gsea/msigdb/search.jsp][gene sets]]
+- [[id:f7eed3be-f505-451c-b191-1a58373fb180][Co-expression gene set databases]]
+  - [[id:c79bfe84-0f15-474e-8a22-1f210605ed5a][MSigDB]]
+- file creation and formatting
+  - see to create .rnk file https://github.com/BaderLab/EM-tutorials-docker/blob/master/R_scripts/supplemental_protocol2_rnaseq.R
+- [[http://software.broadinstitute.org/cancer/software/genepattern/modules/docs/ssGSEAProjection/4][ssGSEA]] calculates enrichment for each sample-gene set pair
+- https://academic.oup.com/bib/article/17/3/393/1744776
+
 **** flexbar                                                        :biotool:
 :PROPERTIES:
 :doc: https://github.com/seqan/flexbar/wiki/Manual
@@ -7984,48 +8045,12 @@ segmentation file column 6 is log2(x)-1 of the copy number, so
 - https://docs.cbioportal.org/5.1-data-loading/data-loading/file-formats#gistic-2-0-data
 - https://blindwith.science/2018/10/442.html/
 - http://crazyhottommy.blogspot.com/2017/11/run-gistic2-with-sequenza-segmentation.html
-**** GSEA and fgsea                                                 :biotool:
+**** GSEA                                                           :biotool:
 :PROPERTIES:
 :ID:       D68E1182-1F7B-4160-A6DD-BD2635F8085F
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
-- https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1674-0#Sec8
-- https://bioconductor.org/packages/release/bioc/vignettes/fgsea/inst/doc/geseca-tutorial.html#analysis-of-time-course-data
-- https://bioconductor.org/packages/release/bioc/vignettes/fgsea/inst/doc/fgsea-tutorial.html
-- Gene set enrichment analysis :: coexpression method that determines enrichment of gene sets by the set's genes ranked differential expression positions
-- Historical development
-  - Developed in cite:mootha2003
-  - Proposed in cite:subramanian2005
-- Outputs
-  - ES (enrichment score)- maximum deviantion from zero in random walk of running sums of genes in a list. Corresponds to Kolmogorov-Smirnov
-  - p-value of ES- versus null of permutated gene labels
-  - Leading edge analysis :: "A subset of genes found in the ranking at or just before the maximal ES in a GSEA analysis. This subset of genes often accounts for a pathway being defined as enriched." cite:reimand2019
-- Used in
-  - [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][Used in Co-expression / pathway enrichment process]]
-  - Used in [[id:8e4c1fb8-cd52-4fac-900a-4b6e6eb5a28a][clusterProfiler]]
-- fgsea
-  - https://bioconductor.org/packages/devel/bioc/vignettes/fgsea/inst/doc/fgsea-tutorial.html
-- Ranking metric
-  - -log10(p-value)
-    - https://bioinformatics.stackexchange.com/questions/13443/ranking-metric-in-gsea
-  - sign(logFC) * -log10(pval)
-    - https://support.bioconductor.org/p/85681/
-- [[https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideTEXT.htm#_Consistent_Feature_Identifiers_Acro][documentation]]
-  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/FAQ#Why_does_GSEA_use_a_false_discovery_rate_.28FDR.29_of_0.25_rather_than_the_more_classic_0.05.3F][FDR discussion]]
-  - FAQ
-    - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/FAQ#What_array_platforms_and_organism_species_does_GSEA_support.3F][using for mouse data]]
-  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Using_RNA-seq_Datasets_with_GSEA][RNA-seq data]]
-    - with RNA-seq, use TMM
-  - [[http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats][file formats]]
-    - GMT: gene matrix transposed file (*.gmt)
-    - chip files ftp://ftp.broadinstitute.org/pub/gsea/annotations (use ENSEMBL)
-  - [[https://www.gsea-msigdb.org/gsea/msigdb/search.jsp][gene sets]]
-- [[id:f7eed3be-f505-451c-b191-1a58373fb180][Co-expression gene set databases]]
-  - [[id:c79bfe84-0f15-474e-8a22-1f210605ed5a][MSigDB]]
-- file creation and formatting
-  - see to create .rnk file https://github.com/BaderLab/EM-tutorials-docker/blob/master/R_scripts/supplemental_protocol2_rnaseq.R
-- [[http://software.broadinstitute.org/cancer/software/genepattern/modules/docs/ssGSEAProjection/4][ssGSEA]] calculates enrichment for each sample-gene set pair
-- https://academic.oup.com/bib/article/17/3/393/1744776
+- see [[*fgsea][fgsea]]
 **** histat2
 :PROPERTIES:
 :doc: |         |              | fastq   |      | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]]      |       |                        |
@@ -10937,7 +10962,8 @@ done
 # get readmes
 #########1#########2#########3#########4#########5#########6#########7#########8
 #+end_src
-** [[#271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics pipeline]]
+** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics pipeline]]
+
 ** My bioinformatics pipelines
 *** meth seq
 
@@ -11298,6 +11324,9 @@ CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://ai.tinybio.cloud/chat?rdt_cid=3878222416981413620
+- https://www.reddit.com/r/bioinformatics/comments/154v2k6/resources_for_learning_best_practices_for_writing/
+
 - https://www.cancergenomics.org/cgc_webinars_and_special_semin.php
 - https://cancergenomics.org/meetings/2022_annual_meeting_presentati.php
 - https://www.reddit.com/r/bioinformatics/comments/12402xq/what_are_the_struggles_that_bioinformatician_face/
