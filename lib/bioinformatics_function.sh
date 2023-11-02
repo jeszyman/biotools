@@ -1,12 +1,3 @@
-# Bioinformatic shell functions
-# :PROPERTIES:
-# :header-args: :tangle ./lib/bioinformatics_function.sh :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
-# :ID:       2e51c010-1e25-4fc3-acc5-aefd490164be
-# :END:
-
-
-# Functions
-
 smk_draw(){
   [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
     cat <<EOF
@@ -15,12 +6,11 @@ Implements snakemake's rulegraph to make a DAG. DAG is saved in ./resources/<SNA
 EOF
     return
   }
-    local configfile="${1}"
-    local snakefile="${2}"
+    local snakefile="${1}"
     local snakefile_basename="$(basename "$snakefile")"
     local out_pdf="./resources/${snakefile_basename%.*}_smk.pdf"
     local out_png="${out_pdf%.*}.png"
-    snakemake --configfile "$configfile" \
+    snakemake --configfile ./config/${HOSTNAME}.yaml \
               --snakefile "$snakefile" \
               --cores 1 \
               --rerun-incomplete \
@@ -40,11 +30,10 @@ smk_dry(){
 }
 
 smk_forced(){
-    local configfile="${1}"
-    local snakefile="${2}"
+    local snakefile="${1}"
     local cores=$(nproc)
     snakemake \
-        --configfile "$configfile" \
+        --configfile ./config/${HOSTNAME}.yaml \
         --cores "$cores" \
         --forceall \
         --rerun-incomplete \
@@ -60,19 +49,16 @@ Launches a snakemake run with common parameters
 EOF
     return
   }
-    local configfile="${1}"
-    local snakefile="${2}"
+    local snakefile="${1}"
     local cores=$(nproc)
     snakemake \
-        --configfile "$configfile" \
+        --configfile ./config/${HOSTNAME}.yaml \
         --cores "$cores" \
         --keep-going \
         --rerun-incomplete \
         --snakefile "$snakefile"
 }
 
-# Tangle the specified org file using Emacs and org-mode
-# Usage: tangle <org_file>
 tangle() {
   [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
     cat <<EOF
@@ -83,4 +69,20 @@ EOF
   }
     local org_file="$1"
     /usr/bin/emacs --batch -l ~/.emacs.d/tangle.el -l org -eval "(org-babel-tangle-file \"$org_file\")"
+}
+
+check_mnt(){
+  [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
+    cat <<EOF
+Usage: check_mnt <DIRECTORY>
+Checks if directory is a mount point (must be top directory of mtn).
+EOF
+    return
+  }
+    local directory="${1}"
+    if mountpoint -q "$directory"; then
+        echo "The directory $directory is a mountpoint."
+    else
+        echo "The directory $directory is not a mountpoint."
+    fi
 }

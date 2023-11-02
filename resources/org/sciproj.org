@@ -1,6 +1,7 @@
 * Scientific Project Template :sciproj:
 :PROPERTIES:
 :header-args: :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
+:ID:       00656e3d-e62c-4ace-a27c-252b56010fe0
 :END:
 ** TODO Search #TEMPLATE# for needed manual updates?
 ** Project Administration

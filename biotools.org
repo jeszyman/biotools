@@ -4,969 +4,34 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :header-args:bash: :tangle-mode (identity #o555)
 :END:
-** Scripts
-*** R
-**** [[file:~/repos/basecamp/basecamp.org::*R scripts][R scripts in basecamp]]
-*** Bash
-**** Check run conditions for integration testing
-
-#+begin_src bash
-#!/usr/bin/env bash
-
-repo=$1
-mntpt=$2
-sif_dir=$3
-
-# Check for parameters, return usage if empty
-if [ $# -ne 3 ];
-then
-    printf "\n usage: repo_startup.sh <REPO PATH> <RIS MOUNT PT> <SINGULARITY CONTAINER DIR>
-    \n Repo development helper script to check run conditions for integration testing
-    \n "
-else
-
-    # Check mount point
-    if grep -qs $mntpt /proc/mounts; then
-        echo "RIS storage mounted."
-    else
-        echo "RIS storage NOT mounted, exiting."
-        exit 1
-    fi
-
-    # Check singularity container
-    if [ -r $sif_dir/atac.sif ]; then
-        echo "Local SIF file present"
-    else
-        echo "No local SIF file found"
-        exit 1
-    fi
-
-    # Check singularity container up-to-date
-    if [ /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif -nt $sif_dir/atac.sif ]; then
-        echo "Local SIF is out of date. Updating ..."
-        cp /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif $sif_dir/atac.sif
-    else
-        echo "Local SIF file is up to date"
-    fi
-
-    cur_branch=$(git branch | head -n 1)
-    echo "Current branch is $cur_branch"
-fi
-#+end_src
-
-**** Dry run
+** Biotools conda yaml
 :PROPERTIES:
-:ID:       c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
+:ID:       cf13d347-1d0e-4858-a016-0a8a8af22609
 :END:
+#+begin_src bash :tangle ./resources/conda/biotools_env.yaml
+channels:
+  - conda-forge
+  - bioconda
 
-#+begin_src bash :tangle ./tools/shell/smk_dry_run.sh
-#  Note: This code block transcluded from code blocks in the Emacs Org-mode
-#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
-#  Changes made directly to this region will be overwritten by transclusion from
-#  the source blocks in that file.
-
-# Check for parameters and return usage
-if [ "$#" -ne 2 ];
-then
-    printf "\n usage: smk_dry_run.sh <SMK CONFIG YAML> <SMK FILE>
-    \n Script for snakemake dry run.
-    \n Will not test singularity container is working
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 \
-        --cores 1 \
-        --dry-run \
-        --forceall \
-        --printshellcmds \
-        --use-singularity \
-        --snakefile $2
-fi
-#+end_src
-
-**** Draw rulegraph
-:PROPERTIES:
-:ID:       78a99954-1d5d-4e09-87a4-6690f28f4519
-:CUSTOM_ID: 78a99954-1d5d-4e09-87a4-6690f28f4519
-:END:
-
-#+begin_src bash :tangle ./tools/shell/smk_draw.sh
-#  Note: This code block transcluded from code blocks in the Emacs Org-mode
-#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
-#  Changes made directly to this region will be overwritten by transclusion from
-#  the source blocks in that file.
-
-# Check for parameters and return usage
-if [ "$#" -ne 3 ];
-then
-    printf "\n usage: smk_dry_run.sh config_file smk_file pdf_loc
-    \n Draws the rulegraph for a snakemake file at pdf_loc
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    png=$(echo $3 | sed 's/.pdf/.png/g')
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 \
-        --cores 1 \
-        --rulegraph \
-        --snakefile $2 | dot -Tpdf > $3
-    #
-    snakemake \
-        --configfile $1 \
-        --cores 1 \
-        --rulegraph \
-        --snakefile $2 | dot -Tpng > $png
-fi
-#+end_src
-
-**** TODO [#D] Normal run
-:PROPERTIES:
-:effort:   00:30
-:ID:       3adf72d3-aa35-4a3d-8eba-0df075c52e26
-:CUSTOM_ID: 3adf72d3-aa35-4a3d-8eba-0df075c52e26
-:END:
-
-- [ ] needs a cores option w/ default
-#+begin_src bash :tangle ./tools/shell/smk_run.sh
-#  Note: This code block transcluded from code blocks in the Emacs Org-mode
-#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
-#  Changes made directly to this region will be overwritten by transclusion from
-#  the source blocks in that file.
-
-# Check for parameters, return usage if empty
-if [ "$#" -ne 2 ];
-then
-    printf "\n usage: smk_forced_run.sh <SMK CONFIG YAML> <SMK FILE>
-    \n Script to complete an normal run of a snakefile
-    \n Assumes
-    - Singularity container specified in config
-    - a mount point at /mnt
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 --cores 4 \
-        --use-singularity \
-        --printshellcmds \
-        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
-        --rerun-incomplete \
-        --resources mem_mb=6000 \
-        --snakefile $2 \
-        --verbose
-fi
-#+end_src
-
-**** Forced run
-:PROPERTIES:
-:ID:       c2a25d2f-05bb-4eda-920f-e2d9fa768de6
-:CUSTOM_ID: c2a25d2f-05bb-4eda-920f-e2d9fa768de6
-:END:
-
-#+begin_src bash :tangle ./tools/shell/smk_forced_run.sh
-#  Note: This code block transcluded from code blocks in the Emacs Org-mode
-#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
-#  Changes made directly to this region will be overwritten by transclusion from
-#  the source blocks in that file.
-
-# Check for parameters and return usage
-if [ "$#" -ne 2 ];
-then
-    printf "\n usage: smk_forced_run.sh config_file smk_file
-    \n Script to complete forced run of snakefile.
-    \n Assumes
-    - Singularity container specified in config
-    - a mount point at /mnt
-    \n "
-else
-    # Necessary to run conda snakemake command in shell script
-    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
-    #
-    conda activate snakemake
-    #
-    snakemake \
-        --configfile $1 --cores 4 \
-        --use-singularity \
-        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
-        --forceall \
-        --printshellcmds \
-        --rerun-incomplete \
-        --snakefile $2 \
-        --verbose
-fi
-#+end_src
-
-**** Development
-:PROPERTIES:
-:header-args: :tangle no
-:END:
-
-- https://unix.stackexchange.com/questions/10646/repeat-a-unix-command-every-x-seconds-forever
-- ?
-  #+begin_src bash
-#!/bin/bash
-#
-#############################################################################
-###              BIOINFORMATICS PROJECT COMMON SETUP SCRIPT               ###
-#############################################################################
-#
-###############
-### SCRIPTS ###
-###############
-#
-# Interactive docker initialization
-docker_interactive() {
-  repo="USER INPUT"
-  read -p "repo name: " repo
-  case $HOSTNAME in
-      (radonc-cancerbio) docker run -it \
-                                -v /media/:/media/ \
-                                -v /home/:/home/ \
-                          -u $(id -u ${USER}) \
-                          jeszyman/$repo \
-                          /bin/bash;;
-      (jeszyman-*) docker run -it \
-                          -v /home/:/home/ \
-                          -u $(id -u ${USER}) \
-                          jeszyman/$repo \
-                          /bin/bash;;
-      (acl*) docker run -it \
-                    -v /drive3/:/drive3/ \
-                    -v /duo4/:/duo4/ \
-                    -v /home/:/home/ \
-                    -u $(id -u ${USER}) \
-                    jeszyman/$repo \
-                    /bin/bash;;
-      (ACL*) docker run -it \
-                    -v /home/:/home/ \
-                    -v /duo4/:/duo4/ \
-                    -u $(id -u ${USER}):$(id -g ${USER}) \
-                    -h=${HOSTNAME} \
-                    jeszyman/$repo \
-                    /bin/bash;;
-      (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker(jeszyman/'"$repo"')' /bin/bash;;
-  esac
-}
-#
-#
-echo "Biotools setup completed successfully"
-#
-############################################################################
-#
-#############
-### IDEAS ###
-#############
-# # identifies server in docker containers
-# server_ask() {
-#     echo -n "Choose your server: "
-#     read SERVER
-#     SERVER="${SERVER:=chaudhuri-roche}"
-# }
-# # check if inside docker
-# if [ -f /.dockerenv ];then
-#     dockercontainer=yes
-#     echo "Your are in a docker container"
-# else
-#     dockercontainer=no
-#     echo "Not in docker"
-#     # setup NON-docker variables
-#     shopt -s nocasematch
-#     case $HOSTNAME in
-#         (radonc-cancerbio) server_home="/home/jeszyman" ;;
-#         (jeszyman-*) server_home="/home/jeszyman" ;;
-#         (acl*) server_home="/home/jszymanski" ;;
-#         (virtual-workstation*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
-#         (blade*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
-#     esac
-#     projectdir=$server_home"/repos/$project"
-#     localdata="$server_home/data/$project/"
-#     unset $SERVER
-# fi
-# #
-# case $dockercontainer in
-#     (yes) server_ask ;;
-#     (no) ;;
-# esac
-# #
-# case $SERVER in
-#     (chaudhuri-roche) projectdir=/drive3/users/jszymanski/repos/$project
-#                       localdata=/drive3/users/jszymanski/data/$project;;
-#     (NA) ;;
-# esac
-#
-#IDEAS
-### DEPENDENCIES ###
-#declare -a software=(
-#"rclone"
-# #DOES NOT RETURN ON MGI                     "docker"
-# #"git"
-# "bash"
-# )
-# for i in "${software[@]}"; do
-# if command -v $i >/dev/null 2>&1 ; then
-#     echo "$i installed"
-# else
-#     echo "$i not found, exiting"
-#     exit 1
-# fi
-# done
+dependencies:
+  - bedtools
+  - samtools
+  - picard
+  - pysam
+  - fastp
+  - fastqc
+  - multiqc
 
 #+end_src
-- example [[id:8263e3b1-3ba4-4c4f-8d39-9dd9bb06e2bb][publish to box]]
-  #+begin_src bash
-#!/usr/bin/env bash
-git pull &&
-    git add -A &&
-    git commit -m "minor changes" &&
-    git push
 
-git branch
-git branch stable4.1
-git checkout stable4.1
-git merge master
-git push origin stable4.1
-git checkout master
-#+end_src
-
-***** Dev
-
-#+begin_src bash
-#!/bin/bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-
-####################################
-###   Choose and Run Snakefile   ###
-####################################
-
-# Setup
-#set -euxov pipefail
-
-source config/${HOSTNAME}.sh
-echo "The following `*.smk` archives were found; select one:"
-
-# set the prompt used by select, replacing "#?"
-PS3="Use number to select an option"
-
-select filename in ./workflow/*.smk
-
-do
-    if [[ "$filename" == "" ]]
-    then
-        echo "'$REPLY' is not a valid number"
-        continue
-    fi
-    echo $filename
-    select run_option in dry_run normal force_final force_all
-    do
-        echo selected $run_option
-        case $run_option in
-            dry_run)
-                source activate snakemake
-                snakemake \
-                    --configfile config/${HOSTNAME}.yaml \
-                    --cores $threads \
-                    --directory ${repo} \
-                    --dry-run \
-                    --rerun-incomplete \
-                    --singularity-args "--bind $mntpt:$mntpt" \
-                    --use-singularity \
-                    --snakefile $filename
-                ;;
-            normal)
-                source activate snakemake
-                select nohup_option in no yes
-                do
-                    case $nohup_option in
-                        no)
-                            snakemake \
-                                --configfile config/${HOSTNAME}.yaml \
-                                --cores $threads \
-                                --directory ${repo} \
-                                --singularity-args "--bind $mntpt:$mntpt" \
-                                --use-singularity \
-                                --snakefile $filename
-                            ;;
-                        yes)
-                            nohup snakemake \
-                                  --configfile config/${HOSTNAME}.yaml \
-                                  --cores $threads \
-                                  --directory ${repo} \
-                                  --singularity-args "--bind $mntpt:$mntpt" \
-                                  --use-singularity \
-                                  --snakefile $filename
-                            ;;
-                    esac
-                done
-                ;;
-            force_final)
-                source activate snakemake
-                select nohup_option in no yes
-                do
-                    case $nohup_option in
-                        no)
-                            snakemake \
-                                --configfile config/${HOSTNAME}.yaml \
-                                --cores $threads \
-                                --directory ${repo} \
-                                --force \
-                                --singularity-args "--bind $mntpt:$mntpt" \
-                                --use-singularity \
-                                --snakefile $filename
-                            ;;
-                        yes)
-                            nohup snakemake \
-                                  --configfile config/${HOSTNAME}.yaml \
-                                  --cores $threads \
-                                  --directory ${repo} \
-                                  --force \
-                                  --singularity-args "--bind $mntpt:$mntpt" \
-                                  --use-singularity \
-                                  --snakefile $filename
-                            ;;
-                    esac
-                done
-                ;;
-            force_all)
-                source activate snakemake
-                select nohup_option in no yes
-                do
-                    case $nohup_option in
-                        no)
-
-                snakemake \
-                    --configfile config/${HOSTNAME}.yaml \
-                    --cores $threads \
-                    --directory ${repo} \
-                    -F \
-                    --singularity-args "--bind $mntpt:$mntpt" \
-                    --use-singularity \
-                    --snakefile $filename
-                                            ;;
-                        yes)
-                nohup snakemake \
-                    --configfile config/${HOSTNAME}.yaml \
-                    --cores $threads \
-                    --directory ${repo} \
-                    -F \
-                    --singularity-args "--bind $mntpt:$mntpt" \
-                    --use-singularity \
-                    --snakefile $filename
-                            ;;
-                    esac
-                done
-                ;;
-        esac
-        break
-    done
-    break
-done
-#+end_src
-
-**** Examples
-
-- https://github.com/jeszyman/exrna
-- https://github.com/jeszyman/cfdna-wgs
-- https://github.com/jeszyman/cappseq
-- https://github.com/jeszyman/cfdna-frag
-- https://github.com/jeszyman/atac-seq
-
-**** [[https://snakemake.readthedocs.io/en/stable/index.html][Documentation]]
-
-- https://snakemake-wrappers.readthedocs.io/en/stable/wrappers.html
-- [[Snakemake Tutorial][Snakemake Tutorial]]
-
-**** General reference
-
-- https://github.com/aomlomics/tourmaline
-- https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
-- https://swcarpentry.github.io/r-novice-inflammation/05-cmdline/index.html
-- https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
-- #+PROPERTY: header-args:bash :tangle-mode (identity #o777)
-- ideas
-  `(make-string (+ 2 (org-current-level)) ?*)` Run commands
-  ,#+begin_src bash
-  conda activate snakemake
-
-  snakemake \
-    --cores $threads \
-    --printshellcmds \
-    --snakefile workflow/$1
-  ,#+end_src
-- Standards and best practice
-  - https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html#snakefiles-best-practices
-- Wildcards
-  - https://edwards.flinders.edu.au/wildcards-in-snakemake/
-- https://endrebak.gitbooks.io/the-snakemake-book/content/
-- https://academic.oup.com/bioinformatics/article/28/19/2520/290322
-- https://www.biostars.org/p/9469533/
-- https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
-- https://stackoverflow.com/questions/54400171/how-to-use-list-in-snakemake-tabular-configuration-for-describing-of-sequencing
-- https://github.com/ngs-docs/2020-ggg-201b-rnaseq/blob/latest/rnaseq-workflow.Rmd
-- https://angus.readthedocs.io/en/2019/snakemake_for_automation.html
-- https://pages.charlesreid1.com/how-do-i-snakemake/converting/
-- http://ivory.idyll.org/blog/2020-snakemake-hacks-collections-files.html
-- http://origin.research.jetbrains.org/files/material/5ec245b4e907c.pdf
-- https://f1000research.com/articles/10-33/v2
-- [ ] https://lachlandeer.github.io/snakemake-econ-r-tutorial/config-files.html
-- https://github.com/snakemake-workflows/rna-seq-star-deseq2/blob/master/workflow/rules/diffexp.smk
-- https://github.com/csoneson/ARMOR
-- https://github.com/slowkow/snakefiles/blob/master/kallisto/Snakefile
-- https://lachlandeer.github.io/snakemake-econ-r-tutorial/initial-steps-with-snakemake.html
-- for repos, git ignore the singularity build
-- https://github.com/EnvGen/snakemake-workflows
-
-***** Tutorials and guides
-
-- https://reproducibility.sschmeier.com/index.html
-- a tutorial
-  #+begin_src bash
-source ~/repos/biotools/src/functions.sh
-docker_interactive
-biotools
-
-#
-mkdir -p /tmp/snakemake-tutorial
-cd /tmp/snakemake-tutorial
-#
-wget https://github.com/snakemake/snakemake-tutorial-data/archive/v5.24.1.tar.gz
-#
-tar --wildcards -xf v5.24.1.tar.gz --strip 1 "*/data" "*/environment.yaml"
-ls
-
-#
-snakemake --help
-
-snakemake -np mapped_reads/A.bam
-#+end_src
-- another tutorial
-  #+begin_src bash
-sudo apt-get install singularity-container
-
-cd ~/snakemake-tutorial/
-
-conda activate snakemake-tutorial
-
-
-snakemake -p --cores 2 sorted_reads/{A,B}.bam
-#    --dry-run \
-
-snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
-
-expand("sorted_reads/{sample}.bam", sample=SAMPLES)
-
-snakemake -p --cores 2 plots/quals.svg
-
-snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
-
-snakemake --cores 20 --forceall --summary
-
-snakemake --cores 20 --forceall
-
-conda install pygraphviz
-
-snakemake --report report.html
-
-open report.html
-
-snakemake --cores 20 --forceall
-#+end_src
-- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
-
-**** Examples
-
-- https://github.com/vari-bbc/rnaseq_workflow/blob/master/Snakefile
-- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
-- https://github.com/yztxwd/rna-seq-standard-pipeline/tree/c19a9e27216b86d3dbfdaed7228aeff59f869383
-- https://github.com/porchard/ATACseq-Snakemake/blob/master/src/Snakefile
-- https://github.com/zhxiaokang/RASflow
-- https://github.com/EthanHolleman
-- https://www.biostars.org/p/406385/
-- https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
-- https://github.com/lachlandeer/snakemake-econ-r
-
-**** Config
-
-
-:PROPERTIES:
-:ID:       5120c9dd-8e0b-4b2c-8c77-a89f271a48e4
-:END:
-
-#+name: bioinfo.config.common.sh
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.common.sh
-# -*- mode: snippet -*-
-# key: bioinfo.config.common.sh
-# expand-env: ((yas-indent-line 'fixed))
-# --
-,#+name: bash_common_config
-,#+begin_src bash :noweb yes :tangle ./config/common.sh
-#!/bin/bash
-#########1#########2#########3#########4#########5#########6#########7#########8
-#
-
-# Check git file hook is read-able
-if [ -r "${repo}/.git/hooks/precommit" ]; then
-   echo "Git size check is read-able"
-else
-    echo
-    "Git size check is not read-able"
-    exit 1
-fi
-
-# Check mount point
-if grep -qs $mntpt /proc/mounts; then
-    echo "RIS storage mounted."
-else
-    echo "RIS storage NOT mounted, exiting."
-    exit 1
-fi
-
-# Check singularity container
-if [ -r $sif_dir/atac.sif ]; then
-    echo "Local SIF file present"
-else
-    echo "No local SIF file found"
-fi
-    fi
-}
-#+end_src
-
-**** Bioinformatic shell functions
-:PROPERTIES:
-:header-args: :tangle ./lib/bioinformatics_function.sh :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
-:ID:       2e51c010-1e25-4fc3-acc5-aefd490164be
-:END:
-
-#+begin_src bash
-# Functions
-
-smk_draw(){
-  [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
-    cat <<EOF
-Usage: smk_draw <CONFIG FILE> <SNAKEFILE>
-Implements snakemake's rulegraph to make a DAG. DAG is saved in ./resources/<SNAKEFILE BASENAME>.pdf and .png
-EOF
-    return
-  }
-    local configfile="${1}"
-    local snakefile="${2}"
-    local snakefile_basename="$(basename "$snakefile")"
-    local out_pdf="./resources/${snakefile_basename%.*}_smk.pdf"
-    local out_png="${out_pdf%.*}.png"
-    snakemake --configfile "$configfile" \
-              --snakefile "$snakefile" \
-              --cores 1 \
-              --rerun-incomplete \
-              --dry-run \
-              --quiet \
-              --rulegraph | tee >(dot -Tpdf > "$out_pdf") | dot -Tpng > "$out_png"
-}
-
-smk_dry(){
-    local snakefile="${1}"
-    snakemake \
-        --configfile ./config/${HOSTNAME}.yaml \
-        --cores 4 \
-        --dry-run \
-        --rerun-incomplete \
-        --snakefile $snakefile
-}
-
-smk_forced(){
-    local configfile="${1}"
-    local snakefile="${2}"
-    local cores=$(nproc)
-    snakemake \
-        --configfile "$configfile" \
-        --cores "$cores" \
-        --forceall \
-        --rerun-incomplete \
-        --snakefile "$snakefile"
-}
-
-smk_run(){
-  [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
-    cat <<EOF
-Usage: smk_run <CONFIGFILE> <SNAKEFILE>
-Launches a snakemake run with common parameters
-(keep-going, rerun-incomplete, use all available cores)
-EOF
-    return
-  }
-    local configfile="${1}"
-    local snakefile="${2}"
-    local cores=$(nproc)
-    snakemake \
-        --configfile "$configfile" \
-        --cores "$cores" \
-        --keep-going \
-        --rerun-incomplete \
-        --snakefile "$snakefile"
-}
-
-# Tangle the specified org file using Emacs and org-mode
-# Usage: tangle <org_file>
-tangle() {
-  [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
-    cat <<EOF
-Usage: tangle <ORG FILE>
-Tangle's org-mode file code using a non-interactive emacs batch instance
-EOF
-    return
-  }
-    local org_file="$1"
-    /usr/bin/emacs --batch -l ~/.emacs.d/tangle.el -l org -eval "(org-babel-tangle-file \"$org_file\")"
-}
-
-#+end_src
-***** Check if mount is active
-#+begin_src bash
-
-check_mnt(){
-  [[ "$1" =~ (-h|--help) || -z "$1" ]] && {
-    cat <<EOF
-Usage: check_mnt <DIRECTORY>
-Checks if directory is a mount point (must be top directory of mtn).
-EOF
-    return
-  }
-    local directory="${1}"
-    if mountpoint -q "$directory"; then
-        echo "The directory $directory is a mountpoint."
-    else
-        echo "The directory $directory is not a mountpoint."
-    fi
-}
-
-#+end_src
-
-** Local YAS
-*** r.bioc :yas:
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/ess-mode/r.bioc
-# -*- mode: snippet -*-
-# key: r.bioc
-# expand-env: ((yas-indent-line 'none))
-# --
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-#+end_src
-*** UPDATE_ON_USE bioinfo.setup
-CLOSED: [2021-12-09 Thu 12:38]
-:PROPERTIES:
-:ID:       dbd3c67c-e33b-42d8-800d-705292d3c372
-:CUSTOM_ID: dbd3c67c-e33b-42d8-800d-705292d3c372
-:END:
-
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
-# -*- mode: snippet -*-
-# key: bioinfo.setup
-# expand-env: ((yas-indent-line 'none))
-# --
-`(concat "*" (make-string (org-current-level) ?*))` Setup
-`(concat "**" (make-string (org-current-level) ?*))` Bash
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-- Local (by $HOSTNAME)
-- Common
-  ,#+begin_src bash :tangle ./config/common.sh
-,#+end_src
-`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
-- Command line
-  ,#+name: bash_preamble_cmd
-  ,#+begin_src bash
-if [[ -f ./config/\${HOSTNAME}.sh ]];
-then source ./config/\${HOSTNAME}.sh
-else
-    echo "No config file found for \${HOSTNAME}"
-    exit 1
-fi
-,#+end_src
-- Snakemake
-`(concat "**" (make-string (org-current-level) ?*))` TODO Box and rclone
-`(concat "**" (make-string (org-current-level) ?*))` TODO Docker and singularity
-`(concat "***" (make-string (org-current-level) ?*))` Processes
-1. Write
-   ,#+begin_src fundamental :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
-,#+end_src
-2. Build
-3. Make singularity container from docker container
-`(concat "**" (make-string (org-current-level) ?*))` TODO Emacs and Org-mode
-- [ ] Run minimal YAS
-  bioinfo.setup
-  bioinfo.inputs
-  bioinfo.data
-  locvars
-- [ ] Add
-  - to main reference section
-    - Bioinformatics project [[6acdcddf-d693-40f2-a3ae-9703bad56043][module headline]] and [[tag:{bioinfo}][instances]]
-  - to Local variables
-    ,#+TODO: WAITING(w@) TODO(t) INPROCESS(p) | CLOSEOUT DONE(d!) DELEGATED(@) CANCELED(@)
-    ,#+property: header-args:R    :session *PROJECT_NAME*
-`(concat "**" (make-string (org-current-level) ?*))` TODO Local data directory and WashU RIS Storage processes
-- Mount
-- Create directory structure
-  ,#+begin_src bash
-  <<bash_preamble>>
-  ,#+end_src
-`(concat "**" (make-string (org-current-level) ?*))` R
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
-`(concat "**" (make-string (org-current-level) ?*))` TODO Repository, git, and github
-- [ ] ensure [[file:.git/hooks/pre-commit]]
-- [ ] Create repository structure
-  ,#+begin_src bash
-mkdir -p "\${repo}/config"
-mkdir -p "\${repo}/resources"
-mkdir -p "\${repo}/results"
-mkdir -p "\${repo}/src"
-mkdir -p "\${repo}/workflow/scripts"
-,#+end_src
-`(concat "***" (make-string (org-current-level) ?*))` README
-`(concat "**" (make-string (org-current-level) ?*))` Snakemake
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-`(concat "***" (make-string (org-current-level) ?*))` TODO Run commands
-#+end_src
-
-*** bioinfo.launch.docker
-
-#+name: bioinfo.launch.docker
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
-  # -*- mode: snippet -*-
-  # key: bioinfo.launch.docker
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src bash
-  #!/bin/bash
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-
-  # Notes: This block build from bioinfo.launch.docker at
-  #  ce85a21e-466f-43d0-ad13-3cd21497bfc3
-
-  # Function to launch an interactive docker session
-
-  ,#+end_src
-#+end_src
-
-*** bioinfo.setup.bash
-
-#+name: bioinfo.setup.bash
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
-  # -*- mode: snippet -*-
-  # key: bioinfo.setup.bash
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  `(make-string (1+ (org-current-level)) ?*)` Bash
-  Potential YAS to run:
-  bioinfo.config.host.sh
-  bioinfo.config.main.sh
-  ris.mount
-  $0
-#+end_src
-
-*** bioinfo.config.main.R
-
-#+name: bioinfo.config.main.R
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
-  # -*- mode: snippet -*-
-  # key: bioinfo.config.main.R
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src R :noweb yes :tangle ./config/main.R
-  #!/usr/bin/env Rscript
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  # Repository-local, relative variables
-  $0
-
-  # Pull in from other repositories
-  ##
-  ## Basecamp
-  <<./basecamp/basecamp.org:basecamp_r_setup_wrapper()>>
-
-  ##
-  ## Biotools
-  <<./biotools/biotools.org:biotools_r_setup_wrapper()>>
-
-  ,#+end_src
-#+end_src
-
-*** bioinfo.config.local.R
-
-#+name: bioinfo.config.local.R
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
-  # -*- mode: snippet -*-
-  # key: bioinfo.config.local.R
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src R :noweb yes :tangle ./config/${1:HOSTNAME}.R
-  #!/usr/bin/env Rscript
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  # Repository-local, host-absolute variables
-  data_dir = file.path("${2:DATA_DIR}")
-  source("./config/main.R")
-  $0
-  ,#+end_src
-#+end_src
-
-*** bioinfo.bash.script
-
-#+name: bioinfo.bash.script
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
-  # -*- mode: snippet -*-
-  # key: bioinfo.bash.script
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  #!/bin/bash
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  ### ${1:SCRIPT NAME} ###
-  #
-  # Notes:
-  ## This script assumes your your bash sessin is running within the repository docker container (see ./)
-  ## This script calls relative varibles and assumes you have sourced an appriopriate configuration file (see ./config)
-#+end_src
-
-*** bioinfo.inputs
-:PROPERTIES:
-:ID:       d6bb61c9-8b10-4460-b987-0a6c678d2ddb
-:CUSTOM_ID: d6bb61c9-8b10-4460-b987-0a6c678d2ddb
-:END:
-
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
-# -*- mode: snippet -*-
-# key: bioinfo.inputs
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (1+ (org-current-level)) ?*)` Inputs
-,#+name: input_table
-|basename|dirname|get_class|model_class|origin
-`(concat "**" (make-string (org-current-level) ?*))` Manually created input tables
-- (names must end in _input)
--
-#+end_src
-
-** Snakemake demo                                                      :demo:
-** Glossary
--
 ** Processes                                                      :hierarchy:
-https://www.google.com/search?q=%22samtools+depth%22+%22wgs%22&oq=%22samtools+depth%22+%22wgs%22&aqs=chrome..69i57.25710j0j4&sourceid=chrome-mobile&ie=UTF-8
 *** 0 Bioinformatics process flat list                                 :flat:
 **** Send-out sequencing services
 - https://www.reddit.com/r/bioinformatics/comments/13py5j8/folks_who_send_their_samples_out_for_sequencing/
 - [[file:~/repos/org/science.org::#e9f3ca18-6066-414e-92a6-268ee5858407][GTAC]]
 **** Sequencing depth
+https://www.google.com/search?q=%22samtools+depth%22+%22wgs%22&oq=%22samtools+depth%22+%22wgs%22&aqs=chrome..69i57.25710j0j4&sourceid=chrome-mobile&ie=UTF-8
+
 - samtools for depth https://www.biostars.org/p/356937/
 **** Sequence reverse compliment in shell
 https://bioinformatics.stackexchange.com/questions/7458/what-is-a-quick-way-to-find-the-reverse-complement-in-bash
@@ -2299,6 +1364,8 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 
 
 **** cfDNA fragmentomics
+- fragment length NMF [[cite:&renaud2021]]
+- https://academic.oup.com/clinchem/article/68/9/1184/6623478#377336919
 - fragmentomics from targeted panel [[https://www.annalsofoncology.org/article/S0923-7534(23)00724-X/fulltext]]
 - [[file:~/library/alizadeh2023.pptx]]
 - cite:lo2021
@@ -2355,6 +1422,7 @@ cite:foda2022
 **** cfDNA long read
 https://www.biorxiv.org/content/10.1101/2021.10.18.464684v1.full
 **** cfDNA methylation
+https://mail.google.com/mail/u/0/#inbox/FMfcgzGtxKMwMFsxwrhWpKhfMNbKGtdK
 - https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext
 - https://academic.oup.com/nargab/article/5/2/lqad048/7188752
 - cite:shen2019cfmedip used in cite:shen2018
@@ -2382,7 +1450,10 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 :PROPERTIES:
 :ID:       c4dde8d6-1a02-42c7-a6b6-786b757fcad1
 :END:
--
+- [[id:2d0d13d9-857a-4285-89e6-4614f749afd3][cfDNA topology]]
+- [[cite:&fedyuk2022]]
+
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8198695/#:~:text=Open%20chromatin%20regions%20(OCRs)%20are%20the%20regions%20of%20the%20human,elements%20%5B1%2C2%5D.
 - https://www.nature.com/articles/s41467-022-35076-w
 - cite:sarkar2022
 - cite:zhu2021
@@ -2736,6 +1807,7 @@ https://www.nature.com/articles/nature23891
 :PROPERTIES:
 :ID:       8859ad56-d367-4000-9895-7dc9baf41756
 :END:
+https://cdn.10xgenomics.com/image/upload/v1660261285/support-documents/CG000375_DemonstratedProtocol_NucleiIsolationComplexSample_ATAC_GEX_Sequencing_Rev_C.pdf
 https://www.10xgenomics.com/products/single-cell-multiome-atac-plus-gene-expression
 **** Mutation and expression signatures
 https://www.cell.com/cell-genomics/pdfExtended/S2666-979X(22)00124-0
@@ -2992,7 +2064,11 @@ https://www.nature.com/articles/s43018-022-00379-w
 :ID:       ccab4617-0399-4ba3-828e-b5fbbb972ba1
 :END:
 https://singularity.lbl.gov/install-linux
+*** Workflow languages
+https://www.google.com/search?q=convert+snakemake+to+nextflow&oq=convert+snakemake+to+nextflow&aqs=chrome..69i57j33i160l2.20088j0j7&client=ms-android-hmd-rvo3&sourceid=chrome-mobile&ie=UTF-8
+https://www.reddit.com/r/bioinformatics/comments/15gut08/its_almost_2024_what_languageframework_are_you/
 *** Biomarkers
+https://www.nature.com/articles/s41467-023-40012-7
 **** Visualizations
 :PROPERTIES:
 :ID:       c0359d9c-246a-41fb-a9b4-05ea5cb546ab
@@ -3067,6 +2143,7 @@ https://www.reddit.com/r/bioinformatics/comments/tgzeya/t_sne_graphs_for_data_vi
 :PROPERTIES:
 :ID:       a259c668-737b-4ca3-9994-a9ce8afa01db
 :END:
+- https://academic.oup.com/bioinformatics/article/32/18/2847/1743594?login=true
 - https://slowkow.com/notes/pheatmap-tutorial/#quantile-breaks
 - https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
 - https://slowkow.com/notes/pheatmap-tutorial/
@@ -3088,6 +2165,7 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 
 *** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 *** Bioinformatics pipelines and project management
+- https://osf.io/4pd9n/
 - https://www.reddit.com/r/bioinformatics/comments/12cb99z/what_are_some_good_examples_of_wellengineered/
 - https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424
 - http://byronjsmith.com/make-bml/
@@ -3395,16 +2473,16 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
   - "The generated SAM files from hg19 alignment were converted to BAM format, ensuring the removal of duplicate reads, and the reads were then sorted and indexed using SAMtools21 before subsequent analysis with the R package MEDIPS22. The CpG enrichment score, as a quality control measure for the immunoprecipitation reaction, was calculated as part of the MEDIPS package."
   - Shell scripts were used to process MeDIP sequencing data to produce RPKM estimates for downstream analysis. Custom R scripts with a collection of R/Bioconductor packages were used to analyse the resulting dataset. The code used for analysis is available in the form of R markdowns deposited onto Zenodo as detailed in Supplementary Table 13.
   -
-  | Description                                                                                    | Zenodo DOI for Data    | Zenodo DOI for Code    |
-  | <25>                                                                                           | <25>                   | <25>                   |
-  | IHEC Figure                                                                                    | 10.5281/zenodo.1205714 |                        |
-  | Simulations                                                                                    | 10.5281/zenodo.1205730 | 10.5281/zenodo.1205728 |
-  | Extended Data Fig. 6 violin plots                                                              | 10.5281/zenodo.1205744 | 10.5281/zenodo.1205735 |
-  | Bed file of genomic windows that contain CpGs                                                  | 10.5281/zenodo.1205752 |                        |
-  | TCGA and COSMIC tSNEs                                                                          | 10.5281/zenodo.1205754 |                        |
-  | Machine learning                                                                               |                        | 10.5281/zenodo.1242697 |
+  | Description                                                 | Zenodo DOI for Data    | Zenodo DOI for Code    |
+  | <25>                                                        | <25>                   | <25>                   |
+  | IHEC Figure                                                 | 10.5281/zenodo.1205714 |                        |
+  | Simulations                                                 | 10.5281/zenodo.1205730 | 10.5281/zenodo.1205728 |
+  | Extended Data Fig. 6 violin plots                           | 10.5281/zenodo.1205744 | 10.5281/zenodo.1205735 |
+  | Bed file of genomic windows that contain CpGs               | 10.5281/zenodo.1205752 |                        |
+  | TCGA and COSMIC tSNEs                                       | 10.5281/zenodo.1205754 |                        |
+  | Machine learning                                            |                        | 10.5281/zenodo.1242697 |
   | Markdown with ensemble of non-machine learning scripts including Extended Data Fig. 6 heatmaps |                        | 10.5281/zenodo.1205756 |
-  | Stand alone scripts called by non-machine learning markdown                                    |                        | 10.5281/zenodo.1205746 |
+  | Stand alone scripts called by non-machine learning markdown |                        | 10.5281/zenodo.1205746 |
 -
 - Open source code/packages used for data analysis: R, SAMtools (v. 1.3.1), Bowtie (v. 0.12.9), MEDIPS (v. 1.22.0), BWA (v. 0.7.1220),
 - Genome Analysis ToolKit (GATK) IndelRealigner, MuTect (v.1.1.5) , Trim Galore! (v. 0.4.4), Bismark (v. 0.10.1), Bowtie2 (v. 2.0.5),
@@ -3664,12 +2742,12 @@ https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigC
 :PROPERTIES:
 :ID:       22e31d06-f5df-427e-bd70-3a2ccd3f47ec
 :END:
-****** [[id:12393aa3-d318-4ba6-8183-6e3a175d3ba4][Region or locus-based enrichment analysis]]
+****** [[id:6ca433ff-59ed-4f60-889f-c43e1f945064][Cis-regulatory elements]]
 ****** Method-establishing papers
 - cite:buenrostro2015
 - cite:corces2017
-****** Experimental design
-****** Method guides, tutorials, and best practice
+****** Method guides, tutorials, and good practice
+- https://currentprotocols.onlinelibrary.wiley.com/doi/10.1002/cphg.101
 - https://fonseca.lab.mcgill.ca/resources/20220810_ATAC_Analysis_Demo/guide.html
 - https://rockefelleruniversity.github.io/RU_ATAC_Workshop.html
 - https://github.com/maxplanck-ie/snakepipes/tree/master/snakePipes/workflows/ATAC-seq
@@ -3909,8 +2987,11 @@ consensusToCount
   - https://meme-suite.org/meme/
   - example of homer-jaspar method https://www.sciencedirect.com/science/article/pii/S1535610817302040?via%3Dihub
   - cite:sun2019atac
+****** Identifying transcription factor binding sites
+- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1642-2
 ****** Tables
 - [[https://gdc.cancer.gov/about-data/publications/ATACseq-AWG][outputs example]]
+****** [[id:12393aa3-d318-4ba6-8183-6e3a175d3ba4][Region or locus-based enrichment analysis]]
 ****** Visualizations / figures                                      :scifig:
 - highlight visualizations on ucsc or igv
   - dump beds and narrowpeaks directly into ucsc
@@ -3960,10 +3041,12 @@ consensusToCount
   - https://www.bioconductor.org/packages/devel/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.html
 - cite:wilson2019
 - cite:wang2018amd
+******* [[id:29821fa1-acfe-4a74-9c5d-a24adddf2969][Coordinate-based genomics visualization tracks]]
 ****** Part of [[id:ae0363f3-379e-4521-9184-cbc0d46501cd][Chromatin accessibility profiling]]
 ****** General reference
+- https://github.com/Zhang-lab/ATACseq_benchmarking/blob/master/simulated_ATAC_tests_limma.R
 - https://www.sciencedirect.com/science/article/pii/S2666166720302768
-https://bioinformatics-core-shared-training.github.io/cruk-autumn-school-2017/ChIP/Materials/Lectures/Lecture5_Peak%20Calling_SS.pdf
+- https://bioinformatics-core-shared-training.github.io/cruk-autumn-school-2017/ChIP/Materials/Lectures/Lecture5_Peak%20Calling_SS.pdf
 - Tn5 insertion
   - See for T5 shift visualization https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1642-2#Sec13
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8557372/
@@ -3995,8 +3078,6 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666684/
 :PROPERTIES:
 :ID:       2597b54c-972a-43c3-9630-0e542ba90eeb
 :END:
-https://www.nature.com/articles/s41467-023-36383-6
-https://www.nature.com/articles/s41576-023-00586-w
 - https://www.nature.com/articles/s41591-020-0844-1
 - cite:griffith2015
 - http://bioinformatics.sdstate.edu/idep/
@@ -4005,12 +3086,20 @@ https://www.nature.com/articles/s41576-023-00586-w
   - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
   - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
     - cite:lawson2018
-- cite:stuart2019
+- Single cell data integration cite:stuart2019
 - [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
 - inputs and pre-processing
   - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02048-6
   - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1171-9
-********** single-nucleus RNA-seq
+**** Good practice
+:PROPERTIES:
+:ID:       f6418486-9a29-4a65-9145-2a2a3ac788a7
+:END:
+- [[cite:&luecken2019]]
+- cite:heumos2023
+- cite:slyper2020
+- https://www.nature.com/articles/s41576-023-00586-w
+**** single-nucleus RNA-seq
 :PROPERTIES:
 :ID:       1149b091-eabe-4137-a3e9-222f21bfdd57
 :END:
@@ -4063,6 +3152,7 @@ https://www.nature.com/articles/s41467-018-03149-4
 :PROPERTIES:
 :ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
 :END:
+- clustering and identification algorithms - https://www.nature.com/articles/s41467-023-36383-6
 - trajectory inference
   - Monocle 2
   - Slingshot
@@ -4149,10 +3239,7 @@ https://www.embopress.org/doi/full/10.15252/msb.20188746
 *** Sequence motif analysis
 https://meme-suite.org/meme/
 *** Gene expression
-**** Transcriptomics
-:PROPERTIES:
-:ID:       b9db0398-4481-4502-abb0-bd9edcd353f2
-:END:
+https://www.science.org/doi/10.1126/sciadv.ade2812
 **** Microarray
 :PROPERTIES:
 :ID:       294edcbb-f306-4f94-9eba-e8a1c7c512f1
@@ -4164,16 +3251,13 @@ https://meme-suite.org/meme/
 :ID:       4206be38-8d3c-43c4-a5c7-ca6a8bd8361a
 :CREATED:  [2021-02-17 Wed 09:08]
 :END:
-- https://www.nature.com/articles/s42003-023-04791-5
-***** Platform and Workflows
-:PROPERTIES:
-:ID:       b7c65054-f648-4579-9c5f-7bedbe272b5c
-:END:
-***** [[id:386d899a-9208-4d5c-93d8-3750b22d9748][RNA bench methods]]
+https://www.cell.com/ajhg/fulltext/S0002-9297(18)30401-4
 ***** RNA-seq experimental design
 :PROPERTIES:
 :ID:       19780d7c-afa7-4195-b1f9-df9c563de303
 :END:
+https://www.biostars.org/p/9549394/
+https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7873980/
 - https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/designmatrices.html#design-matrices-with-and-without-intercept-term
 - https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/designmatrices.html#design-matrices-with-and-without-intercept-term
@@ -4216,17 +3300,14 @@ https://meme-suite.org/meme/
       - stranded and paired library prep not required
 - Prefer “balanced block” design w/ barcode-> mixed prep-> all samples on all lanes
 - cite:auer2010
-- cite:williams2014
-  - contains the 30-50 mil read for DE recommendation
-- Examples of experimental objectives
-  - cite:Cabanski_2014 RNA sequencing (RNA-Seq) approaches are designed to characterize the expressed genome in numerous ways1,2 from defining different types of RNA, such as long non- coding RNAs,3 to comparing RNA expression,4 splice iso- forms,5e7 allele-specific expression,8e10 fusions,11e14 RNA editing,15,16
-- sequencing platforms
-  - cite:li2014
-- cite:su2014
-- cite:rajkumar2015
+
+****** General reference
 - http://www.slideshare.net/YaoyuEWang/rnaseq-analysis-ngsapplication2
 - http://michelebusby.tumblr.com/post/26913184737/thinking-about-designing-rna-seq-experiments-to
-- Parameters affecting sequencing
+****** Parameters
+- cite:williams2014
+  - contains the 30-50 mil read for DE recommendation
+******* Parameters affecting sequencing
   - Variance is bimodal
     - low @ low counts b/c Poisson
     - low @ high counts b/c?
@@ -4240,20 +3321,13 @@ https://meme-suite.org/meme/
     - strandedness problem[[file:org.org_imgs/20170224_132238_567aRU.png]]
   - Strandedness
     - cite:Zhao_2015
-- [[*testing, modeling, and read simulation][testing, modeling, and read simulation]]
-****** Design
-:PROPERTIES:
-:ID:       4e8a8446-e84d-4c4f-8bd8-45ee611337b5
-:END:
-- spike-ins
-  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4538800/
+
+****** Validation
 - validation technologies
   - cannot distinguish isomiRs
   - qPCR expected to correlate >.9 w/ seq expression > 2^8 cite:yeri2018
   - qPCR more concordant than EdgeSeq or FirePlex cite:yeri2018
-- what depth? https://www.researchgate.net/post/how_many_million_reads_for_miRNA_discovery
-- reads per sample
-  - https://www.qiagen.com/us/resources/faq?id=a119d5f0-0a2a-4612-828e-d8fa3cc37891&lang=en
+***** [[id:386d899a-9208-4d5c-93d8-3750b22d9748][RNA bench methods]]
 ***** [[id:7BF989EC-4DA7-4B0C-AAA9-0175156447FF][RNA extraction, solubilization, and isolation]]
 :PROPERTIES:
 :ID:       b477ff77-85e8-4613-9bea-a703de899817
@@ -4308,6 +3382,7 @@ https://meme-suite.org/meme/
 :PROPERTIES:
 :ID:       68056b25-1413-4bda-a1f2-6610e92c6765
 :END:
+- what depth? https://www.researchgate.net/post/how_many_million_reads_for_miRNA_discovery
 ***** [[id:1EE731A3-83DD-46AF-B988-2311307C335F][Raw sequence quality control]]
 :PROPERTIES:
 :ID:       7cc53256-8b7b-4c93-aaa5-2a35e41b7319
@@ -4614,10 +3689,13 @@ https://www.biostars.org/p/287512/
 - mapped reads were visualized by SeqMonk[[file:org.org_imgs/20161220_180037_4849srR.png]]
 ***** Methods by RNA population
 ****** exRNA
-- spike ins use
+- [[cite:&hulstaert2021]]
+- [[cite:&hulstaert2020]]
+- [[cite:&exrnaqc2021]]
+- spike-in use
   - cite:godoy2019
   - cite:giraldez2018
-- pipelines- [[id:1db0ffb6-25b7-4c97-9aa0-263b8c96373b][exceRpt]]
+
 - cite:godoy2018
 - cite:alexander2022
 - spike ins use
@@ -4641,6 +3719,8 @@ https://www.biostars.org/p/287512/
 - cite:lee2016exrna
 ******* Complete pipelines
 - https://exrna.org/resources/software/
+- pipelines- [[id:1db0ffb6-25b7-4c97-9aa0-263b8c96373b][exceRpt]]
+- https://github.com/oncornalab/rnaexome from [[cite:&hulstaert2021]]
 ******* By transcript and sequencing
 - single cell- https://www.nature.com/articles/s41587-021-01188-9
 ******* By fluid
@@ -4900,6 +3980,10 @@ cite:buschmann2016 pg6011
 :LOGBOOK:
 CLOCK: [2021-01-27 Wed 13:53]--[2021-01-27 Wed 13:57] =>  0:04
 :END:
+- spike-ins
+  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4538800/
+- reads per sample
+  - https://www.qiagen.com/us/resources/faq?id=a119d5f0-0a2a-4612-828e-d8fa3cc37891&lang=en
 - cite:tam2015
 - https://www.nature.com/articles/srep05150#Sec11
 - http://www.mircode.org/faq.php
@@ -5082,10 +4166,22 @@ CLOCK: [2022-06-03 Fri 08:56]--[2022-06-03 Fri 09:31] =>  0:35
 - https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&st1=%22nascent+RNA+sequencing%22&nlo=&nlr=&nls=&sid=a567d38581c262627b32ded722d56613&sot=b&sdt=b&sl=39&s=TITLE-ABS-KEY%28%22nascent+RNA+sequencing%22%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist
   - cite:core2008
   - cite:henriques2018
+***** Integrating results across RNA-seq datasets
+- cite:rajkumar2015
+- https://www.nature.com/articles/s42003-023-04791-5
+***** Writeup
+- https://www.nature.com/articles/s42003-023-04791-5
+***** General reference
+- cite:li2014
+- cite:su2014
 ***** Complete pipelines
-
-[[http://bioinf.wehi.edu.au/marray/jsm2005/lab4/lab4.html][A limma workflow to try]]
-[[http://combine-australia.github.io/RNAseq-R/06-rnaseq-day1.html][another workflow example]]
+:PROPERTIES:
+:ID:       3b95fbca-3d9a-479c-9285-f8f328c5114f
+:END:
+- [[https://github.com/zhxiaokang/RASflow/tree/master][RASflow]]
+- [[https://bitbucket.org/cfce/viper/src/master/viper.snakefile][viper]]
+- [[http://bioinf.wehi.edu.au/marray/jsm2005/lab4/lab4.html][A limma workflow to try]]
+- [[http://combine-australia.github.io/RNAseq-R/06-rnaseq-day1.html][another workflow example]]
 - https://github.com/BIMSBbioinfo/pigx_rnaseq
 ****** Pipeline Comparisons
 :PROPERTIES:
@@ -5207,6 +4303,7 @@ https://www.biostars.org/p/428905/
 :PROPERTIES:
 :ID:       91d46e60-eec3-48c7-97f1-b53eb1559b3f
 :END:
+https://uclouvain-cbio.github.io/WSBIM2122/sec-gsea.html
 [[https://www.reddit.com/r/bioinformatics/comments/13vk8r5/comparing_gsea_results_between_different_species/][clusterprofiler term to gene]]
 - cite:reimand2019
 - https://old.reddit.com/r/bioinformatics/comments/r7hzoq/annual_ingenuity_subscription_sticker_shock_and/
@@ -5629,10 +4726,11 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       b7b36cba-0d4d-41b0-ae5d-79b0f0f67d2e
 :END:
-***** CyTOF
+***** Mass cytometry, cytometry by time of flight (CyTOF)
 :PROPERTIES:
 :ID:       881d23a0-c943-47ac-9bf5-ef965f8a80e3
 :END:
+- https://onlinelibrary.wiley.com/doi/10.1002/cyto.a.23621
 - CATALYST
   - https://www.bioconductor.org/packages/release/bioc/html/CATALYST.html
   - https://www.bioconductor.org/packages/release/bioc/vignettes/CATALYST/inst/doc/differential.html
@@ -5653,13 +4751,13 @@ https://www.nature.com/articles/s41416-022-01881-9
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
+- [[https://www.nature.com/articles/s41591-023-02598-9#:~:text=The%20trial%20met%20its%20primary,CI%3A%2056.5%E2%80%9388.5%25).][ctDNA response after pembrolizumab in non-small cell lung cancer: phase 2 adaptive trial results]]
+- phased seq of multiple muts https://www.nature.com/articles/s41587-021-00981-w
 - https://www.sitcancer.org/research/jitc-2/jitc/collections/liquid-biopsies
-- https://www.nature.com/articles/s41586-023-05776-4
-- https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02710-1#Sec10
-- https://elifesciences.org/articles/71569
-- https://insight.jci.org/articles/view/159590/pdf
-- https://www.nature.com/articles/s41587-022-01447-3
-- https://www.nature.com/articles/s41587-021-00857-z
+- TRACERx - https://www.nature.com/articles/s41586-023-05776-4
+- cfDNA nanopore for meth and COO [[cite:&katsman2022cfdnananopore]]
+- SEQC2 analytical validity [[cite:&deveson2021]]
+- Fragmentomics from targeted panels [[cite:&helzer2023panelfrag]]
 ***** Integrated hybrid capture and genome-wide- MAESTRO
 :PROPERTIES:
 :ID:       55b77210-fcb6-438d-a546-0c3605f6f5c4
@@ -5679,6 +4777,12 @@ cite:widman2022
 ***** [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
 ***** [[*cfDNA methylation][cfDNA methylation]]
 ***** [[*cfDNA fragmentomics][cfDNA fragmentomics]]
+***** cfDNA topology
+:PROPERTIES:
+:ID:       2d0d13d9-857a-4285-89e6-4614f749afd3
+:END:
+- [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
+- https://insight.jci.org/articles/view/159590/pdf
 ***** [[*cfDNA small variant calling][cfDNA small variant calling]]
 ***** Tumor-informed methods
 - phylogenic for cancer evolution cite:abbosh2017
@@ -5703,6 +4807,7 @@ cite:widman2022
 - see  [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDNNMGQwVvHMjSKjBHhrkMLrS][jake's ulpwgs cfdna preprocessing]]
 - cite:heberts2021
 *** Machine learning in genomics and bioinformatics
+- https://colab.research.google.com/github/isb-cgc/Community-Notebooks/blob/master/MachineLearning/How_to_build_an_RNAseq_logistic_regression_classifier.ipynb
 - [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]]
 - cite:chiorean2022
 - https://www.science.org/doi/10.1126/scitranslmed.abk2756
@@ -5964,12 +5069,16 @@ cite:widman2022
 :PROPERTIES:
 :ID:       f4d64349-0202-41e5-9143-39de3dd63d90
 :END:
-https://oaepublishstorage.blob.core.windows.net/b918d521-af58-4cf0-bc57-db03c5c43f33/4446.pdf
-https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFgqmWTzSTxFbqlqjBLnzFsWT
-cite:rozowsky2019
-https://www.nature.com/articles/s41586-022-04410-z
-https://www.nature.com/articles/d41586-021-03801-y
-https://mail.google.com/mail/u/0/#inbox/FMfcgzGlksDcrLMrdlPVPsVnzpdCNTsx
+- https://directorsblog.nih.gov/2023/09/12/new-approach-to-liquid-biopsy-relies-on-repetitive-rna-in-the-bloodstream/
+- https://www.nature.com/articles/s41551-023-01081-7
+- https://oaepublishstorage.blob.core.windows.net/b918d521-af58-4cf0-bc57-db03c5c43f33/4446.pdf
+- https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFgqmWTzSTxFbqlqjBLnzFsWT
+- cite:rozowsky2019
+- https://www.nature.com/articles/s41586-022-04410-z
+- https://www.nature.com/articles/d41586-021-03801-y
+- [[cite:&larson2021]]
+- [[cite:&griffith2016a]]
+- https://mail.google.com/mail/u/0/#inbox/FMfcgzGlksDcrLMrdlPVPsVnzpdCNTsx
  [[#larson2021][larson2021]]
 https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
 ****** Allele-specific expression
@@ -6839,6 +5948,7 @@ https://www.reddit.com/r/statistics/comments/t3ok40/q_is_there_any_difference_be
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
 :END:
+https://www.sciencedirect.com/science/article/pii/S1535610823002192#sec1.3
 https://bioone.org/journals/radiation-research/volume-198/issue-6/RADE-22-00074.1/Prediction-of-Total-Body-and-Partial-Body-Exposures-to-Radiation/10.1667/RADE-22-00074.1.short
 https://www.kavrakilab.org/nci-1u01ca258512-01.html
 https://www.science.org/doi/10.1126/science.abj1541
@@ -7116,6 +6226,12 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
 - https://github.com/orgs/genome/repositories?type=all
 *** Coordinate-based genomics visualization tracks
+:PROPERTIES:
+:ID:       29821fa1-acfe-4a74-9c5d-a24adddf2969
+:END:
+- https://cmdcolin.github.io/awesome-genome-visualization/?citations=-1&tag=Coverage
+- https://rockefelleruniversity.github.io/RU_VisualizingGenomicsData/exercises/answers/Viz_part1_answers.html
+
 - motif tracks https://bioconductor.org/packages/release/bioc/vignettes/motifStack/inst/doc/motifStack_HTML.html
 - plotgardener
 - soGGi https://bioconductor.org/packages/release/bioc/vignettes/soGGi/inst/doc/soggi.pdf
@@ -7132,21 +6248,886 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
     - https://bioconductor.org/packages/release/bioc/vignettes/GenVisR/inst/doc/Intro.html
   - https://bioconductor.org/packages/release/bioc/vignettes/soGGi/inst/doc/soggi.pdf
   - https://phanstiellab.github.io/plotgardener/reference/plotSignal.html
+** Variant databases
+https://www.oncokb.org/
+https://civicdb.org/welcome
+** Bioinformatics consortia, data portals and commons
+:PROPERTIES:
+:ID:       0e7d0c19-22cc-4502-a3c2-4be5b537f375
+:END:
+ - [[https://portal.gdc.cancer.gov/][Genomic data commons]]
+- [[https://datascience.cancer.gov/data-commons][NCI Cancer Research Data Commons]]
+- [[https://www.cancer.gov/research/infrastructure/bioinformatics/cancer-research-data-ecosystem-infographic][NCI Cancer Research Data Ecosystem]]
+- GENIE https://aacrjournals.org/cancerdiscovery/article/7/8/818/6485/AACR-Project-GENIE-Powering-Precision-Medicine
+https://www.science.org/doi/full/10.1126/scisignal.2004088
+https://www.nature.com/articles/s41588-021-00791-5#Sec2
+[[cite:&langmead2018]]
+[[cite:&grossman2019]]
+[[cite:&bernasconi2020]]
+[[cite:&grossman2018]]
+** Scripts
+*** R
+**** [[file:~/repos/basecamp/basecamp.org::*R scripts][R scripts in basecamp]]
+*** Bash
+**** Check run conditions for integration testing
+
+#+begin_src bash
+#!/usr/bin/env bash
+
+repo=$1
+mntpt=$2
+sif_dir=$3
+
+# Check for parameters, return usage if empty
+if [ $# -ne 3 ];
+then
+    printf "\n usage: repo_startup.sh <REPO PATH> <RIS MOUNT PT> <SINGULARITY CONTAINER DIR>
+    \n Repo development helper script to check run conditions for integration testing
+    \n "
+else
+
+    # Check mount point
+    if grep -qs $mntpt /proc/mounts; then
+        echo "RIS storage mounted."
+    else
+        echo "RIS storage NOT mounted, exiting."
+        exit 1
+    fi
+
+    # Check singularity container
+    if [ -r $sif_dir/atac.sif ]; then
+        echo "Local SIF file present"
+    else
+        echo "No local SIF file found"
+        exit 1
+    fi
+
+    # Check singularity container up-to-date
+    if [ /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif -nt $sif_dir/atac.sif ]; then
+        echo "Local SIF is out of date. Updating ..."
+        cp /mnt/ris/jschwarz/cardiac-radiobiology/atac.sif $sif_dir/atac.sif
+    else
+        echo "Local SIF file is up to date"
+    fi
+
+    cur_branch=$(git branch | head -n 1)
+    echo "Current branch is $cur_branch"
+fi
+#+end_src
+
+**** Dry run
+:PROPERTIES:
+:ID:       c6c494f0-5dbe-4cc4-bf99-8bcd7b12de24
+:END:
+
+#+begin_src bash :tangle ./tools/shell/smk_dry_run.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters and return usage
+if [ "$#" -ne 2 ];
+then
+    printf "\n usage: smk_dry_run.sh <SMK CONFIG YAML> <SMK FILE>
+    \n Script for snakemake dry run.
+    \n Will not test singularity container is working
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --dry-run \
+        --forceall \
+        --printshellcmds \
+        --use-singularity \
+        --snakefile $2
+fi
+#+end_src
+
+**** Draw rulegraph
+:PROPERTIES:
+:ID:       78a99954-1d5d-4e09-87a4-6690f28f4519
+:CUSTOM_ID: 78a99954-1d5d-4e09-87a4-6690f28f4519
+:END:
+
+#+begin_src bash :tangle ./tools/shell/smk_draw.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters and return usage
+if [ "$#" -ne 3 ];
+then
+    printf "\n usage: smk_dry_run.sh config_file smk_file pdf_loc
+    \n Draws the rulegraph for a snakemake file at pdf_loc
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    png=$(echo $3 | sed 's/.pdf/.png/g')
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --rulegraph \
+        --snakefile $2 | dot -Tpdf > $3
+    #
+    snakemake \
+        --configfile $1 \
+        --cores 1 \
+        --rulegraph \
+        --snakefile $2 | dot -Tpng > $png
+fi
+#+end_src
+
+**** TODO [#D] Normal run
+:PROPERTIES:
+:effort:   00:30
+:ID:       3adf72d3-aa35-4a3d-8eba-0df075c52e26
+:CUSTOM_ID: 3adf72d3-aa35-4a3d-8eba-0df075c52e26
+:END:
+
+- [ ] needs a cores option w/ default
+#+begin_src bash :tangle ./tools/shell/smk_run.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters, return usage if empty
+if [ "$#" -ne 2 ];
+then
+    printf "\n usage: smk_forced_run.sh <SMK CONFIG YAML> <SMK FILE>
+    \n Script to complete an normal run of a snakefile
+    \n Assumes
+    - Singularity container specified in config
+    - a mount point at /mnt
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 --cores 4 \
+        --use-singularity \
+        --printshellcmds \
+        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
+        --rerun-incomplete \
+        --resources mem_mb=6000 \
+        --snakefile $2 \
+        --verbose
+fi
+#+end_src
+
+**** Forced run
+:PROPERTIES:
+:ID:       c2a25d2f-05bb-4eda-920f-e2d9fa768de6
+:CUSTOM_ID: c2a25d2f-05bb-4eda-920f-e2d9fa768de6
+:END:
+
+#+begin_src bash :tangle ./tools/shell/smk_forced_run.sh
+#  Note: This code block transcluded from code blocks in the Emacs Org-mode
+#  file at https://github.com/jeszyman/biotools/blob/master/biotools.org.
+#  Changes made directly to this region will be overwritten by transclusion from
+#  the source blocks in that file.
+
+# Check for parameters and return usage
+if [ "$#" -ne 2 ];
+then
+    printf "\n usage: smk_forced_run.sh config_file smk_file
+    \n Script to complete forced run of snakefile.
+    \n Assumes
+    - Singularity container specified in config
+    - a mount point at /mnt
+    \n "
+else
+    # Necessary to run conda snakemake command in shell script
+    eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+    #
+    conda activate snakemake
+    #
+    snakemake \
+        --configfile $1 --cores 4 \
+        --use-singularity \
+        --singularity-args "--bind ${HOME}:${HOME} --bind /mnt:/mnt" \
+        --forceall \
+        --printshellcmds \
+        --rerun-incomplete \
+        --snakefile $2 \
+        --verbose
+fi
+#+end_src
+
+**** Development
+:PROPERTIES:
+:header-args: :tangle no
+:END:
+
+- https://unix.stackexchange.com/questions/10646/repeat-a-unix-command-every-x-seconds-forever
+- ?
+  #+begin_src bash
+#!/bin/bash
+#
+#############################################################################
+###              BIOINFORMATICS PROJECT COMMON SETUP SCRIPT               ###
+#############################################################################
+#
+###############
+### SCRIPTS ###
+###############
+#
+# Interactive docker initialization
+docker_interactive() {
+  repo="USER INPUT"
+  read -p "repo name: " repo
+  case $HOSTNAME in
+      (radonc-cancerbio) docker run -it \
+                                -v /media/:/media/ \
+                                -v /home/:/home/ \
+                          -u $(id -u ${USER}) \
+                          jeszyman/$repo \
+                          /bin/bash;;
+      (jeszyman-*) docker run -it \
+                          -v /home/:/home/ \
+                          -u $(id -u ${USER}) \
+                          jeszyman/$repo \
+                          /bin/bash;;
+      (acl*) docker run -it \
+                    -v /drive3/:/drive3/ \
+                    -v /duo4/:/duo4/ \
+                    -v /home/:/home/ \
+                    -u $(id -u ${USER}) \
+                    jeszyman/$repo \
+                    /bin/bash;;
+      (ACL*) docker run -it \
+                    -v /home/:/home/ \
+                    -v /duo4/:/duo4/ \
+                    -u $(id -u ${USER}):$(id -g ${USER}) \
+                    -h=${HOSTNAME} \
+                    jeszyman/$repo \
+                    /bin/bash;;
+      (virtual-workstation*.gsc.wustl.edu) bsub -Is -q docker-interactive -a 'docker(jeszyman/'"$repo"')' /bin/bash;;
+  esac
+}
+#
+#
+echo "Biotools setup completed successfully"
+#
+############################################################################
+#
+#############
+### IDEAS ###
+#############
+# # identifies server in docker containers
+# server_ask() {
+#     echo -n "Choose your server: "
+#     read SERVER
+#     SERVER="${SERVER:=chaudhuri-roche}"
+# }
+# # check if inside docker
+# if [ -f /.dockerenv ];then
+#     dockercontainer=yes
+#     echo "Your are in a docker container"
+# else
+#     dockercontainer=no
+#     echo "Not in docker"
+#     # setup NON-docker variables
+#     shopt -s nocasematch
+#     case $HOSTNAME in
+#         (radonc-cancerbio) server_home="/home/jeszyman" ;;
+#         (jeszyman-*) server_home="/home/jeszyman" ;;
+#         (acl*) server_home="/home/jszymanski" ;;
+#         (virtual-workstation*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
+#         (blade*.gsc.wustl.edu) server_home="/gscuser/szymanski" ;;
+#     esac
+#     projectdir=$server_home"/repos/$project"
+#     localdata="$server_home/data/$project/"
+#     unset $SERVER
+# fi
+# #
+# case $dockercontainer in
+#     (yes) server_ask ;;
+#     (no) ;;
+# esac
+# #
+# case $SERVER in
+#     (chaudhuri-roche) projectdir=/drive3/users/jszymanski/repos/$project
+#                       localdata=/drive3/users/jszymanski/data/$project;;
+#     (NA) ;;
+# esac
+#
+#IDEAS
+### DEPENDENCIES ###
+#declare -a software=(
+#"rclone"
+# #DOES NOT RETURN ON MGI                     "docker"
+# #"git"
+# "bash"
+# )
+# for i in "${software[@]}"; do
+# if command -v $i >/dev/null 2>&1 ; then
+#     echo "$i installed"
+# else
+#     echo "$i not found, exiting"
+#     exit 1
+# fi
+# done
+
+#+end_src
+- example [[id:8263e3b1-3ba4-4c4f-8d39-9dd9bb06e2bb][publish to box]]
+  #+begin_src bash
+#!/usr/bin/env bash
+git pull &&
+    git add -A &&
+    git commit -m "minor changes" &&
+    git push
+
+git branch
+git branch stable4.1
+git checkout stable4.1
+git merge master
+git push origin stable4.1
+git checkout master
+#+end_src
+
+***** Dev
+
+#+begin_src bash
+#!/bin/bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+####################################
+###   Choose and Run Snakefile   ###
+####################################
+
+# Setup
+#set -euxov pipefail
+
+source config/${HOSTNAME}.sh
+echo "The following `*.smk` archives were found; select one:"
+
+# set the prompt used by select, replacing "#?"
+PS3="Use number to select an option"
+
+select filename in ./workflow/*.smk
+
+do
+    if [[ "$filename" == "" ]]
+    then
+        echo "'$REPLY' is not a valid number"
+        continue
+    fi
+    echo $filename
+    select run_option in dry_run normal force_final force_all
+    do
+        echo selected $run_option
+        case $run_option in
+            dry_run)
+                source activate snakemake
+                snakemake \
+                    --configfile config/${HOSTNAME}.yaml \
+                    --cores $threads \
+                    --directory ${repo} \
+                    --dry-run \
+                    --rerun-incomplete \
+                    --singularity-args "--bind $mntpt:$mntpt" \
+                    --use-singularity \
+                    --snakefile $filename
+                ;;
+            normal)
+                source activate snakemake
+                select nohup_option in no yes
+                do
+                    case $nohup_option in
+                        no)
+                            snakemake \
+                                --configfile config/${HOSTNAME}.yaml \
+                                --cores $threads \
+                                --directory ${repo} \
+                                --singularity-args "--bind $mntpt:$mntpt" \
+                                --use-singularity \
+                                --snakefile $filename
+                            ;;
+                        yes)
+                            nohup snakemake \
+                                  --configfile config/${HOSTNAME}.yaml \
+                                  --cores $threads \
+                                  --directory ${repo} \
+                                  --singularity-args "--bind $mntpt:$mntpt" \
+                                  --use-singularity \
+                                  --snakefile $filename
+                            ;;
+                    esac
+                done
+                ;;
+            force_final)
+                source activate snakemake
+                select nohup_option in no yes
+                do
+                    case $nohup_option in
+                        no)
+                            snakemake \
+                                --configfile config/${HOSTNAME}.yaml \
+                                --cores $threads \
+                                --directory ${repo} \
+                                --force \
+                                --singularity-args "--bind $mntpt:$mntpt" \
+                                --use-singularity \
+                                --snakefile $filename
+                            ;;
+                        yes)
+                            nohup snakemake \
+                                  --configfile config/${HOSTNAME}.yaml \
+                                  --cores $threads \
+                                  --directory ${repo} \
+                                  --force \
+                                  --singularity-args "--bind $mntpt:$mntpt" \
+                                  --use-singularity \
+                                  --snakefile $filename
+                            ;;
+                    esac
+                done
+                ;;
+            force_all)
+                source activate snakemake
+                select nohup_option in no yes
+                do
+                    case $nohup_option in
+                        no)
+
+                snakemake \
+                    --configfile config/${HOSTNAME}.yaml \
+                    --cores $threads \
+                    --directory ${repo} \
+                    -F \
+                    --singularity-args "--bind $mntpt:$mntpt" \
+                    --use-singularity \
+                    --snakefile $filename
+                                            ;;
+                        yes)
+                nohup snakemake \
+                    --configfile config/${HOSTNAME}.yaml \
+                    --cores $threads \
+                    --directory ${repo} \
+                    -F \
+                    --singularity-args "--bind $mntpt:$mntpt" \
+                    --use-singularity \
+                    --snakefile $filename
+                            ;;
+                    esac
+                done
+                ;;
+        esac
+        break
+    done
+    break
+done
+#+end_src
+
+**** Examples
+
+- https://github.com/jeszyman/exrna
+- https://github.com/jeszyman/cfdna-wgs
+- https://github.com/jeszyman/cappseq
+- https://github.com/jeszyman/cfdna-frag
+- https://github.com/jeszyman/atac-seq
+
+**** [[https://snakemake.readthedocs.io/en/stable/index.html][Documentation]]
+
+- https://snakemake-wrappers.readthedocs.io/en/stable/wrappers.html
+- [[Snakemake Tutorial][Snakemake Tutorial]]
+
+**** General reference
+
+- https://github.com/aomlomics/tourmaline
+- https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
+- https://swcarpentry.github.io/r-novice-inflammation/05-cmdline/index.html
+- https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/
+- #+PROPERTY: header-args:bash :tangle-mode (identity #o777)
+- ideas
+  `(make-string (+ 2 (org-current-level)) ?*)` Run commands
+  ,#+begin_src bash
+  conda activate snakemake
+
+  snakemake \
+    --cores $threads \
+    --printshellcmds \
+    --snakefile workflow/$1
+  ,#+end_src
+- Standards and best practice
+  - https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html#snakefiles-best-practices
+- Wildcards
+  - https://edwards.flinders.edu.au/wildcards-in-snakemake/
+- https://endrebak.gitbooks.io/the-snakemake-book/content/
+- https://academic.oup.com/bioinformatics/article/28/19/2520/290322
+- https://www.biostars.org/p/9469533/
+- https://stackoverflow.com/questions/64949149/is-it-possible-to-add-a-conditional-statement-in-snakemakes-rule-all
+- https://stackoverflow.com/questions/54400171/how-to-use-list-in-snakemake-tabular-configuration-for-describing-of-sequencing
+- https://github.com/ngs-docs/2020-ggg-201b-rnaseq/blob/latest/rnaseq-workflow.Rmd
+- https://angus.readthedocs.io/en/2019/snakemake_for_automation.html
+- https://pages.charlesreid1.com/how-do-i-snakemake/converting/
+- http://ivory.idyll.org/blog/2020-snakemake-hacks-collections-files.html
+- http://origin.research.jetbrains.org/files/material/5ec245b4e907c.pdf
+- https://f1000research.com/articles/10-33/v2
+- [ ] https://lachlandeer.github.io/snakemake-econ-r-tutorial/config-files.html
+- https://github.com/snakemake-workflows/rna-seq-star-deseq2/blob/master/workflow/rules/diffexp.smk
+- https://github.com/csoneson/ARMOR
+- https://github.com/slowkow/snakefiles/blob/master/kallisto/Snakefile
+- https://lachlandeer.github.io/snakemake-econ-r-tutorial/initial-steps-with-snakemake.html
+- for repos, git ignore the singularity build
+- https://github.com/EnvGen/snakemake-workflows
+
+***** Tutorials and guides
+
+- https://reproducibility.sschmeier.com/index.html
+- a tutorial
+  #+begin_src bash
+source ~/repos/biotools/src/functions.sh
+docker_interactive
+biotools
+
+#
+mkdir -p /tmp/snakemake-tutorial
+cd /tmp/snakemake-tutorial
+#
+wget https://github.com/snakemake/snakemake-tutorial-data/archive/v5.24.1.tar.gz
+#
+tar --wildcards -xf v5.24.1.tar.gz --strip 1 "*/data" "*/environment.yaml"
+ls
+
+#
+snakemake --help
+
+snakemake -np mapped_reads/A.bam
+#+end_src
+- another tutorial
+  #+begin_src bash
+sudo apt-get install singularity-container
+
+cd ~/snakemake-tutorial/
+
+conda activate snakemake-tutorial
+
+
+snakemake -p --cores 2 sorted_reads/{A,B}.bam
+#    --dry-run \
+
+snakemake --dag calls/all.vcf | dot -Tsvg > dag.svg
+
+expand("sorted_reads/{sample}.bam", sample=SAMPLES)
+
+snakemake -p --cores 2 plots/quals.svg
+
+snakemake --cores 2 -p --dag | dot -Tsvg > dag.svg
+
+snakemake --cores 20 --forceall --summary
+
+snakemake --cores 20 --forceall
+
+conda install pygraphviz
+
+snakemake --report report.html
+
+open report.html
+
+snakemake --cores 20 --forceall
+#+end_src
+- https://snakemake.readthedocs.io/en/stable/executor_tutorial/google_lifesciences.html
+
+**** Examples
+
+- https://github.com/vari-bbc/rnaseq_workflow/blob/master/Snakefile
+- https://github.com/ohsu-cedar-comp-hub/cfRNA-seq-pipeline-Ngo-manuscript-2019
+- https://github.com/yztxwd/rna-seq-standard-pipeline/tree/c19a9e27216b86d3dbfdaed7228aeff59f869383
+- https://github.com/porchard/ATACseq-Snakemake/blob/master/src/Snakefile
+- https://github.com/zhxiaokang/RASflow
+- https://github.com/EthanHolleman
+- https://www.biostars.org/p/406385/
+- https://github.com/chrishah/samtools-docker/blob/master/Dockerfile
+- https://github.com/lachlandeer/snakemake-econ-r
+
+**** Config
+
+
+:PROPERTIES:
+:ID:       5120c9dd-8e0b-4b2c-8c77-a89f271a48e4
+:END:
+
+#+name: bioinfo.config.common.sh
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.common.sh
+# -*- mode: snippet -*-
+# key: bioinfo.config.common.sh
+# expand-env: ((yas-indent-line 'fixed))
+# --
+,#+name: bash_common_config
+,#+begin_src bash :noweb yes :tangle ./config/common.sh
+#!/bin/bash
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+
+# Check git file hook is read-able
+if [ -r "${repo}/.git/hooks/precommit" ]; then
+   echo "Git size check is read-able"
+else
+    echo
+    "Git size check is not read-able"
+    exit 1
+fi
+
+# Check mount point
+if grep -qs $mntpt /proc/mounts; then
+    echo "RIS storage mounted."
+else
+    echo "RIS storage NOT mounted, exiting."
+    exit 1
+fi
+
+# Check singularity container
+if [ -r $sif_dir/atac.sif ]; then
+    echo "Local SIF file present"
+else
+    echo "No local SIF file found"
+fi
+    fi
+}
+#+end_src
+
+**** Bioinformatic shell functions
+:PROPERTIES:
+:header-args: :tangle ./lib/bioinformatics_function.sh :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
+:ID:       2e51c010-1e25-4fc3-acc5-aefd490164be
+:END:
+
+** Local YAS
+*** r.bioc :yas:
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/ess-mode/r.bioc
+# -*- mode: snippet -*-
+# key: r.bioc
+# expand-env: ((yas-indent-line 'none))
+# --
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+#+end_src
+*** UPDATE_ON_USE bioinfo.setup
+CLOSED: [2021-12-09 Thu 12:38]
+:PROPERTIES:
+:ID:       dbd3c67c-e33b-42d8-800d-705292d3c372
+:CUSTOM_ID: dbd3c67c-e33b-42d8-800d-705292d3c372
+:END:
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
+# -*- mode: snippet -*-
+# key: bioinfo.setup
+# expand-env: ((yas-indent-line 'none))
+# --
+`(concat "*" (make-string (org-current-level) ?*))` Setup
+`(concat "**" (make-string (org-current-level) ?*))` Bash
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+- Local (by $HOSTNAME)
+- Common
+  ,#+begin_src bash :tangle ./config/common.sh
+,#+end_src
+`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
+- Command line
+  ,#+name: bash_preamble_cmd
+  ,#+begin_src bash
+if [[ -f ./config/\${HOSTNAME}.sh ]];
+then source ./config/\${HOSTNAME}.sh
+else
+    echo "No config file found for \${HOSTNAME}"
+    exit 1
+fi
+,#+end_src
+- Snakemake
+`(concat "**" (make-string (org-current-level) ?*))` TODO Box and rclone
+`(concat "**" (make-string (org-current-level) ?*))` TODO Docker and singularity
+`(concat "***" (make-string (org-current-level) ?*))` Processes
+1. Write
+   ,#+begin_src fundamental :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
+,#+end_src
+2. Build
+3. Make singularity container from docker container
+`(concat "**" (make-string (org-current-level) ?*))` TODO Emacs and Org-mode
+- [ ] Run minimal YAS
+  bioinfo.setup
+  bioinfo.inputs
+  bioinfo.data
+  locvars
+- [ ] Add
+  - to main reference section
+    - Bioinformatics project [[6acdcddf-d693-40f2-a3ae-9703bad56043][module headline]] and [[tag:{bioinfo}][instances]]
+  - to Local variables
+    ,#+TODO: WAITING(w@) TODO(t) INPROCESS(p) | CLOSEOUT DONE(d!) DELEGATED(@) CANCELED(@)
+    ,#+property: header-args:R    :session *PROJECT_NAME*
+`(concat "**" (make-string (org-current-level) ?*))` TODO Local data directory and WashU RIS Storage processes
+- Mount
+- Create directory structure
+  ,#+begin_src bash
+  <<bash_preamble>>
+  ,#+end_src
+`(concat "**" (make-string (org-current-level) ?*))` R
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
+`(concat "**" (make-string (org-current-level) ?*))` TODO Repository, git, and github
+- [ ] ensure [[file:.git/hooks/pre-commit]]
+- [ ] Create repository structure
+  ,#+begin_src bash
+mkdir -p "\${repo}/config"
+mkdir -p "\${repo}/resources"
+mkdir -p "\${repo}/results"
+mkdir -p "\${repo}/src"
+mkdir -p "\${repo}/workflow/scripts"
+,#+end_src
+`(concat "***" (make-string (org-current-level) ?*))` README
+`(concat "**" (make-string (org-current-level) ?*))` Snakemake
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+`(concat "***" (make-string (org-current-level) ?*))` TODO Run commands
+#+end_src
+
+*** bioinfo.launch.docker
+
+#+name: bioinfo.launch.docker
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
+  # -*- mode: snippet -*-
+  # key: bioinfo.launch.docker
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src bash
+  #!/bin/bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+
+  # Notes: This block build from bioinfo.launch.docker at
+  #  ce85a21e-466f-43d0-ad13-3cd21497bfc3
+
+  # Function to launch an interactive docker session
+
+  ,#+end_src
+#+end_src
+
+*** bioinfo.setup.bash
+
+#+name: bioinfo.setup.bash
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
+  # -*- mode: snippet -*-
+  # key: bioinfo.setup.bash
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  `(make-string (1+ (org-current-level)) ?*)` Bash
+  Potential YAS to run:
+  bioinfo.config.host.sh
+  bioinfo.config.main.sh
+  ris.mount
+  $0
+#+end_src
+
+*** bioinfo.config.main.R
+
+#+name: bioinfo.config.main.R
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
+  # -*- mode: snippet -*-
+  # key: bioinfo.config.main.R
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src R :noweb yes :tangle ./config/main.R
+  #!/usr/bin/env Rscript
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # Repository-local, relative variables
+  $0
+
+  # Pull in from other repositories
+  ##
+  ## Basecamp
+  <<./basecamp/basecamp.org:basecamp_r_setup_wrapper()>>
+
+  ##
+  ## Biotools
+  <<./biotools/biotools.org:biotools_r_setup_wrapper()>>
+
+  ,#+end_src
+#+end_src
+
+*** bioinfo.config.local.R
+
+#+name: bioinfo.config.local.R
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
+  # -*- mode: snippet -*-
+  # key: bioinfo.config.local.R
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src R :noweb yes :tangle ./config/${1:HOSTNAME}.R
+  #!/usr/bin/env Rscript
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # Repository-local, host-absolute variables
+  data_dir = file.path("${2:DATA_DIR}")
+  source("./config/main.R")
+  $0
+  ,#+end_src
+#+end_src
+
+*** bioinfo.bash.script
+
+#+name: bioinfo.bash.script
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
+  # -*- mode: snippet -*-
+  # key: bioinfo.bash.script
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  #!/bin/bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  ### ${1:SCRIPT NAME} ###
+  #
+  # Notes:
+  ## This script assumes your your bash sessin is running within the repository docker container (see ./)
+  ## This script calls relative varibles and assumes you have sourced an appriopriate configuration file (see ./config)
+#+end_src
+
+*** bioinfo.inputs
+:PROPERTIES:
+:ID:       d6bb61c9-8b10-4460-b987-0a6c678d2ddb
+:CUSTOM_ID: d6bb61c9-8b10-4460-b987-0a6c678d2ddb
+:END:
+
+#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
+# -*- mode: snippet -*-
+# key: bioinfo.inputs
+# expand-env: ((yas-indent-line 'none))
+# --
+`(make-string (1+ (org-current-level)) ?*)` Inputs
+,#+name: input_table
+|basename|dirname|get_class|model_class|origin
+`(concat "**" (make-string (org-current-level) ?*))` Manually created input tables
+- (names must end in _input)
+-
+#+end_src
+** ENCODE analysis pipelines
+- https://github.com/ENCODE-DCC/atac-seq-pipeline
+https://www.genome.gov/sites/default/files/Multimedia/Slides/ENCODE2016-ResearchAppsUsers/ENCODE2016_strattan_slides.pdf
+https://www.biorxiv.org/content/10.1101/2023.04.04.535623v1.full.pdf
+** Snakemake demo                                                      :demo:
+** Glossary
+-
 ** Bioinformatics software tools
 *** 0 Bioinformatics software flat list
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
 :END:
-**** Gviz
-https://rdrr.io/bioc/Gviz/man/DataTrack-class.html
-https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.html#7_Composite_plots_for_multiple_chromosomes
-**** rGREAT
-https://www.bioconductor.org/packages/release/bioc/vignettes/rGREAT/inst/doc/local-GREAT.html
-**** bismark
-https://www.bioinformatics.babraham.ac.uk/projects/bismark/Bismark_User_Guide.pdf
-- https://github.com/FelixKrueger/Bismark/issues/241
-- https://github.com/FelixKrueger/Bismark
-https://www.nature.com/articles/nmeth.1828
+**** Ecotyper
+https://www.nature.com/articles/s42003-023-05117-1#Sec2
 **** annotationDb
 |   |   | [[https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf][doc]] |   |   |
 **** annovar
@@ -7204,6 +7185,11 @@ https://bioconductor.org/packages/devel/bioc/vignettes/BiocParallel/inst/doc/Int
 :ID:       5e9e8bfa-ac9e-4103-9cc5-7123337b4e24
 :END:
 https://github.com/genome/docker-biscuit
+**** bismark
+https://www.bioinformatics.babraham.ac.uk/projects/bismark/Bismark_User_Guide.pdf
+- https://github.com/FelixKrueger/Bismark/issues/241
+- https://github.com/FelixKrueger/Bismark
+https://www.nature.com/articles/nmeth.1828
 **** BLAT                                                           :biotool:
 :PROPERTIES:
 :ID:       6e44c130-0eaa-4e44-8c12-c7c8125ab9ec
@@ -7801,6 +7787,7 @@ https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSe
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 | edgeR | diff express |   |   | [[https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf][vignette]] |   | cite:robinson2010 |
+https://academic.oup.com/nar/article/40/10/4288/2411520?login=true
 - GLM asking whether exons are used proportionally across experiment conditions
 - DEXSeq is an extension to exons
 - [[file:~/Box%20Sync/comp_bio/RNA-seq/Rueda,15%20Differential%20expression%20analysis%20using%20edgeR.pdf][Rueda,15 Differential expression analysis using edgeR]]
@@ -7864,6 +7851,8 @@ https://www.biostars.org/p/13270/
 **** featureCounts
 | featureCounts |   |   |   |   | [[https://watermark.silverchair.com/btt656.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAApgwggKUBgkqhkiG9w0BBwagggKFMIICgQIBADCCAnoGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMofurkoV2NWsQqlelAgEQgIICS7iktDnfv1X3fe1vdQQcXCS09zT549UGvBjDCLHoNebBGfiQi_Eo7ZjUHVH_Yay_p1DlFd4eDeXU4WEX6HTQ-MzPqmtZ6RMGegyEptsqxaLnvr3QfpGO6WRT01dViqp6xya9-CqCRGV3E7F37VruIYzZEFjr-2svIgoRydPyF4pkSzA2hkvwV_g-JT2YSnqboZ5DOGtwZXeMaLKf48_aEpuYemRUx8VqOfM8xnOm4_jumLGd_BBqCCv6brLX8z3WVJpWfJ4YfpJXhemFRt8mSvIsAe9pYXV52W7-psxHlM2ocXzdD_7vLSD7iy1NocDXWLFT5HRH_Cq8NyiRq1s4Mq-QYuvQJFlTxWArVC6vdpE40bDr9slGD6KTJ0DpUQeC52q-aoKJXr9Y7Pi2SDo881eFuJxTWuSuMjxcXStn9MkPKZfcKa10Vu4CdJSSnvJAKAvd4GsshsfCVGCvkgy4ZfEabo5nOZaB82UYC-8AZEpdbD3RtJg1FUQJHDz0tlY-2gZYf2VB3KU1JK4wZcHzn8T8R5BSChB6MjFrRdTZeo3M8-ZIK3eWQGH2vLj8_bPsYlBF-wfj2JzSG3zJGgUUa_rSBzoK8Vvw8k_BPxCq63h6u-k49l-X0o-MO6f8mOdm_YliTT0dWu_ujvlbXMw9AIBrKjwBJncq27EwMOX0shm8nnzPMoPTfOzoekZR2nYTDPayGjHhqkAs6haFAQrI8XAAd0PfbMtW4l54ArULWEH6hCVxzDX8_h8F8oWgOc_3h2ktpbTLNsiX6Bxj][paper]] |   |
 **** fgsea :biotool:
+- https://www.reddit.com/r/bioinformatics/comments/1703dz0/gsea_are_authors_just_cherry_picking_enriched/
+- https://www.sciencedirect.com/science/article/pii/S1874939919302287?via%3Dihub#s0110
 - scoreType
   - https://github.com/ctlab/fgsea/issues/87
 - ranking metric
@@ -8050,7 +8039,11 @@ segmentation file column 6 is log2(x)-1 of the copy number, so
 :ID:       D68E1182-1F7B-4160-A6DD-BD2635F8085F
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
+-
 - see [[*fgsea][fgsea]]
+**** Gviz
+https://rdrr.io/bioc/Gviz/man/DataTrack-class.html
+https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.html#7_Composite_plots_for_multiple_chromosomes
 **** histat2
 :PROPERTIES:
 :doc: |         |              | fastq   |      | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]]      |       |                        |
@@ -8203,6 +8196,7 @@ Another use of the voom plot-  what you are failing to do completely in the voom
 :CREATED:  [2021-09-13 Mon 07:29]
 :ID:       75ca7513-8f01-4819-a813-f9459f447483
 :END:
+- google
 - macs2 shift - https://www.biostars.org/p/207318/
 - https://github.com/macs3-project/MACS/blob/master/docs/callpeak.md
 - https://hbctraining.github.io/Intro-to-ChIPseq/lessons/05_peak_calling_macs.html
@@ -8379,6 +8373,8 @@ https://www.pnas.org/content/115/4/E743.long
 - http://smithlabresearch.org/manuals/preseqmanual.pdf
 - library complexity- preseqr http://smithlabresearch.org/manuals/preseqmanual.pdf
 
+**** rGREAT
+https://www.bioconductor.org/packages/release/bioc/vignettes/rGREAT/inst/doc/local-GREAT.html
 **** rnaseqc
 :PROPERTIES:
 :use: rna-seq qc
@@ -8507,6 +8503,9 @@ https://www.biostars.org/p/9465609/
 :paper:  cite:dobin2019
 :doc:  [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]
 :END:
+ UPDATE- STAR should handle adaptors (and maybe low quality reads as well, although there aren't many of those).
+ see- https://groups.google.com/forum/#!searchin/rna-star/adaptor/rna-star/T8zBqtlxopU/8kVi17eDGAAJ
+
 - used in [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][alignment]]
 - star-rsem pipeline
   - cite:djebali2017
@@ -8922,156 +8921,156 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 - cite:wikipathways
 *** Table
 #+BEGIN: propview :id "1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb" :cols (DOC)
-|                                                                                                                   DOC |     |   |       |   |     |   |   |   |
-|-----------------------------------------------------------------------------------------------------------------------+-----+---+-------+---+-----+---+---+---|
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                    "" |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                 [[http://bedtools\.readthedocs\.io/en/latest/] [doc]] |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                        "https://github.com/seqan/flexbar/wiki/Manual" |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-| [[http://portals\.broadinstitute\.org/cgi-bin/cancer/publications/pub_paper\.cgi\?mode=view&paper_id=216&p=t] [site]] |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     " |     |   | fastq |   | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]] |   |   | " |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                            [[https://github\.com/broadinstitute/ichorCNA/wiki] [doc]] |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     " | [[https://multiqc.info/docs/][doc]] |   |       | " |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                              [[http://www\.basic\.northwestern\.edu/biotools/oligocalc\.html] [site]] |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                       [[https://broadinstitute\.github\.io/picard/index\.html] [doc]] |     |   |       |   |     |   |   |   |
-|            [[http://bioconductor\.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester\.html] [vignette]] |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                 [[https://github\.com/broadinstitute/rnaseqc] [repo]] |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                            [[http://rseqc\.sourceforge\.net/] [repo]] |     |   |       |   |     |   |   |   |
-|                                                                  [[https://salmon\.readthedocs\.io/en/latest/] [doc]] |     |   |       |   |     |   |   |   |
-|                                          [[http://lomereiter\.github\.io/sambamba/docs/sambamba-view\.html] [online]] |     |   |       |   |     |   |   |   |
-|                                                                [[https://github\.com/GregoryFaust/samblaster] [repo]] |     |   |       |   |     |   |   |   |
-|                                                               [[http://www\.htslib\.org/doc/samtools\.html] [online]] |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|         [[https://www\.bioconductor\.org/packages/release/bioc/vignettes/seqTools/inst/doc/seqTools\.pdf] [seqTools]] |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                          [[https://github\.com/alexdobin/STAR/blob/master/doc/STARmanual\.pdf] [doc]] |     |   |       |   |     |   |   |   |
-|                                                          [[https://ccb\.jhu\.edu/software/tophat/manual\.html] [doc]] |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|                                                                                                                     0 |     |   |       |   |     |   |   |   |
-|-----------------------------------------------------------------------------------------------------------------------+-----+---+-------+---+-----+---+---+---|
-|                                                                                                                       |     |   |       |   |     |   |   |   |
+|                                                         DOC |                                     |   |       |   |                                                          |   |   |   |
+|-------------------------------------------------------------+-------------------------------------+---+-------+---+----------------------------------------------------------+---+---+---|
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                          "" |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|       [[http://bedtools\.readthedocs\.io/en/latest/] [doc]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|              "https://github.com/seqan/flexbar/wiki/Manual" |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+| [[http://portals\.broadinstitute\.org/cgi-bin/cancer/publications/pub_paper\.cgi\?mode=view&paper_id=216&p=t] [site]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           " |                                     |   | fastq |   | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]] |   |   | " |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|  [[https://github\.com/broadinstitute/ichorCNA/wiki] [doc]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           " | [[https://multiqc.info/docs/][doc]] |   |       | " |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+| [[http://www\.basic\.northwestern\.edu/biotools/oligocalc\.html] [site]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+| [[https://broadinstitute\.github\.io/picard/index\.html] [doc]] |                                     |   |       |   |                                                          |   |   |   |
+| [[http://bioconductor\.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester\.html] [vignette]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|       [[https://github\.com/broadinstitute/rnaseqc] [repo]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                  [[http://rseqc\.sourceforge\.net/] [repo]] |                                     |   |       |   |                                                          |   |   |   |
+|        [[https://salmon\.readthedocs\.io/en/latest/] [doc]] |                                     |   |       |   |                                                          |   |   |   |
+| [[http://lomereiter\.github\.io/sambamba/docs/sambamba-view\.html] [online]] |                                     |   |       |   |                                                          |   |   |   |
+|      [[https://github\.com/GregoryFaust/samblaster] [repo]] |                                     |   |       |   |                                                          |   |   |   |
+|     [[http://www\.htslib\.org/doc/samtools\.html] [online]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+| [[https://www\.bioconductor\.org/packages/release/bioc/vignettes/seqTools/inst/doc/seqTools\.pdf] [seqTools]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+| [[https://github\.com/alexdobin/STAR/blob/master/doc/STARmanual\.pdf] [doc]] |                                     |   |       |   |                                                          |   |   |   |
+| [[https://ccb\.jhu\.edu/software/tophat/manual\.html] [doc]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           0 |                                     |   |       |   |                                                          |   |   |   |
+|-------------------------------------------------------------+-------------------------------------+---+-------+---+----------------------------------------------------------+---+---+---|
+|                                                             |                                     |   |       |   |                                                          |   |   |   |
 #+END:
 *** tool collections
 :PROPERTIES:
@@ -10195,6 +10194,10 @@ cite:consortium2020
 :PROPERTIES:
 :ID:       99eace6a-6b4e-4acf-9381-1b48a59a4b61
 :END:
+- https://github.com/NCI-GDC/gdc-workflow-overview
+- https://gdc.cancer.gov/about-data/data-standards
+- https://docs.gdc.cancer.gov/Data/Data_Model/GDC_Data_Model/
+- https://gdc.cancer.gov/about-data/data-dictionary
 - [[https://gdc.cancer.gov/][NCI Genomic Data Commons]]
   - [[https://docs.gdc.cancer.gov/][GDC documentation]]
   - [[https://gdc.cancer.gov/about-data/data-harmonization-and-generation/genomic-data-harmonization/genomic-data-alignment/rna-seq-pipeline][GDC RNA-seq pipeline]]
@@ -11581,4 +11584,5 @@ because computation removes redundancy, you will more frequently be at a new, tr
 :PROPERTIES:
 :ID:       585e27b3-3c79-46d5-aeab-9430251d4318
 :END:
+- cite:becker2011
 - https://www.annualreviews.org/doi/10.1146/annurev-genom-090413-025448#_i21
