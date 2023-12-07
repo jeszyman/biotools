@@ -112,7 +112,7 @@ if os.path.isfile(config_path):
 # include: cardiac_repo + "/rna-seq/workflow/rna.smk"
 #+end_src
 ** Biological model
-** Inputs and data model
+** Data model
 *** [[file:workflows/data.smk][Snakefile]]
 :PROPERTIES:
 :header-args:snakemake: :tangle ./workflow/data.smk :comments org
@@ -232,6 +232,91 @@ rule all:
 \tableofcontents
 
 
+*** Scientific Figure
+:PROPERTIES:
+:header-args:r: :session template
+:END:
+[[file:/tmp/cars/cars.png]]
+- Make tables from low-level data
+  #+name: cars_tbl
+  #+begin_src R : :results replace
+library(tidyverse)
+
+base <- "cars"
+dir <- paste0("/tmp/", base)
+rda <- file.path(dir, paste0(base, ".rda"))
+tsv <- file.path(dir, paste0(base, ".tsv"))
+
+# Create the directory if it doesn't exist
+if (!dir.exists(dirname(rda))) {
+  dir.create(dirname(rda), recursive = TRUE)
+}
+
+cars_tbl <- mtcars %>%
+  rename(Gear = gear,
+         MPG = mpg,
+         Carbs = carb) %>%
+  select(Gear, MPG, Carbs)
+cars_tbl
+
+save(cars_tbl, file = rda)
+write_tsv(cars_tbl, file = tsv)
+cars_tbl
+#+end_src
+- Table
+  #+RESULTS[f0dfa47b85db7cdb5f532c2298650d49a32d3c44]: cars_tbl
+  | 4 |   21 | 4 |
+  | 4 |   21 | 4 |
+  | 4 | 22.8 | 1 |
+  | 3 | 21.4 | 1 |
+  | 3 | 18.7 | 2 |
+  | 3 | 18.1 | 1 |
+  | 3 | 14.3 | 4 |
+  | 4 | 24.4 | 2 |
+  | 4 | 22.8 | 2 |
+  | 4 | 19.2 | 4 |
+  | 4 | 17.8 | 4 |
+  | 3 | 16.4 | 3 |
+  | 3 | 17.3 | 3 |
+  | 3 | 15.2 | 3 |
+  | 3 | 10.4 | 4 |
+  | 3 | 10.4 | 4 |
+  | 3 | 14.7 | 4 |
+  | 4 | 32.4 | 1 |
+  | 4 | 30.4 | 2 |
+  | 4 | 33.9 | 1 |
+  | 3 | 21.5 | 1 |
+  | 3 | 15.5 | 2 |
+  | 3 | 15.2 | 2 |
+  | 3 | 13.3 | 4 |
+  | 3 | 19.2 | 2 |
+  | 4 | 27.3 | 1 |
+  | 5 |   26 | 2 |
+  | 5 | 30.4 | 2 |
+  | 5 | 15.8 | 4 |
+  | 5 | 19.7 | 6 |
+  | 5 |   15 | 8 |
+  | 4 | 21.4 | 2 |
+- Make figure
+  #+begin_src R
+library(cowplot)
+library(tidyverse)
+load("/tmp/cars/cars.rda")
+pdf <- file.path("/tmp/cars/cars.pdf")
+png <- file.path("/tmp/cars/cars.png")
+
+plot =
+  ggplot(cars_tbl, aes(x = Gear, y = MPG)) +
+  geom_boxplot() +
+  facet_grid(~ Carbs, scales = "free")
+
+pdf(pdf)
+plot
+dev.off()
+png(png)
+plot
+dev.off()
+#+end_src
 ** Development
 ** Ideas
 ** Reference
