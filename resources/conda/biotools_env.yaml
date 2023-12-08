@@ -4,3 +4,10 @@ channels:
 
 dependencies:
   - bedtools
+  - samtools
+  - picard
+  - sra-tools
+  - pysam
+  - fastp
+  - fastqc
+  - multiqc
