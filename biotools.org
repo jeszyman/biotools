@@ -26,18 +26,16 @@ dependencies:
 
 #+end_src
 #+begin_src bash
-
 source /opt/miniconda3/bin/activate base
 
-mamba env update --name cardiac --file ./basecamp/resources/conda/basecamp_env.yaml
-mamba env update --name carciac --file ./biotools/resources/conda/biotools_env.yaml
-mamba env update --name carciac --file ./rna-seq/config/rna_env.yaml
-mamba env update --name carciac --file ./atac-seq//config/atac_env.yaml 
-mamba env update --name cardiac --file ./config/cardiac_env.yaml
+mamba env update --name biotools --file ~/repos/biotools/resources/conda/biotools_env.yaml
 
-conda list --name cardiac > ./resources/full_conda_env.txt
-conda list --name cardiac -e > ./resources/machine_read_full_conda_env.txt
+conda list --name biotools > ~/repos/biotools/resources/full_conda_env.txt
+conda list --name cardiac -e > ~/repos/biotools/resources/machine_read_full_conda_env.txt
 
+conda activate biotools
+
+prefetch
 #+end_src
 
 ** Processes                                                      :hierarchy:
