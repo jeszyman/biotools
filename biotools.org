@@ -4,6 +4,38 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :header-args:bash: :tangle-mode (identity #o555)
 :END:
+#+begin_src bash
+conda activate biotools
+
+sra_dir="/mnt/ris/szymanski/Active/tmp/sra"
+
+# Using sra toolkit to fetch "Airway" experiment used as an example in DESeq-related tools
+
+mkdir -p $sra_dir
+cd $sra_dir
+
+# Prefetch
+# This will create subdirectories within $sra_dir, and each subdirectory will contain a single SRA file.
+# E.g.
+# --sra_dir
+#   |-- SRR1039508
+#       |-- SRR1039508.sra
+#   |-- SRR1039509
+#       |-- SRR1039509.sra
+# etc...
+
+prefetch SRP033351
+
+# Fastq-dump to convert the SRA files to fastq:
+
+find "${sra_dir}" -type d | parallel 'fastq-dump --split-files {}'
+
+# Zip up the fastqs
+
+
+
+#+end_src
+
 https://hgserver1.amc.nl/cgi-bin/r2/main.cgi?open_page=login
 ** Biotools conda yaml
 :PROPERTIES:
