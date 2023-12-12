@@ -4,6 +4,7 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :header-args:bash: :tangle-mode (identity #o555)
 :END:
+
 #+begin_src bash
 conda activate biotools
 
@@ -37,6 +38,8 @@ find "${sra_dir}" -type d | parallel 'fastq-dump --split-files {}'
 #+end_src
 
 https://hgserver1.amc.nl/cgi-bin/r2/main.cgi?open_page=login
+
+
 ** Biotools conda yaml
 :PROPERTIES:
 :ID:       cf13d347-1d0e-4858-a016-0a8a8af22609
@@ -134,6 +137,7 @@ https://www.nature.com/articles/s41467-021-22463-y#Sec2
 - batch effect https://evayiwenwang.github.io/Managing_batch_effects/detect.html
 https://www.reddit.com/r/bioinformatics/comments/s3twgh/working_with_batch_effects/
 **** Bioinformatics project management
+- https://www.reddit.com/r/bioinformatics/comments/18alwyn/best_practices_for_putting_a_project_on_github/
 - https://www.reddit.com/r/bioinformatics/comments/zxbeqw/how_can_i_have_an_organized_team/
 **** Biotools docker containers
 - ...rebuild local sing and add checker
@@ -1410,6 +1414,7 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 
 
 **** cfDNA fragmentomics
+- Fragmentomics from targeted panels [[cite:&helzer2023panelfrag]]
 - [[cite:&jiang2015]]
 - fragment length NMF [[cite:&renaud2021]]
 - https://academic.oup.com/clinchem/article/68/9/1184/6623478#377336919
@@ -1469,7 +1474,9 @@ cite:foda2022
 **** cfDNA long read
 https://www.biorxiv.org/content/10.1101/2021.10.18.464684v1.full
 **** cfDNA methylation
-https://mail.google.com/mail/u/0/#inbox/FMfcgzGtxKMwMFsxwrhWpKhfMNbKGtdK
+- [[cite:&li2023cfdna]]
+- TRACERx - https://www.nature.com/articles/s41586-023-05776-4
+- https://mail.google.com/mail/u/0/#inbox/FMfcgzGtxKMwMFsxwrhWpKhfMNbKGtdK
 - https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext
 - https://academic.oup.com/nargab/article/5/2/lqad048/7188752
 - cite:shen2019cfmedip used in cite:shen2018
@@ -1498,20 +1505,23 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 :ID:       c4dde8d6-1a02-42c7-a6b6-786b757fcad1
 :END:
 - [[id:2d0d13d9-857a-4285-89e6-4614f749afd3][cfDNA topology]]
-- [[cite:&fedyuk2022]]
-
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8198695/#:~:text=Open%20chromatin%20regions%20(OCRs)%20are%20the%20regions%20of%20the%20human,elements%20%5B1%2C2%5D.
-- https://www.nature.com/articles/s41467-022-35076-w
-- cite:sarkar2022
-- cite:zhu2021
-- inferred gene expression
-  - cite:ulz2016
-- https://github.com/alexcpan/Griffin
+- Plasma nucleosome capture and antibody binding [[cite:&fedyuk2022]]
+- OCRDetector, for detecting OCRs from whole-genome cfDNA sequencing data   [[cite:&wang2021ocr]]
 - nucleosome profiling with griffin
+  - [[cite:&doebley2022griffin]]
   - https://github.com/adoebley/Griffin/wiki
   - https://www.medrxiv.org/content/10.1101/2021.08.31.21262867v1.full-text
   - https://github.com/alexcpan/Griffin
+- tissue-specific nucleosome depleted regions cite:zhu2021
+- inferred gene expression and regulation
+  - w/ Griffin, Gavin Ha method cite:sarkar2022
+  - cite:ulz2016
+- https://github.com/alexcpan/Griffin
 **** cfDNA small variant calling
+- [[https://www.nature.com/articles/s41591-023-02598-9#:~:text=The%20trial%20met%20its%20primary,CI%3A%2056.5%E2%80%9388.5%25).][ctDNA response after pembrolizumab in non-small cell lung cancer: phase 2 adaptive trial results]]
+
+- [[id:55b77210-fcb6-438d-a546-0c3605f6f5c4][Integrated hybrid capture and genome-wide- MAESTRO]]
+- SEQC2 analytical validity [[cite:&deveson2021]]
 https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
 - PhasED-seq- https://www.nature.com/articles/s41587-021-00981-w
   - - phased seq https://www.sciencedirect.com/science/article/pii/S2666634021003202
@@ -1833,7 +1843,7 @@ bwa index -p $2 -a bwtsw $3
 :END:
 - http://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig
 - cite:derrien2012
-<<<<<<< HEAD
+
 ***** Mappability
 =======
 **** methylation sequencing
@@ -1981,7 +1991,7 @@ https://www.nature.com/articles/d41586-021-01994-w
 :LOGBOOK:
 CLOCK: [2022-02-22 Tue 10:11]--[2022-02-22 Tue 11:59] =>  1:48
 CLOCK: [2022-02-22 Tue 08:00]--[2022-02-22 Tue 09:45] =>  1:45
-<<<<<<< HEAD
+
 :END:
 - https://www.nature.com/articles/nrg3885
 - SBGN
@@ -2086,7 +2096,7 @@ wget --directory-prefix=/home/jeszyman/data/ref/simNGS-runfiles \
 cat /home/jeszyman/data/ref/hg19.fa | simNGS \
                                           --paired paired /home/jeszyman/data/ref/simNGS-runfiles/s_4_4x.runfile > test.fq
 
-<<<<<<< HEAD
+
 - http://www.blopig.com/blog/2018/03/running-jupyter-notebook-on-a-remote-server-via-ssh/
 - https://www.reddit.com/r/bioinformatics/comments/7gxsk0/does_anyone_use_cwl_does_it_actually_help_you_get/
 - https://cromwell.readthedocs.io/en/stable/
@@ -4794,6 +4804,8 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 **** Immune cell sequencing
 - cite:bentham2021
 *** Liquid biopsy
+- liquid biopsy somascan https://www.cell.com/cell/fulltext/S0092-8674(23)01033-4#secsectitle0090
+
 https://www.nature.com/articles/s43018-022-00498-4
 https://www.nature.com/articles/s41416-022-01881-9
 - cite:illumina2022
@@ -4801,20 +4813,13 @@ https://www.nature.com/articles/s41416-022-01881-9
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
-- [[cite:&wan2022]]
-- [[cite:&li2023cfdna]]
-- [[https://www.nature.com/articles/s41591-023-02598-9#:~:text=The%20trial%20met%20its%20primary,CI%3A%2056.5%E2%80%9388.5%25).][ctDNA response after pembrolizumab in non-small cell lung cancer: phase 2 adaptive trial results]]
-- phased seq of multiple muts https://www.nature.com/articles/s41587-021-00981-w
-- https://www.sitcancer.org/research/jitc-2/jitc/collections/liquid-biopsies
-- TRACERx - https://www.nature.com/articles/s41586-023-05776-4
-- cfDNA nanopore for meth and COO [[cite:&katsman2022cfdnananopore]]
-- SEQC2 analytical validity [[cite:&deveson2021]]
-- Fragmentomics from targeted panels [[cite:&helzer2023panelfrag]]
 ***** Integrated hybrid capture and genome-wide- MAESTRO
 :PROPERTIES:
 :ID:       55b77210-fcb6-438d-a546-0c3605f6f5c4
 :END:
 cite:gydush2022
+***** cfDNA long read sequencing
+- cfDNA nanopore for meth and COO [[cite:&katsman2022cfdnananopore]]
 ***** Promenent research groups
 ****** Adalsteinsson group
 [[id:55b77210-fcb6-438d-a546-0c3605f6f5c4][Integrated hybrid capture and genome-wide- MAESTRO]]
@@ -4839,6 +4844,9 @@ cite:widman2022
 ***** Tumor-informed methods
 - phylogenic for cancer evolution cite:abbosh2017
 ***** WGS cfDNA methods
+- phased seq of multiple muts https://www.nature.com/articles/s41587-021-00981-w
+- mutational signatures for LP WGS [[cite:&wan2022]]
+- [[id:55b77210-fcb6-438d-a546-0c3605f6f5c4][Integrated hybrid capture and genome-wide- MAESTRO]]
 - https://www.medrxiv.org/content/10.1101/2022.12.06.22283116v1
 - mutation profiling in low coverage wgs https://www.nature.com/articles/s41467-022-32598-1
 - https://www.biorxiv.org/content/10.1101/2022.01.17.476508v1.full.pdf
@@ -4849,6 +4857,7 @@ cite:widman2022
 - https://d0dd8a80-1a24-4cc5-a00a-3f42615181d7.filesusr.com/ugd/ad98ab_846561db683443d3af0664c558849464.pdf
 ***** [[id:2e475e89-40a2-4359-903d-6e590f4ab8a0][cfDNA from nonterminal mouse blood draws]]
 ***** General reference
+- https://www.sitcancer.org/research/jitc-2/jitc/collections/liquid-biopsies
 - cite:keller2020
 - https://www.nature.com/collections/gcdaehehhf/webinars
 - https://www.nature.com/articles/s41551-021-00837-3
@@ -5051,7 +5060,7 @@ CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 :PROPERTIES:
 :ID:       8a2ff484-d234-48fa-88c9-c4994f2e0d14
 :END:
-<<<<<<< HEAD
+
 https://teichlab.github.io/scg_lib_structs/methods_html/Illumina.html
 http://enseqlopedia.com/2018/01/illumina-index-sequencing-sample/
 https://www.illumina.com/content/dam/illumina-marketing/documents/products/illumina_sequencing_introduction.pdf
@@ -6000,6 +6009,8 @@ https://www.reddit.com/r/statistics/comments/t3ok40/q_is_there_any_difference_be
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
 :END:
+- liquid biopsy somascan https://www.cell.com/cell/fulltext/S0092-8674(23)01033-4#secsectitle0090
+
 https://www.sciencedirect.com/science/article/pii/S1535610823002192#sec1.3
 https://bioone.org/journals/radiation-research/volume-198/issue-6/RADE-22-00074.1/Prediction-of-Total-Body-and-Partial-Body-Exposures-to-Radiation/10.1667/RADE-22-00074.1.short
 https://www.kavrakilab.org/nci-1u01ca258512-01.html
@@ -11380,6 +11391,7 @@ CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://hgserver1.amc.nl/cgi-bin/r2/main.cgi?open_page=login
 - https://www.reddit.com/r/bioinformatics/comments/17svhsq/genome_in_a_bottle_just_released_hg002_v10_new/
 - https://github.com/fgomez02
 - https://ai.tinybio.cloud/chat?rdt_cid=3878222416981413620
