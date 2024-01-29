@@ -1,13 +1,24 @@
+
+# :PROPERTIES:
+# :ID:       cf13d347-1d0e-4858-a016-0a8a8af22609
+# :END:
+
 channels:
   - conda-forge
   - bioconda
 
 dependencies:
-  - picard
+  - bedops
+  - bedtools
+  - bioconductor-complexheatmap
+  - bioconductor-rsamtools
+  - bowtie2
+  - deeptools
   - fastp
   - fastqc
+  - multiqc
+  - picard
   - pybedtools
-  - bioconductor-complexheatmap
-  - sra-tools
   - pysam
-  - bioconductor-rsamtools
+  - samtools
+  - sra-tools
