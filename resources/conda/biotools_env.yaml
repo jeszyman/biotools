@@ -3,11 +3,11 @@ channels:
   - bioconda
 
 dependencies:
-  - bedtools
-  - samtools
   - picard
-  - sra-tools
-  - pysam
   - fastp
   - fastqc
-  - multiqc
+  - pybedtools
+  - bioconductor-complexheatmap
+  - sra-tools
+  - pysam
+  - bioconductor-rsamtools
