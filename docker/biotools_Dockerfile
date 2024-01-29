@@ -1,4 +1,4 @@
-FROM jeszyman/basecamp:2.0.0
+FROM jeszyman/basecamp
 ################################################################################
 ################################################################################
 ###                                                                          ###
@@ -18,34 +18,34 @@ FROM jeszyman/basecamp:2.0.0
 #################
 ###   Conda   ###
 #################
-RUN conda install -c bioconda -c conda-forge bbmap=39.00 \
-    && conda install -c bioconda -c conda-forge bcftools=1.15.1 \
-    && conda install -c bioconda -c conda-forge bedops=2.4.41 \
-    && conda install -c bioconda -c conda-forge bedtools=2.30.0 \
-    && conda install -c bioconda -c conda-forge bowtie=1.3.1 \
-    && conda install -c bioconda -c conda-forge bowtie2=2.4.5 \
-    && conda install -c bioconda -c conda-forge bwa=0.7.17 \
-    && conda install -c bioconda -c conda-forge cutadapt=4.1 \
-    && conda install -c bioconda -c conda-forge deeptools=3.5.1 \
-    && conda install -c bioconda -c conda-forge fastp=0.23.2 \
-    && conda install -c bioconda -c conda-forge fastqc=0.11.9 \
-    && conda install -c bioconda -c conda-forge gatk \
-    && conda install -c bioconda -c conda-forge goleft=0.2.4 \
-    && conda install -c bioconda -c conda-forge htseq=2.0.2 \
-    && conda install -c bioconda -c conda-forge mosdepth=0.3.3 \
-    && conda install -c bioconda -c conda-forge vcftools
 
-RUN conda create -c bioconda -c conda-forge --name samtools.1.7 samtools=1.7
-
-RUN conda install -c bioconda -c conda-forge samblaster \
-    && conda install -c bioconda -c conda-forge sambamba \
-    && conda install -c bioconda -c conda-forge qualimap \
-    && conda install -c bioconda -c conda-forge preseq=3.2.0 \
-    && conda install -c bioconda -c conda-forge pysam=0.19.1 \
-    && conda install -c bioconda -c conda-forge seqkit=2.3.1 \
-    && conda install -c bioconda -c conda-forge seqtk=1.3 \
-    && conda install -c bioconda -c conda-forge skewer=0.2.2 \
-    && conda install -c bioconda -c conda-forge trimmomatic=0.39
+RUN conda install -c bioconda bbmap \
+    && conda install -c bioconda bcftools \
+    && conda install -c bioconda bedops \
+    && conda install -c bioconda bedtools \
+    && conda install -c bioconda bowtie \
+    && conda install -c bioconda bowtie2 \
+    && conda install -c bioconda bwa \
+    && conda install -c bioconda cutadapt \
+    && conda install -c bioconda deeptools=3.5.1 --force \
+    && conda install -c bioconda fastp \
+    && conda install -c bioconda fastqc \
+    && conda install -c bioconda gatk \
+    && conda install -c bioconda goleft \
+    && conda install -c bioconda htseq \
+    && conda install -c bioconda mosdepth \
+    && conda install -c bioconda preseq \
+    && conda install -c bioconda pysam \
+    && conda install -c bioconda qualimap \
+    && conda install -c bioconda sambamba \
+    && conda install -c bioconda samblaster \
+    && conda install -c bioconda samtools=1.7 \
+    && conda install -c bioconda seqkit \
+    && conda install -c bioconda seqtk \
+    && conda install -c bioconda skewer \
+    && conda install -c bioconda snakemake \
+    && conda install -c bioconda trimmomatic=0.39 \
+    && conda install -c bioconda vcftools
 
 # To avoid conflict with jeszyman/basecamp R install
 #RUN conda uninstall r-base
@@ -61,7 +61,135 @@ RUN R -e "BiocManager::install(version='3.15', update=TRUE, ask=FALSE)"
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
           BiocManager::install(c("AnnotationDbi",\
-                                 "apeglm", \
+                                 "apeglm"
+                                 "BiocParallel", \
+                                 "BSgenome.Hsapiens.UCSC.hg19", \
+                                 "ComplexHeatmap", \
+                                 "EnsDb.Mmusculus.v79", \
+                                 "org.Mm.eg.db", \
+                                 "readr", \
+                                 "Rsamtools", \
+                                 "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
+
+##############################################
+###   Select UCSC Command-line utilities   ###
+##############################################
+
+RUN mkdir /opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedClip --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedCommonRegions --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedCoverage --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedExtendRanges --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGeneParts --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphPack --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedIntersect --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedItemOverlapCount --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedJoinTabOffset --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedJoinTabOffset.py --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedMergeAdjacent --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedPartition --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedPileUps --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedRemoveOverlap --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedRestrictToPositions --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedSort --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToExons --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedSummary --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedToBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCat --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCluster --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigCorrelate --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigInfo --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigMerge --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigSummary --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToBedGraph --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToWig --directory-prefix=/opt/ucsc \
+    && wget --no-parent --no-directories https://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/#+end_src --directory-prefix=/opt/ucsc \
+    && chmod -R +x /opt/ucsc/
+
+ENV PATH="/opt/ucsc:${PATH}"
+
+###########################
+###   Custom Installs   ###
+###########################
+
+# Multiqc
+
+RUN pip install multiqc
+
+# Flexbar
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated libtbb2
+RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0-linux.tar.gz && tar -xzf flexbar-3.5.0-linux.tar.gz && mv flexbar-3.5.0-linux/flexbar /usr/bin/ && mv flexbar-3.5.0-linux/libtbb.so.2 /usr/bin/
+
+# samtools
+# https://www.biostars.org/p/9480029/
+RUN conda install -c bioconda samtools openssl=1.0
+
+##################
+###   Picard   ###
+##################
+
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated openjdk-8-jdk
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+#https://github.com/genome/docker-picard-cwl/commit/639ad8e4d8e7bd7e6e10f193df8d5cd16260d2e2
+RUN mkdir /opt/picard-2.18.1/ \
+    && cd /tmp/ \
+    && wget --no-check-certificate https://github.com/broadinstitute/picard/releases/download/2.18.1/picard.jar \
+    && mv picard.jar /opt/picard-2.18.1/ \
+    && ln -s /opt/picard-2.18.1 /opt/picard \
+    && ln -s /opt/picard-2.18.1 /usr/picard
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+#################
+###   Conda   ###
+#################
+
+RUN conda install -c bioconda bbmap=39.00 \
+    && conda install -c bioconda bcftools=1.15.1 \
+    && conda install -c bioconda bedops=2.4.41 \
+    && conda install -c bioconda bedtools=2.30.0 \
+    && conda install -c bioconda bowtie=1.3.1 \
+    && conda install -c bioconda bowtie2=2.4.5 \
+    && conda install -c bioconda bwa=0.7.17 \
+    && conda install -c bioconda cutadapt=4.1 \
+    && conda install -c bioconda deeptools=3.5.1 --force \
+    && conda install -c bioconda fastp=0.23.2 \
+    && conda install -c bioconda fastqc=0.11.9 \
+    && conda install -c bioconda gatk=4.2.6.0 \
+    && conda install -c bioconda goleft=0.2.4 \
+    && conda install -c bioconda htseq=2.0.2 \
+    && conda install -c bioconda mosdepth=0.3.3 \
+    && conda install -c bioconda preseq=3.2.0 \
+    && conda install -c bioconda pysam=0.19.1 \
+    && conda install -c bioconda qualimap=2.2.2d \
+    && conda install -c bioconda sambamba=0.8.2 \
+    && conda install -c bioconda samblaster=0.1.26 \
+    && conda install -c bioconda samtools=1.7 \
+    && conda install -c bioconda seqkit=2.3.1 \
+    && conda install -c bioconda seqtk=1.3 \
+    && conda install -c bioconda skewer=0.2.2 \
+    && conda install -c bioconda trimmomatic=0.39 \
+    && conda install -c bioconda vcftools=0.1.16-7
+
+# To avoid conflict with jeszyman/basecamp R install
+#RUN conda uninstall r-base
+
+##########################
+###   R Bioconductor   ###
+##########################
+
+RUN R -e "install.packages('BiocManager', repos='http://cran.rstudio.com/')"
+
+RUN R -e "BiocManager::install(version='3.15', update=TRUE, ask=FALSE)"
+
+RUN R -e 'install.packages("BiocManager"); \
+          BiocManager::install(); \
+          BiocManager::install(c("AnnotationDbi",\
+                                 "apeglm"
                                  "BiocParallel", \
                                  "biomaRt", \
                                  "BSgenome.Hsapiens.UCSC.hg38", \
@@ -138,7 +266,7 @@ RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0
 
 # samtools
 # https://www.biostars.org/p/9480029/
-#RUN conda install -c bioconda samtools openssl=1.0
+RUN conda install -c bioconda samtools openssl=1.0
 
 ##################
 ###   Picard   ###
