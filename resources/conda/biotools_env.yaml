@@ -3,6 +3,7 @@
 # :ID:       cf13d347-1d0e-4858-a016-0a8a8af22609
 # :END:
 
+name: biotools
 channels:
   - conda-forge
   - bioconda
@@ -12,6 +13,7 @@ dependencies:
   - bedtools
   - bioconductor-complexheatmap
   - bioconductor-rsamtools
+  - bioconductor-orthology.eg.db
   - bowtie2
   - deeptools
   - fastp

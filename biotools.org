@@ -4,11 +4,299 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :header-args: :tangle no :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
 :END:
+
+** Single-cell methods
+:PROPERTIES:
+:ID:       2597b54c-972a-43c3-9630-0e542ba90eeb
+:END:
+#+begin_src R
+library(Seurat)
+
+test = readRDS("/mnt/ris/cbergom/Active/scrna/Bergom_SR003528_10X/Seurat_5_GEX_Analysis_Resolution_0.8/SR003528_8-Female_TG_RT_Seurat_Analysis_0.8_Resolution/SR003528_8-Female_TG_RT.RDS")
+
+DimHeatmap(test, dims = 1:15, cells = 500, balanced = TRUE)
+
+ElbowPlot(test)
+
+test = FindNeighbors(test, dims = 1:10)
+test = FindClusters(test, resolution = 0.5)
+
+head(Idents(test), 5)
+
+test = RunUMAP(test, dims = 1:10)
+
+DimPlot(test, reduction = "umap")
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+library(Seurat)
+
+if (!requireNamespace("remotes", quietly = TRUE))
+  install.packages("remotes")
+remotes::install_github("satijalab/seurat-data")
+
+library(SeuratData)
+library(patchwork)
+
+InstallData("ifnb")
+
+install.packages("~/ifnb.SeuratData_3.1.0.tar.gz", repos = NULL, type = "source")
+
+# load dataset
+ifnb <- LoadData("ifnb")
+# split the RNA measurements into two layers one for control cells, one for stimulated cells
+
+ifnb[["RNA"]] <- split(ifnb[["RNA"]], f = ifnb$stim)
+
+ifnb
+
+# run standard anlaysis workflow
+ifnb <- NormalizeData(ifnb)
+ifnb <- FindVariableFeatures(ifnb)
+ifnb <- ScaleData(ifnb)
+ifnb <- RunPCA(ifnb)
+
+ifnb <- FindNeighbors(ifnb, dims = 1:30, reduction = "pca")
+ifnb <- FindClusters(ifnb, resolution = 2, cluster.name = "unintegrated_clusters")
+
+ifnb <- RunUMAP(ifnb, dims = 1:30, reduction = "pca", reduction.name = "umap.unintegrated")
+DimPlot(ifnb, reduction = "umap.unintegrated", group.by = c("stim", "seurat_clusters"))
+
+ifnb <- IntegrateLayers(object = ifnb, method = CCAIntegration, orig.reduction = "pca", new.reduction = "integrated.cca",
+    verbose = FALSE)
+
+# re-join layers after integration
+ifnb[["RNA"]] <- JoinLayers(ifnb[["RNA"]])
+
+ifnb <- FindNeighbors(ifnb, reduction = "integrated.cca", dims = 1:30)
+ifnb <- FindClusters(ifnb, resolution = 1)
+
+ifnb <- RunUMAP(ifnb, dims = 1:30, reduction = "integrated.cca")
+
+DimPlot(ifnb, reduction = "umap", group.by = c("stim", "seurat_annotations"))
+
+DimPlot(ifnb, reduction = "umap", split.by = "stim")
+
+Idents(ifnb) <- "seurat_annotations"
+
+install.packages('BiocManager')
+BiocManager::install('multtest')
+install.packages('metap')
+
+nk.markers <- FindConservedMarkers(ifnb, ident.1 = "NK", grouping.var = "stim", verbose = FALSE)
+head(nk.markers)
+
+
+female_tg_rt = readRDS("/mnt/ris/cbergom/Active/scrna/Bergom_SR003528_10X/Seurat_5_GEX_Analysis_Resolution_0.8/SR003528_8-Female_TG_RT_Seurat_Analysis_0.8_Resolution/SR003528_8-Female_TG_RT.RDS")
+
+female_tg_sham = readRDS("/mnt/ris/cbergom/Active/scrna/Bergom_SR003528_10X/Seurat_5_GEX_Analysis_Resolution_0.8/SR003528_8-Female_TG_sham_Seurat_Analysis_0.8_Resolution/SR003528_8-Female_TG_sham.RDS")
+
+class(female_tg_sham)
+female_tg_sham
+#+end_src
+
+*** [[id:99ee4bd0-060e-4109-9901-29aa7fafd816][Single nucleus and single cell methods applied to heart]]
+*** [[id:992de4dc-775e-41f0-a70a-e38c99b87265][Single cell methylation sequencing]]
+*** Good practice
+:PROPERTIES:
+:ID:       f6418486-9a29-4a65-9145-2a2a3ac788a7
+:END:
+- [[cite:&slyper2020]]
+- [[cite:&luecken2019]]
+- cite:heumos2023 and associated [[https://www.sc-best-practices.org/preamble.html#peer-review][ebook]]
+- cite:slyper2020
+- https://www.nature.com/articles/s41576-023-00586-w
+*** Well-done applications
+- cite:storrs2022
+- Li Ding pancreas - https://www.nature.com/articles/s41588-022-01157-1
+- cite:qi2019
+*** single-nucleus RNA-seq
+:PROPERTIES:
+:ID:       1149b091-eabe-4137-a3e9-222f21bfdd57
+:END:
+- https://www.nature.com/articles/s41591-020-0844-1
+*** Jointly defining cell states from singl-cell multi-omic and spatial tanscriptomic datasest
+:PROPERTIES:
+:ID:       76cd9647-825f-46b4-9344-b7b95049f2f6
+:END:
+:LOGBOOK:
+CLOCK: [2021-11-02 Tue 11:01]--[2021-11-02 Tue 11:26] =>  0:25
+:END:
+- https://event.on24.com/eventRegistration/console/EventConsoleApollo.jsp?&eventid=3478709&sessionid=1&username=&partnerref=&format=fhaudio&mobile=&flashsupportedmobiledevice=&helpcenter=&key=87791679E10838FA9DCF16C96D7F22F8&newConsole=true&nxChe=true&newTabCon=true&consoleEarEventConsole=false&text_language_id=en&playerwidth=748&playerheight=526&eventuserid=488203953&contenttype=A&mediametricsessionid=422205446&mediametricid=4883132&usercd=488203953&mode=launch
+- liger cell welch 2019 linked inference of henomic experimental relationships
+- scalable, iteratifve integration with online iNMF gai nature biotechnology 2021
+-
+*** General                                                             :ref:
+- inputs and pre-processing
+  - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02048-6
+  - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1171-9
+- [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
+- Single cell data integration cite:stuart2019
+- applications
+  - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
+  - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
+    - cite:lawson2018
+- simulated data https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-02904-1
+- https://www.sciencedirect.com/science/article/pii/S1097276516301861?via%3Dihub
+- Tutorials, guides, good practice
+  - Sanger Institute https://www.singlecellcourse.org/
+  - EMBL-EBI https://www.ebi.ac.uk/training/events/single-cell-rna-seq-analysis-using-r-virtual/
+  - https://www.reddit.com/r/bioinformatics/comments/uy9g1j/where_to_start_with_scrnaseq_data/
+  - https://www.embopress.org/doi/full/10.15252/msb.20188746
+  - https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigCp6gJIIgmyhPA
+- Reviews
+  - https://www.nature.com/articles/nmeth.4612
+  - cite:stuart2019
+- Multi-cell pathway analysis - https://bioengineeringcommunity.nature.com/posts/dialogue-maps-multicellular-programs-in-tissue-from-single-cell-or-spatial-transcriptomics-data
+- Integrating multiple single cell data sets - Harmony - https://www.nature.com/articles/s41592-019-0619-0
+
+*** Time-based analysis
+- RNA velocity - scVelo RNA velocity  [[https://scvelo.readthedocs.io/][site]]
+*** Single cell methylation sequencing
+:PROPERTIES:
+:ID:       992de4dc-775e-41f0-a70a-e38c99b87265
+:END:
+https://www.nature.com/articles/nmeth.3035
+https://www.nature.com/articles/s41467-018-03149-4
+[[id:2597b54c-972a-43c3-9630-0e542ba90eeb][Single-cell methods]]
+*** Single cell ATAC-seq
+- https://www.nature.com/articles/s41467-021-21583-9#Sec2
+*** single-nucleus RNA-seq
+:PROPERTIES:
+:ID:       1149b091-eabe-4137-a3e9-222f21bfdd57
+:END:
+- cite:grindberg2013
+- https://www.nature.com/articles/s41591-020-0844-1
+
+*** single-cell RNA sequencing (scRNA-seq)
+:PROPERTIES:
+:ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
+:END:
+- clustering and identification algorithms - https://www.nature.com/articles/s41467-023-36383-6
+- trajectory inference
+  - Monocle 2
+  - Slingshot
+  - TSCAN
+  - Wishbone
+- https://cancerdiscovery.aacrjournals.org/content/early/2021/12/22/2159-8290.CD-RW2021-181
+
+https://www.nature.com/articles/s41587-022-01452-6
+https://www.embopress.org/doi/full/10.15252/msb.20188746
+- https://www.biorxiv.org/content/biorxiv/early/2019/02/05/541433.full.pdf
+- examples
+  - - see fig 3 & methods https://genome.cshlp.org/content/27/2/208.full.pdf
+- https://www.nature.com/articles/s41587-020-0553-9
+- 10x
+  - applications - https://pages.10xgenomics.com/nur-gen-research-area-literature.html?src=email&utm_medium=email&lss=nurture&utm_source=nurture&cnm=es-nurture-ra_g-general&utm_campaign=es-nurture-ra_g-general&utm_content=&utm_term=&useroffertype=marketing-literature&userresearcharea=ra_g&userregion=&userrecipient=customer&mktouserid=1265915&cid=&usercampaignid=
+- https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0212031
+- http://www.nature.com/nbt/journal/v34/n2/full/nbt.3445.html
+- https://www.10xgenomics.com/videos
+- https://www.nature.com/articles/s41591-021-01276-y
+- [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
+- https://bioconductor.org/packages/release/bioc/vignettes/FlowSOM/inst/doc/FlowSOM.pdf
+- https://chanzuckerberg.github.io/scRNA-python-workshop/analysis/05-diffexp.html
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6914766/
+- https://www.nature.com/articles/s41467-019-12235-0
+- http://www.kumc.edu/genomics/genome-sequencing-facility/services/chromium-single-cell-5-and-v(d)j-enrichment.html
+- https://www.10xgenomics.com/solutions/vdj/
+- https://research.medgenome.com/ngs-services/single-cell-sequencing/
+- https://www.sciencedirect.com/science/article/pii/S1097276517300497#fig1
+- https://www.biorxiv.org/content/10.1101/615013v1
+- https://www.youtube.com/watch?v=Wbusqowyu6g&t=147s
+- cite:monaco2019
+- cite:see2018
+- toolkits
+  - Seurat
+  - Monocle 2
+  - scVI
+- clustering
+  - SC3
+  - SIMLR
+  - CIDR
+  - SNN-Cliq
+  - Biscuit
+- imputing dropouts
+  - MAGIC
+  - scImpute
+  - SAVER
+- https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/mkfastq
+- http://www.partek.com/free-trial/
+- https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
+- https://github.com/koash/cellranger-docker
+- https://satijalab.org/seurat/v3.0/pbmc3k_tutorial.html
+- http://core-genomics.blogspot.com/2016/07/10x-genomics-single-cell-3mrna-seq.html
+- https://www.frontiersin.org/articles/10.3389/fcell.2018.00108/full
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6292934/
+- https://www.sciencedirect.com/science/article/pii/S1097276515002610?via%3Dihub
+- https://www.ncbi.nlm.nih.gov/pubmed/26000846/
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5561556/
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6131190/
+- https://www.nature.com/articles/s41598-019-46932-z
+- https://www.biorxiv.org/content/biorxiv/early/2018/03/05/275859.full.pdf
+- cite:wohnhaas2019
+- cite:papalexi2018
+- https://support.10xgenomics.com/single-cell-gene-expression/datasets
+- https://www.cell.com/cell-reports/pdf/S2211-1247(19)30059-2.pdf
+- https://www.nature.com/articles/s41591-020-0844-1
+- https://www.workcast.com/AuditoriumAuthenticator.aspx?cpak=8475927829006248&pak=1763506853003757
+
+- cite:qi2019
+- applications
+  - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
+  - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
+    - cite:lawson2018
+- cite:stuart2019
+- [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
+- inputs and pre-processing
+  - - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02048-6
+  - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1171-9
+  - https://www.nature.com/articles/s41591-020-0844-1
+- trajectory inference
+  - Monocle 2
+  - Slingshot
+  - TSCAN
+  - Wishbone
+*** Single cell conda yaml
+#+begin_src bash :tangle ./resources/conda/single_cell_env.yaml
+name: single_cell
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+# Notes:
+#
+# This file contains ONLY single-cell-specific packages. For full environment
+#  functionality, this yaml is intended to be used with basecamp and biotools
+#  general yamls which can be found at
+#  https://github.com/jeszyman/basecamp/blob/master/basecamp_env.yaml and
+#  https://github.com/jeszyman/biotools/blob/master/biotools_env.yaml.
+#
+# These can be incorporated from local files as:
+#
+#  mamba env update --name single_cell \
+#     --file /path/to/basecamp_env.yaml
+
+channels:
+  - antonio.domingues
+  - conda-forge
+  - bioconda
+
+dependencies:
+  - r-seurat
+  - r-seuratdata
+#+end_src
+
+** Bioinformatics style guide
+:PROPERTIES:
+:ID:       8ddb3ced-a572-43cd-82d9-69fe449fe320
+:END:
+- See [[id:593672e1-82b2-44e0-aa00-d28825860706][Computer programming style Guide]]
+  - Prefer Ensembl identifiers as a final reference
+** [[173e0331-9140-47d0-9e5e-ec91672ebdc3][Fragmentomics]]
 ** Biotools conda yaml
 :PROPERTIES:
 :ID:       cf13d347-1d0e-4858-a016-0a8a8af22609
 :END:
 #+begin_src bash :tangle ./resources/conda/biotools_env.yaml
+name: biotools
 channels:
   - conda-forge
   - bioconda
@@ -18,6 +306,7 @@ dependencies:
   - bedtools
   - bioconductor-complexheatmap
   - bioconductor-rsamtools
+  - bioconductor-orthology.eg.db
   - bowtie2
   - deeptools
   - fastp
@@ -1384,6 +1673,10 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 
 
 **** cfDNA fragmentomics
+:PROPERTIES:
+:ID:       173e0331-9140-47d0-9e5e-ec91672ebdc3
+:END:
+- cite:liu2022
 - Fragmentomics from targeted panels [[cite:&helzer2023panelfrag]]
 - [[cite:&jiang2015]]
 - fragment length NMF [[cite:&renaud2021]]
@@ -1428,8 +1721,8 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 :PROPERTIES:
 :ID:       dd8b334b-e431-4709-8485-bf0dda1760a5
 :END:
-https://www.nature.com/articles/ng.3648
-cite:foda2022
+- https://www.nature.com/articles/ng.3648
+- cite:foda2022
 **** cfDNA from nonterminal mouse blood draws
 :PROPERTIES:
 :ID:       2e475e89-40a2-4359-903d-6e590f4ab8a0
@@ -2198,7 +2491,10 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 
 
 *** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
-*** Bioinformatics pipelines and project management
+*** Bioinformatics pipelines and project management and code
+- cite:griffith2015
+- https://www.reddit.com/r/bioinformatics/comments/1apn4f4/what_are_some_criteria_for_my_code_to_have_in_a/
+
 - https://osf.io/4pd9n/
 - https://www.reddit.com/r/bioinformatics/comments/12cb99z/what_are_some_good_examples_of_wellengineered/
 - https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424
@@ -3109,170 +3405,6 @@ consensusToCount
 
 **** Enhancers
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666684/
-*** Single-cell methods
-:PROPERTIES:
-:ID:       2597b54c-972a-43c3-9630-0e542ba90eeb
-:END:
-- simulated data https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-02904-1
-- https://www.reddit.com/r/bioinformatics/comments/18hl7ra/my_experience_with_single_cell_rna_seq_analysis/
-- [[cite:&slyper2020]]
-- cite:griffith2015
-- http://bioinformatics.sdstate.edu/idep/
-- cite:qi2019
-- applications
-  - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
-  - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
-    - cite:lawson2018
-- Single cell data integration cite:stuart2019
-- [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
-- inputs and pre-processing
-  - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02048-6
-  - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1171-9
-**** Good practice
-:PROPERTIES:
-:ID:       f6418486-9a29-4a65-9145-2a2a3ac788a7
-:END:
-- [[cite:&luecken2019]]
-- cite:heumos2023
-- cite:slyper2020
-- https://www.nature.com/articles/s41576-023-00586-w
-**** single-nucleus RNA-seq
-:PROPERTIES:
-:ID:       1149b091-eabe-4137-a3e9-222f21bfdd57
-:END:
-- https://www.nature.com/articles/s41591-020-0844-1
-**** Jointly defining cell states from singl-cell multi-omic and spatial tanscriptomic datasest
-:PROPERTIES:
-:ID:       76cd9647-825f-46b4-9344-b7b95049f2f6
-:END:
-:LOGBOOK:
-CLOCK: [2021-11-02 Tue 11:01]--[2021-11-02 Tue 11:26] =>  0:25
-:END:
-- https://event.on24.com/eventRegistration/console/EventConsoleApollo.jsp?&eventid=3478709&sessionid=1&username=&partnerref=&format=fhaudio&mobile=&flashsupportedmobiledevice=&helpcenter=&key=87791679E10838FA9DCF16C96D7F22F8&newConsole=true&nxChe=true&newTabCon=true&consoleEarEventConsole=false&text_language_id=en&playerwidth=748&playerheight=526&eventuserid=488203953&contenttype=A&mediametricsessionid=422205446&mediametricid=4883132&usercd=488203953&mode=launch
-- liger cell welch 2019 linked inference of henomic experimental relationships
-- scalable, iteratifve integration with online iNMF gai nature biotechnology 2021
--
-**** [[id:99ee4bd0-060e-4109-9901-29aa7fafd816][Single nucleus and single cell methods applied to heart]]
-**** [[id:992de4dc-775e-41f0-a70a-e38c99b87265][Single cell methylation sequencing]]
-**** General
-- https://www.sciencedirect.com/science/article/pii/S1097276516301861?via%3Dihub
-- Tutorials, guides, good practice
-  - https://www.reddit.com/r/bioinformatics/comments/uy9g1j/where_to_start_with_scrnaseq_data/
-  - https://www.embopress.org/doi/full/10.15252/msb.20188746
-  - https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigCp6gJIIgmyhPA
-- Reviews
-  - https://www.nature.com/articles/nmeth.4612
-  - cite:stuart2019
-- Multi-cell pathway analysis - https://bioengineeringcommunity.nature.com/posts/dialogue-maps-multicellular-programs-in-tissue-from-single-cell-or-spatial-transcriptomics-data
-- Examples of well-implimented applications
-  - cite:storrs2022
-  - Li Ding pancreas - https://www.nature.com/articles/s41588-022-01157-1
-- Integrating multiple single cell data sets - Harmony - https://www.nature.com/articles/s41592-019-0619-0
-- RNA velocity - scVelo RNA velocity  [[https://scvelo.readthedocs.io/][site]]
-**** Single cell methylation sequencing
-:PROPERTIES:
-:ID:       992de4dc-775e-41f0-a70a-e38c99b87265
-:END:
-https://www.nature.com/articles/nmeth.3035
-https://www.nature.com/articles/s41467-018-03149-4
-[[id:2597b54c-972a-43c3-9630-0e542ba90eeb][Single-cell methods]]
-**** Single cell ATAC-seq
-- https://www.nature.com/articles/s41467-021-21583-9#Sec2
-**** single-nucleus RNA-seq
-:PROPERTIES:
-:ID:       1149b091-eabe-4137-a3e9-222f21bfdd57
-:END:
-- cite:grindberg2013
-- https://www.nature.com/articles/s41591-020-0844-1
-
-**** single-cell RNA sequencing (scRNA-seq)
-:PROPERTIES:
-:ID:       2bbeb644-af54-4f07-80ad-3584e1e21b04
-:END:
-- clustering and identification algorithms - https://www.nature.com/articles/s41467-023-36383-6
-- trajectory inference
-  - Monocle 2
-  - Slingshot
-  - TSCAN
-  - Wishbone
-- https://cancerdiscovery.aacrjournals.org/content/early/2021/12/22/2159-8290.CD-RW2021-181
-
-https://www.nature.com/articles/s41587-022-01452-6
-https://www.embopress.org/doi/full/10.15252/msb.20188746
-- https://www.biorxiv.org/content/biorxiv/early/2019/02/05/541433.full.pdf
-- examples
-  - - see fig 3 & methods https://genome.cshlp.org/content/27/2/208.full.pdf
-- https://www.nature.com/articles/s41587-020-0553-9
-- 10x
-  - applications - https://pages.10xgenomics.com/nur-gen-research-area-literature.html?src=email&utm_medium=email&lss=nurture&utm_source=nurture&cnm=es-nurture-ra_g-general&utm_campaign=es-nurture-ra_g-general&utm_content=&utm_term=&useroffertype=marketing-literature&userresearcharea=ra_g&userregion=&userrecipient=customer&mktouserid=1265915&cid=&usercampaignid=
-- https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0212031
-- http://www.nature.com/nbt/journal/v34/n2/full/nbt.3445.html
-- https://www.10xgenomics.com/videos
-- https://www.nature.com/articles/s41591-021-01276-y
-- [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
-- https://bioconductor.org/packages/release/bioc/vignettes/FlowSOM/inst/doc/FlowSOM.pdf
-- https://chanzuckerberg.github.io/scRNA-python-workshop/analysis/05-diffexp.html
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6914766/
-- https://www.nature.com/articles/s41467-019-12235-0
-- http://www.kumc.edu/genomics/genome-sequencing-facility/services/chromium-single-cell-5-and-v(d)j-enrichment.html
-- https://www.10xgenomics.com/solutions/vdj/
-- https://research.medgenome.com/ngs-services/single-cell-sequencing/
-- https://www.sciencedirect.com/science/article/pii/S1097276517300497#fig1
-- https://www.biorxiv.org/content/10.1101/615013v1
-- https://www.youtube.com/watch?v=Wbusqowyu6g&t=147s
-- cite:monaco2019
-- cite:see2018
-- toolkits
-  - Seurat
-  - Monocle 2
-  - scVI
-- clustering
-  - SC3
-  - SIMLR
-  - CIDR
-  - SNN-Cliq
-  - Biscuit
-- imputing dropouts
-  - MAGIC
-  - scImpute
-  - SAVER
-- https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/mkfastq
-- http://www.partek.com/free-trial/
-- https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
-- https://github.com/koash/cellranger-docker
-- https://satijalab.org/seurat/v3.0/pbmc3k_tutorial.html
-- http://core-genomics.blogspot.com/2016/07/10x-genomics-single-cell-3mrna-seq.html
-- https://www.frontiersin.org/articles/10.3389/fcell.2018.00108/full
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6292934/
-- https://www.sciencedirect.com/science/article/pii/S1097276515002610?via%3Dihub
-- https://www.ncbi.nlm.nih.gov/pubmed/26000846/
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5561556/
-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6131190/
-- https://www.nature.com/articles/s41598-019-46932-z
-- https://www.biorxiv.org/content/biorxiv/early/2018/03/05/275859.full.pdf
-- cite:wohnhaas2019
-- cite:papalexi2018
-- https://support.10xgenomics.com/single-cell-gene-expression/datasets
-- https://www.cell.com/cell-reports/pdf/S2211-1247(19)30059-2.pdf
-- https://www.nature.com/articles/s41591-020-0844-1
-- https://www.workcast.com/AuditoriumAuthenticator.aspx?cpak=8475927829006248&pak=1763506853003757
-
-- cite:qi2019
-- applications
-  - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
-  - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
-    - cite:lawson2018
-- cite:stuart2019
-- [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
-- inputs and pre-processing
-  - - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02048-6
-  - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1171-9
-  - https://www.nature.com/articles/s41591-020-0844-1
-- trajectory inference
-  - Monocle 2
-  - Slingshot
-  - TSCAN
-  - Wishbone
 *** Sequence motif analysis
 https://meme-suite.org/meme/
 *** Gene expression
@@ -3289,6 +3421,7 @@ overlap plus combined DEGs https://wustl.app.box.com/file/1235774979545 fig2c
 :ID:       4206be38-8d3c-43c4-a5c7-ca6a8bd8361a
 :CREATED:  [2021-02-17 Wed 09:08]
 :END:
+- http://bioinformatics.sdstate.edu/idep/
 https://nf-co.re/rnaseq/3.13.2
 https://www.nature.com/articles/s41598-020-76881-x
 https://www.cell.com/ajhg/fulltext/S0002-9297(18)30401-4
@@ -6270,9 +6403,6 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
         - roemer2016.pdf
         - fribbens2016.pdf
         - rizvi2018.pdf
-*** General reference                                                   :ref:
-- [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
-- https://github.com/orgs/genome/repositories?type=all
 *** Coordinate-based genomics visualization tracks
 :PROPERTIES:
 :ID:       29821fa1-acfe-4a74-9c5d-a24adddf2969
@@ -6913,7 +7043,7 @@ snakemake --cores 20 --forceall
 :END:
 
 #+name: bioinfo.config.common.sh
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.common.sh
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.common.sh
 # -*- mode: snippet -*-
 # key: bioinfo.config.common.sh
 # expand-env: ((yas-indent-line 'fixed))
@@ -6959,7 +7089,7 @@ fi
 
 ** Local YAS
 *** r.bioc :yas:
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/ess-mode/r.bioc
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/ess-mode/r.bioc
 # -*- mode: snippet -*-
 # key: r.bioc
 # expand-env: ((yas-indent-line 'none))
@@ -6974,7 +7104,7 @@ CLOSED: [2021-12-09 Thu 12:38]
 :CUSTOM_ID: dbd3c67c-e33b-42d8-800d-705292d3c372
 :END:
 
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
 # -*- mode: snippet -*-
 # key: bioinfo.setup
 # expand-env: ((yas-indent-line 'none))
@@ -7002,7 +7132,7 @@ fi
 `(concat "**" (make-string (org-current-level) ?*))` TODO Docker and singularity
 `(concat "***" (make-string (org-current-level) ?*))` Processes
 1. Write
-   ,#+begin_src fundamental :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
+   ,#+begin_src bash :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
 ,#+end_src
 2. Build
 3. Make singularity container from docker container
@@ -7046,7 +7176,7 @@ mkdir -p "\${repo}/workflow/scripts"
 *** bioinfo.launch.docker
 
 #+name: bioinfo.launch.docker
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
   # -*- mode: snippet -*-
   # key: bioinfo.launch.docker
   # expand-env: ((yas-indent-line 'fixed))
@@ -7067,7 +7197,7 @@ mkdir -p "\${repo}/workflow/scripts"
 *** bioinfo.setup.bash
 
 #+name: bioinfo.setup.bash
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
   # -*- mode: snippet -*-
   # key: bioinfo.setup.bash
   # expand-env: ((yas-indent-line 'fixed))
@@ -7083,7 +7213,7 @@ mkdir -p "\${repo}/workflow/scripts"
 *** bioinfo.config.main.R
 
 #+name: bioinfo.config.main.R
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
   # -*- mode: snippet -*-
   # key: bioinfo.config.main.R
   # expand-env: ((yas-indent-line 'fixed))
@@ -7110,7 +7240,7 @@ mkdir -p "\${repo}/workflow/scripts"
 *** bioinfo.config.local.R
 
 #+name: bioinfo.config.local.R
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
   # -*- mode: snippet -*-
   # key: bioinfo.config.local.R
   # expand-env: ((yas-indent-line 'fixed))
@@ -7129,7 +7259,7 @@ mkdir -p "\${repo}/workflow/scripts"
 *** bioinfo.bash.script
 
 #+name: bioinfo.bash.script
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
   # -*- mode: snippet -*-
   # key: bioinfo.bash.script
   # expand-env: ((yas-indent-line 'fixed))
@@ -7150,7 +7280,7 @@ mkdir -p "\${repo}/workflow/scripts"
 :CUSTOM_ID: d6bb61c9-8b10-4460-b987-0a6c678d2ddb
 :END:
 
-#+begin_src fundamental :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
 # -*- mode: snippet -*-
 # key: bioinfo.inputs
 # expand-env: ((yas-indent-line 'none))
@@ -8552,6 +8682,7 @@ https://www.biostars.org/p/9465609/
 
 :END:
 **** [[id:a8b27140-4b9e-40c5-86ab-ee5afeae723f][snakemake]]
+**** SRA toolkit :biotool:
 **** STAR                                                           :biotool:
 :PROPERTIES:
 :ID:       d1d5d554-57c4-4b9c-8385-2bb72369375e
@@ -8977,156 +9108,156 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 - cite:wikipathways
 *** Table
 #+BEGIN: propview :id "1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb" :cols (DOC)
-|                                                                                                                   DOC |                                     |   |       |   |                                                          |   |   |   |
-|-----------------------------------------------------------------------------------------------------------------------+-------------------------------------+---+-------+---+----------------------------------------------------------+---+---+---|
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                    "" |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                 [[http://bedtools\.readthedocs\.io/en/latest/] [doc]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                        "https://github.com/seqan/flexbar/wiki/Manual" |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                  DOC |                                     |   |       |   |                                                          |   |   |   |
+|------------------------------------------------------------------------------------------------------+-------------------------------------+---+-------+---+----------------------------------------------------------+---+---+---|
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                   "" |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                [[http://bedtools\.readthedocs\.io/en/latest/] [doc]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                       "https://github.com/seqan/flexbar/wiki/Manual" |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
 | [[http://portals\.broadinstitute\.org/cgi-bin/cancer/publications/pub_paper\.cgi\?mode=view&paper_id=216&p=t] [site]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     " |                                     |   | fastq |   | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]] |   |   | " |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                            [[https://github\.com/broadinstitute/ichorCNA/wiki] [doc]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     " | [[https://multiqc.info/docs/][doc]] |   |       | " |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                              [[http://www\.basic\.northwestern\.edu/biotools/oligocalc\.html] [site]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                       [[https://broadinstitute\.github\.io/picard/index\.html] [doc]] |                                     |   |       |   |                                                          |   |   |   |
-|            [[http://bioconductor\.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester\.html] [vignette]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                 [[https://github\.com/broadinstitute/rnaseqc] [repo]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                            [[http://rseqc\.sourceforge\.net/] [repo]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                  [[https://salmon\.readthedocs\.io/en/latest/] [doc]] |                                     |   |       |   |                                                          |   |   |   |
-|                                          [[http://lomereiter\.github\.io/sambamba/docs/sambamba-view\.html] [online]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                [[https://github\.com/GregoryFaust/samblaster] [repo]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                               [[http://www\.htslib\.org/doc/samtools\.html] [online]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|         [[https://www\.bioconductor\.org/packages/release/bioc/vignettes/seqTools/inst/doc/seqTools\.pdf] [seqTools]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                          [[https://github\.com/alexdobin/STAR/blob/master/doc/STARmanual\.pdf] [doc]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                          [[https://ccb\.jhu\.edu/software/tophat/manual\.html] [doc]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|-----------------------------------------------------------------------------------------------------------------------+-------------------------------------+---+-------+---+----------------------------------------------------------+---+---+---|
-|                                                                                                                       |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    " |                                     |   | fastq |   | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]] |   |   | " |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                           [[https://github\.com/broadinstitute/ichorCNA/wiki] [doc]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    " | [[https://multiqc.info/docs/][doc]] |   |       | " |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                             [[http://www\.basic\.northwestern\.edu/biotools/oligocalc\.html] [site]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                      [[https://broadinstitute\.github\.io/picard/index\.html] [doc]] |                                     |   |       |   |                                                          |   |   |   |
+| [[http://bioconductor\.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester\.html] [vignette]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                [[https://github\.com/broadinstitute/rnaseqc] [repo]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                           [[http://rseqc\.sourceforge\.net/] [repo]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                 [[https://salmon\.readthedocs\.io/en/latest/] [doc]] |                                     |   |       |   |                                                          |   |   |   |
+|                         [[http://lomereiter\.github\.io/sambamba/docs/sambamba-view\.html] [online]] |                                     |   |       |   |                                                          |   |   |   |
+|                                               [[https://github\.com/GregoryFaust/samblaster] [repo]] |                                     |   |       |   |                                                          |   |   |   |
+|                                              [[http://www\.htslib\.org/doc/samtools\.html] [online]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+| [[https://www\.bioconductor\.org/packages/release/bioc/vignettes/seqTools/inst/doc/seqTools\.pdf] [seqTools]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                         [[https://github\.com/alexdobin/STAR/blob/master/doc/STARmanual\.pdf] [doc]] |                                     |   |       |   |                                                          |   |   |   |
+|                                         [[https://ccb\.jhu\.edu/software/tophat/manual\.html] [doc]] |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                    0 |                                     |   |       |   |                                                          |   |   |   |
+|------------------------------------------------------------------------------------------------------+-------------------------------------+---+-------+---+----------------------------------------------------------+---+---+---|
+|                                                                                                      |                                     |   |       |   |                                                          |   |   |   |
 #+END:
 *** tool collections
 :PROPERTIES:
@@ -10709,6 +10840,7 @@ CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://github.com/mikelove/awesome-multi-omics
 - https://compgenomr.github.io/book/
 - https://github.com/pachterlab/BI-BE-CS-183-2023
 - https://hgserver1.amc.nl/cgi-bin/r2/main.cgi?open_page=login
@@ -10973,3 +11105,7 @@ because computation removes redundancy, you will more frequently be at a new, tr
 :END:
 - cite:becker2011
 - https://www.annualreviews.org/doi/10.1146/annurev-genom-090413-025448#_i21
+*** General reference                                                   :ref:
+- https://osg-htc.org/
+- [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
+- https://github.com/orgs/genome/repositories?type=all
