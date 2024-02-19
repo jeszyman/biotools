@@ -1,0 +1,25 @@
+name: single_cell
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+#
+# Notes:
+#
+# This file contains ONLY single-cell-specific packages. For full environment
+#  functionality, this yaml is intended to be used with basecamp and biotools
+#  general yamls which can be found at
+#  https://github.com/jeszyman/basecamp/blob/master/basecamp_env.yaml and
+#  https://github.com/jeszyman/biotools/blob/master/biotools_env.yaml.
+#
+# These can be incorporated from local files as:
+#
+#  mamba env update --name single_cell \
+#     --file /path/to/basecamp_env.yaml
+
+channels:
+  - antonio.domingues
+  - conda-forge
+  - bioconda
+
+dependencies:
+  - r-seurat
+  - r-seuratdata
