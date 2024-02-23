@@ -16,10 +16,8 @@ name: single_cell
 #     --file /path/to/basecamp_env.yaml
 
 channels:
-  - antonio.domingues
   - conda-forge
   - bioconda
 
 dependencies:
   - r-seurat
-  - r-seuratdata

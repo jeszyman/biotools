@@ -49,12 +49,245 @@ https://hgserver1.amc.nl/cgi-bin/r2/main.cgi?open_page=login
 :END:
 #+begin_src R
 library(Seurat)
+library(patchwork)
+
+library(SingleR)
+library(celldex)
+
+library(glmGamPoi)
+
+
+#library(future)
+#plan(multisession, workers = 8)
+
+female_tg_rt = readRDS("/mnt/ris/cbergom/Active/scrna/Bergom_SR003528_10X/Seurat_5_GEX_Analysis_Resolution_0.8/SR003528_8-Female_TG_RT_Seurat_Analysis_0.8_Resolution/SR003528_8-Female_TG_RT.RDS")
+
+female_tg_sham = readRDS("/mnt/ris/cbergom/Active/scrna/Bergom_SR003528_10X/Seurat_5_GEX_Analysis_Resolution_0.8/SR003528_7-Female_TG_sham_Seurat_Analysis_0.8_Resolution/SR003528_7-Female_TG_sham.RDS")
+
+male_tg_sham = readRDS("/mnt/ris/cbergom/Active/scrna/Bergom_SR003528_10X/Seurat_5_GEX_Analysis_Resolution_0.8/SR003528_3-Male_TG_sham_Seurat_Analysis_0.8_Resolution/SR003528_3-Male_TG_sham.RDS")
+
+male_tg_rt = readRDS("/mnt/ris/cbergom/Active/scrna/Bergom_SR003528_10X/Seurat_5_GEX_Analysis_Resolution_0.8/SR003528_4-Male_TG_RT_Seurat_Analysis_0.8_Resolution/SR003528_4-Male_TG_RT.RDS")
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+male_tg_sham$condition <- 'sham'
+male_tg_rt$condition <- 'rt'
+
+male_tg <- merge(male_tg_sham, y = list(male_tg_rt), add.cell.ids = c("sham", "rt"), project = "male_tg")
+
+male_tg = SCTransform(male_tg)
+
+male_tg = RunPCA(male_tg)
+
+ElbowPlot(male_tg)
+
+male_tg <- RunUMAP(male_tg, dims = 1:10)  # Adjust dims as needed based on PCA output
+
+DimHeatmap(male_tg, dims = 1:10, cells = 500, balanced = TRUE)
+
+male_tg
+test = PrepSCTFindMarkers(macrophages)
+
+
+
+DimPlot(male_tg, reduction = "umap", group.by = "condition")
+
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+# Ensure the default assay is set to RNA (or the relevant assay for your analysis)
+DefaultAssay(male_tg)
+male_tg
+# Convert to SingleCellExperiment again, ensuring the assay data is included
+sce <- as.SingleCellExperiment(male_tg)
+# Assuming 'male_tg' is your Seurat object and you want to use 'counts' data from the 'SCT' assay
+sce <- as.SingleCellExperiment(x = male_tg, assay = "SCT", layer = "counts")
+sce
+
+refData <- celldex::ImmGenData()
+
+predictions <- SingleR(test = sce, assay.type.test = 1, ref = refData, labels = refData$label.main)
+
+male_tg$singleR_predictions <- predictions$labels
+
+
+DimPlot(male_tg, reduction = "umap", group.by = "singleR_predictions")
+DimPlot(male_tg, reduction = "umap", group.by = "condition")
+
+
+
+p1 = DimPlot(male_tg, reduction = "umap", group.by = "singleR_predictions")
+p2 = DimPlot(male_tg, reduction = "umap", group.by = "condition")
+combined = p1 + p2
+combined
+
+keep_type = c("Macrophages", "Monocytes", "Stromal cells", "Endothelial cells")
+
+male_sub = subset(male_tg, subset = singleR_predictions %in% keep_type)
+
+p1 = DimPlot(male_sub, reduction = "umap", group.by = "singleR_predictions")
+p2 = DimPlot(male_sub, reduction = "umap", group.by = "condition")
+combined = p1 + p2
+combined
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+# Subset male_tg to only stromal cells
+stromal_cells <- subset(male_tg, subset = singleR_predictions == "Stromal cells")
+
+stromal_cells = PrepSCTFindMarkers(stromal_cells)
+
+# Set condition as the identity for differential expression analysis
+Idents(stromal_cells) <- stromal_cells$condition
+stromal_de_genes <- FindMarkers(stromal_cells, ident.1 = "rt", ident.2 = "sham")
+
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+
+endothelial = subset(male_tg, subset = singleR_predictions == "Endothelial cells")
+endothelial = PrepSCTFindMarkers(endothelial)
+
+Idents(endothelial) <- endothelial$condition
+endothelial_de_genes <- FindMarkers(endothelial, ident.1 = "rt", ident.2 = "sham")
+
+test = FindMarkers(endothelial, assay = "SCT", ident.1 = "rt", ident.2 = "sham", recorrect_umi = F)
+
+
+macrophages <- subset(male_tg, subset = singleR_predictions == "Macrophages")
+
+macrophages = PrepSCTFindMarkers(macrophages, assay = "SCT")
+
+# Set condition as the identity for differential expression analysis
+Idents(macrophages) <- macrophages$condition
+
+macrophages_de_genes <- FindMarkers(macrophages, ident.1 = "rt", ident.2 = "sham")
+
+library(tidyverse)
+
+head(de_genes, n = 20)
+de_genes %>% row_names
+grep("cd47", row.names(de_genes), value = T, ignore.case = T)
+
+stromal_markers <- FindAllMarkers(stromal_cells, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+
+macrophages = JoinLayers(macrophages)
+female_tg_trans <- PrepSCTFindMarkers(female_tg_trans)
+
+test = PrepSCTFindMarkers(macrophages)
+
+
+markers <- FindAllMarkers(macrophages, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+
+
+# Differential expression analysis to find genes predictive of condition rt vs sham
+de_genes <- FindMarkers(stromal_cells, ident.1 = "rt", ident.2 = "sham")
+
+# Subset for "Macrophage" cells
+macrophages <- subset(male_tg, subset = singleR_predictions == "Stromal cells")
+DimPlot(macrophages, reduction = "umap", group.by = "condition")
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+female_tg_sham$condition <- 'sham'
+female_tg_rt$condition <- 'rt'
+
+female_tg <- merge(female_tg_sham, y = list(female_tg_rt), add.cell.ids = c("sham", "rt"), project = "female_tg")
+
+female_tg = SCTransform(female_tg)
+
+female_tg = RunPCA(female_tg)
+
+ElbowPlot(female_tg)
+
+female_tg <- RunUMAP(female_tg, dims = 1:10)  # Adjust dims as needed based on PCA output
+
+DimHeatmap(female_tg, dims = 1:10, cells = 500, balanced = TRUE)
+
+DimPlot(female_tg, reduction = "umap", group.by = "condition")
+
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+# Ensure the default assay is set to RNA (or the relevant assay for your analysis)
+DefaultAssay(female_tg)
+female_tg
+
+# Assuming 'female_tg' is your Seurat object and you want to use 'counts' data from the 'SCT' assay
+sce <- as.SingleCellExperiment(x = female_tg, assay = "SCT", layer = "counts")
+sce
+
+refData <- celldex::ImmGenData()
+
+female_predictions <- SingleR(test = sce, assay.type.test = 1, ref = refData, labels = refData$label.main)
+
+female_tg$singleR_predictions <- female_predictions$labels
+
+
+p1 = DimPlot(female_tg, reduction = "umap", group.by = "singleR_predictions")
+p2 = DimPlot(female_tg, reduction = "umap", group.by = "condition")
+
+combined = p1 + p2
+combined
+
+keep_type = c("Macrophages", "Monocytes", "Stromal cells", "Endothelial cells")
+
+female_sub = subset(female_tg, subset = singleR_predictions %in% keep_type)
+
+p1 = DimPlot(female_sub, reduction = "umap", group.by = "singleR_predictions")
+p2 = DimPlot(female_sub, reduction = "umap", group.by = "condition")
+combined = p1 + p2
+combined
+
+
+
+
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+macrophages <- RunUMAP(macrophages, dims = 1:15)  # Adjust dims as needed
+
+pdf("/mnt/ris/cbergom/Active/szymanski/tmp/merge_macro.pdf")
+
+dev.off()
+
+# Assuming you've correctly prepared 'sce' from your Seurat object
+# and you're using a predefined reference dataset:
+
+
+dim(sce)
+
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+test = readRDS("/mnt/ris/cbergom/Active/scrna/Bergom_SR003528_10X/Seurat_5_GEX_Analysis_Resolution_0.8/SR003528_8-Female_TG_RT_Seurat_Analysis_0.8_Resolution/SR003528_8-Female_TG_RT.RDS")
+
+
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+# Normalize data
+male_tg <- NormalizeData(male_tg)
+
+# Find variable features
+male_tg <- FindVariableFeatures(male_tg)
+
+# Scale data
+male_tg <- ScaleData(male_tg)
+
+# Run PCA
+male_tg <- RunPCA(male_tg, features = VariableFeatures(object = male_tg))
+
+# Run UMAP
+ElbowPlot(test)
+ElbowPlot(male_tg)
+
+male_tg <- RunUMAP(male_tg, dims = 1:15)  # Adjust dims as needed based on PCA output
+
+#########1#########2#########3#########4#########5#########6#########7#########8
 
 test = readRDS("/mnt/ris/cbergom/Active/scrna/Bergom_SR003528_10X/Seurat_5_GEX_Analysis_Resolution_0.8/SR003528_8-Female_TG_RT_Seurat_Analysis_0.8_Resolution/SR003528_8-Female_TG_RT.RDS")
 
 DimHeatmap(test, dims = 1:15, cells = 500, balanced = TRUE)
 
-ElbowPlot(test)
+
 
 test = FindNeighbors(test, dims = 1:10)
 test = FindClusters(test, resolution = 0.5)
@@ -66,24 +299,26 @@ test = RunUMAP(test, dims = 1:10)
 DimPlot(test, reduction = "umap")
 
 #########1#########2#########3#########4#########5#########6#########7#########8
-library(Seurat)
+
 
 if (!requireNamespace("remotes", quietly = TRUE))
   install.packages("remotes")
 remotes::install_github("satijalab/seurat-data")
 
 library(SeuratData)
-library(patchwork)
+
 
 InstallData("ifnb")
 
-install.packages("~/ifnb.SeuratData_3.1.0.tar.gz", repos = NULL, type = "source")
+#install.packages("~/ifnb.SeuratData_3.1.0.tar.gz", repos = NULL, type = "source")
 
 # load dataset
 ifnb <- LoadData("ifnb")
 # split the RNA measurements into two layers one for control cells, one for stimulated cells
 
 ifnb[["RNA"]] <- split(ifnb[["RNA"]], f = ifnb$stim)
+
+
 
 ifnb
 
@@ -124,12 +359,475 @@ nk.markers <- FindConservedMarkers(ifnb, ident.1 = "NK", grouping.var = "stim", 
 head(nk.markers)
 
 
-female_tg_rt = readRDS("/mnt/ris/cbergom/Active/scrna/Bergom_SR003528_10X/Seurat_5_GEX_Analysis_Resolution_0.8/SR003528_8-Female_TG_RT_Seurat_Analysis_0.8_Resolution/SR003528_8-Female_TG_RT.RDS")
 
-female_tg_sham = readRDS("/mnt/ris/cbergom/Active/scrna/Bergom_SR003528_10X/Seurat_5_GEX_Analysis_Resolution_0.8/SR003528_8-Female_TG_sham_Seurat_Analysis_0.8_Resolution/SR003528_8-Female_TG_sham.RDS")
 
-class(female_tg_sham)
+names(female_tg_sham)
+
+female_tg_sham$condition <- 'sham'
+female_tg_rt$condition <- 'rt'
+
+female_tg <- merge(female_tg_sham, y = list(female_tg_rt), add.cell.ids = c("sham", "rt"), project = "female_tg")
+
+install.packages('BiocManager')
+BiocManager::install('glmGamPoi')
+
+test = SCTransform(female_tg)
+
+female_tg_trans = RunPCA(female_tg_trans)
+
+# Find clusters
+female_tg_trans <- FindNeighbors(female_tg_trans, dims = 1:30)
+female_tg_trans <- FindClusters(female_tg_trans, resolution = 0.5)  # Adjust resolution as needed
+
+# Prepare the Seurat object for differential expression analysis
+female_tg_trans <- PrepSCTFindMarkers(female_tg_trans)
+
+test = PrepSCTFindMarkers(macrophages)
+macrophages = JoinLayers(macrophages)
+
+markers <- FindAllMarkers(macrophages, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+
+grep("if", rownames(markers), value = T, ignore.case = T)
+
+# Find markers
+markers <- FindAllMarkers(female_tg_trans, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+female_tg_trans = readRDS("/tmp/female_tg_trans.rds")
+
+markers = readRDS("/tmp/markers.rds")
+
+library(SingleR)
+
+refData <- celldex::ImmGenData() # Example for mouse immune cells
+
+
+# run standard anlaysis workflow
+female_tg_sham <- NormalizeData(female_tg_sham)
+female_tg_sham <- FindVariableFeatures(female_tg_sham)
+female_tg_sham <- ScaleData(female_tg_sham)
+female_tg_sham <- RunPCA(female_tg_sham)
+
+
+# Ensure the default assay is set to RNA (or the relevant assay for your analysis)
+DefaultAssay(female_tg_sham) <- "RNA"
+
+# Convert to SingleCellExperiment again, ensuring the assay data is included
+sce <- as.SingleCellExperiment(female_tg_sham)
+
+library(SingleR)
+library(celldex)
+
+if (is.null(refData) || is.null(refData$label)) {
+  stop("Reference data or labels are missing.")
+}
+
+# Inspect the metadata of the reference dataset
+metadata(refData)
+
+# Alternatively, inspect colData if metadata doesn't give clues
+colData(refData)
+
+# Extract cell type annotations from colData
+cellTypeLabels <- colData(refData)$cellType
+
+# If the above line doesn't directly work, it means identifying the correct column name
+# where the labels are stored is necessary. Adjust 'cellType' accordingly.
+predictions <- SingleR(test = sce, ref = refData, labels = cellTypeLabels)
+
+# Run SingleR
+predictions <- SingleR(test = sce, assay.type.test = 1, ref = refData, labels = refData$label.main)
+
+table(predictions$labels)
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+# run standard anlaysis workflow
+female_tg_rt <- NormalizeData(female_tg_rt)
+female_tg_rt <- FindVariableFeatures(female_tg_rt)
+female_tg_rt <- ScaleData(female_tg_rt)
+female_tg_rt <- RunPCA(female_tg_rt)
+
+# Ensure the default assay is set to RNA (or the relevant assay for your analysis)
+DefaultAssay(female_tg_rt) <- "RNA"
+
+# Convert to SingleCellExperiment again, ensuring the assay data is included
+sce <- as.SingleCellExperiment(female_tg_rt)
+
+
+# Run SingleR
+predictions_rt <- SingleR(test = sce, assay.type.test = 1, ref = refData, labels = refData$label.main)
+
+# Assuming 'female_tg_sham' is your original Seurat object
+# and 'predictions_rt' contains your SingleR predictions
+female_tg_sham$singleR_predictions <- predictions_sham$labels
+
+pdf("/mnt/ris/cbergom/Active/szymanski/tmp/cells.pdf")
+DimPlot(female_tg_sham, reduction = "umap", group.by = "singleR_predictions")
+dev.off()
+
+female_tg_rt$singleR_predictions <- predictions_rt$labels
+
+pdf("/mnt/ris/cbergom/Active/szymanski/tmp/cells_rt.pdf")
+DimPlot(female_tg_rt, reduction = "umap", group.by = "singleR_predictions")
+dev.off()
+
+table(predictions_rt$labels)
+
+predictions_sham = predictions
+
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+female_tg_sham$condition <- 'sham'
+female_tg_rt$condition <- 'rt'
+
+female_tg <- merge(female_tg_sham, y = list(female_tg_rt), add.cell.ids = c("sham", "rt"), project = "female_tg")
+
+# Normalize data
+female_tg <- NormalizeData(female_tg)
+
+# Find variable features
+female_tg <- FindVariableFeatures(female_tg)
+
+# Scale data
+female_tg <- ScaleData(female_tg)
+
+# Run PCA
+female_tg <- RunPCA(female_tg, features = VariableFeatures(object = female_tg))
+
+# Run UMAP
+female_tg <- RunUMAP(female_tg, dims = 1:15)  # Adjust dims as needed based on PCA output
+
+
+DimPlot(female_tg, reduction = "umap", group.by = "singleR_predictions")
+
+pdf("/mnt/ris/cbergom/Active/szymanski/tmp/merge.pdf")
+DimPlot(female_tg, reduction = "umap", group.by = "condition")
+dev.off()
+
+pdf("/mnt/ris/cbergom/Active/szymanski/tmp/merge_cells.pdf")
+DimPlot(female_tg, reduction = "umap", group.by = "singleR_predictions")
+dev.off()
+
+# Subset for "Macrophage" cells
+macrophages <- subset(female_tg, subset = singleR_predictions == "Macrophages")
+macrophages <- RunUMAP(macrophages, dims = 1:15)  # Adjust dims as needed
+
+pdf("/mnt/ris/cbergom/Active/szymanski/tmp/merge_macro.pdf")
+DimPlot(macrophages, reduction = "umap", group.by = "condition")
+dev.off()
+
+pdf("/mnt/ris/cbergom/Active/szymanski/tmp/merge_cells_macro.pdf")
+DimPlot(macrophages, reduction = "umap", group.by = "singleR_predictions")
+dev.off()
+
+table(female_tg$condition)
+macrophages <- subset(female_tg, subset = singleR_predictions == "Macrophages")
+table(macrophages$condition)
+
+# Set identities based on the 'condition' column
+macrophages$active.ident <- macrophages$condition
+
+# Attempt to find markers again
+markers_rt_vs_sham <- FindMarkers(macrophages, ident.1 = "rt", ident.2 = "sham", min.pct = 0.25, logfc.threshold = 0.25)
+
+Idents(macrophages) <- macrophages$condition
+
+levels(Idents(macrophages))
+
+markers_rt_vs_sham <- FindMarkers(macrophages, ident.1 = "rt", ident.2 = "sham", min.pct = 0.25, logfc.threshold = 0.25)
+
+markers_rt_vs_sham <- FindMarkers(macrophages, ident.1 = "rt", ident.2 = "sham", min.pct = 0.25, logfc.threshold = 0.25)
+
+head(macrophages$condition)
+# Identify markers for differentiation between 'rt' and 'sham'
+
+markers_rt_vs_sham <- FindMarkers(macrophages, ident.1 = "rt", ident.2 = "sham", min.pct = 0.25, logfc.threshold = 0.25)
+
+
+install.packages('BiocManager')
+BiocManager::install('glmGamPoi')
+
+test = SCTransform(female_tg)
+
+female_tg_trans = RunPCA(female_tg_trans)
+
+# Find clusters
+female_tg_trans <- FindNeighbors(female_tg_trans, dims = 1:30)
+female_tg_trans <- FindClusters(female_tg_trans, resolution = 0.5)  # Adjust resolution as needed
+
+# Prepare the Seurat object for differential expression analysis
+female_tg_trans <- PrepSCTFindMarkers(female_tg_trans)
+ls()
+
+# Find markers
+markers <- FindAllMarkers(female_tg_trans, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+# Check results
+head(predictions$labels)
+
+# Proceed with SingleR for cell type prediction
+predictions <- SingleR(test = sce, ref = refData, labels = refData$label)
+
+
+# Before running SingleR, check that sce contains expression data
+if (any(dim(counts(sce)) == 0)) {
+  stop("No counts data found in SingleCellExperiment object. Check the conversion process.")
+}
+
+# Assuming 'female_tg_sham' is your Seurat object and it has RNA assay set as default
+
+# Ensure log-normalized data is present
+if (!"RNA" %in% names(Assays(female_tg_sham))) {
+  stop("RNA assay not found in Seurat object.")
+}
+
+# Convert Seurat object to SingleCellExperiment
+sce <- as.SingleCellExperiment(female_tg_sham)
+
+# Check if 'logcounts' needs to be added
+if (!"logcounts" %in% assayNames(sce)) {
+  # Assuming log-normalized data is in the 'data' slot of the Seurat object
+  # You might need to adjust this based on where your log-normalized data resides
+  logcounts <- GetAssayData(female_tg_sham, slot = "data")
+  assays(sce)$logcounts <- Matrix::Matrix(logcounts, sparse = TRUE)
+}
+
+# Verify 'logcounts' is now part of the SCE object
+if (!"logcounts" %in% assayNames(sce)) {
+  stop("'logcounts' not successfully added to SingleCellExperiment object.")
+}
+
+# Now, try running SingleR again with the adjusted SCE object
+predictions <- SingleR(test = sce, ref = refData, labels = refData$label)
+
+# Proceed with SingleR, ensuring you have the correct reference dataset
+predictions <- SingleR(test = sce, ref = refData, labels = refData$label)
+
+predictions <- SingleR(test = as.SingleCellExperiment(female_tg_sham), ref = refData, labels = refData$label)
+
+seuratObject$predictedCellType <- predictions$labels
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+female_tg_trans = RunUMAP(female_tg_trans, dims = 1:30)
+
+test = DimPlot(female_tg_trans, reduction = "umap", group.by = c("condition", "seurat_clusters"))
+
+test = DimPlot(female_tg_trans, reduction = "umap", group.by = c("condition"))
+
+plot2 <- DimPlot(female_tg_trans, reduction = "umap", group.by = "seurat_clusters")
+
+# Subset the Seurat object to include only specific clusters
+female_tg_subset <- subset(female_tg_trans, idents = c("3","4","5","6","7","8"))
+
+# Now, plot the UMAP for the subsetted data
+plot2_subset <- DimPlot(female_tg_subset, reduction = "umap", group.by = "seurat_clusters")
+
+# Display the plot
+
+pdf("/mnt/ris/cbergom/Active/szymanski/tmp/test3.pdf")
+plot2_subset
+dev.off()
+
+cluster3.markers <- FindMarkers(female_tg_trans, ident.1 = 3)
+head(cluster3.markers, n = 5)
+
+# Filter for cluster 3 and sort by logFC in descending order to get the top markers
+cluster_3_markers <- markers[markers$cluster == 3, ]
+
+names(cluster_3_markers)
+
+(top_10_markers_cluster_3 <- head(cluster_3_markers[order(cluster_3_markers$avg_log2FC, decreasing = TRUE), ], 10))
+markers3 = row.names(top_10_markers_cluster_3)
+
+test =FeaturePlot(female_tg_trans, features = markers3)
+
+pdf(test, file= "/mnt/ris/cbergom/Active/szymanski/tmp/feat_plot_3.pdf", width = 20)
+test
+dev.off()
+
+cluster_4_markers <- markers[markers$cluster == 4, ]
+(top_10_markers_cluster_4 <- head(cluster_4_markers[order(cluster_4_markers$avg_log2FC, decreasing = TRUE), ], 10))
+markers4 = row.names(top_10_markers_cluster_4)
+pdf(test, file= "/mnt/ris/cbergom/Active/szymanski/tmp/feat_plot_4.pdf")
+FeaturePlot(female_tg_trans, features = markers4)
+dev.off()
+
+cluster_6_markers <- markers[markers$cluster == 6, ]
+(top_10_markers_cluster_6 <- head(cluster_6_markers[order(cluster_6_markers$avg_log2FC, decreasing = TRUE), ], 10))
+markers6 = row.names(top_10_markers_cluster_6)
+pdf(test, file= "/mnt/ris/cbergom/Active/szymanski/tmp/feat_plot_6.pdf")
+FeaturePlot(female_tg_trans, features = markers6)
+dev.off()
+
+
+# Find differential markers between cluster 3 and cluster 4
+differential_markers <- FindMarkers(female_tg_trans, ident.1 = "3", ident.2 = "4", min.pct = 0.1, logfc.threshold = 0.75)
+(clust3_v_4 = head(differential_markers[order(abs(differential_markers$avg_log2FC), decreasing = T),],10))
+markers3v4 = row.names(clust3_v_4)
+pdf(file= "/mnt/ris/cbergom/Active/szymanski/tmp/feat_plot_3_v_4.pdf", width = 15)
+FeaturePlot(female_tg_trans, features = markers3v4)
+dev.off()
+
+markers3v4 = c("Hcn1", "Txnip", "Pdk4", "Nr4a1", "Ifi27", "Ddx60")
+pdf(file= "/mnt/ris/cbergom/Active/szymanski/tmp/feat_plot_3_v_4.pdf")
+FeaturePlot(female_tg_trans, features = markers3v4)
+dev.off()
+
+# Find differential markers between cluster 3 and cluster 4
+differential_markers <- FindMarkers(female_tg_trans, ident.1 = "4", ident.2 = "6", min.pct = 0.1, logfc.threshold = 0.75)
+(clust4_v_6 = head(differential_markers[order(abs(differential_markers$avg_log2FC), decreasing = T),],15))
+markers4v6 = row.names(clust4_v_6)
+pdf(file= "/mnt/ris/cbergom/Active/szymanski/tmp/feat_plot_4_v_6.pdf", width = 20)
+FeaturePlot(female_tg_trans, features = markers4v6)
+dev.off()
+
+# Sort the results to get the most significant markers at the top
+# Assuming sorting by p-value; you can also sort by logFC if you're interested in the magnitude of change
+sorted_markers <- differential_markers[order(differential_markers$p_val_adj), ]
+
+# View the top differential markers
+head(sorted_markers, n = 5)
+
+# Display the top 5 markers for cluster 3
+top_5_markers_cluster_3
+
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+female_tg[["RNA"]] = split(female_tg[["RNA"]], f = female_tg$condition)
+
+library(Seurat)
+
+# Assuming female_tg_rt and female_tg_sham are your loaded Seurat objects
+
+# Step 0: Address potential duplicated cell names (Seurat should handle this automatically, as per the warning, but ensure unique cell names if needed)
+
+# 1. Select integration features across the datasets
+features.to.integrate <- SelectIntegrationFeatures(object.list = list(female_tg_rt, female_tg_sham), nfeatures = 3000)
+
+print(class(female_tg_rt))
+print(class(female_tg_sham))
+
+options(future.globals.maxSize = 8000 * 1024^2)
+# Prep the list of Seurat objects for SCT integration
+
+pancreas.list.prepped <- PrepSCTIntegration(
+  object.list = list(female_tg_rt, female_tg_sham),
+  anchor.features = features.to.integrate
+)
+
+class(pancreas.list.prepped)
+
+
+# 2. Prepare for SCT integration by scaling data and storing necessary information for integration
+female_tg_rt <- PrepSCTIntegration(object = female_tg_rt, anchor.features = features.to.integrate)
+female_tg_sham <- PrepSCTIntegration(object = female_tg_sham, anchor.features = features.to.integrate)
+
+# 3. Find integration anchors using the prepared data
+integration.anchors <- FindIntegrationAnchors(object.list = list(female_tg_rt, female_tg_sham),
+                                              normalization.method = "SCT",
+                                              anchor.features = features.to.integrate)
+
+# 4. Integrate the data
+integrated.data <- IntegrateData(anchorset = integration.anchors)
+
+# Optional: Proceed with the analysis (scaling, PCA, UMAP, clustering) on the integrated dataset
+integrated.data <- ScaleData(integrated.data)
+integrated.data <- RunPCA(integrated.data)
+integrated.data <- RunUMAP(integrated.data, dims = 1:30)
+integrated.data <- FindNeighbors(integrated.data, dims = 1:30)
+integrated.data <- FindClusters(integrated.data, resolution = 0.5)
+
+# Now, integrated.data is ready for downstream analysis
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+
 female_tg_sham
+test = CreateAssay5Object(counts = female_tg$counts)
+
+
+
+
+head(
+
+
+# Set the RNA assay as active and normalize
+female_tg_sham <- NormalizeData(object = SwitchAssay(female_tg_sham, "RNA"), normalization.method = "LogNormalize", scale.factor = 10000)
+female_tg_rt <- NormalizeData(object = SwitchAssay(female_tg_rt, "RNA"), normalization.method = "LogNormalize", scale.factor = 10000)
+
+
+
+# Merge the datasets
+female_tg <- merge(female_tg_sham, y = list(female_tg_rt), add.cell.ids = c("sham", "rt"), project = "female_tg")
+
+table(female_tg$condition)
+
+library(Seurat)
+
+# Step 1: Select integration features
+features <- SelectIntegrationFeatures(object.list = list(female_tg_sham, female_tg_rt), nfeatures = 3000)
+
+# Select features for integration
+features <- SelectIntegrationFeatures(object.list = list(female_tg_sham, female_tg_rt))
+
+# Prep each object for SCT integration
+female_tg_sham <- PrepSCTIntegration(object = female_tg_sham, anchor.features = features)
+female_tg_rt <- PrepSCTIntegration(object = female_tg_rt, anchor.features = features)
+
+# Find integration anchors
+anchors <- FindIntegrationAnchors(object.list = list(female_tg_sham, female_tg_rt), normalization.method = "SCT", anchor.features = features)
+
+# Integrate the data
+female_tg <- IntegrateData(anchorset = anchors)
+
+
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+# Assuming features is correctly defined
+# Prepare both objects for integration
+list_of_objects <- list(female_tg_sham, female_tg_rt)
+list_of_objects_prep <- lapply(list_of_objects, function(x) {
+  PrepSCTIntegration(object = x, anchor.features = features)
+})
+
+
+# Step 2: Prep SCT integration
+# This creates a list of Seurat objects with a new assay named "SCT" containing the data for integration
+female_tg_sham <- PrepSCTIntegration(object = female_tg_sham, anchor.features = features)
+
+female_tg_rt <- PrepSCTIntegration(object = female_tg_rt, anchor.features = features)
+
+# Step 3: Find integration anchors using the prepared data
+anchors <- FindIntegrationAnchors(object.list = list(female_tg_sham, female_tg_rt),
+                                  normalization.method = "SCT")
+
+# Step 4: Integrate the data
+female_tg <- IntegrateData(anchorset = anchors)
+
+# run standard anlaysis workflow
+female_tg <- NormalizeData(female_tg)
+
+# (JFC this loads a lot of shit)
+install.packages('BiocManager')
+BiocManager::install('glmGamPoi')
+
+# Re-run SCTransform on the merged dataset
+female_tg <- SCTransform(female_tg, vars.to.regress = "percent.mt", verbose = FALSE)
+
+# Proceed with the analysis
+female_tg <- FindVariableFeatures(female_tg)
+
+female_tg <- FindVariableFeatures(female_tg)
+
+female_tg <- ScaleData(female_tg)
+female_tg <- RunPCA(female_tg)
 #+end_src
 
 *** [[id:99ee4bd0-060e-4109-9901-29aa7fafd816][Single nucleus and single cell methods applied to heart]]
@@ -313,13 +1011,13 @@ name: single_cell
 #     --file /path/to/basecamp_env.yaml
 
 channels:
-  - antonio.domingues
   - conda-forge
   - bioconda
 
 dependencies:
   - r-seurat
-  - r-seuratdata
+  - r-singler
+
 #+end_src
 
 ** Bioinformatics style guide
