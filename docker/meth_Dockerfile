@@ -1,3 +1,8 @@
+# Preamble
+# :PROPERTIES:
+# :ID:       30acaf7e-0b41-4390-972e-49700298c95a
+# :END:
+
 FROM jeszyman/biotools:1.0.2
 # Dockerfile to build a bioinformatics methylation toolkit
 
@@ -9,12 +14,22 @@ FROM jeszyman/biotools:1.0.2
 # jeszyman/meth
 # (https://hub.docker.com/repository/docker/jeszyman/meth)
 
+# Conda
+# :PROPERTIES:
+# :ID:       7a5178e3-6792-420d-b67b-3708ae566fea
+# :END:
+
 #################
 ###   Conda   ###
 #################
 
 RUN conda update conda
 RUN conda install -c bioconda metilene=0.2.8
+
+# Custom
+# :PROPERTIES:
+# :ID:       8e517826-f4e8-476e-acab-8203c965a20a
+# :END:
 
 ###########################
 ###   Custom Installs   ###

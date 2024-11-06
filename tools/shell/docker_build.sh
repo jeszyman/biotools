@@ -1,6 +1,7 @@
-
+# Built docker container
 # :PROPERTIES:
 # :ORDERED:  t
+# :ID:       d9400316-b6a3-4922-a20d-c2f203259f6a
 # :END:
 
 #!/usr/bin/env bash
@@ -187,9 +188,10 @@ push_singularity(){
 
 main "$@"
 
-
+# Built docker container
 # :PROPERTIES:
 # :ORDERED:  t
+# :ID:       ef485b0c-90af-4295-8e53-a4149cb179af
 # :END:
 
 #!/usr/bin/env bash

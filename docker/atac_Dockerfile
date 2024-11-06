@@ -1,57 +1,7 @@
-FROM jeszyman/biotools:1.0.2
-#########1#########2#########3#########4#########5#########6#########7#########8
-
-###################################
-###   Dockerfile for ATAC-seq   ###
-###################################
-
-# After build, the image will be pushed to dockerhub as jeszyman/atac
-# (https://hub.docker.com/repository/docker/jeszyman/atac)
-
-RUN apt-get -y update && apt-get upgrade -y
-
-# Simple bioconda installs
-RUN conda install -c bioconda macs2
-
-# Simple R installs
-##
-## Via Bioconductor
-RUN R -e 'install.packages("BiocManager"); \
-          BiocManager::install(); \
-          BiocManager::install(c("ATACseqQC", \
-                                 "ChIPpeakAnno", \
-                                 "ChIPseeker", \
-                                 "clusterProfiler", \
-                                 "csaw"));'
-
-
-# ATACseqQC
-##
-## Linux prerequisites
-RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
-    libgsl-dev \
-    libcurl4-openssl-dev
-    #libssl-dev
-##
-## ATACseqQC
-RUN R -e 'install.packages("BiocManager"); \
-    BiocManager::install(); \
-    BiocManager::install(c("ATACseqQC"));'
-
-# Homer
-RUN mkdir /opt/homer
-RUN cd /opt/homer
-RUN wget http://homer.ucsd.edu/homer/configureHomer.pl -O /opt/homer/configureHomer.pl
-RUN perl /opt/homer/configureHomer.pl -install
-
-ENV PATH="${PATH}:/opt/homer/bin/"
-
-RUN perl /opt/homer/.//configureHomer.pl -install mouse-p
-
-RUN conda install -c bioconda samtools=1.7
-
-# R CRAN Installs
-RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
+# [[file:docker/atac_Dockerfile][ATAC-seq docker]]
+# :PROPERTIES:
+# :ID:       dccf525d-6c1c-48ab-b757-989cafabe530
+# :END:
 
 FROM jeszyman/biotools:1.0.2
 #########1#########2#########3#########4#########5#########6#########7#########8
@@ -107,6 +57,71 @@ RUN conda install -c bioconda samtools=1.7
 
 # R CRAN Installs
 RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
+
+# [[file:docker/atac_Dockerfile][ATAC-seq docker]]
+# :PROPERTIES:
+# :ID:       1e71d7ee-2c47-4f37-bc49-771ec5786fc4
+# :END:
+
+FROM jeszyman/biotools:1.0.2
+#########1#########2#########3#########4#########5#########6#########7#########8
+
+###################################
+###   Dockerfile for ATAC-seq   ###
+###################################
+
+# After build, the image will be pushed to dockerhub as jeszyman/atac
+# (https://hub.docker.com/repository/docker/jeszyman/atac)
+
+RUN apt-get -y update && apt-get upgrade -y
+
+# Simple bioconda installs
+RUN conda install -c bioconda macs2
+
+# Simple R installs
+##
+## Via Bioconductor
+RUN R -e 'install.packages("BiocManager"); \
+          BiocManager::install(); \
+          BiocManager::install(c("ATACseqQC", \
+                                 "ChIPpeakAnno", \
+                                 "ChIPseeker", \
+                                 "clusterProfiler", \
+                                 "csaw"));'
+
+
+# ATACseqQC
+##
+## Linux prerequisites
+RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
+    libgsl-dev \
+    libcurl4-openssl-dev
+    #libssl-dev
+##
+## ATACseqQC
+RUN R -e 'install.packages("BiocManager"); \
+    BiocManager::install(); \
+    BiocManager::install(c("ATACseqQC"));'
+
+# Homer
+RUN mkdir /opt/homer
+RUN cd /opt/homer
+RUN wget http://homer.ucsd.edu/homer/configureHomer.pl -O /opt/homer/configureHomer.pl
+RUN perl /opt/homer/configureHomer.pl -install
+
+ENV PATH="${PATH}:/opt/homer/bin/"
+
+RUN perl /opt/homer/.//configureHomer.pl -install mouse-p
+
+RUN conda install -c bioconda samtools=1.7
+
+# R CRAN Installs
+RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
+
+# Preamble
+# :PROPERTIES:
+# :ID:       bd4c729f-9ddb-4006-89c9-21a93c9a055c
+# :END:
 
 FROM jeszyman/biotools:1.0.2
 #########1#########2#########3#########4#########5#########6#########7#########8
@@ -122,6 +137,11 @@ FROM jeszyman/biotools:1.0.2
 # After build, the image will be pushed to dockerhub as jeszyman/atac
 # (https://hub.docker.com/repository/docker/jeszyman/atac)
 
+# Apt
+# :PROPERTIES:
+# :ID:       ed99ab4e-ac9d-4922-8740-b5e27f5aecc3
+# :END:
+
 ###############
 ###   APT   ###
 ###############
@@ -134,11 +154,21 @@ RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-mi
     libgsl-dev \
     libcurl4-openssl-dev
 
+# Conda
+# :PROPERTIES:
+# :ID:       4c6f0e77-2a6a-49a8-a8df-dbc8db3d95ae
+# :END:
+
 #################
 ###   Conda   ###
 #################
 
 RUN conda install -c bioconda macs2
+
+# R and bioconductor
+# :PROPERTIES:
+# :ID:       68797c07-6e37-4541-b165-259a9dfc0b73
+# :END:
 
 ##############################
 ###   R and Bioconductor   ###
@@ -155,6 +185,11 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "ChIPseeker", \
                                  "clusterProfiler", \
                                  "csaw"));'
+
+# Custom installs
+# :PROPERTIES:
+# :ID:       01a1101b-2ab9-4f35-a4eb-e0ccc66d5f9f
+# :END:
 
 ###########################
 ###   Custom Installs   ###

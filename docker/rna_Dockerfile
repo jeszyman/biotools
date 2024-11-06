@@ -1,3 +1,8 @@
+# Preamble
+# :PROPERTIES:
+# :ID:       649a5972-d9c6-4194-a388-96e47941d660
+# :END:
+
 FROM jeszyman/biotools:1.0.2
 ################################################################################
 ################################################################################
@@ -15,11 +20,21 @@ FROM jeszyman/biotools:1.0.2
 # jeszyman/rna
 # (https://hub.docker.com/repository/docker/jeszyman/rna)
 
+# Conda
+# :PROPERTIES:
+# :ID:       231d12e4-5dc5-4955-a41a-15b0ed47320c
+# :END:
+
 RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda rsem
 RUN conda install -c bioconda star
 RUN conda install -c bioconda subread
 RUN conda install -c bioconda salmon
+
+# R and Bioconductor
+# :PROPERTIES:
+# :ID:       911dc16d-bb70-4b7d-807b-f9421c5f3987
+# :END:
 
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
@@ -29,6 +44,11 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "limma", \
                                  "tximport"));'
 
+# Custom installs
+# :PROPERTIES:
+# :ID:       81632e35-0970-4554-a22c-4cc2bb65cdbd
+# :END:
+
 RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl
 
 RUN /bin/bash
@@ -36,6 +56,11 @@ RUN /bin/bash
 RUN cd /opt/mirdeep2 && perl install.pl
 
 ENV PATH="/opt/mirdeep2/bin:${PATH}"
+
+# Preamble
+# :PROPERTIES:
+# :ID:       a0c24664-909d-4a9a-9969-dc0181fa478d
+# :END:
 
 FROM jeszyman/biotools:2.0.0
 ################################################################################
@@ -54,11 +79,21 @@ FROM jeszyman/biotools:2.0.0
 # jeszyman/rna
 # (https://hub.docker.com/repository/docker/jeszyman/rna)
 
+# Conda
+# :PROPERTIES:
+# :ID:       39ef57e9-444e-4bf3-a725-c5993baba18f
+# :END:
+
 RUN conda install -c bioconda kallisto
 RUN conda install -c bioconda rsem
 RUN conda install -c bioconda star
 RUN conda install -c bioconda subread
 RUN conda install -c bioconda salmon
+
+# R and Bioconductor
+# :PROPERTIES:
+# :ID:       f8b3b802-b712-4fa8-825b-b1c46f6ae2db
+# :END:
 
 RUN R -e 'install.packages("BiocManager"); \
           BiocManager::install(); \
@@ -69,6 +104,11 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "tximport"));'
 
 RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
+
+# Custom installs
+# :PROPERTIES:
+# :ID:       27532517-1a70-498d-85f1-998ef98eb72f
+# :END:
 
 RUN cd /opt && git clone https://github.com/rajewsky-lab/mirdeep2 && cd /opt/mirdeep2 && perl install.pl
 

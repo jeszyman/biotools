@@ -1,3 +1,8 @@
+# Preamble
+# :PROPERTIES:
+# :ID:       784d575d-ab29-4791-88ea-c961b3c252ea
+# :END:
+
 FROM jeszyman/basecamp
 ################################################################################
 ################################################################################
@@ -14,6 +19,11 @@ FROM jeszyman/basecamp
 # After build, the image will be pushed to the dockerhub as
 # jeszyman/biotools
 # (https://hub.docker.com/repository/docker/jeszyman/atac)
+
+# Conda
+# :PROPERTIES:
+# :ID:       9484b0c0-cb0f-478f-97f8-fec77ef47d7d
+# :END:
 
 #################
 ###   Conda   ###
@@ -47,6 +57,11 @@ RUN conda install -c bioconda bbmap \
     && conda install -c bioconda trimmomatic=0.39 \
     && conda install -c bioconda vcftools
 
+# R and Bioconductor
+# :PROPERTIES:
+# :ID:       fcbc7fbd-e2d4-416d-a9ff-d1c7a736c124
+# :END:
+
 # To avoid conflict with jeszyman/basecamp R install
 #RUN conda uninstall r-base
 
@@ -70,6 +85,11 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "readr", \
                                  "Rsamtools", \
                                  "TxDb.Mmusculus.UCSC.mm10.ensGene"));'
+
+# UCSC
+# :PROPERTIES:
+# :ID:       15f14b2e-0445-4f59-b1f5-6906e0c5aaa1
+# :END:
 
 ##############################################
 ###   Select UCSC Command-line utilities   ###
@@ -112,6 +132,11 @@ RUN mkdir /opt/ucsc \
 
 ENV PATH="/opt/ucsc:${PATH}"
 
+# Custom and manual installs
+# :PROPERTIES:
+# :ID:       b9e5e45f-8137-46cf-bc8e-8be40ff93323
+# :END:
+
 ###########################
 ###   Custom Installs   ###
 ###########################
@@ -128,6 +153,11 @@ RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0
 # https://www.biostars.org/p/9480029/
 RUN conda install -c bioconda samtools openssl=1.0
 
+# Picard
+# :PROPERTIES:
+# :ID:       80a0ab58-c388-47d8-868f-72a23f2e1660
+# :END:
+
 ##################
 ###   Picard   ###
 ##################
@@ -143,6 +173,11 @@ RUN mkdir /opt/picard-2.18.1/ \
     && ln -s /opt/picard-2.18.1 /opt/picard \
     && ln -s /opt/picard-2.18.1 /usr/picard
 #########1#########2#########3#########4#########5#########6#########7#########8
+
+# Conda
+# :PROPERTIES:
+# :ID:       aa79d1a0-f7b4-4cf2-8ba7-5b4edcd6615d
+# :END:
 
 #################
 ###   Conda   ###
@@ -174,6 +209,11 @@ RUN conda install -c bioconda bbmap=39.00 \
     && conda install -c bioconda skewer=0.2.2 \
     && conda install -c bioconda trimmomatic=0.39 \
     && conda install -c bioconda vcftools=0.1.16-7
+
+# R and Bioconductor
+# :PROPERTIES:
+# :ID:       39c663d7-bcb0-4bd0-9015-bbf011e7ebc4
+# :END:
 
 # To avoid conflict with jeszyman/basecamp R install
 #RUN conda uninstall r-base
@@ -211,6 +251,11 @@ RUN R -e 'install.packages("BiocManager"); \
 
 RUN R -e "install.packages(c('seqinr'), repos='http://cran.rstudio.com/')"
 
+# UCSC
+# :PROPERTIES:
+# :ID:       7af192c3-43a8-4c70-8a77-770e3399c56b
+# :END:
+
 ##############################################
 ###   Select UCSC Command-line utilities   ###
 ##############################################
@@ -252,6 +297,11 @@ RUN mkdir /opt/ucsc \
 
 ENV PATH="/opt/ucsc:${PATH}"
 
+# Custom and manual installs
+# :PROPERTIES:
+# :ID:       39ea1f36-8644-4cb2-8b85-79dcb9c53b9b
+# :END:
+
 ###########################
 ###   Custom Installs   ###
 ###########################
@@ -267,6 +317,11 @@ RUN wget https://github.com/seqan/flexbar/releases/download/v3.5.0/flexbar-3.5.0
 # samtools
 # https://www.biostars.org/p/9480029/
 RUN conda install -c bioconda samtools openssl=1.0
+
+# Picard
+# :PROPERTIES:
+# :ID:       7ccd4dd3-44ff-4796-a6bd-4226eeb482f6
+# :END:
 
 ##################
 ###   Picard   ###

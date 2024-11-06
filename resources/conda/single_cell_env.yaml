@@ -1,3 +1,8 @@
+# Single cell conda yaml
+# :PROPERTIES:
+# :ID:       48692b20-239f-4392-8100-9ed0ab028ca8
+# :END:
+
 name: single_cell
 
 #########1#########2#########3#########4#########5#########6#########7#########8
@@ -21,3 +26,4 @@ channels:
 
 dependencies:
   - r-seurat
+  - r-singler
