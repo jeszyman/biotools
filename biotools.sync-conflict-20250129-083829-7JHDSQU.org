@@ -4,36 +4,6 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :header-args: :tangle no :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
 :END:
-** National Cancer Institute (NCI)
-:PROPERTIES:
-:ID:       b6752449-050b-4349-a103-fde3a87b0fc1
-:END:
-*** NCI Cancer Research Data Commons
-:PROPERTIES:
-:ID:       8d60abc7-07e0-4263-8ec2-de3e810cb029
-:END:
-https://datacommons.cancer.gov/support-crdc-cloud-resources
-https://datacommons.cancer.gov/
-**** ISB Cancer Gateway in the Cloud (ISB-CGC)
-:PROPERTIES:
-:ID:       cc8ecad2-1a98-49bc-aeb8-6ce6658905bd
-:END:
-- https://cloud.google.com/customers/nci-nih
-- https://isb-cgc.appspot.com/
-**** Imaging Data Commons (IDC)
-:PROPERTIES:
-:ID:       f7651553-d983-4ff5-828d-339e32c9fda1
-:END:
-https://portal.imaging.datacommons.cancer.gov/about/
-[[cite:&fedorov2021]]
-https://github.com/ImagingDataCommons
-**** Cancer Genomics Cloud (CGC)
-:PROPERTIES:
-:ID:       1c0828de-ce18-46d8-9303-7b2dc1ca93e7
-:END:
-[[cite:&reynolds2017]]
-https://docs.cancergenomicscloud.org/docs/collaborating-on-the-cgc-a-guide-for-consortia
-
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][Basecamp]]
 ** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics pipeline]]
 ** [[id:d482d49c-9dbe-43cd-a188-b1662a9ce348][Bioinformatics research project module]]
@@ -59,9 +29,9 @@ channels:
 dependencies:
   - bedops
   - bedtools
-  - bioconductor-biomart
   - bioconductor-complexheatmap
   - bioconductor-rsamtools
+  - bioconductor-orthology.eg.db
   - bowtie2
   - deeptools
   - fastp
@@ -73,8 +43,6 @@ dependencies:
   - samtools
   - sra-tools
 #+end_src
-- this was too big- removed: bioconductor-orthology.eg.db
-
 #+begin_src bash
 source ${HOME}/miniconda3/bin/activate base
 
@@ -1747,6 +1715,9 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 [[http://software.broadinstitute.org/software/igv/UserGuide][User Guide]]
 
 *** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
+:PROPERTIES:
+:ID:       ed325a69-be7d-4f86-b66c-7a6a3ac6d358
+:END:
 *** Bioinformatics pipelines and project management and code
 :PROPERTIES:
 :ID:       eaa783cb-9d06-4763-9a28-b5cfe6c99825
@@ -2942,28 +2913,6 @@ https://hbctraining.github.io/DGE_workshop/lessons/08_DGE_LRT.html
 :PROPERTIES:
 :ID:       5f9ec48c-4be0-4351-abff-348144b96d0f
 :END:
-- pseudoaligner
-  - kallisto
-  - Salmon
-- Aligners
-  - TopHat2
-  - Specialized aligners
-    - Fusions
-      - TopHat Fusion
-        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html
-      - STAR for chimeric reads / STAR-Fusion
-        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
-        - From cite:star_2.5_dobin Chapter 5
-        - From cite:dobin2015mapping Alternate Protocol 6
-          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
-        - additional outputs are
-          - Chimeric.out.sam
-          - Chimeric.out.junction- a STAR-specific format
-    - To transcriptome
-      -
-  - [[*STAR][STAR]]
-- HISAT2
-
 ****** [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][Nucleic acid sequence alignment]]
 :PROPERTIES:
 :ID:       542988fa-307f-454e-927e-ee6a17187265
@@ -4469,13 +4418,6 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
-- https://www.biorxiv.org/content/10.1101/2024.11.07.622399v1.full.pdf
-- https://pubmed.ncbi.nlm.nih.gov/40020203/
-- dPCR of global tumor methylation signature https://mail.google.com/mail/u/0/#inbox/FMfcgzQZTMLpbcLfPvXqMSjhTrBbzvKk?projector=1&messagePartId=0.1
-- Retrotransposons
-  - [cite:@michel2024line1]
-- https://www.sciencedirect.com/science/article/pii/S2666379123005669
-- alternative TF strategies https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-023-05478-8
 - cite:illumina2022
 - 5hmC in cfDNA https://www.nature.com/articles/cr2017121.pdf?origin=ppub
 **** cfDNA and ctDNA-specific visualizations
@@ -6173,7 +6115,6 @@ https://hgserver1.amc.nl/cgi-bin/r2/main.cgi?open_page=login
 :PROPERTIES:
 :ID:       85e691cc-ebb3-4d74-825b-1c9204fb9c96
 :END:
-- [cite:@emseq2021]
 - https://mail.google.com/mail/u/0/#inbox/FMfcgzQVxlRMrkdpbmdDQwTpXqLNjKdM
 - [[cite:&emseq2021]]
 - [[cite:&emseq2023manual]]
@@ -8545,8 +8486,6 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 :END:
 - How to do allele-specific copy number and LOH?
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5027494/
-- [cite:@ricklesyoung2024]
-- MSK with augmented CNA TF [cite:@tsui2021] used https://doi.org/10.1186/gm434 method
 - [[#0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 - https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-023-01171-w
 - has LOH on seq panel w/ custom pipeline  - https://www.sciencedirect.com/science/article/pii/S0923753419454604?pes=vor#ec0010
@@ -9101,6 +9040,10 @@ https://www.nature.com/articles/nature12477
 :END:
 https://www.neb.com/products/e7120-nebnext-enzymatic-methyl-seq-kit#Product%20Information
 https://www.neb.com/-/media/nebus/files/application-notes/technote_nebnext_enzymatic_methyl-seq.pdf?rev=015e017f782a4bc9b50b61f1b0f3c807&hash=E23FFED5E02C7A282E753B6B8F555A30
+**** Nucleic acid sequence alignment
+:PROPERTIES:
+:ID:       b2d348d7-1127-46a8-9bdd-c1bdd2532851
+:END:
 
 **** Nucleic acid sequence alignment
 :PROPERTIES:
@@ -9128,6 +9071,27 @@ assembly. J. Hum. Genet., 56, 406–414.
 - https://davetang.org/muse/2017/10/25/getting-started-hisat-stringtie-ballgown/
 - prerequisites
   - adaptor identification and trimming
+- pseudoaligner
+  - kallisto
+  - Salmon
+- Aligners
+  - TopHat2
+  - Specialized aligners
+    - Fusions
+      - TopHat Fusion
+        - tophat fusion documentation http://ccb.jhu.edu/software/tophat/fusion_manual.html
+      - STAR for chimeric reads / STAR-Fusion
+        - [[https://github.com/STAR-Fusion/STAR-Fusion/wiki][website]]
+        - From cite:star_2.5_dobin Chapter 5
+        - From cite:dobin2015mapping Alternate Protocol 6
+          - --chimSegmentMin <N> is minimum allowed length for each of the chimeric segments
+        - additional outputs are
+          - Chimeric.out.sam
+          - Chimeric.out.junction- a STAR-specific format
+    - To transcriptome
+      -
+  - [[*STAR][STAR]]
+- HISAT2
 
 **** Omics integration
 :PROPERTIES:
@@ -9707,15 +9671,11 @@ https://support.illumina.com/content/dam/illumina-support/documents/documentatio
 :ID:       f9e1a60e-fe3c-4fd8-af73-3ce0167fbec7
 :END:
 https://bioconductor.org/packages/devel/bioc/vignettes/BiocParallel/inst/doc/Introduction_To_BiocParallel.pdf
-**** BISulfite-seq CUI Toolkit (BISCUIT)
+**** biscuit
 :PROPERTIES:
-:doc: https://huishenlab.github.io/biscuit/
-:paper: https://doi.org/10.1093/nar/gkae097
-:repo: https://github.com/huishenlab/biscuit
-:input:
-:function:
 :ID:       5e9e8bfa-ac9e-4103-9cc5-7123337b4e24
 :END:
+https://github.com/genome/docker-biscuit
 **** bismark
 :PROPERTIES:
 :ID:       b9fd11de-3064-40de-be3d-eae089c7316d
@@ -13113,7 +13073,6 @@ for title in titles:
     pmid = fetch_pmid(title)
     print(f"Title: {title}\nPMID: {pmid}\n")
 #+end_src
-https://nf-co.re/sarek/3.5.0/
 *** Development                                                         :dev:
 :PROPERTIES:
 :ID:       ba6e2aa0-217b-46f8-a8c3-e7b5e774b952
