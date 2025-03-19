@@ -1,6 +1,6 @@
 # [[file:docker/atac_Dockerfile][ATAC-seq docker]]
 # :PROPERTIES:
-# :ID:       dccf525d-6c1c-48ab-b757-989cafabe530
+# :ID:       1e71d7ee-2c47-4f37-bc49-771ec5786fc4
 # :END:
 
 FROM jeszyman/biotools:1.0.2
@@ -60,7 +60,7 @@ RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
 
 # [[file:docker/atac_Dockerfile][ATAC-seq docker]]
 # :PROPERTIES:
-# :ID:       1e71d7ee-2c47-4f37-bc49-771ec5786fc4
+# :ID:       dccf525d-6c1c-48ab-b757-989cafabe530
 # :END:
 
 FROM jeszyman/biotools:1.0.2

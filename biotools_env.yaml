@@ -12,7 +12,6 @@ channels:
 dependencies:
   - bedops
   - bedtools
-  - bioconductor-biomart
   - bioconductor-complexheatmap
   - bioconductor-rsamtools
   - bowtie2
