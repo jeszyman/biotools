@@ -59,8 +59,6 @@ channels:
 dependencies:
   - bedops
   - bedtools
-  - bioconductor-complexheatmap
-  - bioconductor-rsamtools
   - bowtie2
   - deeptools
   - fastp
