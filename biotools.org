@@ -73,7 +73,7 @@ dependencies:
   - samtools
   - sra-tools
 #+end_src
-- this was too big- removed: bioconductor-orthology.eg.db
+- this was too big- removed: bioconductor-orthology.eg.db, also associated genomeinfodbdata was breaking srever installs
 
 #+begin_src bash
 source ${HOME}/miniconda3/bin/activate base
