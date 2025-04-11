@@ -57,7 +57,6 @@ RUN conda install -c bioconda samtools=1.7
 
 # R CRAN Installs
 RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
-
 # [[file:docker/atac_Dockerfile][ATAC-seq docker]]
 # :PROPERTIES:
 # :ID:       dccf525d-6c1c-48ab-b757-989cafabe530
@@ -117,7 +116,6 @@ RUN conda install -c bioconda samtools=1.7
 
 # R CRAN Installs
 RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
-
 # Preamble
 # :PROPERTIES:
 # :ID:       bd4c729f-9ddb-4006-89c9-21a93c9a055c
@@ -136,7 +134,6 @@ FROM jeszyman/biotools:1.0.2
 
 # After build, the image will be pushed to dockerhub as jeszyman/atac
 # (https://hub.docker.com/repository/docker/jeszyman/atac)
-
 # Apt
 # :PROPERTIES:
 # :ID:       ed99ab4e-ac9d-4922-8740-b5e27f5aecc3
@@ -153,7 +150,6 @@ RUN apt-get -y update && apt-get upgrade -y
 RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-missing \
     libgsl-dev \
     libcurl4-openssl-dev
-
 # Conda
 # :PROPERTIES:
 # :ID:       4c6f0e77-2a6a-49a8-a8df-dbc8db3d95ae
@@ -164,7 +160,6 @@ RUN apt-get install -yq --no-install-recommends --allow-unauthenticated --fix-mi
 #################
 
 RUN conda install -c bioconda macs2
-
 # R and bioconductor
 # :PROPERTIES:
 # :ID:       68797c07-6e37-4541-b165-259a9dfc0b73
@@ -185,7 +180,6 @@ RUN R -e 'install.packages("BiocManager"); \
                                  "ChIPseeker", \
                                  "clusterProfiler", \
                                  "csaw"));'
-
 # Custom installs
 # :PROPERTIES:
 # :ID:       01a1101b-2ab9-4f35-a4eb-e0ccc66d5f9f

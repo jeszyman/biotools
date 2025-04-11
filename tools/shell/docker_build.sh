@@ -187,7 +187,6 @@ push_singularity(){
 }
 
 main "$@"
-
 # Built docker container
 # :PROPERTIES:
 # :ORDERED:  t

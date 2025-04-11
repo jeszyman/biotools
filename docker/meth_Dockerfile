@@ -13,7 +13,6 @@ FROM jeszyman/biotools:1.0.2
 # After build, the image will be pushed to the dockerhub as
 # jeszyman/meth
 # (https://hub.docker.com/repository/docker/jeszyman/meth)
-
 # Conda
 # :PROPERTIES:
 # :ID:       7a5178e3-6792-420d-b67b-3708ae566fea
@@ -25,7 +24,6 @@ FROM jeszyman/biotools:1.0.2
 
 RUN conda update conda
 RUN conda install -c bioconda metilene=0.2.8
-
 # Custom
 # :PROPERTIES:
 # :ID:       8e517826-f4e8-476e-acab-8203c965a20a
