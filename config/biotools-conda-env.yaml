@@ -1,6 +1,7 @@
 # Biotools conda yaml
 # :PROPERTIES:
 # :ID:       cf13d347-1d0e-4858-a016-0a8a8af22609
+# :header-args:yaml: :tangle ./config/biotools-conda-env.yaml
 # :END:
 # - [[file:biotools_env.yaml]]
 
@@ -10,15 +11,21 @@ channels:
   - bioconda
 
 dependencies:
+  - bamtools
   - bedops
   - bedtools
   - bowtie2
   - deeptools
   - fastp
   - fastqc
+  - mosdepth
   - multiqc
   - picard
   - pybedtools
   - pysam
+  - sambamba
   - samtools
   - sra-tools
+  - gffread
+  - ucsc-gtftogenepred
+  - ucsc-genepredtobed

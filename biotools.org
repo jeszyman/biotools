@@ -4,7 +4,14 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :header-args: :tangle no :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
 :END:
-https://arcinstitute.org/tools/evo/evo-designer
+https://arcinstitute.org/
+https://academic-oup-com.mclibrary.idm.oclc.org/neuro-oncology/advance-article/doi/10.1093/neuonc/noaf103/8139084?login=true&token=eyJhbGciOiJub25lIn0.eyJleHAiOjE3NTA2ODU5ODQsImp0aSI6IjFjOWJhMmE0LTc3N2QtNGMyOS1hYzZlLTg1MzAxZDQwODU2YiJ9.
+- [cite:@peneder2021] has healthy cfDNA WGS data
+** Illumina protein prep
+:PROPERTIES:
+:ID:       052b5d06-5f71-4a86-b4eb-5d59cbb6b622
+:END:
+- ~10k targets
 ** National Cancer Institute (NCI)
 :PROPERTIES:
 :ID:       b6752449-050b-4349-a103-fde3a87b0fc1
@@ -49,28 +56,36 @@ https://docs.cancergenomicscloud.org/docs/collaborating-on-the-cgc-a-guide-for-c
 ** Biotools conda yaml
 :PROPERTIES:
 :ID:       cf13d347-1d0e-4858-a016-0a8a8af22609
+:header-args:yaml: :tangle ./config/biotools-conda-env.yaml
 :END:
 - [[file:biotools_env.yaml]]
-#+begin_src bash :tangle ./config/biotools-conda-env.yaml
+#+begin_src yaml
 name: biotools
 channels:
   - conda-forge
   - bioconda
 
 dependencies:
+  - bamtools
   - bedops
   - bedtools
   - bowtie2
   - deeptools
   - fastp
   - fastqc
+  - mosdepth
   - multiqc
   - picard
   - pybedtools
   - pysam
+  - sambamba
   - samtools
   - sra-tools
+  - gffread
+  - ucsc-gtftogenepred
+  - ucsc-genepredtobed
 #+end_src
+
 - this was too big- removed: bioconductor-orthology.eg.db, also associated genomeinfodbdata was breaking srever installs
 
 #+begin_src bash
@@ -1559,6 +1574,232 @@ qplot.electrophoresis(
 #+end_src
 ** Good practice
 https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003285
+** Local YAS
+:PROPERTIES:
+:ID:       d60dc63d-66d6-4792-b55f-e39a616679ad
+:END:
+*** r.bioc                                                              :yas:
+:PROPERTIES:
+:ID:       99141c49-76e3-4dec-9296-28a12bc1ada6
+:END:
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/ess-mode/r.bioc
+# -*- mode: snippet -*-
+# key: r.bioc
+# expand-env: ((yas-indent-line 'none))
+# --
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+#+end_src
+*** UPDATE_ON_USE bioinfo.setup
+CLOSED: [2021-12-09 Thu 12:38]
+:PROPERTIES:
+:ID:       dbd3c67c-e33b-42d8-800d-705292d3c372
+:CUSTOM_ID: dbd3c67c-e33b-42d8-800d-705292d3c372
+:END:
+
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
+# -*- mode: snippet -*-
+# key: bioinfo.setup
+# expand-env: ((yas-indent-line 'none))
+# --
+`(concat "*" (make-string (org-current-level) ?*))` Setup
+`(concat "**" (make-string (org-current-level) ?*))` Bash
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+- Local (by $HOSTNAME)
+- Common
+  ,#+begin_src bash :tangle ./config/common.sh
+,#+end_src
+`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
+- Command line
+  ,#+name: bash_preamble_cmd
+  ,#+begin_src bash
+if [[ -f ./config/\${HOSTNAME}.sh ]];
+then source ./config/\${HOSTNAME}.sh
+else
+    echo "No config file found for \${HOSTNAME}"
+    exit 1
+fi
+,#+end_src
+- Snakemake
+`(concat "**" (make-string (org-current-level) ?*))` TODO Box and rclone
+`(concat "**" (make-string (org-current-level) ?*))` TODO Docker and singularity
+`(concat "***" (make-string (org-current-level) ?*))` Processes
+1. Write
+   ,#+begin_src bash :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
+,#+end_src
+2. Build
+3. Make singularity container from docker container
+`(concat "**" (make-string (org-current-level) ?*))` TODO Emacs and Org-mode
+- [ ] Run minimal YAS
+  bioinfo.setup
+  bioinfo.inputs
+  bioinfo.data
+  locvars
+- [ ] Add
+  - to main reference section
+    - Bioinformatics project [[6acdcddf-d693-40f2-a3ae-9703bad56043][module headline]] and [[tag:{bioinfo}][instances]]
+  - to Local variables
+    ,#+TODO: WAITING(w@) TODO(t) INPROCESS(p) | CLOSEOUT DONE(d!) DELEGATED(@) CANCELED(@)
+    ,#+property: header-args:R    :session *PROJECT_NAME*
+`(concat "**" (make-string (org-current-level) ?*))` TODO Local data directory and WashU RIS Storage processes
+- Mount
+- Create directory structure
+  ,#+begin_src bash
+  <<bash_preamble>>
+  ,#+end_src
+`(concat "**" (make-string (org-current-level) ?*))` R
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
+`(concat "**" (make-string (org-current-level) ?*))` TODO Repository, git, and github
+- [ ] ensure [[file:.git/hooks/pre-commit]]
+- [ ] Create repository structure
+  ,#+begin_src bash
+mkdir -p "\${repo}/config"
+mkdir -p "\${repo}/resources"
+mkdir -p "\${repo}/results"
+mkdir -p "\${repo}/src"
+mkdir -p "\${repo}/workflow/scripts"
+,#+end_src
+`(concat "***" (make-string (org-current-level) ?*))` README
+`(concat "**" (make-string (org-current-level) ?*))` Snakemake
+`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
+`(concat "***" (make-string (org-current-level) ?*))` TODO Run commands
+#+end_src
+
+*** bioinfo.launch.docker
+:PROPERTIES:
+:ID:       d2b47716-387f-4209-a751-1e3108d70106
+:END:
+
+#+name: bioinfo.launch.docker
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
+  # -*- mode: snippet -*-
+  # key: bioinfo.launch.docker
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src bash
+  #!/bin/bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+
+  # Notes: This block build from bioinfo.launch.docker at
+  #  ce85a21e-466f-43d0-ad13-3cd21497bfc3
+
+  # Function to launch an interactive docker session
+
+  ,#+end_src
+#+end_src
+
+*** bioinfo.setup.bash
+:PROPERTIES:
+:ID:       847d4a6c-83e6-4ca1-9ea4-2daf6def6c3c
+:END:
+
+#+name: bioinfo.setup.bash
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
+  # -*- mode: snippet -*-
+  # key: bioinfo.setup.bash
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  `(make-string (1+ (org-current-level)) ?*)` Bash
+  Potential YAS to run:
+  bioinfo.config.host.sh
+  bioinfo.config.main.sh
+  ris.mount
+  $0
+#+end_src
+
+*** bioinfo.config.main.R
+:PROPERTIES:
+:ID:       c7edbb0d-e0bc-432a-b482-71b16bd40aaa
+:END:
+
+#+name: bioinfo.config.main.R
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
+  # -*- mode: snippet -*-
+  # key: bioinfo.config.main.R
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src R :noweb yes :tangle ./config/main.R
+  #!/usr/bin/env Rscript
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # Repository-local, relative variables
+  $0
+
+  # Pull in from other repositories
+  ##
+  ## Basecamp
+  <<./basecamp/basecamp.org:basecamp_r_setup_wrapper()>>
+
+  ##
+  ## Biotools
+  <<./biotools/biotools.org:biotools_r_setup_wrapper()>>
+
+  ,#+end_src
+#+end_src
+
+*** bioinfo.config.local.R
+:PROPERTIES:
+:ID:       27114eb7-5931-489c-a105-ed7375074678
+:END:
+
+#+name: bioinfo.config.local.R
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
+  # -*- mode: snippet -*-
+  # key: bioinfo.config.local.R
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  ,#+begin_src R :noweb yes :tangle ./config/${1:HOSTNAME}.R
+  #!/usr/bin/env Rscript
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  # Repository-local, host-absolute variables
+  data_dir = file.path("${2:DATA_DIR}")
+  source("./config/main.R")
+  $0
+  ,#+end_src
+#+end_src
+
+*** bioinfo.bash.script
+:PROPERTIES:
+:ID:       769639f9-c804-4bac-afb7-5167ce3a10b5
+:END:
+
+#+name: bioinfo.bash.script
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
+  # -*- mode: snippet -*-
+  # key: bioinfo.bash.script
+  # expand-env: ((yas-indent-line 'fixed))
+  # --
+  #!/bin/bash
+  #########1#########2#########3#########4#########5#########6#########7#########8
+  #
+  ### ${1:SCRIPT NAME} ###
+  #
+  # Notes:
+  ## This script assumes your your bash sessin is running within the repository docker container (see ./)
+  ## This script calls relative varibles and assumes you have sourced an appriopriate configuration file (see ./config)
+#+end_src
+
+*** bioinfo.inputs
+:PROPERTIES:
+:ID:       d6bb61c9-8b10-4460-b987-0a6c678d2ddb
+:CUSTOM_ID: d6bb61c9-8b10-4460-b987-0a6c678d2ddb
+:END:
+
+#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
+# -*- mode: snippet -*-
+# key: bioinfo.inputs
+# expand-env: ((yas-indent-line 'none))
+# --
+`(make-string (1+ (org-current-level)) ?*)` Inputs
+,#+name: input_table
+|basename|dirname|get_class|model_class|origin
+`(concat "**" (make-string (org-current-level) ?*))` Manually created input tables
+- (names must end in _input)
+-
+#+end_src
 ** Processes
 :PROPERTIES:
 :ID:       a7a7cba3-9e47-48dc-9603-a2e4f1e27234
@@ -1613,6 +1854,8 @@ https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003285
   #+end_src
 *** Methylation
 https://pmc.ncbi.nlm.nih.gov/articles/PMC6162482/
+**** Methylome deconvolution
+https://www-nature-com.mclibrary.idm.oclc.org/articles/s41467-024-48466-z
 *** Spatial methods
 :PROPERTIES:
 :ID:       bac12c9a-6f8a-4d1b-b8a2-041632c814f6
@@ -1751,6 +1994,7 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 :PROPERTIES:
 :ID:       eaa783cb-9d06-4763-9a28-b5cfe6c99825
 :END:
+- https://book.the-turing-way.org/project-design/pd-overview/pd-overview-planning
 - https://www.reddit.com/r/bioinformatics/comments/1c88uoe/git_hooks_in_bioinformatics/
 - cite:griffith2015
 - https://www.reddit.com/r/bioinformatics/comments/1apn4f4/what_are_some_criteria_for_my_code_to_have_in_a/
@@ -1768,6 +2012,7 @@ https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Gir
 :PROPERTIES:
 :ID:       c0c0ee28-2e41-41a7-9a3b-ae195117a93e
 :END:
+coordinate sorted bams are typically smaller (i.e. more compressible) than name sorted
 - https://bioinf.shenwei.me/seqkit/usage/#pair
 - https://www.google.com/search?q=annotate+bed+file+with+gene+names
 - https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
@@ -2860,23 +3105,23 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 
 *** Plasma proteomics
 - liquid biopsy somascan https://www.cell.com/cell/fulltext/S0092-8674(23)01033-4#secsectitle0090
-*** Cell-free RNA (cfRNA), extracellular RNA (exRNA)
-- cite:illumina2022
 *** Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
-- as circ nucleosomes https://pubmed.ncbi.nlm.nih.gov/37627320/
-- ultra short https://www.degruyterbrill.com/document/doi/10.1515/cclm-2023-0541/html
-- https://www.biorxiv.org/content/10.1101/2024.11.07.622399v1.full.pdf
-- https://pubmed.ncbi.nlm.nih.gov/40020203/
-- dPCR of global tumor methylation signature https://mail.google.com/mail/u/0/#inbox/FMfcgzQZTMLpbcLfPvXqMSjhTrBbzvKk?projector=1&messagePartId=0.1
-- Retrotransposons
-  - [cite:@michel2024line1]
-- https://www.sciencedirect.com/science/article/pii/S2666379123005669
+- [cite:@tivey2024]
+- https://mail.google.com/mail/u/0/#inbox/FMfcgzQbfxdHZssqkRxWNGzcMfWWDkdC?projector=1&messagePartId=0.1
+- cfDNA CHIP-seq https://mail.google.com/mail/u/0/#inbox/FMfcgzQbfpLJzcxKvRQxgwBNtVqggNnG
+- https://www.cell.com/cell-reports-methods/fulltext/S2667-2375%2825%2900119-5
+- https://www-nature-com.mclibrary.idm.oclc.org/articles/s41568-025-00795-x?fromPaywallRec=false
+- https://www-sciencedirect-com.mclibrary.idm.oclc.org/science/article/pii/S153561082200513X?via%3Dihub
+- https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-021-00857-z
+- cfDNA for CAR-T resitance https://www.nature.com/articles/s41467-025-56486-6 https://www.sciencedirect.com/science/article/pii/S1535610822005918
+**** Tumor origin, tumor content, tumor fraction
 - alternative TF strategies https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-023-05478-8
-- cite:illumina2022
-- 5hmC in cfDNA https://www.nature.com/articles/cr2017121.pdf?origin=ppub
+**** Circulating nucleosomes
+- as circ nucleosomes https://pubmed.ncbi.nlm.nih.gov/37627320/
+
 **** cfDNA and ctDNA-specific visualizations
 :PROPERTIES:
 :ID:       314e4183-bcb9-4029-86c8-fd4654219a6c
@@ -2884,6 +3129,11 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - [[file:resources/moding2020fig4b.png]] cite:moding2020 fig4b
 - tumor fraction ratios [[./biotools.org_20220817_135512.png]]
 - https://d0dd8a80-1a24-4cc5-a00a-3f42615181d7.filesusr.com/ugd/ad98ab_846561db683443d3af0664c558849464.pdf
+**** General and miscellaneous
+- [cite:@illumina2022]
+- https://pubmed.ncbi.nlm.nih.gov/40020203/
+- GC bias correction https://www.biorxiv.org/content/10.1101/2024.11.07.622399v1.full.pdf
+
 **** cfDNA fragment length-based methods
 - fragment size
   - https://www.nature.com/articles/s41586-020-2140-0
@@ -2901,17 +3151,24 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - cite:underhill2016
 - cite:mouliere2018
   - cite:mouliere2018a
+- ultra short https://www.degruyterbrill.com/document/doi/10.1515/cclm-2023-0541/html
+**** cfDNA ChIP-seq
+https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
+**** Retrotransposons in cfDNA
+- Retrotransposons
+  - [cite:@michel2024line1]
 
-**** [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling]]
-**** cfDNA feature integration
+**** cfDNA methylation
 :PROPERTIES:
-:ID:       434f2b3a-cd86-4d1a-955d-b84e98005a71
+:ID:       79dfda7e-8b6d-45c7-88d5-804979155763
 :END:
-- https://www.cell.com/cell-reports-medicine/pdf/S2666-3791(23)00566-9.pdf
-**** [[*cfDNA fragmentomics][cfDNA fragmentomics]]
-**** [[id:2e475e89-40a2-4359-903d-6e590f4ab8a0][cfDNA from nonterminal mouse blood draws]]
-**** [[id:dd8b334b-e431-4709-8485-bf0dda1760a5][cfDNA inferred tissue gene expression]]
-**** [[id:833f276f-f532-475e-8e0e-f4d528078a6b][cfDNA library preparation]]
+https://www.nature.com/articles/s41390-022-02448-3gas
+https://www.nature.com/articles/s41587-022-01652-0
+https://www.annalsofoncology.org/article/S0923-7534(20)36058-0/fulltext
+- [cite:@chemi2022]
+- 5hmC in cfDNA https://www.nature.com/articles/cr2017121.pdf?origin=ppub
+- dPCR of global tumor methylation signature https://mail.google.com/mail/u/0/#inbox/FMfcgzQZTMLpbcLfPvXqMSjhTrBbzvKk?projector=1&messagePartId=0.1
+
 **** cfDNA long read sequencing
 :PROPERTIES:
 :ID:       dda1c9d0-59b6-487d-8bdb-86423062cf22
@@ -2920,14 +3177,23 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - https://www.biorxiv.org/content/10.1101/2021.10.18.464684v1.full
 - [cite:@katsman2022cfdnananopore]
 - cfDNA nanopore for meth and COO [[cite:&katsman2022cfdnananopore]]
+**** [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling]]
+**** cfDNA feature integration
+:PROPERTIES:
+:ID:       434f2b3a-cd86-4d1a-955d-b84e98005a71
+:END:
+- https://www.sciencedirect.com/science/article/pii/S2666379123005669
+- https://www.cell.com/cell-reports-medicine/pdf/S2666-3791(23)00566-9.pdf
+**** cfDNA quality control (QC)
+- cfdna qc
+  - see cite:quigley2018 S1
+
+**** [[*cfDNA fragmentomics][cfDNA fragmentomics]]
+**** [[id:2e475e89-40a2-4359-903d-6e590f4ab8a0][cfDNA from nonterminal mouse blood draws]]
+**** [[id:dd8b334b-e431-4709-8485-bf0dda1760a5][cfDNA inferred tissue gene expression]]
+**** [[id:833f276f-f532-475e-8e0e-f4d528078a6b][cfDNA library preparation]]
 **** [[*cfDNA methylation][cfDNA methylation]]
-:PROPERTIES:
-:ID:       5ccd59aa-3e02-4cb5-955f-14b07ee78ac8
-:END:
 **** [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
-:PROPERTIES:
-:ID:       55906a36-c6cc-4043-a3b5-a42d2db9d428
-:END:
 **** [[*cfDNA small variant calling][cfDNA small variant calling]]
 **** [[id:1c6c6e74-c470-4272-abf1-6574da0c80b0][cfDNA specimen collection and DNA isolation]]
 **** [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
@@ -2961,6 +3227,20 @@ cite:gydush2022
 :PROPERTIES:
 :ID:       d806c115-915b-4a15-ba00-3713797d2d48
 :END:
+***** Mouliere
+- https://www.sciencedirect.com/science/article/pii/S2666379123005669
+***** Velculescu
+****** LB-SIG Webinar - https://cbiit.webex.com/cbiit/j.php?MTID=m034b40090add3040f3411064c8e3dd59
+  <2025-04-28 Mon 12:00>--<2025-04-28 Mon 13:00>
+
+- < 20% of patients recieve guidlin adherant screeing for liver cancer
+- high C open chrom vs frag- foda 2023 cancer disco [cite:@foda2022]
+- cancer disc 20205 medina annapragada ovarian ca
+  - monte carlo for different feature sets-
+- lung firstlook.com test mazzone cancer disc 2024
+- artemis
+  - annapragada stm 2024
+  - tie to amp/del
 ***** Adalsteinsson group
 :PROPERTIES:
 :ID:       217755bf-b9e9-4802-ba96-482ba39f1b1a
@@ -2970,7 +3250,9 @@ cite:gydush2022
 :PROPERTIES:
 :ID:       b4b2a35f-e59a-4e84-995e-ca16d7fd190d
 :END:
-cite:widman2022
+- [cite:@widman2024]
+- [cite:@widman2022]
+- [cite:@zviran2020]
 **** Tumor-informed methods
 :PROPERTIES:
 :ID:       10d3a3a4-dbe6-4494-b287-c3e5720932b2
@@ -2980,6 +3262,7 @@ cite:widman2022
 :PROPERTIES:
 :ID:       67251de4-3c85-4ba5-b5e5-6efefcd8961d
 :END:
+- [cite:@davis2019]
 - phased seq of multiple muts https://www.nature.com/articles/s41587-021-00981-w
 - mutational signatures for LP WGS [[cite:&wan2022]]
 - [[id:55b77210-fcb6-438d-a546-0c3605f6f5c4][Integrated hybrid capture and genome-wide- MAESTRO]]
@@ -2987,6 +3270,9 @@ cite:widman2022
 - mutation profiling in low coverage wgs https://www.nature.com/articles/s41467-022-32598-1
 - https://www.biorxiv.org/content/10.1101/2022.01.17.476508v1.full.pdf
 - cite:zviran2020
+*** Cell-free RNA (cfRNA), extracellular RNA (exRNA)
+- https://www.nature.com/articles/s41586-025-08834-1
+- cite:illumina2022
 *** Machine learning in genomics and bioinformatics
 :PROPERTIES:
 :ID:       d11ec8a8-7fa6-4043-89b3-20045e2d339e
@@ -3180,6 +3466,7 @@ CLOCK: [2019-06-12 Wed 14:40]--[2019-06-12 Wed 14:58] =>  0:18
 CLOCK: [2019-05-29 Wed 15:23]--[2019-05-29 Wed 15:34] =>  0:11
 CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 :END:
+- [cite:@baslan2012]
 - https://link.springer.com/protocol/10.1007/978-1-4939-9004-7_8
 - https://bioinformaticsdotca.github.io/bicg_2017_module4_lab
 - cite:hehir-kwa2015
@@ -3286,7 +3573,7 @@ cite:widman2022
 :ID:       1b87f575-dd0f-41c3-bc01-fe17edb0db3d
 :END:
 - https://www.biorxiv.org/content/10.1101/2022.01.17.476508v1.full.pdf
-- cite:zviran2020
+- cite:zviran2020 [cite:@zviran2020]
 ******** cfDNA and ctDNA-specific visualizations
 :PROPERTIES:
 :ID:       f3252217-66be-4dad-aa81-c20e55b55b66
@@ -3324,6 +3611,7 @@ cite:widman2022
 - https://www.nature.com/articles/s41551-023-01081-7
 - https://oaepublishstorage.blob.core.windows.net/b918d521-af58-4cf0-bc57-db03c5c43f33/4446.pdf
 - https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFgqmWTzSTxFbqlqjBLnzFsWT
+[cite:@rozowsky2019]
 - cite:rozowsky2019
 - https://www.nature.com/articles/s41586-022-04410-z
 - https://www.nature.com/articles/d41586-021-03801-y
@@ -4568,22 +4856,23 @@ https://hgserver1.amc.nl/cgi-bin/r2/main.cgi?open_page=login
 :PROPERTIES:
 :ID:       85e691cc-ebb3-4d74-825b-1c9204fb9c96
 :END:
-- https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#FAQs---Troubleshooting
-- https://github.com/nebiolabs/EM-seq/tree/master
-- [cite:@an2023]
-- [cite:@vaisvila2021]
-- [cite:@emseq2021]
-- https://mail.google.com/mail/u/0/#inbox/FMfcgzQVxlRMrkdpbmdDQwTpXqLNjKdM
-- [[cite:&emseq2021]]
-- [[cite:&emseq2023manual]]
-- [[https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit][New Englash Biolabs NEBNext Enzymatic Methyl-seq Kit]]
-- https://genome.cshlp.org/content/31/7/1280.full#sec-6
-  - [[cite:&an2023]]
-  - https://www.scopus.com/results/citedbyresults.uri?sort=cp-f&cite=2-s2.0-85109010344&src=s&nlo=&nlr=&nls=&imp=t&sid=38b46575ba9a9c8054024687862d5c43&sot=cite&sdt=a&sl=0&origin=resultslist&offset=1&txGid=30fdfa104ea4d8831d2807a0ebc3f992&isValidNewDocSearchRedirection=false
+- New England Biolabs materials
+  - [[https://www.neb.com/en-us/products/e7120-nebnext-enzymatic-methyl-seq-kit#FAQs---Troubleshooting][Troubleshooting]]
+  - [[https://github.com/nebiolabs/EM-seq/tree/master][EM-seq repo]]
+  - Technical note [cite:@emseq2021] (largely mirroring the vaisvila2021 paper)
+  - Initial publication: [cite:@vaisvila2021]
+  - [[cite:&emseq2023manual]]
+- Initial publication: [cite:@vaisvila2021]
+- Scopus citing vaisvila2021 https://www-scopus-com.mclibrary.idm.oclc.org/search/save/action.uri?activity=allAction&userSearchID=3&origin=savedsearch
+- [[id:d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6][Methylation sequencing biotools process]]
+- [cite:@bie2023] uses EM-seq for multimodal cfDNA analysis including fragmentomics. They validate EM-seq fragments ~ WGS fragments
+- [cite:@an2023] uses EM-seq to show that hypo-methylated fragments are shorter
 *** Single-cell methods
 :PROPERTIES:
 :ID:       2597b54c-972a-43c3-9630-0e542ba90eeb
 :END:
+https://www.reddit.com/r/bioinformatics/comments/1kc5a5t/newbie_in_singlecell_omics_any_top_lab_work_to/
+https://www.reddit.com/r/bioinformatics/comments/1keqtce/designing_rnaseq_experiments_with_confidence_no/
 https://mail.google.com/mail/u/0/#inbox/FMfcgzGxTFWDgPhqMLGHBDfJrdBMrWXq
 https://www.nature.com/articles/s41587-023-01685-z
 #+begin_src R
@@ -6938,10 +7227,17 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-020-03919-2
 https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-021-00895-x#Sec2
 https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
-**** cfDNA copy number calling
+**** cfDNA copy number calling and CNA-based tumor fraction
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
 :END:
+- [cite:@ostrup2017]
+- Boost via em-seq? https://www.pnas.org/doi/10.1073/pnas.1313995110
+- Copy number ANomaly Assessment and Recovery (CANARy)
+  - https://aacrjournals-org.mclibrary.idm.oclc.org/cancerres/article/85/8_Supplement_1/4565/760975/Abstract-4565-CANARy-TF-an-improved-copy-number
+  - https://drive.google.com/file/d/1MpA65YpwE37gJy8jrozYAjwwYy07AOjR/view?usp=drive_link
+  - https://ashpublications.org/blood/article/140/Supplement%201/10712/491124/Accurate-Detection-of-Clinically-Actionable-Copy
+- [cite:@chabon2020]
 - How to do allele-specific copy number and LOH?
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5027494/
 - [cite:@ricklesyoung2024]
@@ -6996,13 +7292,13 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 - [[file:~/data/career/golkaram2022.pdf]]
 - [[#0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 - cite:an2023
-- F-profiles: cite:zhou2023
+- F-profiles: cite:zhou2023 [cite:@zhou2023]
 - cite:guo2022
 - cite:zhitnyuk2022
 - cite:zhou2022 - fragma
 - cite:moldovan2021
 - cite:zhou2021 - jaggedness
-- cite:jiang2020motif
+- cite:jiang2020motif [cite:@jiang2020motif]
 **** cfDNA fragmentomics
 :PROPERTIES:
 :ID:       173e0331-9140-47d0-9e5e-ec91672ebdc3
@@ -7038,7 +7334,7 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 :PROPERTIES:
 :ID:       2e475e89-40a2-4359-903d-6e590f4ab8a0
 :END:
-- [[cite:&rao2022]]
+- [[cite:&rao2022]] [cite:@rao2022]
   - [[https://www.scopus.com/results/citedbyresults.uri?sort=plf-f&cite=2-s2.0-85136454112&src=s&nlo=&nlr=&nls=&imp=t&sid=dacd92e53a1732d3f30ed4e48426dc27&sot=cite&sdt=cl&cluster=scosubtype%2c%22ar%22%2ct&sl=0&origin=resultslist&zone=leftSideBar&editSaveSearch=&txGid=9d3c2ae452ba1a73cc713ec009b5e33f][scopus citing]]
     - https://doi.org/10.1016/j.xcrm.2023.101349
     - https://doi.org/10.1016/j.annonc.2023.06.001
@@ -7297,6 +7593,9 @@ bwa index -p $2 -a bwtsw $3
 :PROPERTIES:
 :ID:       d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6
 :END:
+- Bisulfite-free approaches
+  - [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
+  - Six letter [cite:@fullgrabe2023six]
 - https://nf-co.re/methylseq/output
 - https://clinicalepigeneticsjournal.biomedcentral.com/articles/10.1186/s13148-019-0795-x#Sec8
 - https://www.biostars.org/p/164929/
@@ -7612,232 +7911,6 @@ https://www.nature.com/articles/s43018-022-00379-w
 :END:
 https://singularity.lbl.gov/install-linux
 
-** Local YAS
-:PROPERTIES:
-:ID:       d60dc63d-66d6-4792-b55f-e39a616679ad
-:END:
-*** r.bioc                                                              :yas:
-:PROPERTIES:
-:ID:       99141c49-76e3-4dec-9296-28a12bc1ada6
-:END:
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/ess-mode/r.bioc
-# -*- mode: snippet -*-
-# key: r.bioc
-# expand-env: ((yas-indent-line 'none))
-# --
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-#+end_src
-*** UPDATE_ON_USE bioinfo.setup
-CLOSED: [2021-12-09 Thu 12:38]
-:PROPERTIES:
-:ID:       dbd3c67c-e33b-42d8-800d-705292d3c372
-:CUSTOM_ID: dbd3c67c-e33b-42d8-800d-705292d3c372
-:END:
-
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
-# -*- mode: snippet -*-
-# key: bioinfo.setup
-# expand-env: ((yas-indent-line 'none))
-# --
-`(concat "*" (make-string (org-current-level) ?*))` Setup
-`(concat "**" (make-string (org-current-level) ?*))` Bash
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-- Local (by $HOSTNAME)
-- Common
-  ,#+begin_src bash :tangle ./config/common.sh
-,#+end_src
-`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
-- Command line
-  ,#+name: bash_preamble_cmd
-  ,#+begin_src bash
-if [[ -f ./config/\${HOSTNAME}.sh ]];
-then source ./config/\${HOSTNAME}.sh
-else
-    echo "No config file found for \${HOSTNAME}"
-    exit 1
-fi
-,#+end_src
-- Snakemake
-`(concat "**" (make-string (org-current-level) ?*))` TODO Box and rclone
-`(concat "**" (make-string (org-current-level) ?*))` TODO Docker and singularity
-`(concat "***" (make-string (org-current-level) ?*))` Processes
-1. Write
-   ,#+begin_src bash :tangle ./config/DOCKER_IMAGE_NAME_Dockerfile
-,#+end_src
-2. Build
-3. Make singularity container from docker container
-`(concat "**" (make-string (org-current-level) ?*))` TODO Emacs and Org-mode
-- [ ] Run minimal YAS
-  bioinfo.setup
-  bioinfo.inputs
-  bioinfo.data
-  locvars
-- [ ] Add
-  - to main reference section
-    - Bioinformatics project [[6acdcddf-d693-40f2-a3ae-9703bad56043][module headline]] and [[tag:{bioinfo}][instances]]
-  - to Local variables
-    ,#+TODO: WAITING(w@) TODO(t) INPROCESS(p) | CLOSEOUT DONE(d!) DELEGATED(@) CANCELED(@)
-    ,#+property: header-args:R    :session *PROJECT_NAME*
-`(concat "**" (make-string (org-current-level) ?*))` TODO Local data directory and WashU RIS Storage processes
-- Mount
-- Create directory structure
-  ,#+begin_src bash
-  <<bash_preamble>>
-  ,#+end_src
-`(concat "**" (make-string (org-current-level) ?*))` R
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-`(concat "***" (make-string (org-current-level) ?*))` TODO Preambles
-`(concat "**" (make-string (org-current-level) ?*))` TODO Repository, git, and github
-- [ ] ensure [[file:.git/hooks/pre-commit]]
-- [ ] Create repository structure
-  ,#+begin_src bash
-mkdir -p "\${repo}/config"
-mkdir -p "\${repo}/resources"
-mkdir -p "\${repo}/results"
-mkdir -p "\${repo}/src"
-mkdir -p "\${repo}/workflow/scripts"
-,#+end_src
-`(concat "***" (make-string (org-current-level) ?*))` README
-`(concat "**" (make-string (org-current-level) ?*))` Snakemake
-`(concat "***" (make-string (org-current-level) ?*))` TODO Configurations
-`(concat "***" (make-string (org-current-level) ?*))` TODO Run commands
-#+end_src
-
-*** bioinfo.launch.docker
-:PROPERTIES:
-:ID:       d2b47716-387f-4209-a751-1e3108d70106
-:END:
-
-#+name: bioinfo.launch.docker
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
-  # -*- mode: snippet -*-
-  # key: bioinfo.launch.docker
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src bash
-  #!/bin/bash
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-
-  # Notes: This block build from bioinfo.launch.docker at
-  #  ce85a21e-466f-43d0-ad13-3cd21497bfc3
-
-  # Function to launch an interactive docker session
-
-  ,#+end_src
-#+end_src
-
-*** bioinfo.setup.bash
-:PROPERTIES:
-:ID:       847d4a6c-83e6-4ca1-9ea4-2daf6def6c3c
-:END:
-
-#+name: bioinfo.setup.bash
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
-  # -*- mode: snippet -*-
-  # key: bioinfo.setup.bash
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  `(make-string (1+ (org-current-level)) ?*)` Bash
-  Potential YAS to run:
-  bioinfo.config.host.sh
-  bioinfo.config.main.sh
-  ris.mount
-  $0
-#+end_src
-
-*** bioinfo.config.main.R
-:PROPERTIES:
-:ID:       c7edbb0d-e0bc-432a-b482-71b16bd40aaa
-:END:
-
-#+name: bioinfo.config.main.R
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
-  # -*- mode: snippet -*-
-  # key: bioinfo.config.main.R
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src R :noweb yes :tangle ./config/main.R
-  #!/usr/bin/env Rscript
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  # Repository-local, relative variables
-  $0
-
-  # Pull in from other repositories
-  ##
-  ## Basecamp
-  <<./basecamp/basecamp.org:basecamp_r_setup_wrapper()>>
-
-  ##
-  ## Biotools
-  <<./biotools/biotools.org:biotools_r_setup_wrapper()>>
-
-  ,#+end_src
-#+end_src
-
-*** bioinfo.config.local.R
-:PROPERTIES:
-:ID:       27114eb7-5931-489c-a105-ed7375074678
-:END:
-
-#+name: bioinfo.config.local.R
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
-  # -*- mode: snippet -*-
-  # key: bioinfo.config.local.R
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  ,#+begin_src R :noweb yes :tangle ./config/${1:HOSTNAME}.R
-  #!/usr/bin/env Rscript
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  # Repository-local, host-absolute variables
-  data_dir = file.path("${2:DATA_DIR}")
-  source("./config/main.R")
-  $0
-  ,#+end_src
-#+end_src
-
-*** bioinfo.bash.script
-:PROPERTIES:
-:ID:       769639f9-c804-4bac-afb7-5167ce3a10b5
-:END:
-
-#+name: bioinfo.bash.script
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
-  # -*- mode: snippet -*-
-  # key: bioinfo.bash.script
-  # expand-env: ((yas-indent-line 'fixed))
-  # --
-  #!/bin/bash
-  #########1#########2#########3#########4#########5#########6#########7#########8
-  #
-  ### ${1:SCRIPT NAME} ###
-  #
-  # Notes:
-  ## This script assumes your your bash sessin is running within the repository docker container (see ./)
-  ## This script calls relative varibles and assumes you have sourced an appriopriate configuration file (see ./config)
-#+end_src
-
-*** bioinfo.inputs
-:PROPERTIES:
-:ID:       d6bb61c9-8b10-4460-b987-0a6c678d2ddb
-:CUSTOM_ID: d6bb61c9-8b10-4460-b987-0a6c678d2ddb
-:END:
-
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
-# -*- mode: snippet -*-
-# key: bioinfo.inputs
-# expand-env: ((yas-indent-line 'none))
-# --
-`(make-string (1+ (org-current-level)) ?*)` Inputs
-,#+name: input_table
-|basename|dirname|get_class|model_class|origin
-`(concat "**" (make-string (org-current-level) ?*))` Manually created input tables
-- (names must end in _input)
--
-#+end_src
 ** Snakemake demo                                                      :demo:
 :PROPERTIES:
 :ID:       e17bc34d-6bdb-44e2-b820-754dc042cf79
@@ -7851,6 +7924,8 @@ mkdir -p "\${repo}/workflow/scripts"
 :PROPERTIES:
 :ID:       db5b3d18-d670-4ed8-9ba3-0a01032393c2
 :END:
+- https://arcinstitute.org/tools/evo/evo-designer
+
 *** 0 Bioinformatics software flat list
 :PROPERTIES:
 :ID:       1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb
@@ -11264,7 +11339,7 @@ CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
 :ID:       da883d31-d1cb-44ef-b527-8b517a37ba52
 :END:
 ** Ideas
-#+begin_src python
+#+begin_src python :tangle no
 import ssl
 import urllib.request
 
