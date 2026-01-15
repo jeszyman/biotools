@@ -18,6 +18,7 @@
 :END:
 
 [![validate-schema](https://img.shields.io/github/actions/workflow/status/jeszyman/biotools/validate-schema.yaml?branch=master&label=validate-schema)](https://github.com/jeszyman/biotools/actions/workflows/validate-schema.yaml)
+
 *** Continuous Improvement
 **** Metadata validation
 #+begin_src yaml :tangle ./.github/workflows/validate-schema.yaml

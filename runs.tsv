@@ -1,4 +1,0 @@
-run_id	alt_run_id	run_institute	sequencer	run_date	flowcell_id	notes
-run0001	HWTG7DSXY	mayo	novaseq_6000	2024-07-01	HWTG7DSXY	Full flowcell run
-run0002	HKVN3BBXY	washu	hiseq_4000	2024-07-15	HKVN3BBXY	Shared with other projects
-run0003		mayo	nextseq_2000	2024-08-10		Small pilot run
