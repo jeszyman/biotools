@@ -30,4 +30,4 @@ jobs:
       - name: Display validation report
         if: always()  # Show report even if validation fails
         run: |
-          cat /examples/validation-report.txt
+          cat examples/validation-report.txt
