@@ -1,0 +1,182 @@
+% Created 2026-01-14 Wed 15:40
+% Intended LaTeX compiler: pdflatex
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{titletoc}
+\usepackage{graphicx} %Enhanced support for grpahics
+\usepackage{tabularx} %Tables
+\usepackage{fullpage}
+\usepackage{grffile} %File name support for graphics
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{listingsutf8} %UTF8 file conversion?  \usepackage[style=numeric,doi=false,isbn=false,firstinits=true,sorting=none,backend=biber]{biblatex}
+\pagenumbering{arabic}
+  
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{listingsutf8}
+\usepackage{color}
+\usepackage{listings}
+\author{Jeffrey Szymanski}
+\date{\today}
+\title{Bioinformatics metadata}
+\begin{document}
+
+\maketitle
+\begin{itemize}
+\item Elements\\[0pt]
+\begin{itemize}
+\item Immuntable reference files\\[0pt]
+\begin{itemize}
+\item Possible PHI\\[0pt]
+\item Provenence\\[0pt]
+\end{itemize}
+\item Mutable "sample sheet"\\[0pt]
+\begin{itemize}
+\item xlsx or series of tsvs\\[0pt]
+\item No PHI\\[0pt]
+\item Source of truth\\[0pt]
+\item Validation input\\[0pt]
+\end{itemize}
+\end{itemize}
+\item No PHI\\[0pt]
+\item With Libreoffice calc\\[0pt]
+\begin{itemize}
+\item Use Excel A1 formula syntax (Tools -> Options -> LibreOffice Calc -> Formula -> Formula Options -> Formula syntax)\\[0pt]
+\end{itemize}
+\end{itemize}
+\section*{Logical data representation, Common Data Model schema}
+\label{sec:org4a0e532}
+\subsection*{Documentation}
+\label{sec:orgdb0fe54}
+Good Best Practices for Bioinformatics Metadata Schema with Frictionless\\[0pt]
+
+\begin{itemize}
+\item Components\\[0pt]
+\begin{itemize}
+\item Excel as the user interface: non-programmers enter data, schema validates it. Hierarchical data model: organize by biological and technical relationships\\[0pt]
+\item schema yaml\\[0pt]
+Self-documenting: schemas generate data dictionaries programmatically\\[0pt]
+\end{itemize}
+\item Schema Structure\\[0pt]
+\begin{itemize}
+\item Version control by repo-level versioning\\[0pt]
+\item Define Shared Elements Once, Use YAML anchors for repeated definitions:\\[0pt]
+\item Basic Resource Structure\\[0pt]
+\item Field Definition Principles\\[0pt]
+\begin{itemize}
+\item Every field should include:\\[0pt]
+\begin{itemize}
+\item name: Machine-readable identifier\\[0pt]
+\item title: Human-readable label\\[0pt]
+\item description: Clear explanation including format requirements and units\\[0pt]
+\item example: Representative value\\[0pt]
+\item type: Data type\\[0pt]
+\item constraints: Validation rules\\[0pt]
+\item Example:\\[0pt]
+\end{itemize}
+\end{itemize}
+\item Primary Key Conventions\\[0pt]
+\begin{itemize}
+\item Use descriptive prefix plus zero-padded four-digit numbers:\\[0pt]
+\begin{itemize}
+\item Enables lexicographic sorting\\[0pt]
+\item Format: \^{}[prefix]\d{4}\$\\[0pt]
+\item Examples: subj0001, samp0001, lib0001, run0001\\[0pt]
+\item Always include pattern constraint to catch typos.\\[0pt]
+\end{itemize}
+\end{itemize}
+\item Foreign Key Conventions\\[0pt]
+\begin{itemize}
+\item Foreign key fields should be minimal:\\[0pt]
+\item Include pattern constraint to validate format before checking referential integrity.\\[0pt]
+\item Detailed metadata lives in the parent table only - avoid redundancy.\\[0pt]
+\end{itemize}
+\item Data Type Decision Principles\\[0pt]
+\begin{itemize}
+\item Prefer Enums Over Booleans. Use enums for domain-specific concepts that require explanation:\\[0pt]
+\item Booleans are acceptable only when semantics are universally obvious and require no explanation.\\[0pt]
+\item Document Enum Values\\[0pt]
+\begin{itemize}
+\item Use custom enumDescriptions property for programmatic data dictionary generation:\\[0pt]
+\end{itemize}
+\item Standardize Units in Field Names: Include units in field name and description:\\[0pt]
+\end{itemize}
+\end{itemize}
+\item Table Design Principles\\[0pt]
+\begin{itemize}
+\item Hierarchical Relationships\\[0pt]
+\begin{itemize}
+\item Organize tables by biological and technical hierarchy:\\[0pt]
+\begin{verbatim}
+subjects → samples → libraries → fastqs
+\end{verbatim}
+\item Use foreign keys to enforce referential integrity.\\[0pt]
+\end{itemize}
+\item When to Split Tables\\[0pt]
+\begin{itemize}
+\item Split into separate tables when entities have:\\[0pt]
+\begin{itemize}
+\item Many divergent fields (>5 unique per subtype)\\[0pt]
+\item Fundamentally different semantics\\[0pt]
+\item Example: human participants vs mouse subjects\\[0pt]
+\end{itemize}
+\end{itemize}
+\item Keep entities in one table when:\\[0pt]
+\begin{itemize}
+\item Few optional fields (2-3)\\[0pt]
+\item Structural similarity between subtypes\\[0pt]
+\item Add discriminator field for subtype and leave subtype-specific fields optional:\\[0pt]
+\end{itemize}
+\end{itemize}
+\item Schema Evolution Principles\\[0pt]
+\begin{itemize}
+\item Never use "other" catch-all categories or allow arbitrary values - this defeats validation.\\[0pt]
+\item Constraint Defaults\\[0pt]
+\begin{itemize}
+\item Frictionless defaults are:\\[0pt]
+\begin{itemize}
+\item required: false (field is optional)\\[0pt]
+\item unique: false (duplicates allowed)\\[0pt]
+\item No enum restrictions\\[0pt]
+\end{itemize}
+\end{itemize}
+\item Only declare constraints when restricting behavior.\\[0pt]
+\end{itemize}
+\item Field Ordering\\[0pt]
+\begin{itemize}
+\item Primary key first\\[0pt]
+\item Foreign keys second\\[0pt]
+\item Required fields\\[0pt]
+\item Optional fields\\[0pt]
+\item Group related fields together\\[0pt]
+\end{itemize}
+\end{itemize}
+
+\subsection*{Preamble}
+\label{sec:org7aab868}
+\subsection*{Subjects}
+\label{sec:orgcf94344}
+\subsection*{Participants}
+\label{sec:orgc173427}
+\subsection*{Mice}
+\label{sec:orgc80a530}
+\subsection*{Samples}
+\label{sec:org438f2d3}
+\subsection*{Libraries}
+\label{sec:orge6410e9}
+\subsection*{Sequencing runs}
+\label{sec:org42fde55}
+\subsection*{FASTQs}
+\label{sec:org168a8ef}
+\#+end\_src
+\end{document}

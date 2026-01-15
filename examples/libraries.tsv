@@ -1,0 +1,8 @@
+library_id	sample_id	isolation_method	adapter_type	library_type	input_ul	input_pg_ml	notes
+lib0001	sam0001	truseq	illumina	paired_end	100	2.34	Standard prep
+lib0002	sam0002	truseq	illumina	paired_end	100	1.89
+lib0003	sam0003	truseq	illumina	paired_end	50	15.67	High quality tumor DNA
+lib0004	sam0004	emseq_v2	xgen	paired_end	100	3.21	Methylation profiling
+lib0005	sam0005	truseq	illumina	paired_end	25	45.80
+lib0006	sam0006	truseq	illumina	single_end	10	0.56	Low input cfDNA
+lib0007	sam0007	truseq	illumina	paired_end	10	0.42

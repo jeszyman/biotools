@@ -1,0 +1,8 @@
+sample_id	subject_id	collection_date	sample_type	sample_volume_ml	notes
+sam0001	par0001	2024-06-15	blood	8.5	Baseline collection
+sam0002	par0001	2024-09-20	blood	8.0	3-month follow-up
+sam0003	par0002	2024-05-10	tumor		Surgical resection
+sam0004	par0002	2024-05-10	blood	9.2	Same-day blood draw
+sam0005	mou0001	2024-06-01	tumor		PDX tumor harvest
+sam0006	mou0001	2024-06-01	blood	0.2	Terminal bleed
+sam0007	mou0002	2024-05-25	blood	0.15	Serial sampling

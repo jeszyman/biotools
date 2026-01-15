@@ -1,0 +1,641 @@
+# Preamble
+
+# Documentation
+# Good Practices for Bioinformatics Metadata Schema with Frictionless
+#
+# Components:
+#   - Excel as the user interface: non-programmers enter data, schema validates it
+#   - Hierarchical data model: organize by biological and technical relationships
+#   - Self-documenting: schemas generate data dictionaries programmatically
+#
+# Schema Structure:
+#   - Version control by repo-level versioning
+#   - Define shared elements once using YAML anchors
+#   - Use three-letter prefixes + 4 digits for all primary keys (sub0001, par0001, mou0001, etc.)
+#
+# Field Definition Principles:
+#   - Every field should include: name, title, description, example, type, constraints
+#   - Always include pattern constraints on primary keys to catch typos
+#   - Foreign key fields should be minimal: type, pattern, required only
+#   - Use enums over booleans for domain-specific concepts
+#   - Document enum values with enumDescriptions for data dictionary generation
+#   - Standardize units in field names and descriptions
+
+# Shared definitions
+
+resources:
+# Subjects
+
+# Subjects
+# Subjects table serves as the parent linking table for all research organisms
+  # It contains only minimal common fields - organism-specific details live in child tables (participants, mice)
+  - name: subjects
+    path: metadata.xlsx  # Environment variable for flexible path handling across projects
+    control:
+      type: excel
+      sheet: subjects  # Excel sheet name must match resource name
+    schema:
+      missingValues: &mv ["", "unknown", "UNK", "unk", "n/a", "NA", "GET", "None"]
+      fields:
+        # PRIMARY KEY FIELD
+        # Always define first, includes pattern constraint to catch formatting errors
+        - name: subject_id
+          title: Subject Identifier
+          description: Unique value identifying a specific research subject organism. Format is three letters followed by 4 digits. Values match primary keys from participants or mice tables.
+          example: sub0001
+          type: string
+          format: default
+          constraints:
+            required: true  # Must be present in every row
+            unique: true    # No duplicate values allowed
+            pattern: '^[a-z]{3}\d{4}$'  # Three lowercase letters + 4 digits
+
+        # DISCRIMINATOR FIELD
+        # Determines which child table contains organism-specific details
+        # enumDescriptions enables programmatic data dictionary generation
+        - name: organism_type
+          title: Organism Type
+          description: Subject's organism type, determines which subtype table contains additional details
+          example: mouse
+          type: string
+          constraints:
+            required: true
+            enum: [human, mouse]  # Restrict to known categories only
+          enumDescriptions:  # Custom property for documentation - ignored by validator
+            human: Human research participant (details in participants table)
+            mouse: Mouse subject (details in mice table)
+
+        # OPTIONAL FIELD
+        # No required constraint means field can be blank (matches missingValues)
+        - name: notes
+          description: Free-text notes about this subject
+          type: string
+          constraints:
+            required: false  # Explicit even though it's default behavior
+
+    primaryKey: subject_id  # Declares subject_id as the primary key for foreign key relationships
+# Participants
+
+# Participants
+# Participants table contains human-specific metadata for research subjects
+  # Primary key also serves as foreign key to subjects table
+  # Only includes data applicable to human participants (institution, demographics, etc.)
+  - name: participants
+    title: Human Study Participants
+    description: Human research participants enrolled under institutional protocols, with demographic and enrollment metadata
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: participants
+    schema:
+      missingValues: *mv # References the shared anchor defined at top level
+      fields:
+        # PRIMARY KEY - also serves as foreign key to subjects table
+        # Three-letter prefix convention: 'par' + 4 digits
+        - name: participant_id
+          title: Participant Identifier
+          description: Unique identifier of a unique study participant. Format is 'par' followed by 4 digits. Links directly to subject_id in subjects table.
+          example: par0001
+          type: string
+          constraints:
+            required: true
+            unique: true
+            pattern: '^par\d{4}$'
+
+        # ADMINISTRATIVE FIELDS
+        # Institution and protocol tracking for multi-site studies
+        - name: institution_id
+          title: Enrolling Institution
+          description: Identifier for institution where patient was consented for research
+          example: jhh
+          type: string
+          constraints:
+            required: true
+            enum: [nci, jhh, washu, mayo]
+          enumDescriptions:
+            nci: National Cancer Institute
+            jhh: Johns Hopkins Hospital
+            washu: Washington University
+            mayo: Mayo Clinic
+
+        - name: study_protocol_id
+          title: Study Protocol
+          description: Identifier for institution research protocol which participant was consented and enrolled
+          example: 99-CC-0168
+          type: string
+          constraints:
+            required: false
+
+        # DEMOGRAPHIC FIELDS
+        - name: sex
+          title: Participant Sex
+          description: Participant's sex
+          example: m
+          type: string
+          constraints:
+            required: true
+            enum: [m, f]
+          enumDescriptions:
+            m: Male
+            f: Female
+
+        - name: birth_year
+          title: Birth Year
+          description: Year of participant's birth in YYYY format
+          example: 1981
+          type: year
+          constraints:
+            required: false
+            minimum: 1900  # Reasonable lower bound
+            maximum: 2025  # Flags future dates or data entry errors
+
+        # OPTIONAL NOTES FIELD
+        # Allows free-text metadata that doesn't fit structured fields
+        - name: notes
+          title: Notes
+          description: Free-text notes about this participant
+          type: string
+          constraints:
+            required: false
+
+    primaryKey: participant_id
+    foreignKeys:
+      - fields: participant_id
+        reference:
+          resource: subjects
+          fields: subject_id
+# Mice
+
+# Mice
+# Mice table contains mouse-specific metadata for research subjects
+  # Primary key also serves as foreign key to subjects table
+  # Includes strain, genotype, and housing information
+  - name: mice
+    title: Mouse Research Subjects
+    description: Mouse subjects used in research
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: mice
+    schema:
+      missingValues: *mv
+      fields:
+        # PRIMARY KEY - also serves as foreign key to subjects table
+        # Three-letter prefix: 'mou' + 4 digits
+        - name: mouse_id
+          title: Mouse Identifier
+          description: Unique identifier for mouse subject. Format is 'mou' followed by 4 digits. Links directly to subject_id in subjects table.
+          example: mou0001
+          type: string
+          constraints:
+            required: true
+            unique: true
+            pattern: '^mou\d{4}$'
+
+        # MOUSE-SPECIFIC FIELDS
+        - name: strain
+          title: Mouse Strain
+          description: Genetic background strain of the mouse
+          example: C57BL/6
+          type: string
+          constraints:
+            required: true
+            maxLength: 50
+
+        - name: sex
+          title: Mouse Sex
+          description: Biological sex of the mouse
+          example: m
+          type: string
+          constraints:
+            required: true
+            enum: [m, f]
+          enumDescriptions:
+            m: Male
+            f: Female
+
+        - name: birth_date
+          title: Birth Date
+          description: Date of birth in ISO8601 format (YYYY-MM-DD)
+          example: 2024-01-15
+          type: date
+          constraints:
+            required: false
+            minimum: "2020-01-01"
+            maximum: "2026-12-31"
+
+        # OPTIONAL NOTES
+        - name: notes
+          title: Notes
+          description: Free-text notes about this mouse
+          type: string
+          constraints:
+            required: false
+            maxLength: 500
+
+    primaryKey: mouse_id
+    foreignKeys:
+      - fields: mouse_id
+        reference:
+          resource: subjects
+          fields: subject_id
+# Samples
+
+# Samples
+# Samples table links biological specimens to subjects
+  # Contains collection metadata and sample characteristics
+  # One subject can have multiple samples over time
+  - name: samples
+    title: Biological Samples
+    description: Biological specimens collected from research subjects, including collection metadata and sample characteristics
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: samples
+    schema:
+      missingValues: *mv
+      fields:
+        # PRIMARY KEY
+        # Three-letter prefix: 'sam' + 4 digits
+        - name: sample_id
+          title: Sample Identifier
+          description: Unique value identifying any specific sample. Format is 'sam' followed by 4 digits.
+          example: sam0001
+          type: string
+          constraints:
+            required: true
+            unique: true
+            pattern: '^sam\d{4}$'
+
+        # FOREIGN KEY to subjects table
+        - name: subject_id
+          description: Links to subject in subjects table
+          type: string
+          constraints:
+            required: true
+
+        # COLLECTION METADATA
+        - name: collection_date
+          title: Sample Collection Date
+          description: Date when sample was obtained from organism in ISO8601 format (YYYY-MM-DD)
+          example: 2024-01-02
+          type: date
+          constraints:
+            required: true
+            minimum: "2020-01-01"  # Project start date
+            maximum: "2026-12-31"  # Flags future dates
+
+        # SAMPLE CHARACTERISTICS
+        - name: sample_type
+          title: Sample Type
+          description: Type of sample collected
+          example: blood
+          type: string
+          constraints:
+            required: true
+            enum: [blood, tumor, cell_line]
+          enumDescriptions:
+            blood: Sample generated from a blood draw
+            tumor: Solid tissue sample from a biopsy or resection
+            cell_line: Cultured cell line collection
+
+        # NUMERIC FIELDS demonstrating range constraints
+        - name: sample_volume_ml
+          title: Sample Volume
+          description: Volume of sample collected in milliliters
+          example: 5.0
+          type: number
+          constraints:
+            required: false
+            minimum: 0
+            minimum: 0
+            maximum: 1000  # Flag unrealistic values
+
+        # OPTIONAL NOTES
+        - name: notes
+          title: Notes
+          description: Free-text notes about this sample
+          type: string
+          constraints:
+            required: false
+
+    primaryKey: sample_id
+    foreignKeys:
+      - fields: subject_id
+        reference:
+          resource: subjects
+          fields: subject_id
+# Libraries
+
+# Libraries
+# Libraries table contains sequencing library preparation metadata
+  # Links samples to sequencing data through library construction details
+  # Includes prep methods, input quantities, and library characteristics
+  - name: libraries
+    title: Sequencing Libraries
+    description: Sequencing libraries prepared from biological samples, including prep methods and input quantities
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: libraries
+    schema:
+      missingValues: *mv
+      fields:
+        # PRIMARY KEY
+        # Three-letter prefix: 'lib' + 4 digits
+        - name: library_id
+          title: Library Identifier
+          description: Unique identifier for any specific sequencing library. Format is 'lib' followed by 4 digits.
+          example: lib0001
+          type: string
+          constraints:
+            required: true
+            unique: true
+            pattern: '^lib\d{4}$'
+
+        # FOREIGN KEY to samples table
+        - name: sample_id
+          description: Links to sample in samples table
+          type: string
+          constraints:
+            required: true
+            pattern: '^sam\d{4}$'
+
+        # LIBRARY PREP METHODS
+        - name: isolation_method
+          title: Nucleic Acid Isolation Method
+          description: Method used for isolation of nucleic acid input to sequencing library
+          example: truseq
+          type: string
+          constraints:
+            required: true
+            enum: [truseq, emseq_v1, emseq_v2]
+          enumDescriptions:
+            truseq: TruSeq standard library prep
+            emseq_v1: EM-seq enzymatic methylation sequencing version 1
+            emseq_v2: EM-seq enzymatic methylation sequencing version 2
+
+        - name: adapter_type
+          title: Adapter Type
+          description: Type or strategy for sequencing adapters of library
+          example: illumina
+          type: string
+          constraints:
+            required: true
+            enum: [illumina, xgen]
+          enumDescriptions:
+            illumina: Illumina standard adapters
+            xgen: IDT xGen adapters
+
+        - name: library_type
+          title: Library Type
+          description: Whether library was sequenced as paired-end or single-end
+          example: paired_end
+          type: string
+          constraints:
+            required: true
+            enum: [paired_end, single_end]
+          enumDescriptions:
+            paired_end: Paired-end sequencing library
+            single_end: Single-end sequencing library
+
+        # INPUT QUANTITIES with numeric validation
+        - name: input_ul
+          title: Input Volume
+          description: Library input volume in microliters
+          example: 100
+          type: number
+          constraints:
+            required: false
+            minimum: 0
+            maximum: 1000
+
+        - name: input_pg_ml
+          title: Input Concentration
+          description: Library input concentration in picograms per milliliter
+          example: 0.34
+          type: number
+          constraints:
+            required: false
+            minimum: 0
+            maximum: 10000  # Flag unrealistic concentrations
+
+        # OPTIONAL NOTES
+        - name: notes
+          title: Notes
+          description: Free-text notes about this library
+          type: string
+          constraints:
+            required: false
+            maxLength: 500
+
+    primaryKey: library_id
+    foreignKeys:
+      - fields: sample_id
+        reference:
+          resource: samples
+          fields: sample_id
+# Sequencing runs
+
+# Sequencing runs
+# Sequencing runs table tracks individual sequencing runs
+  # Multiple libraries can be multiplexed on a single run
+  # Links to fastqs table which contains per-library FASTQ files from each run
+  - name: runs
+    title: Sequencing Runs
+    description: Individual sequencing runs performed on sequencing instruments, including run metadata and instrument details
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: runs
+    schema:
+      missingValues: *mv
+      fields:
+        # PRIMARY KEY
+        # Three-letter prefix: 'run' + 4 digits
+        - name: run_id
+          title: Run Identifier
+          description: Unique identifier for a specific sequencing run. Format is 'run' followed by 4 digits.
+          example: run0001
+          type: string
+          constraints:
+            required: true
+            unique: true
+            pattern: '^run\d{4}$'
+
+        # ALTERNATIVE IDENTIFIERS
+        # External or vendor-provided run IDs
+        - name: alt_run_id
+          title: Alternative Run ID
+          description: External or vendor-provided identifier for this run (e.g., flowcell ID, instrument run ID)
+          example: HWTG7DSXY
+          type: string
+          constraints:
+            required: false
+            maxLength: 100
+
+        # RUN METADATA
+        - name: run_institute
+          title: Sequencing Institute
+          description: Institution or facility where sequencing was performed
+          example: mayo
+          type: string
+          constraints:
+            required: true
+            enum: [mayo, washu, broad, nci, external]
+          enumDescriptions:
+            mayo: Mayo Clinic
+            washu: Washington University
+            broad: Broad Institute
+            nci: National Cancer Institute
+            external: External sequencing facility
+
+        - name: sequencer
+          title: Sequencing Instrument
+          description: Model of sequencing instrument used
+          example: novaseq_6000
+          type: string
+          constraints:
+            required: false
+            enum: [novaseq_6000, hiseq_4000, nextseq_2000, miseq, other]
+          enumDescriptions:
+            novaseq_6000: Illumina NovaSeq 6000
+            hiseq_4000: Illumina HiSeq 4000
+            nextseq_2000: Illumina NextSeq 2000
+            miseq: Illumina MiSeq
+            other: Other sequencing platform
+
+        - name: run_date
+          title: Run Date
+          description: Date when sequencing run was initiated in ISO8601 format (YYYY-MM-DD)
+          example: 2024-06-15
+          type: date
+          constraints:
+            required: false
+            minimum: "2020-01-01"
+            maximum: "2026-12-31"
+
+        - name: flowcell_id
+          title: Flowcell ID
+          description: Identifier for the flowcell used in this run
+          example: HWTG7DSXY
+          type: string
+          constraints:
+            required: false
+            maxLength: 50
+
+        # OPTIONAL NOTES
+        - name: notes
+          title: Notes
+          description: Free-text notes about this sequencing run
+          type: string
+          constraints:
+            required: false
+            maxLength: 500
+
+    primaryKey: run_id
+# FASTQs
+
+# FASTQs
+# FASTQs table represents individual sequencing data files
+  # Links libraries to their sequencing runs and resulting data files
+  # Uses R1 basename as primary key; R2 can be derived by substitution for paired-end
+  - name: fastqs
+    title: FASTQ Files
+    description: Individual FASTQ sequencing data files with checksums and run linkage
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: fastqs
+    schema:
+      missingValues: *mv
+      fields:
+        # PRIMARY KEY
+        # Using R1 basename since R2 can be derived by string substitution
+        - name: r1_basename
+          title: Read 1 Basename
+          description: File basename of the FASTQ read 1 file (without directory path)
+          example: sample001_L001_R1_001.fastq.gz
+          type: string
+          constraints:
+            required: true
+            unique: true
+            maxLength: 255
+
+        # FOREIGN KEYS
+        - name: library_id
+          description: Links to library in libraries table
+          type: string
+          constraints:
+            required: true
+            pattern: '^lib\d{4}$'
+
+        - name: run_id
+          description: Links to run in runs table
+          type: string
+          constraints:
+            required: true
+            pattern: '^run\d{4}$'
+
+        # FASTQ CHARACTERISTICS
+        - name: multiplexing
+          title: Multiplexing Status
+          description: Whether FASTQ contains reads from multiple libraries (multiplexed) or a single library
+          example: single_library
+          type: string
+          constraints:
+            required: true
+            enum: [multiplexed, single_library]
+          enumDescriptions:
+            multiplexed: FASTQ contains reads from multiple indexed libraries
+            single_library: FASTQ contains reads from a single library only
+
+        - name: lane_number
+          title: Lane Number
+          description: Sequencing lane number if library was split across multiple lanes
+          example: 1
+          type: integer
+          constraints:
+            required: false
+            minimum: 1
+            maximum: 8  # NovaSeq 6000 has max 2 or 4 lanes depending on flowcell; HiSeq can have 8
+
+        # DATA INTEGRITY CHECKSUMS
+        # MD5 hashes for verifying file integrity
+        - name: r1_md5
+          title: Read 1 MD5 Checksum
+          description: MD5 checksum of R1 FASTQ file for data integrity verification
+          example: 5d41402abc4b2a76b9719d911017c592
+          type: string
+          constraints:
+            required: true
+            pattern: '^[a-f0-9]{32}$'  # MD5 is exactly 32 hexadecimal characters
+
+        - name: r2_md5
+          title: Read 2 MD5 Checksum
+          description: MD5 checksum of R2 FASTQ file (paired-end libraries only)
+          example: 5d41402abc4b2a76b9719d911017c592
+          type: string
+          constraints:
+            required: false  # Only required for paired-end
+            pattern: '^[a-f0-9]{32}$'
+
+        # OPTIONAL NOTES
+        - name: notes
+          title: Notes
+          description: Free-text notes about this FASTQ file
+          type: string
+          constraints:
+            required: false
+            maxLength: 500
+
+    primaryKey: r1_basename
+    foreignKeys:
+      - fields: library_id
+        reference:
+          resource: libraries
+          fields: library_id
+      - fields: run_id
+        reference:
+          resource: runs
+          fields: run_id

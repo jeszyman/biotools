@@ -31,13 +31,34 @@ import random
 # ---   Load Inputs   --- #
 # ----------------------- #
 
+
 def load_inputs():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bam_file", type=str, required=True, help="Path to BAM file")
-    parser.add_argument("--target_mb", type=int, required=True, help="Target size of the output BAM file in megabytes")
-    parser.add_argument("--target_dir", type=str, required=False, help="Target directory to write downsampled BAM file to")
-    parser.add_argument("--output_name", type=str, required=False, help="Custom name for the output BAM file")
-    parser.add_argument("--subsample_seed", type=int, required=False, help="Subsampling seed used to influence which subset of reads is kept")
+    parser.add_argument(
+        "--target_mb",
+        type=int,
+        required=True,
+        help="Target size of the output BAM file in megabytes",
+    )
+    parser.add_argument(
+        "--target_dir",
+        type=str,
+        required=False,
+        help="Target directory to write downsampled BAM file to",
+    )
+    parser.add_argument(
+        "--output_name",
+        type=str,
+        required=False,
+        help="Custom name for the output BAM file",
+    )
+    parser.add_argument(
+        "--subsample_seed",
+        type=int,
+        required=False,
+        help="Subsampling seed used to influence which subset of reads is kept",
+    )
 
     args = parser.parse_args()
 
@@ -54,8 +75,10 @@ def load_inputs():
 
     return args
 
+
 # ---   Main   --- #
 # ---------------- #
+
 
 def main():
     try:
@@ -65,20 +88,26 @@ def main():
         fraction, actual_target_mb = calculate_fraction(args.bam_file, args.target_mb)
 
         if fraction == 0.01:
-            print(f"Warning: The minimum allowed fraction is 0.01, which corresponds to {actual_target_mb} MB.")
-            proceed = input("Do you want to proceed with this minimum allowed fraction? (yes/no): ")
-            if proceed.lower() != 'yes':
+            print(
+                f"Warning: The minimum allowed fraction is 0.01, which corresponds to {actual_target_mb} MB."
+            )
+            proceed = input(
+                "Do you want to proceed with this minimum allowed fraction? (yes/no): "
+            )
+            if proceed.lower() != "yes":
                 print("Operation aborted by the user.")
                 return 1
 
         # Generate the target BAM file name
-        target_bam = generate_target_bam_name(args.bam_file, actual_target_mb, args.target_dir, args.output_name)
+        target_bam = generate_target_bam_name(
+            args.bam_file, actual_target_mb, args.target_dir, args.output_name
+        )
         logging.info(f"Target BAM file path: {target_bam}")
 
         # Check if the target file already exists and confirm overwrite
         if os.path.exists(target_bam):
             overwrite = input(f"{target_bam} already exists. Overwrite? (yes/no): ")
-            if overwrite.lower() != 'yes':
+            if overwrite.lower() != "yes":
                 print("Operation aborted by the user.")
                 return 1
 
@@ -89,8 +118,10 @@ def main():
         logging.error(f"An error occurred: {str(e)}")
         return 1
 
+
 # ---   Functions   --- #
 # --------------------- #
+
 
 def calculate_fraction(original_bam, target_mb):
     logging.info(f"Calculating fraction for {original_bam} targeting {target_mb} MB.")
@@ -110,6 +141,7 @@ def calculate_fraction(original_bam, target_mb):
 
     return fraction, actual_target_mb
 
+
 def generate_target_bam_name(original_bam, target_mb, target_dir, custom_name=None):
     if custom_name:
         # Use the custom name, but ensure it has a .bam extension
@@ -119,22 +151,35 @@ def generate_target_bam_name(original_bam, target_mb, target_dir, custom_name=No
         # Use the original naming scheme
         bam_filename = os.path.basename(original_bam)
         base_filename = os.path.splitext(bam_filename)[0]
-        target_bam = os.path.join(target_dir, f"{base_filename}_ds{int(target_mb)}mb.bam")
+        target_bam = os.path.join(
+            target_dir, f"{base_filename}_ds{int(target_mb)}mb.bam"
+        )
 
     logging.info(f"Generated target BAM name: {target_bam}")
     return target_bam
 
+
 def downsample_bam(original_bam, fraction, target_bam, subsample_seed):
-    logging.info(f"Starting downsampling with fraction {fraction} and seed {subsample_seed}.")
+    logging.info(
+        f"Starting downsampling with fraction {fraction} and seed {subsample_seed}."
+    )
 
     # Run the samtools command to subsample using sh package
-    with open(target_bam, 'wb') as f:
+    with open(target_bam, "wb") as f:
         try:
-            sh.samtools.view("-bs", str(fraction), "--subsample-seed", str(subsample_seed), original_bam, _out=f)
+            sh.samtools.view(
+                "-bs",
+                str(fraction),
+                "--subsample-seed",
+                str(subsample_seed),
+                original_bam,
+                _out=f,
+            )
             logging.info(f"Subsampling complete: {target_bam} created.")
         except Exception as e:
             logging.error(f"Error during downsampling: {str(e)}")
             raise
+
 
 # ---   Main Guard   --- #
 # ---------------------- #

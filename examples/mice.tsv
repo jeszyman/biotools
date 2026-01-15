@@ -1,0 +1,4 @@
+mouse_id	strain	sex	birth_date	notes
+mou0001	NOD-SCID	f	2024-03-15	Engrafted with patient PDX
+mou0002	C57BL/6	m	2024-02-20	Wild-type control
+mou0003	NOD-SCID	f	2024-03-22

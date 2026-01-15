@@ -4,49 +4,1576 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :header-args: :tangle no :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
 :END:
-https://arcinstitute.org/
-https://academic-oup-com.mclibrary.idm.oclc.org/neuro-oncology/advance-article/doi/10.1093/neuonc/noaf103/8139084?login=true&token=eyJhbGciOiJub25lIn0.eyJleHAiOjE3NTA2ODU5ODQsImp0aSI6IjFjOWJhMmE0LTc3N2QtNGMyOS1hYzZlLTg1MzAxZDQwODU2YiJ9.
-- [cite:@peneder2021] has healthy cfDNA WGS data
-** Illumina protein prep
-:PROPERTIES:
-:ID:       052b5d06-5f71-4a86-b4eb-5d59cbb6b622
-:END:
-- ~10k targets
-** National Cancer Institute (NCI)
-:PROPERTIES:
-:ID:       b6752449-050b-4349-a103-fde3a87b0fc1
-:END:
-*** NCI Cancer Research Data Commons
-:PROPERTIES:
-:ID:       8d60abc7-07e0-4263-8ec2-de3e810cb029
-:END:
-https://datacommons.cancer.gov/support-crdc-cloud-resources
-https://datacommons.cancer.gov/
-**** ISB Cancer Gateway in the Cloud (ISB-CGC)
-:PROPERTIES:
-:ID:       cc8ecad2-1a98-49bc-aeb8-6ce6658905bd
-:END:
-- https://cloud.google.com/customers/nci-nih
-- https://isb-cgc.appspot.com/
-**** Imaging Data Commons (IDC)
-:PROPERTIES:
-:ID:       f7651553-d983-4ff5-828d-339e32c9fda1
-:END:
-https://portal.imaging.datacommons.cancer.gov/about/
-[[cite:&fedorov2021]]
-https://github.com/ImagingDataCommons
-**** Cancer Genomics Cloud (CGC)
-:PROPERTIES:
-:ID:       1c0828de-ce18-46d8-9303-7b2dc1ca93e7
-:END:
-[[cite:&reynolds2017]]
-https://docs.cancergenomicscloud.org/docs/collaborating-on-the-cgc-a-guide-for-consortia
-
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][Basecamp]]
 ** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics pipeline]]
 ** [[id:d482d49c-9dbe-43cd-a188-b1662a9ce348][Bioinformatics research project module]]
 ** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 ** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][Information Science / Data Science]]
+** Repository administration
+*** README
+:PROPERTIES:
+:ID:       72583990-6a92-4ccf-bc5e-08442ef893a9
+:export_file_name: README
+:END:
+
+[![validate-schema](https://img.shields.io/github/actions/workflow/status/jeszyman/biotools/validate-schema.yaml?branch=master&label=validate-schema)](https://github.com/jeszyman/biotools/actions/workflows/validate-schema.yaml)
+*** Continuous Improvement
+**** Metadata validation
+#+begin_src yaml :tangle ./.github/workflows/validate-schema.yaml
+name: validate-schema
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'  # Cache pip dependencies for faster runs
+
+      - name: Install dependencies
+        run: |
+          pip install frictionless openpyxl pandas
+
+      - name: Run validation
+        run: |
+          bash scripts/ci_validate.sh
+
+      - name: Display validation report
+        if: always()  # Show report even if validation fails
+        run: |
+          cat /tmp/validation-report.txt
+#+end_src
+
+** Bioinformatics metadata
+#+begin_src python :tangle ./scripts/validate_data_schema.py
+#!/usr/bin/env python3
+"""
+Validate a Frictionless schema YAML file structure only (no data validation).
+CLI:
+  --schema  Path to Frictionless Package/descriptor (e.g., data_model.yaml)
+  --cwd     Optional working directory (chdir before running)
+Exit: 0 if valid, 1 otherwise.
+"""
+import os
+import sys
+import argparse
+from frictionless import Package, FrictionlessException
+
+def parse_args():
+    p = argparse.ArgumentParser(description="Validate Frictionless schema YAML structure only.")
+    p.add_argument("--schema", required=True, help="Path to Package/descriptor YAML (e.g., data_model.yaml)")
+    p.add_argument("--cwd", default=None, help="Optional working directory (chdir before running)")
+    return p.parse_args()
+
+
+def validate_schema_file(path: str):
+    """Validate Frictionless schema/package structure only (no data validation)."""
+    errors = []
+    resource_reports = []
+
+    # Try to load the package
+    try:
+        pkg = Package(path)  # validate package metadata (no data read)
+    except FrictionlessException as e:
+        errors.append(("package-error", e.error.note))
+        for r in e.reasons:
+            errors.append((r.type, r.note))
+        return resource_reports, errors
+
+    # Validate each resource's schema
+    for res in pkg.resources:
+        try:
+            res.schema.to_descriptor()  # validate schema only
+            resource_reports.append((res.name, "OK"))
+        except FrictionlessException as e:
+            errs = [(f"{res.name}: {e.error.type}", e.error.note)]
+            errs.extend([(f"{res.name}: {r.type}", r.note) for r in e.reasons])
+            errors.extend(errs)
+            resource_reports.append((res.name, "ERROR"))
+        except Exception as e:
+            errors.append((f"{res.name}: schema-error", str(e)))
+            resource_reports.append((res.name, "ERROR"))
+
+    return resource_reports, errors
+
+
+def render_report(path, resource_reports, errors):
+    """Render validation report."""
+    print(f"Schema validation report for: {path}")
+    print()
+
+    if resource_reports:
+        print(f"Resources found: {len(resource_reports)}")
+        for name, status in resource_reports:
+            status_symbol = "✓" if status == "OK" else "✗"
+            print(f"  {status_symbol} {name}: {status}")
+        print()
+
+    if not errors:
+        print("Result: ✓ All schemas are valid")
+        return True
+    else:
+        print("Schema errors found:")
+        for error_type, note in errors:
+            print(f"  • {error_type}: {note}")
+        print()
+        print("Result: ✗ Schema validation failed")
+        return False
+
+
+def main():
+    args = parse_args()
+
+    if args.cwd:
+        os.chdir(args.cwd)
+
+    try:
+        resource_reports, errors = validate_schema_file(args.schema)
+        is_valid = render_report(args.schema, resource_reports, errors)
+        return 0 if is_valid else 1
+    except Exception as e:
+        print(f"Error validating schema file '{args.schema}': {e}")
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+#+end_src
+
+#+begin_src python :tangle ./scripts/input_data_validator.py
+# - Data model validator
+
+#!/usr/bin/env python3
+# ./scripts/input_data_validator.py
+"""
+Validate ALL Excel sheets corresponding to resources in a Frictionless package.
+Strict header check: every schema-declared field must be present in the sheet header.
+Only schema-declared fields are validated (extra columns ignored).
+Includes foreign key validation across resources.
+
+Exit 0 iff every resource validates; otherwise 1.
+
+CLI:
+  --schema   Path to Frictionless Package/descriptor (e.g., data_model.yaml)
+  --xlsx     Path to the Excel file
+  --report   Path to write a compact, aggregated report (text)
+  --cwd      Optional working directory (chdir before running)
+"""
+import os
+import sys
+import argparse
+from collections import defaultdict, Counter
+from typing import Dict, List, Tuple
+
+from frictionless import Package, Resource, formats, FrictionlessException
+
+
+# -------------------- arg parsing --------------------
+def parse_args():
+    p = argparse.ArgumentParser(description="Validate Excel vs schema for ALL resources (schema fields only, strict header).")
+    p.add_argument("--schema", required=True, help="Path to Package/descriptor YAML (e.g., data_model.yaml)")
+    p.add_argument("--xlsx", required=True, help="Path to Excel file")
+    p.add_argument("--report", required=True, help="Where to write compact validation report (txt)")
+    p.add_argument("--cwd", default=None, help="Optional working directory (chdir before running)")
+    return p.parse_args()
+
+
+# -------------------- header checker --------------------
+class HeaderError(Exception):
+    """Raised when schema-declared fields are missing from the sheet header."""
+    def __init__(self, missing_fields):
+        self.missing_fields = list(missing_fields)
+        msg = "Missing schema fields in sheet header: " + ", ".join(self.missing_fields)
+        super().__init__(msg)
+
+
+class HeaderReport:
+    """Adapter so header failures render via the same code path as frictionless reports."""
+    def __init__(self, missing_fields):
+        self.valid = False
+        self._missing_fields = list(missing_fields)
+
+    def flatten(self, fields):
+        # expected fields: ["rowNumber","fieldName","code","message"]
+        out = []
+        for f in self._missing_fields:
+            out.append((None, f, "missing-field", f"Column '{f}' not found in sheet header"))
+        return out
+
+
+# -------------------- utils --------------------
+def is_blank_value(value):
+    if value is None:
+        return True
+    if isinstance(value, str):
+        return value.strip() == ""
+    return False if isinstance(value, (int, float)) else (str(value).strip() == "")
+
+
+def is_row_blank(row_dict, threshold=1):
+    return sum(1 for v in row_dict.values() if not is_blank_value(v)) < threshold
+
+
+# -------------------- core validation --------------------
+def validate_one_table(xlsx_path: str, sheet: str, pkg_path: str):
+    """
+    Validate a single sheet by projecting to schema fields only with STRICT header check.
+    Returns a report-like object with .valid and .flatten(...).
+    """
+    pkg = Package(pkg_path)
+    res = pkg.get_resource(sheet)  # resource name == sheet name
+    schema = res.schema
+    expected = [f.name for f in schema.fields]
+
+    ctrl = formats.ExcelControl(sheet=sheet)
+    projected_rows = []
+    blank_rows_skipped = 0
+
+    try:
+        with Resource(path=xlsx_path, control=ctrl) as src:
+            header_labels = list(src.header.to_list()) if src.header else []
+            missing_from_sheet = [f for f in expected if f not in header_labels]
+            if missing_from_sheet:
+                raise HeaderError(missing_from_sheet)
+
+            for row in src.read_rows():
+                d = row.to_dict() if hasattr(row, "to_dict") else dict(row)
+                proj = {k: d.get(k) for k in expected}
+                if is_row_blank(proj, threshold=1):
+                    blank_rows_skipped += 1
+                    continue
+                projected_rows.append(proj)
+    except FrictionlessException as e:
+        # Treat missing sheet / IO / parse failures as header-level issues
+        return HeaderReport([f"<sheet:{sheet}> {e.error.note or 'sheet error'}"])
+    except HeaderError as e:
+        return HeaderReport(e.missing_fields)
+
+    # Validate only schema fields
+    return Resource(data=projected_rows, schema=schema).validate()
+
+
+def flatten_issues(report):
+    return list(report.flatten(["rowNumber", "fieldName", "code", "message"]))
+
+
+def render_table_block(name: str, report, max_rows=20) -> Tuple[str, bool, int, int]:
+    """Return (block_text, valid, n_header, n_rows_with_issues)."""
+    lines = []
+    lines.append(f"[{name}] valid: {report.valid}\n")
+
+    issues = flatten_issues(report)
+
+    # header issues
+    header_issues = {}
+    for row, field, code, msg in issues:
+        if row is None:
+            header_issues[field or ""] = (msg or "").strip()
+    if header_issues:
+        lines.append("  Header problems:")
+        for f, m in header_issues.items():
+            lines.append(f"    - {f}: {m}")
+        lines.append("")
+
+    # data issues grouped by row
+    by_row = defaultdict(list)
+    for row, field, code, msg in issues:
+        if row is None:
+            continue
+        by_row[row].append((field or "", code or "error", (msg or "").strip()))
+
+    # code summary
+    code_counts = Counter(code for rows in by_row.values() for _, code, _ in rows)
+    if code_counts:
+        lines.append("  Error code summary:")
+        for c, n in code_counts.most_common():
+            lines.append(f"    - {c}: {n}")
+        lines.append("")
+
+    # sample rows
+    n_show = min(max_rows, len(by_row))
+    lines.append(f"  First {n_show} problematic rows (of {len(by_row)}):")
+    for rownum in sorted(by_row)[:n_show]:
+        seen = set()
+        compact = []
+        for field, code, msg in by_row[rownum]:
+            key = (field, code, msg[:120])
+            if key in seen:
+                continue
+            seen.add(key)
+            if len(msg) > 140:
+                msg = msg[:137] + "..."
+            compact.append((field, code, msg))
+        lines.append(f"    - row {rownum}:")
+        for field, code, msg in compact:
+            label = field if field else "<row>"
+            lines.append(f"      {label}: [{code}] {msg}")
+    lines.append("")
+
+    return "\n".join(lines), bool(report.valid), len(header_issues), len(by_row)
+
+
+# -------------------- foreign key validation --------------------
+def validate_foreign_keys(xlsx_path: str, schema_path: str):
+    """
+    Validate foreign key constraints across all resources.
+    Returns list of FK violation issues.
+    """
+    fk_issues = []
+    try:
+        # Create package with paths pointing to actual xlsx
+        pkg = Package(schema_path)
+        for res in pkg.resources:
+            res.path = xlsx_path
+            res.control = {"type": "excel", "sheet": res.name}
+
+        # Validate entire package (includes FK checks)
+        pkg_report = pkg.validate()
+
+        if not pkg_report.valid:
+            # Extract FK-specific errors
+            for task in pkg_report.tasks:
+                if hasattr(task, 'errors'):
+                    for error in task.errors:
+                        # Foreign key errors typically have 'foreign' or 'key' in type
+                        error_type = getattr(error, 'type', '')
+                        if 'foreign' in error_type.lower() or 'key' in error_type.lower():
+                            fk_issues.append({
+                                'resource': task.resource.name if hasattr(task, 'resource') else '<unknown>',
+                                'row': getattr(error, 'rowNumber', None),
+                                'field': getattr(error, 'fieldName', None),
+                                'type': error_type,
+                                'message': getattr(error, 'message', str(error))
+                            })
+    except Exception as e:
+        fk_issues.append({
+            'resource': '<package>',
+            'row': None,
+            'field': None,
+            'type': 'foreign-key-validation-error',
+            'message': str(e)
+        })
+
+    return fk_issues
+
+
+# -------------------- main --------------------
+def main():
+    args = parse_args()
+    if args.cwd:
+        os.chdir(args.cwd)
+
+    pkg = Package(args.schema)
+    resource_names = [r.name for r in pkg.resources]
+
+    blocks: List[str] = []
+    all_valid = True
+    total_header_issues = 0
+    total_rows_with_issues = 0
+    total_data_issues = 0
+
+    # Validate each resource individually
+    for name in resource_names:
+        report = validate_one_table(args.xlsx, name, args.schema)
+        block, ok, n_hdr, n_rows = render_table_block(name, report)
+        blocks.append(block)
+        all_valid = all_valid and ok
+        total_header_issues += n_hdr
+        total_rows_with_issues += n_rows
+
+        # count total data issues from the already-flattened view
+        issues = flatten_issues(report)
+        data_issues = [t for t in issues if t[0] is not None]
+        total_data_issues += len(data_issues)
+
+    # Validate foreign keys across resources
+    fk_issues = validate_foreign_keys(args.xlsx, args.schema)
+
+    if fk_issues:
+        fk_lines = [
+            "=== Foreign Key Violations ===",
+            f"Total FK issues: {len(fk_issues)}",
+            ""
+        ]
+        for issue in fk_issues[:20]:  # Show first 20
+            row_info = f"row {issue['row']}" if issue['row'] else "header"
+            field_info = f"[{issue['field']}]" if issue['field'] else ""
+            fk_lines.append(f"  {issue['resource']} {row_info} {field_info}: {issue['message']}")
+        if len(fk_issues) > 20:
+            fk_lines.append(f"  ... and {len(fk_issues) - 20} more")
+        fk_lines.append("")
+        blocks.append("\n".join(fk_lines))
+        all_valid = False
+
+    total_fk_issues = len(fk_issues)
+
+    summary = [
+        "=== Validation Summary (all tables) ===",
+        f"Resources checked: {len(resource_names)}",
+        f"All valid: {all_valid}",
+        f"Header issues: {total_header_issues}",
+        f"Rows with issues: {total_rows_with_issues}",
+        f"Total data issues: {total_data_issues}",
+        f"Foreign key issues: {total_fk_issues}",
+        "",
+        f"[input-data-validator] wrote report -> {args.report}",
+    ]
+
+    os.makedirs(os.path.dirname(args.report), exist_ok=True)
+    with open(args.report, "w", encoding="utf-8") as fh:
+        fh.write("\n".join(blocks + summary))
+
+    print(summary[-1])
+    return 0 if all_valid else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+#+end_src
+
+#+begin_src bash :tangle ./scripts/ci_validate.sh
+#!/bin/bash
+set -e
+
+echo "==> Validating schema structure..."
+python scripts/validate_data_schema.py --schema examples/example-metadata-schema.yaml
+
+echo "==> Building Excel from TSVs..."
+python scripts/build_excel_from_tsv.py \
+  --schema examples/example-metadata-schema.yaml \
+  --tsv-dir examples \
+  --output examples/example-metadata.xlsx
+
+echo "==> Validating data against schema..."
+python scripts/input_data_validator.py \
+  --schema examples/example-metadata-schema.yaml \
+  --xlsx examples/example-metadata.xlsx \
+  --report /tmp/validation-report.txt
+
+echo "==> Validation complete!"
+echo ""
+cat /tmp/validation-report.txt
+#+end_src
+
+#+begin_src python :tangle ./scripts/build_excel_from_tsv.py
+#!/usr/bin/env python3
+"""
+Build Excel workbook from TSV files based on Frictionless schema.
+
+For each resource in the schema, reads the corresponding TSV file
+and creates a sheet in the Excel workbook.
+
+CLI:
+  --schema    Path to Frictionless schema YAML
+  --tsv-dir   Directory containing TSV files (named {resource}.tsv)
+  --output    Path to write Excel file
+  --cwd       Optional working directory (chdir before running)
+
+Exit: 0 if successful, 1 otherwise.
+"""
+import os
+import sys
+import argparse
+from pathlib import Path
+
+import pandas as pd
+from frictionless import Package
+
+
+def parse_args():
+    p = argparse.ArgumentParser(
+        description="Build Excel workbook from TSV files based on schema."
+    )
+    p.add_argument("--schema", required=True, help="Path to Frictionless schema YAML")
+    p.add_argument("--tsv-dir", required=True, help="Directory containing TSV files")
+    p.add_argument("--output", required=True, help="Output Excel file path")
+    p.add_argument("--cwd", default=None, help="Optional working directory")
+    return p.parse_args()
+
+
+def build_excel_from_tsvs(schema_path: str, tsv_dir: str, output_path: str):
+    """
+    Read schema, load TSV files, create Excel workbook.
+
+    Args:
+        schema_path: Path to Frictionless schema YAML
+        tsv_dir: Directory containing TSV files named {resource}.tsv
+        output_path: Where to write the Excel file
+
+    Returns:
+        Dict with resource names and row counts
+    """
+    # Load schema to get resource names
+    pkg = Package(schema_path)
+    resource_names = [r.name for r in pkg.resources]
+
+    tsv_dir_path = Path(tsv_dir)
+    output_dir = Path(output_path).parent
+
+    # Ensure output directory exists
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Track results
+    results = {}
+    missing = []
+
+    # Create Excel writer
+    with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
+        for resource_name in resource_names:
+            tsv_path = tsv_dir_path / f"{resource_name}.tsv"
+
+            if not tsv_path.exists():
+                missing.append(resource_name)
+                print(f"Warning: TSV file not found for resource '{resource_name}': {tsv_path}")
+                continue
+
+            # Read TSV
+            # keep_default_na=False prevents pandas from converting strings like "NA" to NaN
+            df = pd.read_csv(tsv_path, sep='\t', keep_default_na=False)
+
+            # Replace empty strings with None for cleaner Excel representation
+            df = df.replace('', None)
+
+            # Write to Excel sheet
+            df.to_excel(writer, sheet_name=resource_name, index=False)
+
+            results[resource_name] = len(df)
+            print(f"✓ {resource_name}: {len(df)} rows")
+
+    if missing:
+        print(f"\nWarning: {len(missing)} resource(s) had no TSV file:")
+        for name in missing:
+            print(f"  - {name}")
+
+    return results, missing
+
+
+def main():
+    args = parse_args()
+
+    if args.cwd:
+        os.chdir(args.cwd)
+
+    try:
+        results, missing = build_excel_from_tsvs(
+            args.schema,
+            args.tsv_dir,
+            args.output
+        )
+
+        total_rows = sum(results.values())
+        print(f"\nCreated {args.output}")
+        print(f"Total resources: {len(results)}")
+        print(f"Total rows: {total_rows}")
+
+        # Exit with error if any TSVs were missing
+        if missing:
+            print(f"\nError: {len(missing)} resource(s) missing TSV files")
+            return 1
+
+        return 0
+
+    except Exception as e:
+        print(f"Error building Excel from TSVs: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc()
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+#+end_src
+
+- With Libreoffice calc
+  - Use Excel A1 formula syntax (Tools -> Options -> LibreOffice Calc -> Formula -> Formula Options -> Formula syntax)
+*** Example data
+#+name: subjects
+| subject_id | organism_type | notes                   |
+|------------+---------------+-------------------------|
+| par0001    | human         | Initial enrollment      |
+| par0002    | human         |                         |
+| par0003    | human         | Withdrawn from study    |
+| mou0001    | mouse         | PDX model establishment |
+| mou0002    | mouse         | Control group           |
+| mou0003    | mouse         |                         |
+
+#+name: participants
+| participant_id | institution_id | study_protocol_id | sex | birth_year | notes                      |
+|----------------+----------------+-------------------+-----+------------+----------------------------|
+| par0001        | mayo           |         21-004567 | f   |       1978 | Consented for biospecimens |
+| par0002        | washu          |         202012345 | m   |       1965 |                            |
+| par0003        | jhh            |       NA_00098765 | f   |       1992 | Lost to follow-up          |
+
+#+name: mice
+| mouse_id | strain   | sex | birth_date | notes                      |
+|----------+----------+-----+------------+----------------------------|
+| mou0001  | NOD-SCID | f   | 2024-03-15 | Engrafted with patient PDX |
+| mou0002  | C57BL/6  | m   | 2024-02-20 | Wild-type control          |
+| mou0003  | NOD-SCID | f   | 2024-03-22 |                            |
+
+#+name: samples
+| sample_id | subject_id | collection_date | sample_type | sample_volume_ml | notes               |
+|-----------+------------+-----------------+-------------+------------------+---------------------|
+| sam0001   | par0001    |      2024-06-15 | blood       |              8.5 | Baseline collection |
+| sam0002   | par0001    |      2024-09-20 | blood       |              8.0 | 3-month follow-up   |
+| sam0003   | par0002    |      2024-05-10 | tumor       |                  | Surgical resection  |
+| sam0004   | par0002    |      2024-05-10 | blood       |              9.2 | Same-day blood draw |
+| sam0005   | mou0001    |      2024-06-01 | tumor       |                  | PDX tumor harvest   |
+| sam0006   | mou0001    |      2024-06-01 | blood       |              0.2 | Terminal bleed      |
+| sam0007   | mou0002    |      2024-05-25 | blood       |             0.15 | Serial sampling     |
+
+#+name: libraries
+| library_id | sample_id | isolation_method | adapter_type | library_type | input_ul | input_pg_ml | notes                  |
+|------------+-----------+------------------+--------------+--------------+----------+-------------+------------------------|
+| lib0001    | sam0001   | truseq           | illumina     | paired_end   |      100 |        2.34 | Standard prep          |
+| lib0002    | sam0002   | truseq           | illumina     | paired_end   |      100 |        1.89 |                        |
+| lib0003    | sam0003   | truseq           | illumina     | paired_end   |       50 |       15.67 | High quality tumor DNA |
+| lib0004    | sam0004   | emseq_v2         | xgen         | paired_end   |      100 |        3.21 | Methylation profiling  |
+| lib0005    | sam0005   | truseq           | illumina     | paired_end   |       25 |       45.80 |                        |
+| lib0006    | sam0006   | truseq           | illumina     | single_end   |       10 |        0.56 | Low input cfDNA        |
+| lib0007    | sam0007   | truseq           | illumina     | paired_end   |       10 |        0.42 |                        |
+
+
+#+name: runs
+| run_id  | alt_run_id | run_institute | sequencer    |   run_date | flowcell_id | notes                      |
+|---------+------------+---------------+--------------+------------+-------------+----------------------------|
+| run0001 | HWTG7DSXY  | mayo          | novaseq_6000 | 2024-07-01 | HWTG7DSXY   | Full flowcell run          |
+| run0002 | HKVN3BBXY  | washu         | hiseq_4000   | 2024-07-15 | HKVN3BBXY   | Shared with other projects |
+| run0003 |            | mayo          | nextseq_2000 | 2024-08-10 |             | Small pilot run            |
+
+#+name: fastqs
+| r1_basename                     | library_id | run_id  | multiplexing   | lane_number | r1_md5                           | r2_md5                           | notes              |
+|---------------------------------+------------+---------+----------------+-------------+----------------------------------+----------------------------------+--------------------|
+| lib0001_S1_L001_R1_001.fastq.gz | lib0001    | run0001 | single_library |           1 | 5d41402abc4b2a76b9719d911017c592 | 7d793037a0760186574b0282f2f435e7 |                    |
+| lib0002_S2_L001_R1_001.fastq.gz | lib0002    | run0001 | single_library |           1 | 8b1a9953c4611296a827abf8c47804d7 | 1679091c5a880faf6fb5e6087eb1b2dc |                    |
+| lib0003_S1_L002_R1_001.fastq.gz | lib0003    | run0002 | single_library |           2 | e4d909c290d0fb1ca068ffaddf22cbd0 | 4b43b0aee35624cd95b910189b3dc231 | Lane split         |
+| lib0003_S1_L003_R1_001.fastq.gz | lib0003    | run0002 | single_library |           3 | d0be2dc421be4fcd0172e5afceea3970 | 6512bd43d9caa6e02c990b0a82652dca |                    |
+| lib0004_S3_L001_R1_001.fastq.gz | lib0004    | run0001 | single_library |           1 | c20ad4d76fe97759aa27a0c99bff6710 | c51ce410c124a10e0db5e4b97fc2af39 | EM-seq library     |
+| lib0005_S1_L001_R1_001.fastq.gz | lib0005    | run0003 | single_library |           1 | aab3238922bcc25a6f606eb525ffdc56 | 9bf31c7ff062936a96d3c8bd1f8f2ff3 |                    |
+| lib0006_S2_L001_R1_001.fastq.gz | lib0006    | run0003 | single_library |           1 | d645920e395fedad7bbbed0eca3fe2e0 |                                  | Single-end library |
+
+#+begin_src python
+import re
+import pandas as pd
+from pathlib import Path
+
+def extract_org_table(org_file, table_name):
+    """Extract a named org table and return as DataFrame"""
+    with open(org_file, 'r') as f:
+        content = f.read()
+
+    # Debug: check if NAME exists
+    if f'#+name: {table_name}' not in content:
+        print(f"DEBUG: Could not find '#+name: {table_name}' in file")
+        # Try to show what NAME tags exist
+        names = re.findall(r'#\+name:\s*(\w+)', content)
+        print(f"DEBUG: Found these NAME tags: {names}")
+        raise ValueError(f"Table {table_name} not found")
+
+    # More flexible pattern - allow for various whitespace
+    pattern = rf'#\+name:\s*{table_name}\s*\n\s*#\+begin_src\s+org\s*\n(.*?)\n\s*#\+end_src'
+    match = re.search(pattern, content, re.DOTALL)
+
+    if not match:
+        print(f"DEBUG: Found NAME tag but couldn't match the full pattern")
+        raise ValueError(f"Table {table_name} pattern didn't match")
+
+    table_text = match.group(1)
+
+    # Parse org table
+    lines = [line.strip() for line in table_text.split('\n') if line.strip()]
+    # Remove separator lines (those with just | and -)
+    lines = [line for line in lines if not re.match(r'^\|[\s\-\+]+\|$', line)]
+
+    # Split by | and clean
+    data = []
+    for line in lines:
+        cols = [col.strip() for col in line.split('|')[1:-1]]  # Skip first/last empty
+        data.append(cols)
+
+    # First row is header
+    df = pd.DataFrame(data[1:], columns=data[0])
+
+    # Replace empty strings with None
+    df = df.replace('', None)
+
+    return df
+
+# Extract all tables
+org_file = 'biotools.org'
+table_names = ['subjects', 'participants', 'mice', 'samples', 'libraries', 'runs', 'fastqs']
+
+# Save as TSVs
+for table_name in table_names:
+    df = extract_org_table(org_file, table_name)
+    df.to_csv(f'{table_name}.tsv', sep='\t', index=False, na_rep='')
+    print(f"Extracted {table_name}: {len(df)} rows")
+
+# Build Excel from TSVs
+with pd.ExcelWriter('example-metadata.xlsx', engine='openpyxl') as writer:
+    for table_name in table_names:
+        df = pd.read_csv(f'{table_name}.tsv', sep='\t', keep_default_na=False)
+        df.to_excel(writer, sheet_name=table_name, index=False)
+
+print("\nCreated example-metadata.xlsx")
+#+end_src
+
+*** Logical data representation, Common Data Model schema
+:PROPERTIES:
+:ID:       a276df0c-a606-4337-8f0f-7f711e9ceb4c
+:header-args:yaml: :tangle ./examples/example-metadata-schema.yaml
+:END:
+[[file:example-metadata-schema.yaml]]
+**** Preamble
+#+begin_src yaml
+# Documentation
+# Good Practices for Bioinformatics Metadata Schema with Frictionless
+#
+# Components:
+#   - Excel as the user interface: non-programmers enter data, schema validates it
+#   - Hierarchical data model: organize by biological and technical relationships
+#   - Self-documenting: schemas generate data dictionaries programmatically
+#
+# Schema Structure:
+#   - Version control by repo-level versioning
+#   - Define shared elements once using YAML anchors
+#   - Use three-letter prefixes + 4 digits for all primary keys (sub0001, par0001, mou0001, etc.)
+#
+# Field Definition Principles:
+#   - Every field should include: name, title, description, example, type, constraints
+#   - Always include pattern constraints on primary keys to catch typos
+#   - Foreign key fields should be minimal: type, pattern, required only
+#   - Use enums over booleans for domain-specific concepts
+#   - Document enum values with enumDescriptions for data dictionary generation
+#   - Standardize units in field names and descriptions
+
+# Shared definitions
+
+resources:
+#+end_src
+**** Subjects
+#+begin_src yaml
+# Subjects
+# Subjects table serves as the parent linking table for all research organisms
+  # It contains only minimal common fields - organism-specific details live in child tables (participants, mice)
+  - name: subjects
+    path: metadata.xlsx  # Environment variable for flexible path handling across projects
+    control:
+      type: excel
+      sheet: subjects  # Excel sheet name must match resource name
+    schema:
+      missingValues: &mv ["", "unknown", "UNK", "unk", "n/a", "NA", "GET", "None"]
+      fields:
+        # PRIMARY KEY FIELD
+        # Always define first, includes pattern constraint to catch formatting errors
+        - name: subject_id
+          title: Subject Identifier
+          description: Unique value identifying a specific research subject organism. Format is three letters followed by 4 digits. Values match primary keys from participants or mice tables.
+          example: sub0001
+          type: string
+          format: default
+          constraints:
+            required: true  # Must be present in every row
+            unique: true    # No duplicate values allowed
+            pattern: '^[a-z]{3}\d{4}$'  # Three lowercase letters + 4 digits
+
+        # DISCRIMINATOR FIELD
+        # Determines which child table contains organism-specific details
+        # enumDescriptions enables programmatic data dictionary generation
+        - name: organism_type
+          title: Organism Type
+          description: Subject's organism type, determines which subtype table contains additional details
+          example: mouse
+          type: string
+          constraints:
+            required: true
+            enum: [human, mouse]  # Restrict to known categories only
+          enumDescriptions:  # Custom property for documentation - ignored by validator
+            human: Human research participant (details in participants table)
+            mouse: Mouse subject (details in mice table)
+
+        # OPTIONAL FIELD
+        # No required constraint means field can be blank (matches missingValues)
+        - name: notes
+          description: Free-text notes about this subject
+          type: string
+          constraints:
+            required: false  # Explicit even though it's default behavior
+
+    primaryKey: subject_id  # Declares subject_id as the primary key for foreign key relationships
+#+end_src
+
+**** Participants
+#+begin_src yaml
+# Participants
+# Participants table contains human-specific metadata for research subjects
+  # Primary key also serves as foreign key to subjects table
+  # Only includes data applicable to human participants (institution, demographics, etc.)
+  - name: participants
+    title: Human Study Participants
+    description: Human research participants enrolled under institutional protocols, with demographic and enrollment metadata
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: participants
+    schema:
+      missingValues: *mv # References the shared anchor defined at top level
+      fields:
+        # PRIMARY KEY - also serves as foreign key to subjects table
+        # Three-letter prefix convention: 'par' + 4 digits
+        - name: participant_id
+          title: Participant Identifier
+          description: Unique identifier of a unique study participant. Format is 'par' followed by 4 digits. Links directly to subject_id in subjects table.
+          example: par0001
+          type: string
+          constraints:
+            required: true
+            unique: true
+            pattern: '^par\d{4}$'
+
+        # ADMINISTRATIVE FIELDS
+        # Institution and protocol tracking for multi-site studies
+        - name: institution_id
+          title: Enrolling Institution
+          description: Identifier for institution where patient was consented for research
+          example: jhh
+          type: string
+          constraints:
+            required: true
+            enum: [nci, jhh, washu, mayo]
+          enumDescriptions:
+            nci: National Cancer Institute
+            jhh: Johns Hopkins Hospital
+            washu: Washington University
+            mayo: Mayo Clinic
+
+        - name: study_protocol_id
+          title: Study Protocol
+          description: Identifier for institution research protocol which participant was consented and enrolled
+          example: 99-CC-0168
+          type: string
+          constraints:
+            required: false
+
+        # DEMOGRAPHIC FIELDS
+        - name: sex
+          title: Participant Sex
+          description: Participant's sex
+          example: m
+          type: string
+          constraints:
+            required: true
+            enum: [m, f]
+          enumDescriptions:
+            m: Male
+            f: Female
+
+        - name: birth_year
+          title: Birth Year
+          description: Year of participant's birth in YYYY format
+          example: 1981
+          type: year
+          constraints:
+            required: false
+            minimum: 1900  # Reasonable lower bound
+            maximum: 2025  # Flags future dates or data entry errors
+
+        # OPTIONAL NOTES FIELD
+        # Allows free-text metadata that doesn't fit structured fields
+        - name: notes
+          title: Notes
+          description: Free-text notes about this participant
+          type: string
+          constraints:
+            required: false
+
+    primaryKey: participant_id
+    foreignKeys:
+      - fields: participant_id
+        reference:
+          resource: subjects
+          fields: subject_id
+#+end_src
+**** Mice
+#+begin_src yaml
+# Mice
+# Mice table contains mouse-specific metadata for research subjects
+  # Primary key also serves as foreign key to subjects table
+  # Includes strain, genotype, and housing information
+  - name: mice
+    title: Mouse Research Subjects
+    description: Mouse subjects used in research
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: mice
+    schema:
+      missingValues: *mv
+      fields:
+        # PRIMARY KEY - also serves as foreign key to subjects table
+        # Three-letter prefix: 'mou' + 4 digits
+        - name: mouse_id
+          title: Mouse Identifier
+          description: Unique identifier for mouse subject. Format is 'mou' followed by 4 digits. Links directly to subject_id in subjects table.
+          example: mou0001
+          type: string
+          constraints:
+            required: true
+            unique: true
+            pattern: '^mou\d{4}$'
+
+        # MOUSE-SPECIFIC FIELDS
+        - name: strain
+          title: Mouse Strain
+          description: Genetic background strain of the mouse
+          example: C57BL/6
+          type: string
+          constraints:
+            required: true
+            maxLength: 50
+
+        - name: sex
+          title: Mouse Sex
+          description: Biological sex of the mouse
+          example: m
+          type: string
+          constraints:
+            required: true
+            enum: [m, f]
+          enumDescriptions:
+            m: Male
+            f: Female
+
+        - name: birth_date
+          title: Birth Date
+          description: Date of birth in ISO8601 format (YYYY-MM-DD)
+          example: 2024-01-15
+          type: date
+          constraints:
+            required: false
+            minimum: "2020-01-01"
+            maximum: "2026-12-31"
+
+        # OPTIONAL NOTES
+        - name: notes
+          title: Notes
+          description: Free-text notes about this mouse
+          type: string
+          constraints:
+            required: false
+            maxLength: 500
+
+    primaryKey: mouse_id
+    foreignKeys:
+      - fields: mouse_id
+        reference:
+          resource: subjects
+          fields: subject_id
+#+end_src
+
+**** Samples
+#+begin_src yaml
+# Samples
+# Samples table links biological specimens to subjects
+  # Contains collection metadata and sample characteristics
+  # One subject can have multiple samples over time
+  - name: samples
+    title: Biological Samples
+    description: Biological specimens collected from research subjects, including collection metadata and sample characteristics
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: samples
+    schema:
+      missingValues: *mv
+      fields:
+        # PRIMARY KEY
+        # Three-letter prefix: 'sam' + 4 digits
+        - name: sample_id
+          title: Sample Identifier
+          description: Unique value identifying any specific sample. Format is 'sam' followed by 4 digits.
+          example: sam0001
+          type: string
+          constraints:
+            required: true
+            unique: true
+            pattern: '^sam\d{4}$'
+
+        # FOREIGN KEY to subjects table
+        - name: subject_id
+          description: Links to subject in subjects table
+          type: string
+          constraints:
+            required: true
+
+        # COLLECTION METADATA
+        - name: collection_date
+          title: Sample Collection Date
+          description: Date when sample was obtained from organism in ISO8601 format (YYYY-MM-DD)
+          example: 2024-01-02
+          type: date
+          constraints:
+            required: true
+            minimum: "2020-01-01"  # Project start date
+            maximum: "2026-12-31"  # Flags future dates
+
+        # SAMPLE CHARACTERISTICS
+        - name: sample_type
+          title: Sample Type
+          description: Type of sample collected
+          example: blood
+          type: string
+          constraints:
+            required: true
+            enum: [blood, tumor, cell_line]
+          enumDescriptions:
+            blood: Sample generated from a blood draw
+            tumor: Solid tissue sample from a biopsy or resection
+            cell_line: Cultured cell line collection
+
+        # NUMERIC FIELDS demonstrating range constraints
+        - name: sample_volume_ml
+          title: Sample Volume
+          description: Volume of sample collected in milliliters
+          example: 5.0
+          type: number
+          constraints:
+            required: false
+            minimum: 0
+            minimum: 0
+            maximum: 1000  # Flag unrealistic values
+
+        # OPTIONAL NOTES
+        - name: notes
+          title: Notes
+          description: Free-text notes about this sample
+          type: string
+          constraints:
+            required: false
+
+    primaryKey: sample_id
+    foreignKeys:
+      - fields: subject_id
+        reference:
+          resource: subjects
+          fields: subject_id
+#+end_src
+**** Libraries
+#+begin_src yaml
+# Libraries
+# Libraries table contains sequencing library preparation metadata
+  # Links samples to sequencing data through library construction details
+  # Includes prep methods, input quantities, and library characteristics
+  - name: libraries
+    title: Sequencing Libraries
+    description: Sequencing libraries prepared from biological samples, including prep methods and input quantities
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: libraries
+    schema:
+      missingValues: *mv
+      fields:
+        # PRIMARY KEY
+        # Three-letter prefix: 'lib' + 4 digits
+        - name: library_id
+          title: Library Identifier
+          description: Unique identifier for any specific sequencing library. Format is 'lib' followed by 4 digits.
+          example: lib0001
+          type: string
+          constraints:
+            required: true
+            unique: true
+            pattern: '^lib\d{4}$'
+
+        # FOREIGN KEY to samples table
+        - name: sample_id
+          description: Links to sample in samples table
+          type: string
+          constraints:
+            required: true
+            pattern: '^sam\d{4}$'
+
+        # LIBRARY PREP METHODS
+        - name: isolation_method
+          title: Nucleic Acid Isolation Method
+          description: Method used for isolation of nucleic acid input to sequencing library
+          example: truseq
+          type: string
+          constraints:
+            required: true
+            enum: [truseq, emseq_v1, emseq_v2]
+          enumDescriptions:
+            truseq: TruSeq standard library prep
+            emseq_v1: EM-seq enzymatic methylation sequencing version 1
+            emseq_v2: EM-seq enzymatic methylation sequencing version 2
+
+        - name: adapter_type
+          title: Adapter Type
+          description: Type or strategy for sequencing adapters of library
+          example: illumina
+          type: string
+          constraints:
+            required: true
+            enum: [illumina, xgen]
+          enumDescriptions:
+            illumina: Illumina standard adapters
+            xgen: IDT xGen adapters
+
+        - name: library_type
+          title: Library Type
+          description: Whether library was sequenced as paired-end or single-end
+          example: paired_end
+          type: string
+          constraints:
+            required: true
+            enum: [paired_end, single_end]
+          enumDescriptions:
+            paired_end: Paired-end sequencing library
+            single_end: Single-end sequencing library
+
+        # INPUT QUANTITIES with numeric validation
+        - name: input_ul
+          title: Input Volume
+          description: Library input volume in microliters
+          example: 100
+          type: number
+          constraints:
+            required: false
+            minimum: 0
+            maximum: 1000
+
+        - name: input_pg_ml
+          title: Input Concentration
+          description: Library input concentration in picograms per milliliter
+          example: 0.34
+          type: number
+          constraints:
+            required: false
+            minimum: 0
+            maximum: 10000  # Flag unrealistic concentrations
+
+        # OPTIONAL NOTES
+        - name: notes
+          title: Notes
+          description: Free-text notes about this library
+          type: string
+          constraints:
+            required: false
+            maxLength: 500
+
+    primaryKey: library_id
+    foreignKeys:
+      - fields: sample_id
+        reference:
+          resource: samples
+          fields: sample_id
+#+end_src
+**** Sequencing runs
+#+begin_src yaml
+# Sequencing runs
+# Sequencing runs table tracks individual sequencing runs
+  # Multiple libraries can be multiplexed on a single run
+  # Links to fastqs table which contains per-library FASTQ files from each run
+  - name: runs
+    title: Sequencing Runs
+    description: Individual sequencing runs performed on sequencing instruments, including run metadata and instrument details
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: runs
+    schema:
+      missingValues: *mv
+      fields:
+        # PRIMARY KEY
+        # Three-letter prefix: 'run' + 4 digits
+        - name: run_id
+          title: Run Identifier
+          description: Unique identifier for a specific sequencing run. Format is 'run' followed by 4 digits.
+          example: run0001
+          type: string
+          constraints:
+            required: true
+            unique: true
+            pattern: '^run\d{4}$'
+
+        # ALTERNATIVE IDENTIFIERS
+        # External or vendor-provided run IDs
+        - name: alt_run_id
+          title: Alternative Run ID
+          description: External or vendor-provided identifier for this run (e.g., flowcell ID, instrument run ID)
+          example: HWTG7DSXY
+          type: string
+          constraints:
+            required: false
+            maxLength: 100
+
+        # RUN METADATA
+        - name: run_institute
+          title: Sequencing Institute
+          description: Institution or facility where sequencing was performed
+          example: mayo
+          type: string
+          constraints:
+            required: true
+            enum: [mayo, washu, broad, nci, external]
+          enumDescriptions:
+            mayo: Mayo Clinic
+            washu: Washington University
+            broad: Broad Institute
+            nci: National Cancer Institute
+            external: External sequencing facility
+
+        - name: sequencer
+          title: Sequencing Instrument
+          description: Model of sequencing instrument used
+          example: novaseq_6000
+          type: string
+          constraints:
+            required: false
+            enum: [novaseq_6000, hiseq_4000, nextseq_2000, miseq, other]
+          enumDescriptions:
+            novaseq_6000: Illumina NovaSeq 6000
+            hiseq_4000: Illumina HiSeq 4000
+            nextseq_2000: Illumina NextSeq 2000
+            miseq: Illumina MiSeq
+            other: Other sequencing platform
+
+        - name: run_date
+          title: Run Date
+          description: Date when sequencing run was initiated in ISO8601 format (YYYY-MM-DD)
+          example: 2024-06-15
+          type: date
+          constraints:
+            required: false
+            minimum: "2020-01-01"
+            maximum: "2026-12-31"
+
+        - name: flowcell_id
+          title: Flowcell ID
+          description: Identifier for the flowcell used in this run
+          example: HWTG7DSXY
+          type: string
+          constraints:
+            required: false
+            maxLength: 50
+
+        # OPTIONAL NOTES
+        - name: notes
+          title: Notes
+          description: Free-text notes about this sequencing run
+          type: string
+          constraints:
+            required: false
+            maxLength: 500
+
+    primaryKey: run_id
+#+end_src
+
+**** FASTQs
+#+begin_src yaml
+# FASTQs
+# FASTQs table represents individual sequencing data files
+  # Links libraries to their sequencing runs and resulting data files
+  # Uses R1 basename as primary key; R2 can be derived by substitution for paired-end
+  - name: fastqs
+    title: FASTQ Files
+    description: Individual FASTQ sequencing data files with checksums and run linkage
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: fastqs
+    schema:
+      missingValues: *mv
+      fields:
+        # PRIMARY KEY
+        # Using R1 basename since R2 can be derived by string substitution
+        - name: r1_basename
+          title: Read 1 Basename
+          description: File basename of the FASTQ read 1 file (without directory path)
+          example: sample001_L001_R1_001.fastq.gz
+          type: string
+          constraints:
+            required: true
+            unique: true
+            maxLength: 255
+
+        # FOREIGN KEYS
+        - name: library_id
+          description: Links to library in libraries table
+          type: string
+          constraints:
+            required: true
+            pattern: '^lib\d{4}$'
+
+        - name: run_id
+          description: Links to run in runs table
+          type: string
+          constraints:
+            required: true
+            pattern: '^run\d{4}$'
+
+        # FASTQ CHARACTERISTICS
+        - name: multiplexing
+          title: Multiplexing Status
+          description: Whether FASTQ contains reads from multiple libraries (multiplexed) or a single library
+          example: single_library
+          type: string
+          constraints:
+            required: true
+            enum: [multiplexed, single_library]
+          enumDescriptions:
+            multiplexed: FASTQ contains reads from multiple indexed libraries
+            single_library: FASTQ contains reads from a single library only
+
+        - name: lane_number
+          title: Lane Number
+          description: Sequencing lane number if library was split across multiple lanes
+          example: 1
+          type: integer
+          constraints:
+            required: false
+            minimum: 1
+            maximum: 8  # NovaSeq 6000 has max 2 or 4 lanes depending on flowcell; HiSeq can have 8
+
+        # DATA INTEGRITY CHECKSUMS
+        # MD5 hashes for verifying file integrity
+        - name: r1_md5
+          title: Read 1 MD5 Checksum
+          description: MD5 checksum of R1 FASTQ file for data integrity verification
+          example: 5d41402abc4b2a76b9719d911017c592
+          type: string
+          constraints:
+            required: true
+            pattern: '^[a-f0-9]{32}$'  # MD5 is exactly 32 hexadecimal characters
+
+        - name: r2_md5
+          title: Read 2 MD5 Checksum
+          description: MD5 checksum of R2 FASTQ file (paired-end libraries only)
+          example: 5d41402abc4b2a76b9719d911017c592
+          type: string
+          constraints:
+            required: false  # Only required for paired-end
+            pattern: '^[a-f0-9]{32}$'
+
+        # OPTIONAL NOTES
+        - name: notes
+          title: Notes
+          description: Free-text notes about this FASTQ file
+          type: string
+          constraints:
+            required: false
+            maxLength: 500
+
+    primaryKey: r1_basename
+    foreignKeys:
+      - fields: library_id
+        reference:
+          resource: libraries
+          fields: library_id
+      - fields: run_id
+        reference:
+          resource: runs
+          fields: run_id
+#+end_src
+
+*** Documentation: Good Practices for Bioinformatics Metadata Schema with Frictionless
+
+**** Overview
+- Excel as user interface: non-programmers enter data, schema validates it
+- Hierarchical data model: organize by biological and technical relationships
+- Self-documenting: schemas generate data dictionaries programmatically
+- Version control by repo-level versioning
+
+**** Elements
+***** Immutable Reference Files
+- Possible PHI
+- Provenance tracking
+
+***** Mutable "Sample Sheet"
+- Format: xlsx or series of tsvs
+- No PHI
+- Source of truth for metadata
+- Validation input
+
+**** PHI Policy
+No PHI (Protected Health Information) should be stored in sample sheets or metadata files managed by this schema.
+
+**** Schema Structure
+
+***** Shared Definitions
+Use YAML anchors for repeated definitions:
+#+begin_src yaml
+missingValues: &mv ["", "unknown", "UNK", "unk", "n/a", "NA", "GET", "None"]
+resources:
+  - name: samples
+    schema:
+      missingValues: *mv
+#+end_src
+
+***** Basic Resource Structure
+#+begin_src yaml
+resources:
+  - name: subjects
+    path: ${PROJECT_METADATA_XLSX}
+    control:
+      type: excel
+      sheet: subjects
+    schema:
+      missingValues: *mv
+      fields:
+        - name: subject_id
+          # field definitions
+      primaryKey: subject_id
+      foreignKeys:
+        - fields: parent_id
+          reference:
+            resource: parents
+            fields: parent_id
+#+end_src
+
+**** Field Definition Principles
+
+***** Required Components
+Every field should include:
+- name: Machine-readable identifier
+- title: Human-readable label
+- description: Clear explanation including format requirements and units
+- example: Representative value
+- type: Data type
+- constraints: Validation rules
+
+Example:
+#+begin_src yaml
+- name: sample_id
+  title: Sample Identifier
+  description: Unique value identifying any specific sample. Format is 'sam' followed by 4 digits.
+  example: sam0001
+  type: string
+  constraints:
+    required: true
+    unique: true
+    pattern: '^sam\d{4}$'
+#+end_src
+
+***** Primary Key Conventions
+- Use three-letter prefix + zero-padded four-digit numbers
+- Enables lexicographic sorting
+- Format: ~^[a-z]{3}\d{4}$~
+- Examples: ~par0001~, ~sam0001~, ~lib0001~, ~run0001~
+- Always include pattern constraint to catch typos
+
+***** Foreign Key Conventions
+Foreign key fields should be minimal:
+#+begin_src yaml
+- name: subject_id
+  description: Links to subject in subjects table
+  type: string
+  constraints:
+    required: true
+    pattern: '^[a-z]{3}\d{4}$'
+#+end_src
+
+- Include pattern constraint to validate format before checking referential integrity
+- Detailed metadata lives in parent table only - avoid redundancy
+
+***** Field Ordering
+1. Primary key first
+2. Foreign keys second
+3. Required fields
+4. Optional fields
+5. Group related fields together
+
+**** Data Type Decisions
+
+***** Prefer Enums Over Booleans
+Use enums for domain-specific concepts that require explanation:
+#+begin_src yaml
+- name: multiplexing
+  title: Multiplexing Status
+  description: Whether FASTQ contains reads from multiple libraries or a single library
+  type: string
+  constraints:
+    required: true
+    enum: [multiplexed, single_library]
+  enumDescriptions:
+    multiplexed: FASTQ contains reads from multiple indexed libraries
+    single_library: FASTQ contains reads from a single library only
+#+end_src
+
+Booleans acceptable only when semantics are universally obvious.
+
+***** Document Enum Values
+Use custom ~enumDescriptions~ property for programmatic data dictionary generation:
+#+begin_src yaml
+- name: sample_type
+  constraints:
+    enum: [blood, tumor, cell_line]
+  enumDescriptions:
+    blood: Whole blood or blood component sample
+    tumor: Solid tumor tissue biopsy
+    cell_line: Cultured cell line sample
+#+end_src
+
+***** Standardize Units in Field Names
+Include units in field name and description:
+#+begin_src yaml
+- name: concentration_pg_ml
+  title: Input Concentration
+  description: Library input concentration in picograms per milliliter
+  type: number
+  example: 0.34
+#+end_src
+
+**** Table Design Principles
+
+***** Hierarchical Relationships
+Organize tables by biological and technical hierarchy:
+#+begin_example
+subjects → samples → libraries → fastqs
+#+end_example
+
+Use foreign keys to enforce referential integrity.
+
+***** When to Split Tables
+Split into separate tables when entities have:
+- Many divergent fields (>5 unique per subtype)
+- Fundamentally different semantics
+- Example: human participants vs mouse subjects
+
+***** When to Keep Together
+Keep entities in one table when:
+- Few optional fields (2-3)
+- Structural similarity between subtypes
+- Add discriminator field for subtype and leave subtype-specific fields optional
+
+**** Schema Evolution
+
+***** Constraint Defaults
+Frictionless defaults:
+- ~required: false~ (field is optional)
+- ~unique: false~ (duplicates allowed)
+- No enum restrictions
+
+Only declare constraints when restricting behavior.
+
+***** Adding Enum Values
+Never use "other" catch-all categories or allow arbitrary values - this defeats validation.
+When new category needed, update schema and increment version.
+
+** Open and controlled access data sources
+- For cfDNA
+  - https://generegulation.org/cfDNA/
+- [cite:@peneder2021] has healthy cfDNA WGS data
 ** Bioinformatics style guide
 :PROPERTIES:
 :ID:       8ddb3ced-a572-43cd-82d9-69fe449fe320
@@ -865,7 +2392,7 @@ else
 fi
 #+end_src
 
-**** TODO [#D] Normal run
+**** [#D] Normal run
 :PROPERTIES:
 :effort:   00:30
 :ID:       3adf72d3-aa35-4a3d-8eba-0df075c52e26
@@ -1363,7 +2890,7 @@ snakemake --cores 20 --forceall
 :END:
 
 #+name: bioinfo.config.common.sh
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.common.sh
+#+begin_src bash :tangle no
 # -*- mode: snippet -*-
 # key: bioinfo.config.common.sh
 # expand-env: ((yas-indent-line 'fixed))
@@ -1582,7 +3109,7 @@ https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003285
 :PROPERTIES:
 :ID:       99141c49-76e3-4dec-9296-28a12bc1ada6
 :END:
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/ess-mode/r.bioc
+#+begin_src bash :tangle no
 # -*- mode: snippet -*-
 # key: r.bioc
 # expand-env: ((yas-indent-line 'none))
@@ -1597,7 +3124,7 @@ CLOSED: [2021-12-09 Thu 12:38]
 :CUSTOM_ID: dbd3c67c-e33b-42d8-800d-705292d3c372
 :END:
 
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup
+#+begin_src bash :tangle no
 # -*- mode: snippet -*-
 # key: bioinfo.setup
 # expand-env: ((yas-indent-line 'none))
@@ -1672,7 +3199,7 @@ mkdir -p "\${repo}/workflow/scripts"
 :END:
 
 #+name: bioinfo.launch.docker
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.launch.docker
+#+begin_src bash :tangle no
   # -*- mode: snippet -*-
   # key: bioinfo.launch.docker
   # expand-env: ((yas-indent-line 'fixed))
@@ -1696,7 +3223,7 @@ mkdir -p "\${repo}/workflow/scripts"
 :END:
 
 #+name: bioinfo.setup.bash
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.setup.bash
+#+begin_src bash :tangle no
   # -*- mode: snippet -*-
   # key: bioinfo.setup.bash
   # expand-env: ((yas-indent-line 'fixed))
@@ -1715,7 +3242,7 @@ mkdir -p "\${repo}/workflow/scripts"
 :END:
 
 #+name: bioinfo.config.main.R
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.main.R
+#+begin_src bash :tangle no
   # -*- mode: snippet -*-
   # key: bioinfo.config.main.R
   # expand-env: ((yas-indent-line 'fixed))
@@ -1745,7 +3272,7 @@ mkdir -p "\${repo}/workflow/scripts"
 :END:
 
 #+name: bioinfo.config.local.R
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.config.local.R
+#+begin_src bash :tangle no
   # -*- mode: snippet -*-
   # key: bioinfo.config.local.R
   # expand-env: ((yas-indent-line 'fixed))
@@ -1767,7 +3294,7 @@ mkdir -p "\${repo}/workflow/scripts"
 :END:
 
 #+name: bioinfo.bash.script
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.bash.script
+#+begin_src bash :tangle no
   # -*- mode: snippet -*-
   # key: bioinfo.bash.script
   # expand-env: ((yas-indent-line 'fixed))
@@ -1788,7 +3315,7 @@ mkdir -p "\${repo}/workflow/scripts"
 :CUSTOM_ID: d6bb61c9-8b10-4460-b987-0a6c678d2ddb
 :END:
 
-#+begin_src bash :tangle ~/repos/emacs.d/snippets/org-mode/bioinfo.inputs
+#+begin_src bash :tangle no
 # -*- mode: snippet -*-
 # key: bioinfo.inputs
 # expand-env: ((yas-indent-line 'none))
@@ -1853,6 +3380,8 @@ mkdir -p "\${repo}/workflow/scripts"
   infer_sequencer_from_fastq(fastq_file)
   #+end_src
 *** Methylation
+- Rationale- cfMeDIP-seq only measures HYPERmethylation (via IP), see [cite:@nassiri2020]
+
 https://pmc.ncbi.nlm.nih.gov/articles/PMC6162482/
 **** Methylome deconvolution
 https://www-nature-com.mclibrary.idm.oclc.org/articles/s41467-024-48466-z
@@ -1862,6 +3391,21 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41467-024-48466-z
 :END:
 https://mail.google.com/mail/u/0/#inbox/FMfcgzGxTFWDgPhqMLGHBDfJrdBMrWXq
 [[id:4de39606-9232-4cfc-b444-f4a27e577862][Spatial ATAC-seq]]
+
+
+#+begin_src yaml :tangle ./config/spatial-conda-env.yaml
+name: spatial
+channels:
+  - conda-forge
+  - bioconda
+
+dependencies:
+  - r-data.table
+  - r-seurat
+#+end_src
+
+- CosMx "cosmic" SMI spatial single cell
+- Xenium 10x panel
 *** Fluorometry
 :PROPERTIES:
 :ID:       fd71d66e-238c-4726-b399-17341a615242
@@ -2282,6 +3826,8 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :PROPERTIES:
 :ID:       4c8cbcad-4523-4883-b041-a8eb548f01ac
 :END:
+https://www.reddit.com/r/bioinformatics/comments/1oi1u7e/help_needed_to_recreate_a_figure/
+
 https://rockefelleruniversity.github.io/RU_ChIPseq/
 https://github.com/crazyhottommy/ChIP-seq-analysis/blob/master/part2_Preparing-ChIP-seq-count-table.md
 https://www.bioconductor.org/help/course-materials/2016/CSAMA/lab-5-chipseq/Epigenetics.html
@@ -3168,7 +4714,8 @@ https://www.annalsofoncology.org/article/S0923-7534(20)36058-0/fulltext
 - [cite:@chemi2022]
 - 5hmC in cfDNA https://www.nature.com/articles/cr2017121.pdf?origin=ppub
 - dPCR of global tumor methylation signature https://mail.google.com/mail/u/0/#inbox/FMfcgzQZTMLpbcLfPvXqMSjhTrBbzvKk?projector=1&messagePartId=0.1
-
+- TAPS-seq
+  - [cite:@sun2021tapsseq]
 **** cfDNA long read sequencing
 :PROPERTIES:
 :ID:       dda1c9d0-59b6-487d-8bdb-86423062cf22
@@ -3190,7 +4737,6 @@ https://www.annalsofoncology.org/article/S0923-7534(20)36058-0/fulltext
 
 **** [[*cfDNA fragmentomics][cfDNA fragmentomics]]
 **** [[id:2e475e89-40a2-4359-903d-6e590f4ab8a0][cfDNA from nonterminal mouse blood draws]]
-**** [[id:dd8b334b-e431-4709-8485-bf0dda1760a5][cfDNA inferred tissue gene expression]]
 **** [[id:833f276f-f532-475e-8e0e-f4d528078a6b][cfDNA library preparation]]
 **** [[*cfDNA methylation][cfDNA methylation]]
 **** [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
@@ -4685,6 +6231,11 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 - https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd
 - https://www.sciencedirect.com/science/article/pii/S1874391916304006
 - For protein, SOMAscan has a higher dynamic range and lower limit of detection than comparable Luminex antibody-based assays (cite doi.org/10.1038/s41591-019-0665-2). Moreover, SOMAscan includes targets such as Jagged-1 and -2 not available for multiplexed antibody assays.
+**** Illumina protein prep
+:PROPERTIES:
+:ID:       052b5d06-5f71-4a86-b4eb-5d59cbb6b622
+:END:
+- ~10k targets
 *** Systems biology
 :PROPERTIES:
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
@@ -5940,8 +7491,7 @@ https://chatgpt.com/c/67191dd3-e8b4-8005-bacd-6876cf5f524d
 :PROPERTIES:
 :ID:       ccc5beb6-da8d-4d0a-959a-80d556d7dba7
 :END:
-- batch effect https://evayiwenwang.github.io/Managing_batch_effects/detect.html
-https://www.reddit.com/r/bioinformatics/comments/s3twgh/working_with_batch_effects/
+
 **** Bioinformatics project management
 :PROPERTIES:
 :ID:       5a7a057f-0283-4a4c-8b7a-44c10767d827
@@ -7349,12 +8899,6 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 -
 - nonterminal mouse blood draws
   - cite:campbell2020
-**** cfDNA inferred tissue gene expression
-:PROPERTIES:
-:ID:       dd8b334b-e431-4709-8485-bf0dda1760a5
-:END:
-- https://www.nature.com/articles/ng.3648
-- cite:foda2022
 **** cfDNA methylation
 :PROPERTIES:
 :ID:       8c302b2c-2d4e-4819-b415-7f03826336e2
@@ -7395,10 +8939,12 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 :ID:       c4dde8d6-1a02-42c7-a6b6-786b757fcad1
 :END:
 - [[id:2d0d13d9-857a-4285-89e6-4614f749afd3][cfDNA topology]]
+- https://www.nature.com/articles/ng.3648
+- cite:foda2022
 - Plasma nucleosome capture and antibody binding [[cite:&fedyuk2022]]
 - OCRDetector, for detecting OCRs from whole-genome cfDNA sequencing data   [[cite:&wang2021ocr]]
 - nucleosome profiling with griffin
-  - [[cite:&doebley2022griffin]]
+  - [cite:@doebley2022griffin]
   - https://github.com/adoebley/Griffin/wiki
   - https://www.medrxiv.org/content/10.1101/2021.08.31.21262867v1.full-text
   - https://github.com/alexcpan/Griffin
@@ -7910,6 +9456,9 @@ https://www.nature.com/articles/s43018-022-00379-w
 :ID:       ccab4617-0399-4ba3-828e-b5fbbb972ba1
 :END:
 https://singularity.lbl.gov/install-linux
+
+*** Genomics language models
+https://www.reddit.com/r/bioinformatics/comments/1nychxo/anyone_recommend_tutorials_on_fine_tuning/
 
 ** Snakemake demo                                                      :demo:
 :PROPERTIES:
@@ -9892,156 +11441,156 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :ID:       acd826b6-dad7-49df-9cc7-8f3eff2aa363
 :END:
 #+BEGIN: propview :id "1b8bb7db-2622-47bd-bd6f-052cbd5d4fdb" :cols (DOC)
-|                                                                                                                   DOC |                                     |   |       |   |                                                          |   |   |   |
-|-----------------------------------------------------------------------------------------------------------------------+-------------------------------------+---+-------+---+----------------------------------------------------------+---+---+---|
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                    "" |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                 [[http://bedtools\.readthedocs\.io/en/latest/] [doc]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                        "https://github.com/seqan/flexbar/wiki/Manual" |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-| [[http://portals\.broadinstitute\.org/cgi-bin/cancer/publications/pub_paper\.cgi\?mode=view&paper_id=216&p=t] [site]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     " |                                     |   | fastq |   | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]] |   |   | " |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                            [[https://github\.com/broadinstitute/ichorCNA/wiki] [doc]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     " | [[https://multiqc.info/docs/][doc]] |   |       | " |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                              [[http://www\.basic\.northwestern\.edu/biotools/oligocalc\.html] [site]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                       [[https://broadinstitute\.github\.io/picard/index\.html] [doc]] |                                     |   |       |   |                                                          |   |   |   |
-|            [[http://bioconductor\.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester\.html] [vignette]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                 [[https://github\.com/broadinstitute/rnaseqc] [repo]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                            [[http://rseqc\.sourceforge\.net/] [repo]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                  [[https://salmon\.readthedocs\.io/en/latest/] [doc]] |                                     |   |       |   |                                                          |   |   |   |
-|                                          [[http://lomereiter\.github\.io/sambamba/docs/sambamba-view\.html] [online]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                [[https://github\.com/GregoryFaust/samblaster] [repo]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                               [[http://www\.htslib\.org/doc/samtools\.html] [online]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|         [[https://www\.bioconductor\.org/packages/release/bioc/vignettes/seqTools/inst/doc/seqTools\.pdf] [seqTools]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                          [[https://github\.com/alexdobin/STAR/blob/master/doc/STARmanual\.pdf] [doc]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                          [[https://ccb\.jhu\.edu/software/tophat/manual\.html] [doc]] |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|                                                                                                                     0 |                                     |   |       |   |                                                          |   |   |   |
-|-----------------------------------------------------------------------------------------------------------------------+-------------------------------------+---+-------+---+----------------------------------------------------------+---+---+---|
-|                                                                                                                       |                                     |   |       |   |                                                          |   |   |   |
+|                                                                                                                   DOC |     |   |       |   |     |   |   |   |
+|-----------------------------------------------------------------------------------------------------------------------+-----+---+-------+---+-----+---+---+---|
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                    "" |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                 [[http://bedtools\.readthedocs\.io/en/latest/] [doc]] |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                        "https://github.com/seqan/flexbar/wiki/Manual" |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+| [[http://portals\.broadinstitute\.org/cgi-bin/cancer/publications/pub_paper\.cgi\?mode=view&paper_id=216&p=t] [site]] |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     " |     |   | fastq |   | [[https://ccb.jhu.edu/software/hisat2/manual.html][doc]] |   |   | " |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                            [[https://github\.com/broadinstitute/ichorCNA/wiki] [doc]] |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     " | [[https://multiqc.info/docs/][doc]] |   |       | " |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                              [[http://www\.basic\.northwestern\.edu/biotools/oligocalc\.html] [site]] |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                       [[https://broadinstitute\.github\.io/picard/index\.html] [doc]] |     |   |       |   |     |   |   |   |
+|            [[http://bioconductor\.org/packages/release/bioc/vignettes/polyester/inst/doc/polyester\.html] [vignette]] |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                 [[https://github\.com/broadinstitute/rnaseqc] [repo]] |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                            [[http://rseqc\.sourceforge\.net/] [repo]] |     |   |       |   |     |   |   |   |
+|                                                                  [[https://salmon\.readthedocs\.io/en/latest/] [doc]] |     |   |       |   |     |   |   |   |
+|                                          [[http://lomereiter\.github\.io/sambamba/docs/sambamba-view\.html] [online]] |     |   |       |   |     |   |   |   |
+|                                                                [[https://github\.com/GregoryFaust/samblaster] [repo]] |     |   |       |   |     |   |   |   |
+|                                                               [[http://www\.htslib\.org/doc/samtools\.html] [online]] |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|         [[https://www\.bioconductor\.org/packages/release/bioc/vignettes/seqTools/inst/doc/seqTools\.pdf] [seqTools]] |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                          [[https://github\.com/alexdobin/STAR/blob/master/doc/STARmanual\.pdf] [doc]] |     |   |       |   |     |   |   |   |
+|                                                          [[https://ccb\.jhu\.edu/software/tophat/manual\.html] [doc]] |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|                                                                                                                     0 |     |   |       |   |     |   |   |   |
+|-----------------------------------------------------------------------------------------------------------------------+-----+---+-------+---+-----+---+---+---|
+|                                                                                                                       |     |   |       |   |     |   |   |   |
 #+END:
 *** tool collections
 :PROPERTIES:
@@ -11338,6 +12887,37 @@ CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
 :PROPERTIES:
 :ID:       da883d31-d1cb-44ef-b527-8b517a37ba52
 :END:
+** Organizations
+*** National Cancer Institute (NCI)
+:PROPERTIES:
+:ID:       b6752449-050b-4349-a103-fde3a87b0fc1
+:END:
+**** NCI Cancer Research Data Commons
+:PROPERTIES:
+:ID:       8d60abc7-07e0-4263-8ec2-de3e810cb029
+:END:
+https://datacommons.cancer.gov/support-crdc-cloud-resources
+https://datacommons.cancer.gov/
+***** ISB Cancer Gateway in the Cloud (ISB-CGC)
+:PROPERTIES:
+:ID:       cc8ecad2-1a98-49bc-aeb8-6ce6658905bd
+:END:
+- https://cloud.google.com/customers/nci-nih
+- https://isb-cgc.appspot.com/
+***** Imaging Data Commons (IDC)
+:PROPERTIES:
+:ID:       f7651553-d983-4ff5-828d-339e32c9fda1
+:END:
+https://portal.imaging.datacommons.cancer.gov/about/
+[[cite:&fedorov2021]]
+https://github.com/ImagingDataCommons
+***** Cancer Genomics Cloud (CGC)
+:PROPERTIES:
+:ID:       1c0828de-ce18-46d8-9303-7b2dc1ca93e7
+:END:
+[[cite:&reynolds2017]]
+https://docs.cancergenomicscloud.org/docs/collaborating-on-the-cgc-a-guide-for-consortia
+
 ** Ideas
 #+begin_src python :tangle no
 import ssl
@@ -11455,6 +13035,8 @@ https://nf-co.re/sarek/3.5.0/
 :CREATED:  [2020-04-23 Thu 08:54]
 :ID:       98f8c0e9-cdfc-4acb-b98c-5db1bd6bc3ca
 :END:
+- https://www.reddit.com/r/bioinformatics/comments/1n25lfn/exemplary_papers_on_multiomics_integration_with/
+- https://www.reddit.com/r/bioinformatics/comments/1mi4hlp/most_influential_or_just_funtoread_papers/
 - https://www.reddit.com/r/bioinformatics/comments/1i36e7s/a_step_by_step_tutorial_to_recreate_a_genomic/
 - https://ngs101.com/how-to-analyze-rnaseq-data-for-absolute-beginners-part-13-circular-rnaseq-analysis/
 - https://www.reddit.com/r/bioinformatics/comments/1go98kz/any_bioinformatics_blogs_out_there/
