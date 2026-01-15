@@ -14,8 +14,8 @@ echo "==> Validating data against schema..."
 python scripts/input_data_validator.py \
   --schema examples/example-metadata-schema.yaml \
   --xlsx examples/example-metadata.xlsx \
-  --report /tmp/validation-report.txt
+  --report examples/validation-report.txt
 
 echo "==> Validation complete!"
 echo ""
-cat /tmp/validation-report.txt
+cat examples/validation-report.txt
