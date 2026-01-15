@@ -50,7 +50,7 @@ jobs:
       - name: Display validation report
         if: always()  # Show report even if validation fails
         run: |
-          cat /tmp/validation-report.txt
+          cat /examples/validation-report.txt
 #+end_src
 
 ** Bioinformatics metadata
