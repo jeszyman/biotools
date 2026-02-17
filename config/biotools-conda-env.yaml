@@ -20,11 +20,13 @@ dependencies:
   - fastqc
   - mosdepth
   - multiqc
+  - pandas
   - picard
   - pybedtools
   - pysam
   - sambamba
   - samtools
+  - snakemake
   - sra-tools
   - gffread
   - ucsc-gtftogenepred

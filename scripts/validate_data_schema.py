@@ -1,4 +1,8 @@
 # Bioinformatics metadata
+# - https://specs.frictionlessdata.io/table-schema/#types-and-formats
+# - Frictionless based on JSON Schema https://datatracker.ietf.org/doc/html/draft-zyp-json-schema-03#section-5.1
+# persistent entity concept
+# no hipaa IDs
 
 #!/usr/bin/env python3
 """

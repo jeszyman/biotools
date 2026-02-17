@@ -17,7 +17,12 @@
 :export_file_name: README
 :END:
 
+#+begin_export markdown
+
 [![validate-schema](https://img.shields.io/github/actions/workflow/status/jeszyman/biotools/validate-schema.yaml?branch=master&label=validate-schema)](https://github.com/jeszyman/biotools/actions/workflows/validate-schema.yaml)
+
+#+end_export
+
 
 *** Continuous Improvement
 **** Metadata validation
@@ -55,6 +60,10 @@ jobs:
 #+end_src
 
 ** Bioinformatics metadata
+- https://specs.frictionlessdata.io/table-schema/#types-and-formats
+- Frictionless based on JSON Schema https://datatracker.ietf.org/doc/html/draft-zyp-json-schema-03#section-5.1
+persistent entity concept
+no hipaa IDs
 #+begin_src python :tangle ./scripts/validate_data_schema.py
 #!/usr/bin/env python3
 """
@@ -596,6 +605,9 @@ if __name__ == "__main__":
 
 - With Libreoffice calc
   - Use Excel A1 formula syntax (Tools -> Options -> LibreOffice Calc -> Formula -> Formula Options -> Formula syntax)
+*** Reference
+- Metadata discussion with Chibuzor, [[https://mail.google.com/mail/u/0/#inbox/FMfcgzQZTpwtCDQwVxtRbGDhwNzwBTdC][gmail]]
+
 *** Example data
 #+name: subjects
 | subject_id | organism_type | notes                   |
@@ -813,7 +825,7 @@ resources:
     primaryKey: subject_id  # Declares subject_id as the primary key for foreign key relationships
 #+end_src
 
-**** Participants
+**** Human Participants
 #+begin_src yaml
 # Participants
 # Participants table contains human-specific metadata for research subjects
@@ -1068,6 +1080,107 @@ resources:
           resource: subjects
           fields: subject_id
 #+end_src
+**** Sequencing runs
+#+begin_src yaml
+# Sequencing runs
+# Sequencing runs table tracks individual sequencing runs
+  # Multiple libraries can be multiplexed on a single run
+  # Links to fastqs table which contains per-library FASTQ files from each run
+  - name: runs
+    title: Sequencing Runs
+    description: Individual sequencing runs performed on sequencing instruments, including run metadata and instrument details
+    path: metadata.xlsx
+    control:
+      type: excel
+      sheet: runs
+    schema:
+      missingValues: *mv
+      fields:
+        # PRIMARY KEY
+        # Three-letter prefix: 'run' + 4 digits
+        - name: run_id
+          title: Run Identifier
+          description: Unique identifier for a specific sequencing run. Format is 'run' followed by 4 digits.
+          example: run0001
+          type: string
+          constraints:
+            required: true
+            unique: true
+            pattern: '^run\d{4}$'
+
+        # ALTERNATIVE IDENTIFIERS
+        # External or vendor-provided run IDs
+        - name: alt_run_id
+          title: Alternative Run ID
+          description: External or vendor-provided identifier for this run (e.g., flowcell ID, instrument run ID)
+          example: HWTG7DSXY
+          type: string
+          constraints:
+            required: false
+            maxLength: 100
+
+        # RUN METADATA
+        - name: run_institute
+          title: Sequencing Institute
+          description: Institution or facility where sequencing was performed
+          example: mayo
+          type: string
+          constraints:
+            required: true
+            enum: [mayo, washu, broad, nci, external]
+          enumDescriptions:
+            mayo: Mayo Clinic
+            washu: Washington University
+            broad: Broad Institute
+            nci: National Cancer Institute
+            external: External sequencing facility
+
+        - name: sequencer
+          title: Sequencing Instrument
+          description: Model of sequencing instrument used
+          example: novaseq_6000
+          type: string
+          constraints:
+            required: false
+            enum: [novaseq_6000, hiseq_4000, nextseq_2000, miseq, other]
+          enumDescriptions:
+            novaseq_6000: Illumina NovaSeq 6000
+            hiseq_4000: Illumina HiSeq 4000
+            nextseq_2000: Illumina NextSeq 2000
+            miseq: Illumina MiSeq
+            other: Other sequencing platform
+
+        - name: run_date
+          title: Run Date
+          description: Date when sequencing run was initiated in ISO8601 format (YYYY-MM-DD)
+          example: 2024-06-15
+          type: date
+          constraints:
+            required: false
+            minimum: "2020-01-01"
+            maximum: "2026-12-31"
+
+        - name: flowcell_id
+          title: Flowcell ID
+          description: Identifier for the flowcell used in this run
+          example: HWTG7DSXY
+          type: string
+          constraints:
+            required: false
+            maxLength: 50
+
+        # OPTIONAL NOTES
+        - name: notes
+          title: Notes
+          description: Free-text notes about this sequencing run
+          type: string
+          constraints:
+            required: false
+            maxLength: 500
+
+    primaryKey: run_id
+#+end_src
+
 **** Libraries
 #+begin_src yaml
 # Libraries
@@ -1179,107 +1292,6 @@ resources:
           resource: samples
           fields: sample_id
 #+end_src
-**** Sequencing runs
-#+begin_src yaml
-# Sequencing runs
-# Sequencing runs table tracks individual sequencing runs
-  # Multiple libraries can be multiplexed on a single run
-  # Links to fastqs table which contains per-library FASTQ files from each run
-  - name: runs
-    title: Sequencing Runs
-    description: Individual sequencing runs performed on sequencing instruments, including run metadata and instrument details
-    path: metadata.xlsx
-    control:
-      type: excel
-      sheet: runs
-    schema:
-      missingValues: *mv
-      fields:
-        # PRIMARY KEY
-        # Three-letter prefix: 'run' + 4 digits
-        - name: run_id
-          title: Run Identifier
-          description: Unique identifier for a specific sequencing run. Format is 'run' followed by 4 digits.
-          example: run0001
-          type: string
-          constraints:
-            required: true
-            unique: true
-            pattern: '^run\d{4}$'
-
-        # ALTERNATIVE IDENTIFIERS
-        # External or vendor-provided run IDs
-        - name: alt_run_id
-          title: Alternative Run ID
-          description: External or vendor-provided identifier for this run (e.g., flowcell ID, instrument run ID)
-          example: HWTG7DSXY
-          type: string
-          constraints:
-            required: false
-            maxLength: 100
-
-        # RUN METADATA
-        - name: run_institute
-          title: Sequencing Institute
-          description: Institution or facility where sequencing was performed
-          example: mayo
-          type: string
-          constraints:
-            required: true
-            enum: [mayo, washu, broad, nci, external]
-          enumDescriptions:
-            mayo: Mayo Clinic
-            washu: Washington University
-            broad: Broad Institute
-            nci: National Cancer Institute
-            external: External sequencing facility
-
-        - name: sequencer
-          title: Sequencing Instrument
-          description: Model of sequencing instrument used
-          example: novaseq_6000
-          type: string
-          constraints:
-            required: false
-            enum: [novaseq_6000, hiseq_4000, nextseq_2000, miseq, other]
-          enumDescriptions:
-            novaseq_6000: Illumina NovaSeq 6000
-            hiseq_4000: Illumina HiSeq 4000
-            nextseq_2000: Illumina NextSeq 2000
-            miseq: Illumina MiSeq
-            other: Other sequencing platform
-
-        - name: run_date
-          title: Run Date
-          description: Date when sequencing run was initiated in ISO8601 format (YYYY-MM-DD)
-          example: 2024-06-15
-          type: date
-          constraints:
-            required: false
-            minimum: "2020-01-01"
-            maximum: "2026-12-31"
-
-        - name: flowcell_id
-          title: Flowcell ID
-          description: Identifier for the flowcell used in this run
-          example: HWTG7DSXY
-          type: string
-          constraints:
-            required: false
-            maxLength: 50
-
-        # OPTIONAL NOTES
-        - name: notes
-          title: Notes
-          description: Free-text notes about this sequencing run
-          type: string
-          constraints:
-            required: false
-            maxLength: 500
-
-    primaryKey: run_id
-#+end_src
-
 **** FASTQs
 #+begin_src yaml
 # FASTQs
@@ -1603,11 +1615,13 @@ dependencies:
   - fastqc
   - mosdepth
   - multiqc
+  - pandas
   - picard
   - pybedtools
   - pysam
   - sambamba
   - samtools
+  - snakemake
   - sra-tools
   - gffread
   - ucsc-gtftogenepred
@@ -4709,9 +4723,10 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 :PROPERTIES:
 :ID:       79dfda7e-8b6d-45c7-88d5-804979155763
 :END:
-https://www.nature.com/articles/s41390-022-02448-3gas
-https://www.nature.com/articles/s41587-022-01652-0
-https://www.annalsofoncology.org/article/S0923-7534(20)36058-0/fulltext
+- Targeted methylation MCED Oxnard CCGA [cite:@liu2020]
+- https://www.nature.com/articles/s41390-022-02448-3gas
+- https://www.nature.com/articles/s41587-022-01652-0
+- https://www.annalsofoncology.org/article/S0923-7534(20)36058-0/fulltext
 - [cite:@chemi2022]
 - 5hmC in cfDNA https://www.nature.com/articles/cr2017121.pdf?origin=ppub
 - dPCR of global tumor methylation signature https://mail.google.com/mail/u/0/#inbox/FMfcgzQZTMLpbcLfPvXqMSjhTrBbzvKk?projector=1&messagePartId=0.1
@@ -6075,7 +6090,8 @@ https://www.reddit.com/r/bioinformatics/comments/12ddk5r/what_genomics_plot_type
 - https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
 - Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
 - https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
-
+**** Power and effect
+https://claude.ai/chat/38a931af-e3c0-459a-a7ad-1429b2800d80
 **** Clustering and cluster analysis
 :PROPERTIES:
 :ID:       5372195f-b5fd-41da-8020-a87533c6e74a
@@ -12919,118 +12935,6 @@ https://github.com/ImagingDataCommons
 [[cite:&reynolds2017]]
 https://docs.cancergenomicscloud.org/docs/collaborating-on-the-cgc-a-guide-for-consortia
 
-** Ideas
-#+begin_src python :tangle no
-import ssl
-import urllib.request
-
-# Create an unverified SSL context
-ssl._create_default_https_context = ssl._create_unverified_context
-
-url = "https://example.com"
-response = urllib.request.urlopen(url)
-html = response.read()
-print(html)
-
-from Bio import Entrez
-
-# Function to get PMID from a title
-def fetch_pmid(title):
-    Entrez.email = "your_email@example.com"  # Always include your email when using Entrez API
-    handle = Entrez.esearch(db="pubmed", term=title, retmax=1)
-    record = Entrez.read(handle)
-    handle.close()
-    pmid_list = record.get("IdList", [])
-    return pmid_list[0] if pmid_list else None
-
-# Example list of titles
-titles = [
-    "Incidence and Mortality of Neurofibromatosis: A Total Population Study in Finland",
-    "Susceptible Stages in Schwann Cells for NF1-Associated Plexiform Neurofibroma Development"
-    # Add more titles here
-]
-
-titles = [
-    "Incidence and Mortality of Neurofibromatosis: A Total Population Study in Finland",
-    "Susceptible Stages in Schwann Cells for NF1-Associated Plexiform Neurofibroma Development",
-    "Histopathologic evaluation of atypical neurofibromatous tumors and their transformation into malignant peripheral nerve sheath tumor in patients with neurofibromatosis 1—a consensus overview",
-    "Malignant peripheral nerve sheath tumor: models, biology, and translation",
-    "Low mutation burden and frequent loss of CDKN2A/B and SMARCA2, but not PRC2, define premalignant neurofibromatosis type 1–associated atypical neurofibromas",
-    "International consensus statement on malignant peripheral nerve sheath tumors in neurofibromatosis",
-    "Malignant peripheral nerve sheath tumor: analysis of treatment outcome",
-    "Prognosis and risk factors for malignant peripheral nerve sheath tumor: a systematic review and meta-analysis",
-    "Combined-modality treatment of localized soft tissue sarcomas of the extremities",
-    "Current Treatment Options for Malignant Peripheral Nerve Sheath Tumors",
-    "A nationwide cohort study on treatment and survival in patients with malignant peripheral nerve sheath tumours",
-    "The role of radiotherapy in the management of malignant peripheral nerve sheath tumors: a single-center retrospective cohort study",
-    "Chemotherapy for the treatment of malignant peripheral nerve sheath tumors in neurofibromatosis 1: a 10-year institutional review",
-    "Longitudinal evaluation of peripheral nerve sheath tumors in neurofibromatosis type 1: growth analysis of plexiform neurofibromas and distinct nodular lesions",
-    "Unmasking Intra-Tumoral Heterogeneity and Clonal Evolution in NF1-MPNST",
-    "Integrative Analysis Identifies Candidate Tumor Microenvironment and Intracellular Signaling Pathways that Define Tumor Heterogeneity in NF1",
-    "Strategies for monitoring and combating resistance to combination kinase inhibitors for cancer therapy",
-    "Targeted therapy: resistance and re-sensitization",
-    "How Compensatory Mechanisms and Adaptive Rewiring Have Shaped Our Understanding of Therapeutic Resistance in Cancer",
-    "Dynamic Reprogramming of the Kinome in Response to Targeted MEK Inhibition in Triple-Negative Breast Cancer",
-    "Kinome Profiling of NF1-Related MPNSTs in Response to Kinase Inhibition and Doxorubicin Reveals Therapeutic Vulnerabilities",
-    "Chromosome 8 gain is associated with high-grade transformation in MPNST",
-    "Cell-free DNA ultra-low-pass whole genome sequencing to distinguish malignant peripheral nerve sheath tumor (MPNST) from its benign precursor lesion: A cross-sectional study",
-    "Enhanced detection of circulating tumor DNA by fragment size analysis",
-    "Genome-wide cell-free DNA fragmentation in patients with cancer",
-    "Detection and characterization of lung cancer using cell-free DNA fragmentomes",
-    "Plasma DNA End-Motif Profiling as a Fragmentomic Marker in Cancer, Pregnancy, and Transplantation",
-    "Fragmentation landscape of cell-free DNA revealed by deconvolutional analysis of end motifs",
-    "Unsupervised detection of fragment length signatures of circulating tumor DNA using non-negative matrix factorization",
-    "Early Detection of Malignant and Premalignant Peripheral Nerve Tumors Using Cell-Free DNA Fragmentomics",
-    "Detection and discrimination of intracranial tumors using plasma cell-free DNA methylomes",
-    "Comprehensive human cell-type methylation atlas reveals origins of circulating cell-free DNA in health and disease",
-    "Cell-free DNA Comprises an In Vivo Nucleosome Footprint that Informs Its Tissues-Of-Origin",
-    "Inference of transcription factor binding from cell-free DNA enables tumor subtype prediction and early detection",
-    "Cell-free DNA from germline TP53 mutation carriers reflect cancer-like fragmentation patterns",
-    "Multiplatform molecular profiling uncovers two subgroups of malignant peripheral nerve sheath tumors with distinct therapeutic vulnerabilities",
-    "Genomic Patterns of Malignant Peripheral Nerve Sheath Tumor (MPNST) Evolution Correlate with Clinical Outcome and Are Detectable in Cell-Free DNA",
-    "Genomic and epigenomic analysis of plasma cell-free DNA identifies stemness features associated with worse survival in lethal prostate cancer",
-    "Circulating tumour DNA methylation markers for diagnosis and prognosis of hepatocellular carcinoma",
-    "Fragment Length of Circulating Tumor DNA",
-    "An improved ATAC-seq protocol reduces background and enables interrogation of frozen tissues",
-    "Enzymatic methyl sequencing detects DNA methylation at single-base resolution from picograms of DNA",
-    "A framework for clinical cancer subtyping from nucleosome profiling of cell-free DNA",
-    "Transcription factor–nucleosome dynamics from plasma cfDNA identifies ER-driven states in breast cancer",
-    "Ex vivo to in vivo model of malignant peripheral nerve sheath tumors for precision oncology"
-]
-
-# Loop through titles and fetch PMIDs
-for title in titles:
-    pmid = fetch_pmid(title)
-    print(f"Title: {title}\nPMID: {pmid}\n")
-#+end_src
-https://nf-co.re/sarek/3.5.0/
-*** Development                                                         :dev:
-:PROPERTIES:
-:ID:       ba6e2aa0-217b-46f8-a8c3-e7b5e774b952
-:END:
-**** v0.1.0
-:PROPERTIES:
-:ID:       7471f01b-fefb-4cc5-9eab-abf13a1b4d0a
-:END:
-***** sifs to szymanski RIS
-:PROPERTIES:
-:ID:       017e0e8e-af37-4365-ad9e-e4c71ee96a05
-:END:
-**** Ideas
-:PROPERTIES:
-:ID:       1a00532b-6854-48e5-9860-17d62fe1100e
-:END:
-- molecular disease signatures
-- https://www.reddit.com/r/commandline/comments/vcs92o/scitopdf_quickly_fetch_science_from_scihub/
-- https://slowkow.com/publications/
-- Data dictionary
-  #+name: biotools_docker_versions
-  | cutadapt_version |    1.18 |
-  | mirdeep2_version | 2.0.1.2 |
-  | bowtie           |     1.2 |
-  #+name: injest_biotools_docker_versions
-- Ideas
-   - make test data
 ** General Reference
 :PROPERTIES:
 :CREATED:  [2020-04-23 Thu 08:54]
@@ -13320,3 +13224,166 @@ because computation removes redundancy, you will more frequently be at a new, tr
 - https://osg-htc.org/
 - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
 - https://github.com/orgs/genome/repositories?type=all
+** Ideas
+
+
+#+begin_src python :tangle no
+import ssl
+import urllib.request
+
+# Create an unverified SSL context
+ssl._create_default_https_context = ssl._create_unverified_context
+
+url = "https://example.com"
+response = urllib.request.urlopen(url)
+html = response.read()
+print(html)
+
+from Bio import Entrez
+
+# Function to get PMID from a title
+def fetch_pmid(title):
+    Entrez.email = "your_email@example.com"  # Always include your email when using Entrez API
+    handle = Entrez.esearch(db="pubmed", term=title, retmax=1)
+    record = Entrez.read(handle)
+    handle.close()
+    pmid_list = record.get("IdList", [])
+    return pmid_list[0] if pmid_list else None
+
+# Example list of titles
+titles = [
+    "Incidence and Mortality of Neurofibromatosis: A Total Population Study in Finland",
+    "Susceptible Stages in Schwann Cells for NF1-Associated Plexiform Neurofibroma Development"
+    # Add more titles here
+]
+
+titles = [
+    "Incidence and Mortality of Neurofibromatosis: A Total Population Study in Finland",
+    "Susceptible Stages in Schwann Cells for NF1-Associated Plexiform Neurofibroma Development",
+    "Histopathologic evaluation of atypical neurofibromatous tumors and their transformation into malignant peripheral nerve sheath tumor in patients with neurofibromatosis 1—a consensus overview",
+    "Malignant peripheral nerve sheath tumor: models, biology, and translation",
+    "Low mutation burden and frequent loss of CDKN2A/B and SMARCA2, but not PRC2, define premalignant neurofibromatosis type 1–associated atypical neurofibromas",
+    "International consensus statement on malignant peripheral nerve sheath tumors in neurofibromatosis",
+    "Malignant peripheral nerve sheath tumor: analysis of treatment outcome",
+    "Prognosis and risk factors for malignant peripheral nerve sheath tumor: a systematic review and meta-analysis",
+    "Combined-modality treatment of localized soft tissue sarcomas of the extremities",
+    "Current Treatment Options for Malignant Peripheral Nerve Sheath Tumors",
+    "A nationwide cohort study on treatment and survival in patients with malignant peripheral nerve sheath tumours",
+    "The role of radiotherapy in the management of malignant peripheral nerve sheath tumors: a single-center retrospective cohort study",
+    "Chemotherapy for the treatment of malignant peripheral nerve sheath tumors in neurofibromatosis 1: a 10-year institutional review",
+    "Longitudinal evaluation of peripheral nerve sheath tumors in neurofibromatosis type 1: growth analysis of plexiform neurofibromas and distinct nodular lesions",
+    "Unmasking Intra-Tumoral Heterogeneity and Clonal Evolution in NF1-MPNST",
+    "Integrative Analysis Identifies Candidate Tumor Microenvironment and Intracellular Signaling Pathways that Define Tumor Heterogeneity in NF1",
+    "Strategies for monitoring and combating resistance to combination kinase inhibitors for cancer therapy",
+    "Targeted therapy: resistance and re-sensitization",
+    "How Compensatory Mechanisms and Adaptive Rewiring Have Shaped Our Understanding of Therapeutic Resistance in Cancer",
+    "Dynamic Reprogramming of the Kinome in Response to Targeted MEK Inhibition in Triple-Negative Breast Cancer",
+    "Kinome Profiling of NF1-Related MPNSTs in Response to Kinase Inhibition and Doxorubicin Reveals Therapeutic Vulnerabilities",
+    "Chromosome 8 gain is associated with high-grade transformation in MPNST",
+    "Cell-free DNA ultra-low-pass whole genome sequencing to distinguish malignant peripheral nerve sheath tumor (MPNST) from its benign precursor lesion: A cross-sectional study",
+    "Enhanced detection of circulating tumor DNA by fragment size analysis",
+    "Genome-wide cell-free DNA fragmentation in patients with cancer",
+    "Detection and characterization of lung cancer using cell-free DNA fragmentomes",
+    "Plasma DNA End-Motif Profiling as a Fragmentomic Marker in Cancer, Pregnancy, and Transplantation",
+    "Fragmentation landscape of cell-free DNA revealed by deconvolutional analysis of end motifs",
+    "Unsupervised detection of fragment length signatures of circulating tumor DNA using non-negative matrix factorization",
+    "Early Detection of Malignant and Premalignant Peripheral Nerve Tumors Using Cell-Free DNA Fragmentomics",
+    "Detection and discrimination of intracranial tumors using plasma cell-free DNA methylomes",
+    "Comprehensive human cell-type methylation atlas reveals origins of circulating cell-free DNA in health and disease",
+    "Cell-free DNA Comprises an In Vivo Nucleosome Footprint that Informs Its Tissues-Of-Origin",
+    "Inference of transcription factor binding from cell-free DNA enables tumor subtype prediction and early detection",
+    "Cell-free DNA from germline TP53 mutation carriers reflect cancer-like fragmentation patterns",
+    "Multiplatform molecular profiling uncovers two subgroups of malignant peripheral nerve sheath tumors with distinct therapeutic vulnerabilities",
+    "Genomic Patterns of Malignant Peripheral Nerve Sheath Tumor (MPNST) Evolution Correlate with Clinical Outcome and Are Detectable in Cell-Free DNA",
+    "Genomic and epigenomic analysis of plasma cell-free DNA identifies stemness features associated with worse survival in lethal prostate cancer",
+    "Circulating tumour DNA methylation markers for diagnosis and prognosis of hepatocellular carcinoma",
+    "Fragment Length of Circulating Tumor DNA",
+    "An improved ATAC-seq protocol reduces background and enables interrogation of frozen tissues",
+    "Enzymatic methyl sequencing detects DNA methylation at single-base resolution from picograms of DNA",
+    "A framework for clinical cancer subtyping from nucleosome profiling of cell-free DNA",
+    "Transcription factor–nucleosome dynamics from plasma cfDNA identifies ER-driven states in breast cancer",
+    "Ex vivo to in vivo model of malignant peripheral nerve sheath tumors for precision oncology"
+]
+
+# Loop through titles and fetch PMIDs
+for title in titles:
+    pmid = fetch_pmid(title)
+    print(f"Title: {title}\nPMID: {pmid}\n")
+#+end_src
+https://nf-co.re/sarek/3.5.0/
+***
+*** CellDesigner
+#+begin_src bash
+chmod +x CellDesigner-4.4.2-linux-x64-installer.run
+./CellDesigner-4.4.2-linux-x64-installer.run
+#+end_src
+
+*** Pathvisio and Wikipathays
+- https://www.wikipathways.org/help.html#reference
+- Install
+  #+begin_src bash
+# Install Java if not already present
+sudo apt update
+sudo apt install default-jre
+
+# Download PathVisio (version 3.3.0 is current stable)
+cd /tmp
+wget https://github.com/PathVisio/pathvisio/releases/download/v3.3.0/PathVisio_unix_3.3.0.sh
+
+bash PathVisio_unix_3.3.0.sh
+#+end_src
+
+- PathVisio is a standalone pathway editor and visualization tool
+- Primary desktop client for WikiPathways
+- Format: GPML (Graphical Pathway Markup Language) - XML-based standard for biological pathways, but
+  - Imports: SBML, BioPAX, GenMAPP MAPP files
+  - Exports: PNG, SVG, PDF, SBML
+- Critical Technical Gotchas for direct GPML file manipulation
+  - Element Ordering is MANDATORY in this exact order or PathVisio will fail to parse:
+    1. DataNode elements
+    2. Interaction elements
+    3. Label elements
+    4. Shape elements
+    5. InfoBox
+    6. Biopax
+  - For pathways to be visible, compartment shapes (membrane, cytoplasm, nucleus) should have negative ZOrder values, ordered from back to front
+    - Negative ZOrder ensures compartments render behind all DataNodes
+    - Positive ZOrder for shapes intended to be visible overlays (legend boxes, annotation callouts)
+  - xml comments- XML comments (<!-- comment -->) are stripped by PathVisio on save. Any documentation or rationale in comments is lost after GUI editing.
+    - will preserve GPML <Comment> elements
+    - Good practice may be to
+      - Keep a "master" GPML file with both XML comments (for developer notes) and <Comment> elements (for scientific annotations)
+      - Use PathVisio on a "working copy" for visual adjustments
+      - Never rely on XML comments for information that must survive PathVisio editing
+  - May get some parsing errors for per-node attribute orders, but not sure about all these
+- Associated databases
+  - Use bridge plugin
+  - Need to ALSO download actual bridge db from website
+
+*** Development                                                         :dev:
+:PROPERTIES:
+:ID:       ba6e2aa0-217b-46f8-a8c3-e7b5e774b952
+:END:
+**** v0.1.0
+:PROPERTIES:
+:ID:       7471f01b-fefb-4cc5-9eab-abf13a1b4d0a
+:END:
+***** sifs to szymanski RIS
+:PROPERTIES:
+:ID:       017e0e8e-af37-4365-ad9e-e4c71ee96a05
+:END:
+**** Ideas
+:PROPERTIES:
+:ID:       1a00532b-6854-48e5-9860-17d62fe1100e
+:END:
+- molecular disease signatures
+- https://www.reddit.com/r/commandline/comments/vcs92o/scitopdf_quickly_fetch_science_from_scihub/
+- https://slowkow.com/publications/
+- Data dictionary
+  #+name: biotools_docker_versions
+  | cutadapt_version |    1.18 |
+  | mirdeep2_version | 2.0.1.2 |
+  | bowtie           |     1.2 |
+  #+name: injest_biotools_docker_versions
+- Ideas
+   - make test data
