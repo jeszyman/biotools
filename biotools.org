@@ -4,6 +4,8 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :header-args: :tangle no :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
 :END:
+
+biotools notes / processes > implimentation
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][Basecamp]]
 ** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics pipeline]]
 ** [[id:d482d49c-9dbe-43cd-a188-b1662a9ce348][Bioinformatics research project module]]
@@ -3348,7 +3350,7 @@ mkdir -p "\${repo}/workflow/scripts"
 :END:
 - repository structure
   - examples
-    - - https://github.com/WayScience/NF1_SchwannCell_data_analysis
+    - https://github.com/WayScience/NF1_SchwannCell_data_analysis
 - infer fastq details from header https://chatgpt.com/c/a41b1403-c420-453a-9257-183e47749e7c
   - https://github.com/nickp60/fcid/blob/main/fcid/run.py
     #+begin_src python
@@ -4696,6 +4698,7 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - GC bias correction https://www.biorxiv.org/content/10.1101/2024.11.07.622399v1.full.pdf
 
 **** cfDNA fragment length-based methods
+
 - fragment size
   - https://www.nature.com/articles/s41586-020-2140-0
   - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
@@ -4707,11 +4710,15 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
   - short-to-long ratio by genomic bin cite:mathios2021
     - https://github.com/cancer-genomics/reproduce_lucas_wflow
   - https://www.nature.com/articles/s41467-022-31419-9
-  - cite:cristiano2019 Delfi
+  - DELFI: genome-wide cfDNA fragmentation profiling across 5Mb bins distinguished 236 cancer patients (7 types) from 245 healthy controls (AUC 0.94, 57-99% sensitivity at 98% specificity) [cite:@cristiano2019]
   - https://github.com/Cancer-Genomics/delfi_scripts
 - cite:underhill2016
 - cite:mouliere2018
   - cite:mouliere2018a
+- NMF fragment length signatures [cite:@renaud2022] - unsupervised fragment length signature decomposition, learns continuous signatures rather than discrete windows
+- NMF transferability [cite:@renaud2025] - extends NMF with bias correction for cross-dataset generalization
+- GC-fragment interaction [cite:@wenzel2025gcfix] - fragment length-specific GC bias correction for ichorCNA
+- Fragmentomics review [cite:@mathios2025] - comprehensive taxonomy of fragmentomic features
 - ultra short https://www.degruyterbrill.com/document/doi/10.1515/cclm-2023-0541/html
 **** cfDNA ChIP-seq
 https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
@@ -4732,6 +4739,25 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 - dPCR of global tumor methylation signature https://mail.google.com/mail/u/0/#inbox/FMfcgzQZTMLpbcLfPvXqMSjhTrBbzvKk?projector=1&messagePartId=0.1
 - TAPS-seq
   - [cite:@sun2021tapsseq]
+- [[cite:&li2023cfdna]]
+- TRACERx - https://www.nature.com/articles/s41586-023-05776-4
+- [[cite:&an2023]]
+- https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext
+- https://academic.oup.com/nargab/article/5/2/lqad048/7188752
+- [cite:@shen2019cfmedip] used in [cite:@shen2018]
+- [[id:d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6][methylation sequencing]]
+- https://jhoonline.biomedcentral.com/articles/10.1186/s13045-020-00933-y
+- [cite:@barefoot2022rads]
+- ct methylation
+  - [cite:@widschwendter2017]
+  - [cite:@xu2017a]
+  - [cite:@heitzer2017]
+- [cite:@guo2017]
+- meth for early detection
+  - https://www.biorxiv.org/content/10.1101/422675v1
+  - https://www.pnas.org/content/113/16/4338.long
+  - https://www.nature.com/articles/cr2017106
+- https://www.jci.org/articles/view/145973
 **** cfDNA long read sequencing
 :PROPERTIES:
 :ID:       dda1c9d0-59b6-487d-8bdb-86423062cf22
@@ -4747,9 +4773,22 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 :END:
 - https://www.sciencedirect.com/science/article/pii/S2666379123005669
 - https://www.cell.com/cell-reports-medicine/pdf/S2666-3791(23)00566-9.pdf
+- Combining genome-wide fragmentation profiling with mutation-based cfDNA analysis detected 91% of cancer patients, exceeding either modality alone [cite:@cristiano2019]
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
+- [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
+- [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]
+- [[id:49d00918-aa42-47ab-9232-c81cddbb5b56][ML prediction models in small-sample / rare disease settings]]]
 **** cfDNA quality control (QC)
+:PROPERTIES:
+:ID:       afc0516f-d05e-4d9a-b063-d2b0a03e11b1
+:END:
 - cfdna qc
   - see cite:quigley2018 S1
+- AMP/CAP consensus reporting requirements for ctDNA assay QC: extraction method (78% reported), collection tube type (72%), sequencing depth (only 27% of NGS pubs reported mean coverage), template cfDNA input quantity (only 35% reported), and analytical sensitivity per variant class [cite:@lockwood2023]
+- [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
+- [[id:498b4485-a6dc-4088-bb25-a17d3df00a4e][Pre-analytic variables]]
+- [[id:cc3e4b92-308d-4323-b18e-1cd07fd6bc32][Molecular assay validation]]
+- [[id:d40fa2c8-dc97-4434-943f-b8fe7d3d9f25][cfDNA and ctDNA preanalytic guidelines]]
 
 **** [[*cfDNA fragmentomics][cfDNA fragmentomics]]
 **** [[id:2e475e89-40a2-4359-903d-6e590f4ab8a0][cfDNA from nonterminal mouse blood draws]]
@@ -8798,6 +8837,8 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
 :END:
+- cfDNA SCNA patterns serve as prognostic biomarkers and predict tumor PRC2/H3K27me3 status in MPNST [cite:@cortes-ciriano2023]
+- CNA from shallow WGS (~0.6x) detects MPNST but lacks sensitivity to distinguish premalignant atypical neurofibromas from benign plexiform; requires complementary fragmentomics features [cite:@sundby2024ccr]
 - [cite:@ostrup2017]
 - Boost via em-seq? https://www.pnas.org/doi/10.1073/pnas.1313995110
 - Copy number ANomaly Assessment and Recovery (CANARy)
@@ -8807,7 +8848,7 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 - [cite:@chabon2020]
 - How to do allele-specific copy number and LOH?
   - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5027494/
-- [cite:@ricklesyoung2024]
+- Clinical validation of ULP-WGS ichorCNA TFx assay: LoD 3% TFx (97.2-100% sensitivity at 1x and 0.1x depth), 95% repeatability, cross-platform concordance (HiSeqX/NovaSeq); CNLOH causes TFx underestimation (62% vs 82% by WES/ABSOLUTE in one case) [cite:@ricklesyoung2024]
 - MSK with augmented CNA TF [cite:@tsui2021] used https://doi.org/10.1186/gm434 method
 - [[#0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 - https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-023-01171-w
@@ -8851,11 +8892,16 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
   - cite:li2017a
   - cite:feng2020
 - by PCR
-  - https://www.pnas.org/content/117/9/4858
+  - https://www.pnas.org/content/117/9/485
+- [[id:d65cc4fa-ab05-4f87-be56-158e2b3977e8][Molecular evolution of NF1-associated tumors]]
+- [[id:c6e419d7-552b-4342-a66e-0dff6c69fee9][Copy number alteration in cancer predisposition]]
+- [[id:8c535c38-9310-4fd0-a8fe-c300639493da][ichorCNA]]
+- [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]8
 **** cfDNA fragment end motif analysis
 :PROPERTIES:
 :ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
 :END:
+- 4-mer end motif features contribute to multimodal fragmentomics classifier discriminating NF1-associated tumor subtypes [cite:@sundby2024ccr]
 - [[file:~/data/career/golkaram2022.pdf]]
 - [[#0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 - cite:an2023
@@ -8865,11 +8911,14 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 - cite:zhou2022 - fragma
 - cite:moldovan2021
 - cite:zhou2021 - jaggedness
-- cite:jiang2020motif [cite:@jiang2020motif]
+- cite:jiang2020motif [cite:@jiang2020motif
+- [[id:601c26c9-88d9-4493-a412-87bd362ecf23][Blood plasma entities related to NF1 disease progression]]
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 **** cfDNA fragmentomics
 :PROPERTIES:
 :ID:       173e0331-9140-47d0-9e5e-ec91672ebdc3
 :END:
+- NMF-based fragment length and end motif signatures distinguish peripheral nerve sheath tumor subtypes (PN vs AN vs MPNST) in NF1 patients (n=122, WGS) [cite:@sundby2024ccr]
 - cite:liu2022
 - Fragmentomics from targeted panels [[cite:&helzer2023panelfrag]]
 - [[cite:&jiang2015]]
@@ -8896,7 +8945,16 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
   - for nucleosome footprinting cite:snyder2016
 - cite:chabon2020 - per individual mutant molecules- see "ctDNA fragment size analysis", R zoo for sliding window, relative enrichment per frag size
 - cite:peneder2021
-  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
+  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]
+- [[id:47952c81-a288-4a29-9a5d-83b7aea86476][MPNST]]
+- [[id:6c436429-c4a9-423d-a7c4-9e5d3d63d574][Liquid biopsy surveillance in cancer predisposition syndromes]]
+- [[id:f53991ba-f4fb-47b9-b33c-2b935619b0e6][cfDNA size distribution]]
+- [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
+- [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
+- [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]]
+- [[id:de9c6398-4ffe-48bf-9ef9-31028edf9873][cfDNA fragment end motif analysis]]
+- [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
+- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
 **** cfDNA from patient derived xenograft (PDX) models
 :PROPERTIES:
 :ID:       2e475e89-40a2-4359-903d-6e590f4ab8a0
@@ -8916,36 +8974,6 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 -
 - nonterminal mouse blood draws
   - cite:campbell2020
-**** cfDNA methylation
-:PROPERTIES:
-:ID:       8c302b2c-2d4e-4819-b415-7f03826336e2
-:END:
-- https://cbiit.webex.com/recordingservice/sites/cbiit/recording/96c9253b7ffd103caf3f00505681c8fe/playback
-- [[cite:&li2023cfdna]]
-- TRACERx - https://www.nature.com/articles/s41586-023-05776-4
-- https://mail.google.com/mail/u/0/#inbox/FMfcgzGtxKMwMFsxwrhWpKhfMNbKGtdK
-- [[cite:&an2023]]
-- https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext
-- https://academic.oup.com/nargab/article/5/2/lqad048/7188752
-- cite:shen2019cfmedip used in cite:shen2018
-- [[id:d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6][methylation sequencing]]
-- https://jhoonline.biomedcentral.com/articles/10.1186/s13045-020-00933-y
-- cite:barefoot2022rads
-- cite:liu2020
-- [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
-- cfDNA methylation
-  - cite:liu2020
-    - https://www.dana-farber.org/newsroom/news-releases/2020/new-blood-test-can-detect-wide-range-of-cancers--now-available-to-at-risk-individuals-in-clinical-study-at-dana-farber/
-  - ct methylation
-    - cite:widschwendter2017
-    - cite:xu2017a
-    - cite:heitzer2017
-  - cite:guo2017
-  - meth for early detection
-    - https://www.biorxiv.org/content/10.1101/422675v1
-    - https://www.pnas.org/content/113/16/4338.long
-    - https://www.nature.com/articles/cr2017106
-- https://www.jci.org/articles/view/145973
 **** cfDNA methylation marker PCR
 :PROPERTIES:
 :ID:       8e0aa543-7033-478b-b66c-bea395db35c8
@@ -8970,6 +8998,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
   - w/ Griffin, Gavin Ha method cite:sarkar2022
   - cite:ulz2016
 - https://github.com/alexcpan/Griffin
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 **** cfDNA small variant calling
 :PROPERTIES:
 :ID:       0b43e09e-52f7-49fb-8796-87168fe57706
@@ -8996,6 +9025,10 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
 - https://www.frontiersin.org/articles/10.3389/fgene.2021.671057/full
 - https://onlinelibrary.wiley.com/doi/10.1002/ctm2.177
 - https://insight.jci.org/articles/view/153559#SEC4
+- Genome-wide cfDNA fragmentation profiles identified tissue of origin to a limited number of candidate sites in 75% of cancer cases across seven tumor types [cite:@cristiano2019]
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
+- [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
+- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
 **** cfDNA window protection score
 :PROPERTIES:
 :ID:       2b5a4f91-873a-4c79-a265-f528c52f06bc
@@ -9055,6 +9088,7 @@ https://chatgpt.com/c/8648af42-5e94-4eb7-aa89-90712de0e095
 :ID:       cf33a283-23e5-41bb-9d64-f70f71451071
 :END:
 
+- [[id:49d00918-aa42-47ab-9232-c81cddbb5b56][ML prediction models in small-sample / rare disease settings]]
 **** Differential chromatin accessibility
 :PROPERTIES:
 :ID:       17f978bc-f2f2-497d-a8f1-b1d47927380f
@@ -9111,6 +9145,10 @@ https://www.biostars.org/p/254848/#:~:text=%22The%20B%2DAllele%20Frequency%20is,
 :END:
 - cite:mathios2021
 - cite:widman2022
+- Gradient-boosted machine learning model on genome-wide cfDNA fragment coverage and size ratios across 5Mb bins achieved AUC 0.94 for pan-cancer detection [cite:@cristiano2019]
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
+- [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
+- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
 **** Make bwa index                                                :smk_rule:
 :PROPERTIES:
 :ID:       b33fa8d9-014a-4f8e-9f0d-e7bb6d72a48e
@@ -10535,6 +10573,10 @@ https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.html
 :END:
 "Briefly, the genome was divided into T non-overlapping windows, or bins, of 1 Mb. Aligned reads were counted based on overlap within each bin using the tools in HMMcopy Suite (http://compbio.bccrc.ca/software/hmmcopy/). The read counts were then normalized to correct for GC content and mappability biases, and then CNAs and tumor fraction were estimated using HMMcopy R package18. "
 
+- Statistical model: HMM with hidden states = integer copy number per bin (0,1,2,3,4,5+); observed data = GC/mappability-normalized log-ratio of read counts per 1Mb bin; transition probabilities enforce adjacent bins share CN state (breakpoints are rare); emission model uses expected ratio = α*(c/2) + (1-α)*1 where α = tumor fraction and c = tumor copy number
+- TFx estimation: grid search over candidate tumor fractions (0.05 to 0.95); for each candidate, runs full HMM forward-backward + Viterbi to find most likely CN path and data likelihood; TFx with highest likelihood is selected (not iterative EM)
+- Detection power comes from genome-wide context: a single bin with 10% depth shift (e.g., CN=3 at 20% TFx) is within noise, but an entire chromosome arm (~50-150 bins) consistently shifted is detectable by the HMM pooling evidence across the segment
+- No matched normal required: model compares "all diploid" (TFx=0) against solutions with CNA; if data is better explained by some bins deviating from diploid, nonzero TFx is preferred
 
 - https://github.com/gavinha/TitanCNA/issues/86
   - [X] does hmmcopy need blacklist? - no mappability score part of hmmcopy The mappability file, which was generated using ENCODE Duke Uniqueness of 35bp sequences track from UCSC (http://genome.ucsc.edu/cgi-bin/hgTrackUi?db=hg18&g=wgEncodeMapability), provides scores indicating how mappable the reference sequence at each bin is to aligners; the higher the score, the more mappable the sequence.
@@ -10553,6 +10595,9 @@ https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzE
 - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDDjrSfkvnNDnxMlVJNFgfnfk][email from:Sundby re:ichor method]]
 - https://www.biostars.org/local/search/page/?q=ichorcna
 - for install see [[file:/ssh:chaudhuri-roche:/home/jszymanski/repos/biotools/Dockerfile][biotools Dockerfile]]
+- Assay validation: 20 ng cfDNA preferred input (5 ng minimum), 4 mL plasma, MAD <0.20 as QC threshold; EDTA and Streck tubes equivalent within 8 hours; panel of normal from 20 healthy donors sufficient [cite:@ricklesyoung2024]
+- [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
+- [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
 **** INTEGRATE                                                      :biotool:
 :PROPERTIES:
 :use: detect rna fusions
