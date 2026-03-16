@@ -8985,6 +8985,7 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 -
 - nonterminal mouse blood draws
   - cite:campbell2020
+- PDX read disambiguation benchmarking — see [[id:f1ff894b-756e-4e68-a637-ee7282d463d6][nf1-mouse]] Literature [cite:@bhandari2025]
 **** cfDNA methylation marker PCR
 :PROPERTIES:
 :ID:       8e0aa543-7033-478b-b66c-bea395db35c8
