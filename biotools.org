@@ -1889,6 +1889,7 @@ cite:consortium2020
 :PROPERTIES:
 :ID:       629e512e-60ac-4283-bc0e-028b8cad3dcc
 :END:
+
 - [[http://firebrowse.org/?cohort=ACC&download_dialog=true][firehose]]
 - http://browser.1000genomes.org/index.html
 - Variance
@@ -4731,6 +4732,7 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 :ID:       79dfda7e-8b6d-45c7-88d5-804979155763
 :END:
 - Targeted methylation MCED Oxnard CCGA [cite:@liu2020]
+- Liver disease-specific methylation atlas (28M CpG sites) constructed from WGS cfDNA; fragments at cell type-specific unmethylated CpGs were shorter in monocytes, liver macrophages, and liver endothelium in cirrhosis patients but not healthy controls, linking methylation state to fragment length [cite:@annapragada2026]
 - https://www.nature.com/articles/s41390-022-02448-3gas
 - https://www.nature.com/articles/s41587-022-01652-0
 - https://www.annalsofoncology.org/article/S0923-7534(20)36058-0/fulltext
@@ -4758,6 +4760,9 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
   - https://www.pnas.org/content/113/16/4338.long
   - https://www.nature.com/articles/cr2017106
 - https://www.jci.org/articles/view/145973
+- [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
+- [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 **** cfDNA long read sequencing
 :PROPERTIES:
 :ID:       dda1c9d0-59b6-487d-8bdb-86423062cf22
@@ -4774,6 +4779,7 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 - https://www.sciencedirect.com/science/article/pii/S2666379123005669
 - https://www.cell.com/cell-reports-medicine/pdf/S2666-3791(23)00566-9.pdf
 - Combining genome-wide fragmentation profiling with mutation-based cfDNA analysis detected 91% of cancer patients, exceeding either modality alone [cite:@cristiano2019]
+- Penalized logistic regression combining fragmentation profiles (473 5-Mb bins), repeat element landscape (786 elements), and epigenetic hotspot coverage in a single classifier for liver fibrosis/cirrhosis detection; L1 regularization for feature selection with 5-fold cross-validation [cite:@annapragada2026]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 - [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]
@@ -4872,6 +4878,7 @@ cite:gydush2022
 - mutation profiling in low coverage wgs https://www.nature.com/articles/s41467-022-32598-1
 - https://www.biorxiv.org/content/10.1101/2022.01.17.476508v1.full.pdf
 - cite:zviran2020
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 *** Cell-free RNA (cfRNA), extracellular RNA (exRNA)
 - https://www.nature.com/articles/s41586-025-08834-1
 - cite:illumina2022
@@ -8919,6 +8926,7 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 :PROPERTIES:
 :ID:       173e0331-9140-47d0-9e5e-ec91672ebdc3
 :END:
+- Genome-wide cfDNA fragmentomes (short:long ratio, repeat elements, epigenetic hotspot coverage) detect non-cancer diseases including liver fibrosis/cirrhosis (AUC 0.95), with disease-specific fragmentation signatures across vascular, autoimmune, and neurodegenerative conditions (n=1576) [cite:@annapragada2026]
 - NMF-based fragment length and end motif signatures distinguish peripheral nerve sheath tumor subtypes (PN vs AN vs MPNST) in NF1 patients (n=122, WGS) [cite:@sundby2024ccr]
 - cite:liu2022
 - Fragmentomics from targeted panels [[cite:&helzer2023panelfrag]]
@@ -8955,6 +8963,8 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 - [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]]
 - [[id:de9c6398-4ffe-48bf-9ef9-31028edf9873][cfDNA fragment end motif analysis]]
 - [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
+- [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
+- [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
 - [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
 **** cfDNA from patient derived xenograft (PDX) models
 :PROPERTIES:
@@ -9027,8 +9037,10 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
 - https://onlinelibrary.wiley.com/doi/10.1002/ctm2.177
 - https://insight.jci.org/articles/view/153559#SEC4
 - Genome-wide cfDNA fragmentation profiles identified tissue of origin to a limited number of candidate sites in 75% of cancer cases across seven tumor types [cite:@cristiano2019]
+- Methylome deconvolution of cfDNA in liver cirrhosis revealed increased blood monocyte and liver endothelium contributions with decreased hepatocyte contributions, linking genome-wide fragmentomic changes to cell type-specific origins in non-cancer disease (n=28 methylomes) [cite:@annapragada2026]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
+- [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
 - [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
 **** cfDNA window protection score
 :PROPERTIES:
@@ -9088,8 +9100,10 @@ https://chatgpt.com/c/8648af42-5e94-4eb7-aa89-90712de0e095
 :PROPERTIES:
 :ID:       cf33a283-23e5-41bb-9d64-f70f71451071
 :END:
-
+- Fragmentome comorbidity index (FCMI): PLR model on genome-wide cfDNA fragmentation features distinguishes high vs low Charlson Comorbidity Index and independently predicts overall survival (HR 1.86, P=0.04) in multivariate Cox model, validated externally (n=231, P=0.016) [cite:@annapragada2026]
 - [[id:49d00918-aa42-47ab-9232-c81cddbb5b56][ML prediction models in small-sample / rare disease settings]]
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
+- [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 **** Differential chromatin accessibility
 :PROPERTIES:
 :ID:       17f978bc-f2f2-497d-a8f1-b1d47927380f
