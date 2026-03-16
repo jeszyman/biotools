@@ -31,3 +31,16 @@ dependencies:
   - gffread
   - ucsc-gtftogenepred
   - ucsc-genepredtobed
+  # R / Bioconductor
+  - r-hmisc
+  - r-survival
+  - r-survminer
+  - r-glmnet
+  - r-readxl
+  - r-dplyr
+  - r-ggplot2
+  - bioconductor-annotatr
+  - bioconductor-genomicranges
+  - bioconductor-txdb.hsapiens.ucsc.hg38.knowngene
+  - bioconductor-clusterprofiler
+  - bioconductor-org.hs.eg.db
