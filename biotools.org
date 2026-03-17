@@ -3633,7 +3633,6 @@ https://pubmed.ncbi.nlm.nih.gov/35311178/
 :PROPERTIES:
 :ID:       e55ec87d-6ef1-47d4-ae16-e051e92114bd
 :END:
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
 :PROPERTIES:
 :CREATED:  [2020-06-22 Mon 12:27]
 :ID:       a5b408eb-77e2-4634-a5bb-950cefaafe18
@@ -3650,7 +3649,6 @@ https://pubmed.ncbi.nlm.nih.gov/35311178/
 :END:
 :PROPERTIES:
 :ID:       778C7C81-34E7-4BAE-94F9-5C33318BFDA5
->>>>>>> e60be068dcbc8c18477fc28e00ee3b742dcf0110
 :END:
 - [[https://github.com/jeszyman/rna-fusion][repository]]
 - [ ] index script
@@ -5109,7 +5107,6 @@ http://tucf.com/htseq_GenomicSeq_DataSheet.pdf
 :PROPERTIES:
 :ID:       71e5bc12-9458-4e4a-a342-d31c90656a59
 :END:
-=======
 https://febs.onlinelibrary.wiley.com/doi/10.1111/febs.15568
 https://www.nature.com/articles/s41467-019-10332-8#Sec13
 
@@ -5117,7 +5114,6 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :PROPERTIES:
 :ID:       80672163-dd92-41cb-a81e-cbaebdbecb63
 :END:
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
 :PROPERTIES:
 :ID:       906150c9-910e-464c-9d7f-d8608abf6c07
 :END:
@@ -5753,7 +5749,6 @@ https://bioinformatics.stackexchange.com/questions/2955/is-there-a-more-elegant-
 :END:
 :PROPERTIES:
 :ID:       F689D6FA-071C-4167-BC21-85A7EC20DA41
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
 :END:
 
 filtering
@@ -5935,7 +5930,6 @@ https://academic.oup.com/genetics/article/216/2/353/6066178
 :END:
 - https://www.nature.com/articles/nature12477
 
-<<<<<<< HEAD
   #########1#########2#########3#########4#########5#########6#########7#########8
   #
   # ichorCNA
@@ -5965,12 +5959,10 @@ https://academic.oup.com/genetics/article/216/2/353/6066178
 :PROPERTIES:
 :ID:       db8041c2-939d-47a0-92a9-ff9321f6ac91
 :END:
-=======
 ******* Sequence variation and variant calling
 :PROPERTIES:
 :ID:       2e14b8be-894e-4a32-bb5b-561d4c1097ba
 :END:
->>>>>>> bb11343ab3ff683a4ece1c261661becfbc0b872d
 :PROPERTIES:
 :ID:       57E81A44-3233-479B-8264-2CD5F1904A60
 :END:
@@ -5980,7 +5972,6 @@ CLOCK: [2019-04-26 Fri 11:28]--[2019-04-26 Fri 11:44] =>  0:16
 CLOCK: [2019-04-26 Fri 11:03]--[2019-04-26 Fri 11:13] =>  0:10
 CLOCK: [2019-04-26 Fri 10:43]--[2019-04-26 Fri 10:57] =>  0:14
 :END:
-<<<<<<< HEAD
 ******* Preamble
 :PROPERTIES:
 :ID:       1c3263f1-8ace-4e8e-a690-99798d819603
@@ -8926,6 +8917,7 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 :PROPERTIES:
 :ID:       173e0331-9140-47d0-9e5e-ec91672ebdc3
 :END:
+- Platelet DNA (pDNA) exhibits a fragment length distribution mirroring plasma cfDNA with mono- and dinucleosome peaks at ~166 bp and ~325 bp; s-pDNA (<600 bp) has more even genome coverage than cfDNA (lower Gini index), and selecting fragments <150 bp enriched tumor fraction from 25% to 30% in a pancreatic cancer case, indicating fragmentomic ctDNA enrichment strategies apply to pDNA [cite:@murphy2025]
 - Genome-wide cfDNA fragmentomes (short:long ratio, repeat elements, epigenetic hotspot coverage) detect non-cancer diseases including liver fibrosis/cirrhosis (AUC 0.95), with disease-specific fragmentation signatures across vascular, autoimmune, and neurodegenerative conditions (n=1576) [cite:@annapragada2026]
 - NMF-based fragment length and end motif signatures distinguish peripheral nerve sheath tumor subtypes (PN vs AN vs MPNST) in NF1 patients (n=122, WGS) [cite:@sundby2024ccr]
 - cite:liu2022
@@ -8965,11 +8957,17 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 - [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
-- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
+- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]
+- [[id:582f644d-c9ef-4aa4-848a-d587f3494ac0][cfDNA sources and fluid types]]]
 **** cfDNA from patient derived xenograft (PDX) models
 :PROPERTIES:
 :ID:       2e475e89-40a2-4359-903d-6e590f4ab8a0
 :END:
+Three common strategies for human/mouse read separation in PDX data:
+- *Direct-to-human*: align to human ref only. Simplest. Mouse reads with homologous regions may falsely align.
+- *ICRG combined reference*: concatenate human + mouse ref (prefix mouse chroms with =mm10_=), align once, filter reads mapping to human chroms. One alignment, competitive mapping handles ambiguous reads.
+- *Disambiguate*: align to human and mouse independently, compare alignment quality (NM tags), assign each read to the species with fewer mismatches. Requires aligner with accurate NM tags (BISCUIT for EM-seq, not bwa-meth).
+For EM-seq/bisulfite data, Xengsort (k-mer classification) is not applicable because C→T conversion breaks k-mer identity. See [[id:A1835C32-1FEB-4902-8127-DCF343353E83][methylation-aware Xengsort idea]] in nf1-mouse.
 - [[cite:&rao2022]] [cite:@rao2022]
   - [[https://www.scopus.com/results/citedbyresults.uri?sort=plf-f&cite=2-s2.0-85136454112&src=s&nlo=&nlr=&nls=&imp=t&sid=dacd92e53a1732d3f30ed4e48426dc27&sot=cite&sdt=cl&cluster=scosubtype%2c%22ar%22%2ct&sl=0&origin=resultslist&zone=leftSideBar&editSaveSearch=&txGid=9d3c2ae452ba1a73cc713ec009b5e33f][scopus citing]]
     - https://doi.org/10.1016/j.xcrm.2023.101349
@@ -8985,7 +8983,6 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 -
 - nonterminal mouse blood draws
   - cite:campbell2020
-- PDX read disambiguation benchmarking — see [[id:f1ff894b-756e-4e68-a637-ee7282d463d6][nf1-mouse]] Literature [cite:@bhandari2025]
 **** cfDNA methylation marker PCR
 :PROPERTIES:
 :ID:       8e0aa543-7033-478b-b66c-bea395db35c8
@@ -8995,6 +8992,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 :PROPERTIES:
 :ID:       c4dde8d6-1a02-42c7-a6b6-786b757fcad1
 :END:
+- Platelet DNA (pDNA) shows nucleosomal periodicity and TSS depletion patterns mirroring cfDNA, with read-depth depletion around TSSs of highly expressed peripheral blood MNC genes in both pDNA and cfDNA; H3K27ac ChIPmentation confirmed histone modifications are preserved in platelet-sequestered chromatin [cite:@murphy2025]
 - [[id:2d0d13d9-857a-4285-89e6-4614f749afd3][cfDNA topology]]
 - https://www.nature.com/articles/ng.3648
 - cite:foda2022
@@ -9030,10 +9028,12 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
     - https://www.theguardian.com/society/2020/mar/25/ai-program-could-check-blood-for-signs-of-lung-cancer
   - tumor mutational burden
     - https://ascopubs.org/doi/full/10.1200/PO.19.00204
+
 **** cfDNA tissue of origin discovery
 :PROPERTIES:
 :ID:       47c4ed56-1dea-48dc-bb25-ddbb0a4cd359
 :END:
+- TAPS methylation deconvolution of platelet DNA (pDNA) showed similar cell-of-origin composition to cfDNA, with majority from blood leukocytes and minor hepatocyte contribution; l-pDNA (>600 bp fragments) had higher megakaryocyte-specific locus mapping (35.9% vs 16.8% for s-pDNA), suggesting longer platelet DNA fragments are enriched for megakaryocyte-derived material [cite:@murphy2025]
 - https://www.frontiersin.org/articles/10.3389/fgene.2021.671057/full
 - https://onlinelibrary.wiley.com/doi/10.1002/ctm2.177
 - https://insight.jci.org/articles/view/153559#SEC4
@@ -9042,7 +9042,8 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
-- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
+- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]
+- [[id:582f644d-c9ef-4aa4-848a-d587f3494ac0][cfDNA sources and fluid types]]]
 **** cfDNA window protection score
 :PROPERTIES:
 :ID:       2b5a4f91-873a-4c79-a265-f528c52f06bc
@@ -9205,7 +9206,6 @@ bwa index -p $2 -a bwtsw $3
 :PROPERTIES:
 :ID:       725d6aa5-9bbc-404b-aa2a-d97206a2d2ed
 :END:
-=======
 **** methylation sequencing
 :PROPERTIES:
 :ID:       d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6
@@ -9448,7 +9448,6 @@ https://www.google.com/search?q=%22samtools+depth%22+%22wgs%22&oq=%22samtools+de
 :END:
 :PROPERTIES:
 :ID:       8877C684-C217-4E7C-8E19-3D972A4015B2
-=======
 :END:
 - https://www.nature.com/articles/nrg3885
 - SBGN
@@ -9503,7 +9502,6 @@ cat /home/jeszyman/data/ref/hg19.fa | simNGS \
 :PROPERTIES:
 :ID:       4a5e39d9-48f5-4542-b7bf-e44ac77ead41
 :END:
-=======
 #+end_src
 **** Spatial ATAC-seq
 :PROPERTIES:
@@ -9645,6 +9643,8 @@ https://bioconductor.org/packages/devel/bioc/vignettes/BiocParallel/inst/doc/Int
 :function:
 :ID:       5e9e8bfa-ac9e-4103-9cc5-7123337b4e24
 :END:
+- NM tag = true mismatches only (conversion mismatches separated into ZC tag). This is critical for PDX Disambiguate workflows where alignment-score comparison between species requires accurate mismatch counts. bwa-meth does NOT correct NM after converting back from C→T space, so its NM is inflated in methylated regions.
+- Conda envs with BISCUIT: =emseq=, =biscuit=
 **** bismark
 :PROPERTIES:
 :ID:       b9fd11de-3064-40de-be3d-eae089c7316d
@@ -12706,7 +12706,6 @@ python3 /tmp/test.py --bam_file /mnt/data/projects/pnst/bams/lib180_ds10.bam --t
 :ID:       0000d7a3-4d8f-41a9-be1b-83ff0edc16a4
 :END:
 #+begin_src bash
-<<<<<<< HEAD
 FROM jeszyman/basecamp
 ################################################################################
 ################################################################################
