@@ -1736,6 +1736,7 @@ print(ranked_genes)
 :END:
 https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/
 - UCSC is chr, ensembl is NOT
+- NCBI =seqs_for_alignment_pipelines.ucsc_ids/= provides pre-built analysis sets with chr-prefixed naming: =GRCh38_no_alt_analysis_set.fna= (195 contigs, no ALTs, no decoys), =GRCh38_no_alt_plus_hs38d1_analysis_set.fna= (adds decoys), =GRCh38_full_analysis_set.fna= (with ALTs). For PDX disambiguation use the no-alt no-decoy set to match symmetric mm10 (UCSC mm10 primary, 66 contigs). No equivalent mouse "analysis set" exists at NCBI — UCSC mm10.fa is the standard.
 - https://gatk.broadinstitute.org/hc/en-us/articles/360035890951-Human-genome-reference-builds-GRCh38-or-hg38-b37-hg19
 - https://www.ncbi.nlm.nih.gov/tools/vecscreen/univec/
 *** By substrate
@@ -8979,7 +8980,8 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 Three common strategies for human/mouse read separation in PDX data:
 - *Direct-to-human*: align to human ref only. Simplest. Mouse reads with homologous regions may falsely align.
 - *ICRG combined reference*: concatenate human + mouse ref (prefix mouse chroms with =mm10_=), align once, filter reads mapping to human chroms. One alignment, competitive mapping handles ambiguous reads. Achieves 99.9% accuracy for WES, RRBS, and RNA-seq [cite:@callari2018], but fails for whole-genome EM-seq — C→T conversion collapses sequence complexity at orthologous loci, causing systematic MAPQ=0 and species assignment bias (see nf1-mouse PDX read handling eval).
-- *Disambiguate*: align to human and mouse independently, compare alignment quality (NM tags), assign each read to the species with fewer mismatches. Requires aligner with accurate NM tags (BISCUIT for EM-seq, not bwa-meth).
+- *Disambiguate*: align to human and mouse independently, compare alignment quality (NM tags), assign each read to the species with fewer mismatches. Requires aligner with accurate NM tags (BISCUIT for EM-seq, not bwa-meth). ~12% of reads tie on NM (ambiguous) — discard or assign to human as sub-variants (3A/3B). Implementation: name-sort both BAMs, streaming merge-walk in lockstep comparing NM per read pair, O(1) RAM. In-memory approach (loading all read names into Python sets) would need ~185 GB at full WGS scale (~250-600M read pairs).
+Reference choice matters for disambiguation: use symmetric references (both without decoys/ALTs) to avoid biasing NM comparison. NCBI GRCh38 no-alt analysis set (195 contigs, no decoys) + UCSC mm10 primary (66 contigs) — both chr-prefixed. hg38 with decoys vs mm10 without creates directional bias.
 For EM-seq/bisulfite data, Xengsort (k-mer classification) is not applicable because C→T conversion breaks k-mer identity. See [[id:A1835C32-1FEB-4902-8127-DCF343353E83][methylation-aware Xengsort idea]] in nf1-mouse.
 - [[cite:&rao2022]] [cite:@rao2022]
   - [[https://www.scopus.com/results/citedbyresults.uri?sort=plf-f&cite=2-s2.0-85136454112&src=s&nlo=&nlr=&nls=&imp=t&sid=dacd92e53a1732d3f30ed4e48426dc27&sot=cite&sdt=cl&cluster=scosubtype%2c%22ar%22%2ct&sl=0&origin=resultslist&zone=leftSideBar&editSaveSearch=&txGid=9d3c2ae452ba1a73cc713ec009b5e33f][scopus citing]]
