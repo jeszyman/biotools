@@ -4681,7 +4681,11 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-021-00857-z
 - cfDNA for CAR-T resitance https://www.nature.com/articles/s41467-025-56486-6 https://www.sciencedirect.com/science/article/pii/S1535610822005918
 **** Tumor origin, tumor content, tumor fraction
+:PROPERTIES:
+:ID:       3f92c60b-c575-419a-95e3-344fd1d5ec0d
+:END:
 - alternative TF strategies https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-023-05478-8
+- [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
 **** Circulating nucleosomes
 - as circ nucleosomes https://pubmed.ncbi.nlm.nih.gov/37627320/
 
@@ -4698,6 +4702,9 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - GC bias correction https://www.biorxiv.org/content/10.1101/2024.11.07.622399v1.full.pdf
 
 **** cfDNA fragment length-based methods
+:PROPERTIES:
+:ID:       9c039277-94b1-46cf-81f2-dcedfd63e576
+:END:
 
 - fragment size
   - https://www.nature.com/articles/s41586-020-2140-0
@@ -4719,7 +4726,8 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - NMF transferability [cite:@renaud2025] - extends NMF with bias correction for cross-dataset generalization
 - GC-fragment interaction [cite:@wenzel2025gcfix] - fragment length-specific GC bias correction for ichorCNA
 - Fragmentomics review [cite:@mathios2025] - comprehensive taxonomy of fragmentomic features
-- ultra short https://www.degruyterbrill.com/document/doi/10.1515/cclm-2023-0541/html
+- ultra short https://www.degruyterbrill.com/document/doi/10.1515/cclm-2023-0541/htm
+- [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]l
 **** cfDNA ChIP-seq
 https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 **** Retrotransposons in cfDNA
@@ -8842,6 +8850,9 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
 :END:
+- Biopipe: [[https://github.com/jeszyman/cfdna-cna][cfdna-cna]] (v3 branch) — ichorCNA + Fragle, configurable {library} x {window} x {pon} x {preset} matrix. Consolidates old cfdna-cna and cfdna repos. Uses [[https://github.com/jeszyman/ichorCNA-patched][ichorCNA-patched]] (=--libdir= mode, pre-computed seqinfo).
+- Fragle: DL-based ctDNA quantification from fragment length profiles ([[https://github.com/skandlab/FRAGLE][GitHub]]). 16 FC layers + SVM selector. AUC 0.96 vs ichorCNA 0.85. Works at 0.05x depth (~50s runtime, 20MB memory). Trained on 8 cancer types + healthy controls.
+- Phase 2 tools: [[https://github.com/CenterForMedicalGeneticsGhent/WisecondorX][WisecondorX]] (Z-score CNA), [[https://github.com/lottaer/BayesCNA][BayesCNA]] (Bayesian changepoint for low-purity)
 - cfDNA SCNA patterns serve as prognostic biomarkers and predict tumor PRC2/H3K27me3 status in MPNST [cite:@cortes-ciriano2023]
 - CNA from shallow WGS (~0.6x) detects MPNST but lacks sensitivity to distinguish premalignant atypical neurofibromas from benign plexiform; requires complementary fragmentomics features [cite:@sundby2024ccr]
 - [cite:@ostrup2017]
@@ -8901,7 +8912,10 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 - [[id:d65cc4fa-ab05-4f87-be56-158e2b3977e8][Molecular evolution of NF1-associated tumors]]
 - [[id:c6e419d7-552b-4342-a66e-0dff6c69fee9][Copy number alteration in cancer predisposition]]
 - [[id:8c535c38-9310-4fd0-a8fe-c300639493da][ichorCNA]]
-- [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]8
+- [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
+- [[id:9c039277-94b1-46cf-81f2-dcedfd63e576][cfDNA fragment length-based methods]]
+- [[id:3f92c60b-c575-419a-95e3-344fd1d5ec0d][Tumor origin, tumor content, tumor fraction]]
+- [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]8
 **** cfDNA fragment end motif analysis
 :PROPERTIES:
 :ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
@@ -8929,6 +8943,7 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 - Platelet DNA (pDNA) exhibits a fragment length distribution mirroring plasma cfDNA with mono- and dinucleosome peaks at ~166 bp and ~325 bp; s-pDNA (<600 bp) has more even genome coverage than cfDNA (lower Gini index), and selecting fragments <150 bp enriched tumor fraction from 25% to 30% in a pancreatic cancer case, indicating fragmentomic ctDNA enrichment strategies apply to pDNA [cite:@murphy2025]
 - Genome-wide cfDNA fragmentomes (short:long ratio, repeat elements, epigenetic hotspot coverage) detect non-cancer diseases including liver fibrosis/cirrhosis (AUC 0.95), with disease-specific fragmentation signatures across vascular, autoimmune, and neurodegenerative conditions (n=1576) [cite:@annapragada2026]
 - NMF-based fragment length and end motif signatures distinguish peripheral nerve sheath tumor subtypes (PN vs AN vs MPNST) in NF1 patients (n=122, WGS) [cite:@sundby2024ccr]
+- cfDNA fragment size fraction correlates with FDG-PET/CT-derived metabolic tumor volume and total lesion glycolysis in NSCLC, supporting fragmentomics as a "liquid PET" bioactivity readout [cite:@gonzlezdealedocastillo2021]
 - cite:liu2022
 - Fragmentomics from targeted panels [[cite:&helzer2023panelfrag]]
 - [[cite:&jiang2015]]
@@ -8973,6 +8988,9 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 - Ultra-deep WGS with single-stranded library preparation shows ~50% of cfDNA fragments are <120 nt (sub-nucleosomal), systematically absent from standard double-stranded prep; this sub-nucleosomal population is relatively enriched for ctDNA in cancer and likely reflects active TF-bound or nucleosome-free regions [cite:@sanchez2018]
 - Single-stranded cfDNA library preparation reveals strand-specific depth asymmetry between the two DNA strands; this strand bias correlates with transcription direction and methylation patterns and represents a novel cfDNA characteristic capturing protein-DNA interaction footprints invisible to double-stranded approaches [cite:@yang2025]
 - [[id:368e3f72-f8d3-475c-ad84-782993f8a6f6][Early cancer detection in Li-Fraumeni with cfDNA]]]
+- [[id:57588960-8260-476a-b191-8e32b998c703][Plexiform neurofibroma]]
+- [[id:e230fd25-63bd-4a4f-888d-715ba1e8e50c][2026 ALSF A]]
+- [[id:3c1e9bc8-37c7-4cdd-a877-3cb55c39e85f][Serial cfDNA assessments in preclinical models]]
 **** cfDNA from patient derived xenograft (PDX) models
 :PROPERTIES:
 :ID:       2e475e89-40a2-4359-903d-6e590f4ab8a0
