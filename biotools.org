@@ -6319,7 +6319,7 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 - http://xena.ucsc.edu/
 - https://www.mdpi.com/1099-4300/22/6/627
 - https://www.sciencedirect.com/science/article/pii/S2589004222015486
-- cite:sanchez-vega2018
+- Oncogenic signaling pathways in The Cancer Genome Atlas [cite:@sanchez-vega2018]
 - https://www.sciencedirect.com/science/article/pii/S2666166721004755
 - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3016-x
 - http://bioportal.bioontology.org/ontologies/GO/?p=classes&conceptid=root
@@ -6339,8 +6339,8 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 - Breker,09 Explorations in topology–delving underneath the surface of genetic.pdf
 - Lima-Mendez,09 The powerful law of the power law and other myths in network biologyw.pdf
 - - [[http://science.sciencemag.org/content/353/6306/aaf1420][A global genetic interaction network maps a wiring diagram of cellular function]]
-- cite:chicco2017
-- cite:sen2014
+- Ten quick tips for machine learning in computational biology [cite:@chicco2017]
+- Integrative DNA, RNA, and protein evidence connects TREML4 to coronary artery calcification [cite:@sen2014]
 - cytoscape
   - https://github.com/mohd-akram/languages
   - [[http://www.nature.com/nmeth/journal/v9/n11/full/nmeth.2212.html][cytoscape plugins]]
@@ -6350,7 +6350,7 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 - https://toppgene.cchmc.org/
 - Pathway analysis
   - https://www.pathvisio.org/documentation/tutorials/tutorial-1/
-  - cite:Khatri_2012
+  - Pathway analysis: current approaches and outstanding challenges (review) [cite:@Khatri_2012]
 - GEDI (Gene Expression Dynamics Inspector)
  Website
  Software v.2.1 Manual
@@ -6371,7 +6371,7 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
     - https://github.com/varnivey/ipanda/blob/master/MANUAL.txt
 - JCO top cited biomarker studies
       - with cfDNA copy number
-        - cite:stover2018
+        - cfDNA tumor fraction and somatic CNAs with survival in TNBC [cite:@stover2018]
         - cite:slaven2018
       - past 1 year
         - innocenti2019.pdf
@@ -6386,7 +6386,7 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 :PROPERTIES:
 :ID:       228D364B-48C8-49E4-9B00-FBFD52384623
 :END:
-- cite:sanchez-vega2018
+- Oncogenic signaling pathways in The Cancer Genome Atlas [cite:@sanchez-vega2018]
 - https://www.sciencedirect.com/science/article/pii/S2666166721004755
 - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3016-x
 - http://bioportal.bioontology.org/ontologies/GO/?p=classes&conceptid=root
@@ -6406,8 +6406,8 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 - Breker,09 Explorations in topology–delving underneath the surface of genetic.pdf
 - Lima-Mendez,09 The powerful law of the power law and other myths in network biologyw.pdf
 - - [[http://science.sciencemag.org/content/353/6306/aaf1420][A global genetic interaction network maps a wiring diagram of cellular function]]
-- cite:chicco2017
-- cite:sen2014
+- Ten quick tips for machine learning in computational biology [cite:@chicco2017]
+- Integrative DNA, RNA, and protein evidence connects TREML4 to coronary artery calcification [cite:@sen2014]
 - cytoscape
   - https://github.com/mohd-akram/languages
   - [[http://www.nature.com/nmeth/journal/v9/n11/full/nmeth.2212.html][cytoscape plugins]]
@@ -6417,7 +6417,7 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 - https://toppgene.cchmc.org/
 - Pathway analysis
   - https://www.pathvisio.org/documentation/tutorials/tutorial-1/
-  - cite:Khatri_2012
+  - Pathway analysis: current approaches and outstanding challenges (review) [cite:@Khatri_2012]
 - GEDI (Gene Expression Dynamics Inspector)
  Website
  Software v.2.1 Manual
@@ -6438,7 +6438,7 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 :END:
 - JCO top cited biomarker studies
       - with cfDNA copy number
-        - cite:stover2018
+        - cfDNA tumor fraction and somatic CNAs with survival in TNBC [cite:@stover2018]
         - cite:slaven2018
       - past 1 year
         - innocenti2019.pdf
@@ -10571,12 +10571,13 @@ https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.html
 - https://www.google.com/search?q=viterbi+algorithm&oq=Viterbi+algorithm&aqs=chrome.0.0l8.356j0j7&client=ubuntu&sourceid=chrome&ie=UTF-8
 
 https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzEg:1617895629440&source=lnms&tbm=vid&sa=X&ved=2ahUKEwjZx5ry-u7vAhVJbs0KHXyIAGkQ_AUoAnoECAEQBA&biw=1596&bih=789
-- cite:guo2018
-- cite:klega2018
-- cite:manier2018
-- cite:mouliere2018
-- cite:stover2018
-- cite:adalsteinsson2017
+- Papers applying ichorCNA
+  - Genomic discovery and clonal tracking in multiple myeloma by cfDNA sequencing [cite:@guo2018]
+  - Detection of somatic structural variants enables quantification of ctDNA in children with solid tumors [cite:@klega2018]
+  - Whole-exome sequencing of cfDNA and CTCs in multiple myeloma [cite:@manier2018]
+  - Enhanced detection of ctDNA by fragment size analysis [cite:@mouliere2018]
+  - cfDNA tumor fraction and somatic CNAs with survival in metastatic triple-negative breast cancer [cite:@stover2018]
+  - Scalable WES of cfDNA: method-establishing ichorCNA paper [cite:@adalsteinsson2017]
 - [[https://github.com/broadinstitute/ichorCNA/wiki][documentation]]
   - https://github.com/broadinstitute/ichorCNA/wiki/Parameter-tuning-and-settings
 - [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDDjrSfkvnNDnxMlVJNFgfnfk][email from:Sundby re:ichor method]]
@@ -10593,16 +10594,10 @@ https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzE
 :ID:       7519d47f-18e8-4a28-be11-9d081b68b52d
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
-  - cite:zhang2016
-    - [[http://apps.webofknowledge.com/summary.do?product=WOS&parentProduct=WOS&search_mode=CitingArticles&qid=2&SID=6ERcSCYD7iSBCZMtAM7&&page=1&action=changePageSize&pageSize=50][WOS citing]]- no cfRNA yet
-  - integrate
-    - cite:zhang2017c
-    - cite:zhang2016
-    - cite:zhang2016a
-    - cite:zhang2016a
-    - - cite:zhang2014a
-    - https://github.com/ChrisMaherLab/INTEGRATE-Vis/blob/master/README.md
-    for integrate, see - cite:li2020
+  - INTEGRATE: gene fusion discovery using whole genome and transcriptome data [cite:@zhang2016]
+  - INTEGRATE-neo: pipeline for personalized gene fusion neoantigen discovery [cite:@zhang2016a]
+  - Chimeric RNA: fusion transcript detection and analysis [cite:@li2020]
+  - [[https://github.com/ChrisMaherLab/INTEGRATE-Vis][INTEGRATE-Vis]]
 **** liftover                                                       :biotool:
 :PROPERTIES:
 :ID:       1b64ef53-604b-4991-8365-5206d2052d24
