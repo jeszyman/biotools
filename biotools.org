@@ -4686,10 +4686,10 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       3f92c60b-c575-419a-95e3-344fd1d5ec0d
 :END:
-- alternative TF strategies https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-023-05478-8
+- Predicting tumour content of liquid biopsies from cfDNA: alternative tumor fraction estimation strategies [cite:@cardner2023]
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
 **** Circulating nucleosomes
-- as circ nucleosomes https://pubmed.ncbi.nlm.nih.gov/37627320/
+- Circulating H3K27-methylated nucleosome plasma concentration provides synergistic information with ctDNA molecular profiling for cancer detection [cite:@grolleau2023]
 
 **** cfDNA and ctDNA-specific visualizations
 :PROPERTIES:
@@ -4699,8 +4699,8 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - tumor fraction ratios [[./biotools.org_20220817_135512.png]]
 - https://d0dd8a80-1a24-4cc5-a00a-3f42615181d7.filesusr.com/ugd/ad98ab_846561db683443d3af0664c558849464.pdf
 **** General and miscellaneous
-- [cite:@illumina2022]
-- https://pubmed.ncbi.nlm.nih.gov/40020203/
+- Illumina technical guide: NGS and microarray methods for liquid biopsy in cancer research [cite:@illumina2022]
+- Computational modeling for circulating cfDNA in clinical oncology: pharmacokinetic and mathematical approaches to cfDNA dynamics [cite:@nguyen2025]
 - GC bias correction https://www.biorxiv.org/content/10.1101/2024.11.07.622399v1.full.pdf
 
 **** cfDNA fragment length-based methods
@@ -4708,33 +4708,29 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :ID:       9c039277-94b1-46cf-81f2-dcedfd63e576
 :END:
 
-- fragment size
-  - https://www.nature.com/articles/s41586-020-2140-0
-  - https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-020-06848-9#Sec9
+- Foundational characterization of circulating tumor DNA fragment length: ctDNA fragments are shorter than non-tumor cfDNA [cite:@underhill2016]
+- Enhanced cancer detection by cfDNA fragment size analysis: exploiting the size difference between tumor-derived and non-tumor cfDNA to improve ctDNA sensitivity [cite:@mouliere2018]
+  - Extension to cerebrospinal fluid: cfDNA fragmentation and copy number alterations detected in CSF from glioma patients [cite:@mouliere2018a]
+- Integrating genomic features including fragment length for non-invasive early lung cancer detection [cite:@chabon2020]
+- Quantitative characterization of tumor cfDNA shortening relative to non-tumor cfDNA [cite:@guo2020bmcgenomics]
+- Ultra-short cfDNA fragments (<100 bp) enhance cancer early detection in a multi-analyte blood test combining mutation, protein, and fragmentomics [cite:@wang2023ultrashort]
 - DELFI (DNA evaluation of fragments for early interception)
-  - https://github.com/cancer-genomics/delfi3
-  - [[file:~/library/alizadeh2023.pptx]]
-  - some evidence for increased abberation in non-cancer cirrhosis
-    - cite:foda2022
-  - short-to-long ratio by genomic bin cite:mathios2021
-    - https://github.com/cancer-genomics/reproduce_lucas_wflow
-  - https://www.nature.com/articles/s41467-022-31419-9
   - DELFI: genome-wide cfDNA fragmentation profiling across 5Mb bins distinguished 236 cancer patients (7 types) from 245 healthy controls (AUC 0.94, 57-99% sensitivity at 98% specificity) [cite:@cristiano2019]
+  - Detecting liver cancer using cfDNA fragmentomes: high-accessibility chromatin features distinguish hepatocellular carcinoma from cirrhosis [cite:@foda2022]
+  - Short-to-long fragment ratio by genomic bin for lung cancer detection and characterization [cite:@mathios2021]
+    - https://github.com/cancer-genomics/reproduce_lucas_wflow
+  - [[file:~/library/alizadeh2023.pptx]]
+  - https://github.com/cancer-genomics/delfi3
   - https://github.com/Cancer-Genomics/delfi_scripts
-- cite:underhill2016
-- cite:mouliere2018
-  - cite:mouliere2018a
 - NMF fragment length signatures [cite:@renaud2022] - unsupervised fragment length signature decomposition, learns continuous signatures rather than discrete windows
 - NMF transferability [cite:@renaud2025] - extends NMF with bias correction for cross-dataset generalization
 - GC-fragment interaction [cite:@wenzel2025gcfix] - fragment length-specific GC bias correction for ichorCNA
 - Fragmentomics review [cite:@mathios2025] - comprehensive taxonomy of fragmentomic features
-- ultra short https://www.degruyterbrill.com/document/doi/10.1515/cclm-2023-0541/htm
-- [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]l
+- [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
 **** cfDNA ChIP-seq
 https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 **** Retrotransposons in cfDNA
-- Retrotransposons
-  - [cite:@michel2024line1]
+- Noninvasive multicancer detection using DNA hypomethylation of LINE-1 retrotransposons in cfDNA [cite:@michel2024line1]
 
 **** cfDNA methylation
 :PROPERTIES:
@@ -4809,17 +4805,14 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 :PROPERTIES:
 :ID:       dda1c9d0-59b6-487d-8bdb-86423062cf22
 :END:
-- https://academic.oup.com/clinchem/article/68/9/1151/6588669
+- Nanopore sequencing of cfDNA detects cell-of-origin and cancer-specific methylation features, enabling simultaneous methylation and fragmentation analysis from long-read data [cite:@katsman2022cfdnananopore]
 - https://www.biorxiv.org/content/10.1101/2021.10.18.464684v1.full
-- [cite:@katsman2022cfdnananopore]
-- cfDNA nanopore for meth and COO [[cite:&katsman2022cfdnananopore]]
 **** [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling]]
 **** cfDNA feature integration
 :PROPERTIES:
 :ID:       434f2b3a-cd86-4d1a-955d-b84e98005a71
 :END:
-- https://www.sciencedirect.com/science/article/pii/S2666379123005669
-- https://www.cell.com/cell-reports-medicine/pdf/S2666-3791(23)00566-9.pdf
+- Multi-modal cfDNA genomic and fragmentomic patterns enhance cancer survival and recurrence analysis [cite:@moldovan2024]
 - Combining genome-wide fragmentation profiling with mutation-based cfDNA analysis detected 91% of cancer patients, exceeding either modality alone [cite:@cristiano2019]
 - Penalized logistic regression combining fragmentation profiles (473 5-Mb bins), repeat element landscape (786 elements), and epigenetic hotspot coverage in a single classifier for liver fibrosis/cirrhosis detection; L1 regularization for feature selection with 5-fold cross-validation [cite:@annapragada2026]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
@@ -4830,8 +4823,7 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 :PROPERTIES:
 :ID:       afc0516f-d05e-4d9a-b063-d2b0a03e11b1
 :END:
-- cfdna qc
-  - see cite:quigley2018 S1
+- cfDNA QC metrics for WGS: see supplementary table S1 of Quigley 2018 for metastatic prostate cancer cfDNA analysis QC thresholds [cite:@quigley2018]
 - AMP/CAP consensus reporting requirements for ctDNA assay QC: extraction method (78% reported), collection tube type (72%), sequencing depth (only 27% of NGS pubs reported mean coverage), template cfDNA input quantity (only 35% reported), and analytical sensitivity per variant class [cite:@lockwood2023]
 - [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
 - [[id:498b4485-a6dc-4088-bb25-a17d3df00a4e][Pre-analytic variables]]
@@ -4859,21 +4851,16 @@ Consolidated into [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucle
 :PROPERTIES:
 :ID:       625e6405-29f3-45ac-8898-37987897014c
 :END:
-- https://www.sitcancer.org/research/jitc-2/jitc/collections/liquid-biopsies
-- cite:keller2020
-- https://www.nature.com/collections/gcdaehehhf/webinars
-- https://www.nature.com/articles/s41551-021-00837-3
-- https://www.mdpi.com/2072-6694/13/14/3460/htm
-- https://www.nature.com/articles/s41416-021-01696-0
-- https://royalsocietypublishing.org/doi/10.1098/rsob.200119
-- cfDNA datasets-  https://generegulation.org/cfdna/
-- see  [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDNNMGQwVvHMjSKjBHhrkMLrS][jake's ulpwgs cfdna preprocessing]]
-- cite:heberts2021
+- Review of clinical relevance of blood-based ctDNA analysis: mutation detection and beyond [cite:@keller2020]
+- cfDNA datasets: https://generegulation.org/cfdna/
+- SITC liquid biopsy collection: https://www.sitcancer.org/research/jitc-2/jitc/collections/liquid-biopsies
+- Nature webinar collection on liquid biopsy: https://www.nature.com/collections/gcdaehehhf/webinars
+- [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDNNMGQwVvHMjSKjBHhrkMLrS][jake's ulpwgs cfdna preprocessing]]
 **** Integrated hybrid capture and genome-wide- MAESTRO
 :PROPERTIES:
 :ID:       55b77210-fcb6-438d-a546-0c3605f6f5c4
 :END:
-cite:gydush2022
+- Massively parallel enrichment of low-frequency alleles enables duplex sequencing at low depth (MAESTRO) [cite:@gydush2022]
 **** Promenent research groups
 :PROPERTIES:
 :ID:       d806c115-915b-4a15-ba00-3713797d2d48
@@ -4901,26 +4888,24 @@ cite:gydush2022
 :PROPERTIES:
 :ID:       b4b2a35f-e59a-4e84-995e-ca16d7fd190d
 :END:
-- [cite:@widman2024]
-- [cite:@widman2022]
-- [cite:@zviran2020]
+- Ultrasensitive plasma-based monitoring of tumor burden using machine-learning-guided signal enrichment [cite:@widman2024]
+- Machine learning guided signal enrichment for ultrasensitive plasma tumor burden monitoring (preprint) [cite:@widman2022]
+- Genome-wide cfDNA mutational integration enables ultra-sensitive cancer monitoring [cite:@zviran2020]
 **** Tumor-informed methods
 :PROPERTIES:
 :ID:       10d3a3a4-dbe6-4494-b287-c3e5720932b2
 :END:
-- phylogenic for cancer evolution cite:abbosh2017
+- Phylogenetic ctDNA analysis depicts early-stage lung cancer evolution: tracking clonal dynamics through tumor-informed ctDNA [cite:@abbosh2017]
 **** WGS cfDNA methods
 :PROPERTIES:
 :ID:       67251de4-3c85-4ba5-b5e5-6efefcd8961d
 :END:
-- [cite:@davis2019]
-- phased seq of multiple muts https://www.nature.com/articles/s41587-021-00981-w
-- mutational signatures for LP WGS [[cite:&wan2022]]
+- Early assessment of molecular progression and response by whole-genome ctDNA in advanced solid tumors [cite:@davis2019]
+- Genome-wide mutational signatures in low-coverage WGS of cfDNA [cite:@wan2022]
+- Genome-wide cfDNA mutational integration enables ultra-sensitive cancer monitoring [cite:@zviran2020]
 - [[id:55b77210-fcb6-438d-a546-0c3605f6f5c4][Integrated hybrid capture and genome-wide- MAESTRO]]
+- Phased sequencing of multiple mutations: https://www.nature.com/articles/s41587-021-00981-w
 - https://www.medrxiv.org/content/10.1101/2022.12.06.22283116v1
-- mutation profiling in low coverage wgs https://www.nature.com/articles/s41467-022-32598-1
-- https://www.biorxiv.org/content/10.1101/2022.01.17.476508v1.full.pdf
-- cite:zviran2020
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 *** Cell-free RNA (cfRNA), extracellular RNA (exRNA)
 - https://www.nature.com/articles/s41586-025-08834-1
