@@ -8947,14 +8947,14 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 - 4-mer end motif features contribute to multimodal fragmentomics classifier discriminating NF1-associated tumor subtypes [cite:@sundby2024ccr]
 - [[file:~/data/career/golkaram2022.pdf]]
 - [[#0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
-- cite:an2023
-- F-profiles: cite:zhou2023 [cite:@zhou2023]
-- cite:guo2022
-- cite:zhitnyuk2022
-- cite:zhou2022 - fragma
-- cite:moldovan2021
-- cite:zhou2021 - jaggedness
-- cite:jiang2020motif [cite:@jiang2020motif
+- DNA methylation analysis explores the molecular basis of plasma cfDNA fragmentation [cite:@an2023]
+- F-profiles: fragmentation landscape of cfDNA revealed by deconvolutional analysis of end motifs [cite:@zhou2023]
+- Sensitive detection of stage I lung adenocarcinoma using plasma cfDNA breakpoint motif profiling [cite:@guo2022]
+- Deep cfDNA fragment end profiling enables cancer detection [cite:@zhitnyuk2022]
+- Epigenetic analysis of cfDNA by fragmentomic profiling (FRAGMA) [cite:@zhou2022]
+- Genome-wide cfDNA termini in patients with cancer [cite:@moldovan2021]
+- Jagged ends of urinary cfDNA: characterization and feasibility in bladder cancer detection [cite:@zhou2021]
+- Plasma DNA end-motif profiling as a fragmentomic marker in cancer, pregnancy, and transplantation [cite:@jiang2020motif]
 - [[id:601c26c9-88d9-4493-a412-87bd362ecf23][Blood plasma entities related to NF1 disease progression]]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]
 - High-resolution characterization of cfDNA end sequence signatures: non-random cleavage produces position-specific dinucleotide biases at fragment termini that correlate with nucleosome rotational positioning and nuclease cutting preferences [cite:@chandrananda2015]
@@ -8968,32 +8968,21 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 - Genome-wide cfDNA fragmentomes (short:long ratio, repeat elements, epigenetic hotspot coverage) detect non-cancer diseases including liver fibrosis/cirrhosis (AUC 0.95), with disease-specific fragmentation signatures across vascular, autoimmune, and neurodegenerative conditions (n=1576) [cite:@annapragada2026]
 - NMF-based fragment length and end motif signatures distinguish peripheral nerve sheath tumor subtypes (PN vs AN vs MPNST) in NF1 patients (n=122, WGS) [cite:@sundby2024ccr]
 - cfDNA fragment size fraction correlates with FDG-PET/CT-derived metabolic tumor volume and total lesion glycolysis in NSCLC, supporting fragmentomics as a "liquid PET" bioactivity readout [cite:@gonzlezdealedocastillo2021]
-- cite:liu2022
-- Fragmentomics from targeted panels [[cite:&helzer2023panelfrag]]
-- [[cite:&jiang2015]]
-- fragment length NMF [[cite:&renaud2021]]
-- https://academic.oup.com/clinchem/article/68/9/1184/6623478#377336919
-- fragmentomics from targeted panel [[https://www.annalsofoncology.org/article/S0923-7534(23)00724-X/fulltext]]
-- [[file:~/library/alizadeh2023.pptx]]
-- cite:lo2021
-- Inferred gene expression
-  - https://mail.google.com/mail/u/0/#inbox/FMfcgzGsltShrnWQMVgTLMNJhmrjkmXx?projector=1&messagePartId=0.1
-- transcription factor binding
-  - cite:ulz2019
-- https://www.nature.com/articles/s41416-021-01635-z
-- https://www.pnas.org/doi/10.1073/pnas.2209852119
-- LIQUORICE
-  - cite:peneder2021
-  - https://jhoonline.biomedcentral.com/articles/10.1186/s13045-022-01342-z#Sec2
-- cite:ding2022
-- cite:esfahani2022
-- http://m.genome.cshlp.org/content/early/2021/12/20/gr.275691.121.full.pdf#page=1&view=FitH
-- fragments for open chromatin and tissue of origin
-- footprinting
-  - https://www.nature.com/articles/s41523-021-00237-5
-  - for nucleosome footprinting cite:snyder2016
-- cite:chabon2020 - per individual mutant molecules- see "ctDNA fragment size analysis", R zoo for sliding window, relative enrichment per frag size
-- cite:peneder2021
+- Fragmentomic analysis of circulating tumor DNA from targeted cancer panels: panel-based cfDNA fragmentation profiling enables cancer detection without WGS [cite:@helzer2023panelfrag]
+- Lengthening and shortening of plasma DNA in hepatocellular carcinoma patients: fragment size shifts in HCC reflect tumor-derived cfDNA burden [cite:@jiang2015]
+- NMF-based fragment length signature discovery from cfDNA reveals tumor-specific fragmentation patterns [cite:@renaud2021]
+- Single-molecule sequencing enables long cfDNA fragment detection and direct methylation analysis for cancer patients [cite:@luo2022singlemol]
+- Epigenetics, fragmentomics, and topology of cell-free DNA in liquid biopsies (review) [cite:@lo2021]
+- Inference of transcription factor binding from cell-free DNA enables tumor subtype prediction and early detection [cite:@ulz2019]
+- Cell-free DNA fragmentomics and gene regulation: fragmentation patterns encode epigenomic information including nucleosome positioning and chromatin accessibility (review) [cite:@mathios2021dawn]
+- LIQUORICE: somatic CNA and fragmentation analysis in ctDNA for cancer screening and treatment monitoring in colorectal cancer [cite:@peneder2021]
+- mHapTk: comprehensive toolkit for DNA methylation haplotype analysis from cfDNA bisulfite sequencing data [cite:@ding2022]
+- Inferring gene expression from cell-free DNA fragmentation profiles: gene-level cfDNA coverage and fragment size patterns predict tissue-specific transcriptional activity [cite:@esfahani2022]
+- Characteristics, origin, and potential for cancer diagnostics of ultrashort plasma cell-free DNA: fragments <100 bp carry distinct epigenomic signatures [cite:@wang2023ultrashort]
+- Nucleosome footprinting in plasma cfDNA correlates with neoadjuvant chemotherapy response for breast cancer [cite:@ulz2021breast]
+- Cell-free DNA comprises an in vivo nucleosome footprint that informs its tissues-of-origin: nucleosome positioning at regulatory elements produces tissue-specific cfDNA fragmentation signatures [cite:@snyder2016]
+- Integrating genomic features for non-invasive early lung cancer detection: per-molecule fragment size analysis with ctDNA mutation data using R zoo sliding window for relative enrichment per fragment size [cite:@chabon2020]
+- Multimodal analysis of cell-free DNA WGS for pediatric cancers with low mutational burden: LIQUORICE tool for fragment coverage analysis at regulatory regions [cite:@peneder2021]
   - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]
 - [[id:47952c81-a288-4a29-9a5d-83b7aea86476][MPNST]]
 - [[id:6c436429-c4a9-423d-a7c4-9e5d3d63d574][Liquid biopsy surveillance in cancer predisposition syndromes]]
