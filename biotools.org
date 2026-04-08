@@ -8879,60 +8879,34 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
 - Phase 2 tools: [[https://github.com/CenterForMedicalGeneticsGhent/WisecondorX][WisecondorX]] (Z-score CNA), [[https://github.com/lottaer/BayesCNA][BayesCNA]] (Bayesian changepoint for low-purity)
 - cfDNA SCNA patterns serve as prognostic biomarkers and predict tumor PRC2/H3K27me3 status in MPNST [cite:@cortes-ciriano2023]
 - CNA from shallow WGS (~0.6x) detects MPNST but lacks sensitivity to distinguish premalignant atypical neurofibromas from benign plexiform; requires complementary fragmentomics features [cite:@sundby2024ccr]
-- [cite:@ostrup2017]
-- Boost via em-seq? https://www.pnas.org/doi/10.1073/pnas.1313995110
+- Detection of copy number alterations in cell-free tumor DNA from plasma [cite:@ostrup2017]
 - Copy number ANomaly Assessment and Recovery (CANARy)
   - https://aacrjournals-org.mclibrary.idm.oclc.org/cancerres/article/85/8_Supplement_1/4565/760975/Abstract-4565-CANARy-TF-an-improved-copy-number
   - https://drive.google.com/file/d/1MpA65YpwE37gJy8jrozYAjwwYy07AOjR/view?usp=drive_link
   - https://ashpublications.org/blood/article/140/Supplement%201/10712/491124/Accurate-Detection-of-Clinically-Actionable-Copy
-- [cite:@chabon2020]
-- How to do allele-specific copy number and LOH?
-  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5027494/
+- Integrating genomic features for non-invasive early lung cancer detection: includes CNA features [cite:@chabon2020]
 - Clinical validation of ULP-WGS ichorCNA TFx assay: LoD 3% TFx (97.2-100% sensitivity at 1x and 0.1x depth), 95% repeatability, cross-platform concordance (HiSeqX/NovaSeq); CNLOH causes TFx underestimation (62% vs 82% by WES/ABSOLUTE in one case) [cite:@ricklesyoung2024]
-- MSK with augmented CNA TF [cite:@tsui2021] used https://doi.org/10.1186/gm434 method
+- MSK augmented CNA-based tumor fraction estimation [cite:@tsui2021]
 - [[#0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
-- https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-023-01171-w
-- has LOH on seq panel w/ custom pipeline  - https://www.sciencedirect.com/science/article/pii/S0923753419454604?pes=vor#ec0010
-- https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-020-00735-4#Sec12
-- snv based with ABSOLUTE https://www.nature.com/articles/nbt.2203#Sec12
-  - https://bioconductor.org/packages/devel/bioc/vignettes/PureCN/inst/doc/PureCN.pdf
-- post-CN call processessing and denoising
-  - cite:zviran2020
-- BIC-seq
-  - cite:zviran2020
-- Proprietary method
-  - cite:chen2019cna
-- CNVkit on duplex hybrid capture reads
-  - cite:mansukhani2018
-- optimal read pre-processing for cfDNA CNV
-  - cite:molparia2018
-- arm-level by z-score
-  - cite:xu2018crc
-- review articles
-  - cite:cristofanilli2017
-    - (p. 119)"In addition, although copy number assessments can be challenging in ptDNA, there are studies that suggest that this is feasible. For example, HER2 amplification for breast and possibly other cancers may one day be assayed through the use of blood [49],"
-    - (p. 119)"Wyatt et  al. serially profiled ptDNA in men with castration-resistant metastatic prostate cancer to assess for copy number and mutations in androgen receptor (AR) along with targeted sequencing of 19 genes through subsequent therapies [51]."
-  - cite:huang2019
-- simulation and power calculation
-  - cite:molparia2017
-- GISTIC2
-  - cite:bujak2020
-  - cite:hemming2019
-- ichorCNA
-  - cite:hemming2019
-  - ichorCNA on off-target reads - cite:shah2021
-  - Other papers applying ichorCNA
-    - cite:bujak2020
-    - cite:ge2020
-      - tumor vs cfDNA CN see cite:ge2020 fig2C
-    - cite:stover2018
-    - https://bmccancer.biomedcentral.com/articles/10.1186/s12885-019-6003-8
-  - Method-establishing paper cite:adalsteinsson2017
-- instability score
-  - cite:li2017a
-  - cite:feng2020
-- by PCR
-  - https://www.pnas.org/content/117/9/485
+- SNV-based purity/ploidy estimation: ABSOLUTE (Carter et al. Nat Biotechnol 2012) and PureCN (Bioconductor) for allele-specific CNA and tumor fraction from cfDNA
+- Genome-wide cfDNA mutational integration enables ultra-sensitive cancer monitoring: includes post-CN call denoising and BIC-seq segmentation [cite:@zviran2020]
+- Low-pass WGS of circulating cfDNA demonstrates dynamic changes in genomic copy number in squamous lung cancer clinical cohort (proprietary method) [cite:@chen2019cna]
+- Ultra-sensitive mutation detection and genome-wide DNA copy number reconstruction by error-corrected ctDNA sequencing: CNVkit on duplex hybrid capture reads [cite:@mansukhani2018]
+- Feasibility of colorectal cancer diagnosis via circulating tumor DNA derived CNV detection: optimal read pre-processing for cfDNA CNV [cite:@molparia2018]
+- Chromosome copy number variation in plasma detects early colorectal cancer: arm-level CNA by z-score [cite:@xu2018crc]
+- Liquid Biopsies in Solid Tumors (book): CNA feasibility including HER2 amplification detection and serial AR copy number profiling in prostate cancer [cite:@cristofanilli2017]
+- Bioinformatics analysis for circulating cell-free DNA in cancer (review) [cite:@huang2019]
+- Assessment of circulating copy number variant detection for cancer screening: simulation and power calculation framework [cite:@molparia2017]
+- GISTIC2 applied to cfDNA CNA profiles from metastatic breast cancer [cite:@bujak2020] and leiomyosarcoma [cite:@hemming2019]
+- ichorCNA applications
+  - Detection of ctDNA in leiomyosarcoma with progressive disease [cite:@hemming2019]
+  - Comprehensive ctDNA assay for translocation and copy-number changes in pediatric sarcomas: ichorCNA on off-target reads [cite:@shah2021]
+  - Urothelial carcinoma detection from urinary cfDNA copy number profiles by shallow WGS; tumor vs cfDNA CN comparison (fig2C) [cite:@ge2020]
+  - cfDNA tumor fraction and somatic CNAs with survival in metastatic triple-negative breast cancer [cite:@stover2018]
+  - Scalable whole-exome sequencing of cfDNA reveals high concordance with metastatic tumors: method-establishing ichorCNA paper [cite:@adalsteinsson2017]
+- Chromosomal instability score
+  - cfDNA copy number variations in plasma from colorectal cancer patients [cite:@li2017a]
+  - Plasma cell-free cancer genome chromosomal instability as biomarker for primary liver cancer [cite:@feng2020]
 - [[id:d65cc4fa-ab05-4f87-be56-158e2b3977e8][Molecular evolution of NF1-associated tumors]]
 - [[id:c6e419d7-552b-4342-a66e-0dff6c69fee9][Copy number alteration in cancer predisposition]]
 - [[id:8c535c38-9310-4fd0-a8fe-c300639493da][ichorCNA]]
@@ -9080,30 +9054,23 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 :PROPERTIES:
 :ID:       0b43e09e-52f7-49fb-8796-87168fe57706
 :END:
-- a sv caller https://academic.oup.com/bioinformatics/article/39/8/btad489/7238210
-- [[https://www.nature.com/articles/s41591-023-02598-9#:~:text=The%20trial%20met%20its%20primary,CI%3A%2056.5%E2%80%9388.5%25).][ctDNA response after pembrolizumab in non-small cell lung cancer: phase 2 adaptive trial results]]
-
+- [[https://www.nature.com/articles/s41591-023-02598-9][ctDNA response after pembrolizumab in non-small cell lung cancer: phase 2 adaptive trial results]]
 - [[id:55b77210-fcb6-438d-a546-0c3605f6f5c4][Integrated hybrid capture and genome-wide- MAESTRO]]
-- SEQC2 analytical validity [[cite:&deveson2021]]
-https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
-- PhasED-seq- https://www.nature.com/articles/s41587-021-00981-w
-  - - phased seq https://www.sciencedirect.com/science/article/pii/S2666634021003202
-- cite:cohen2021
+- Evaluating the analytical validity of circulating tumor DNA sequencing assays for precision oncology (SEQC2 consortium) [cite:@deveson2021]
+- PhasED-seq: phased variant enrichment and detection sequencing for ultra-sensitive ctDNA MRD detection [cite:@kurtz2021phasedseq]
+- Detection of low-frequency DNA variants by targeted sequencing of the Watson and Crick strands [cite:@cohen2021]
 - cfDNA and ctDNA sequence variant calling
-  - cite:razavi2019
-  - cite:chabon2020
-    - https://www.theguardian.com/society/2020/mar/25/ai-program-could-check-blood-for-signs-of-lung-cancer
-  - tumor mutational burden
-    - https://ascopubs.org/doi/full/10.1200/PO.19.00204
+  - High-intensity sequencing reveals sources of plasma cfDNA variants: clonal hematopoiesis dominates at low variant allele fractions [cite:@razavi2019]
+  - Integrating genomic features for non-invasive early lung cancer detection [cite:@chabon2020]
 
 **** cfDNA tissue of origin discovery
 :PROPERTIES:
 :ID:       47c4ed56-1dea-48dc-bb25-ddbb0a4cd359
 :END:
 - TAPS methylation deconvolution of platelet DNA (pDNA) showed similar cell-of-origin composition to cfDNA, with majority from blood leukocytes and minor hepatocyte contribution; l-pDNA (>600 bp fragments) had higher megakaryocyte-specific locus mapping (35.9% vs 16.8% for s-pDNA), suggesting longer platelet DNA fragments are enriched for megakaryocyte-derived material [cite:@murphy2025]
-- https://www.frontiersin.org/articles/10.3389/fgene.2021.671057/full
-- https://onlinelibrary.wiley.com/doi/10.1002/ctm2.177
-- https://insight.jci.org/articles/view/153559#SEC4
+- Detection of cell types contributing to cancer from circulating cell-free methylated DNA [cite:@loyfer2021celltypes]
+- Whole-genome sequencing of cfDNA yields genome-wide read distribution patterns to track tissue of origin in cancer patients [cite:@peneder2021toi]
+- Liquid biopsy reveals collateral tissue damage in cancer: cfDNA tissue-of-origin deconvolution detects non-tumor tissue injury [cite:@mouliere2021collateral]
 - Genome-wide cfDNA fragmentation profiles identified tissue of origin to a limited number of candidate sites in 75% of cancer cases across seven tumor types [cite:@cristiano2019]
 - Methylome deconvolution of cfDNA in liver cirrhosis revealed increased blood monocyte and liver endothelium contributions with decreased hepatocyte contributions, linking genome-wide fragmentomic changes to cell type-specific origins in non-cancer disease (n=28 methylomes) [cite:@annapragada2026]
 - EM-seq over-conversion artifacts produce spurious tissue-of-origin signal: in cardiac catheterization cfDNA, EM-seq showed false baseline cardiomyocyte signal that masked procedure-related elevation detected by matched WGBS; negative-control pancreatic beta cell markers also showed false-positive signal only in EM-seq [cite:@loyfer2026emseqerror]
