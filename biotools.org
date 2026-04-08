@@ -3402,8 +3402,6 @@ mkdir -p "\${repo}/workflow/scripts"
 - Rationale- cfMeDIP-seq only measures HYPERmethylation (via IP), see [cite:@nassiri2020]
 
 https://pmc.ncbi.nlm.nih.gov/articles/PMC6162482/
-**** Methylome deconvolution
-https://www-nature-com.mclibrary.idm.oclc.org/articles/s41467-024-48466-z
 *** Spatial methods
 :PROPERTIES:
 :ID:       bac12c9a-6f8a-4d1b-b8a2-041632c814f6
@@ -3919,6 +3917,10 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
   - visualization
     - heatmap
     - canyon plot- methylation proportion vs distance from target locus
+  - Bisulfite per-CpG errors are independent and sporadic, meaning noise is exponentially suppressed in multi-CpG markers — a property not shared by EM-seq, where fragment-level over-conversion produces correlated errors across all CpGs in a molecule [cite:@loyfer2026emseqerror]
+  - [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
+  - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
+  - [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
 
 **** protein-DNA interactions
 :PROPERTIES:
@@ -4739,40 +4741,71 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 :PROPERTIES:
 :ID:       79dfda7e-8b6d-45c7-88d5-804979155763
 :END:
-- Targeted methylation MCED Oxnard CCGA [cite:@liu2020]
-- Liver disease-specific methylation atlas (28M CpG sites) constructed from WGS cfDNA; fragments at cell type-specific unmethylated CpGs were shorter in monocytes, liver macrophages, and liver endothelium in cirrhosis patients but not healthy controls, linking methylation state to fragment length [cite:@annapragada2026]
-- https://www.nature.com/articles/s41390-022-02448-3gas
-- https://www.nature.com/articles/s41587-022-01652-0
-- https://www.annalsofoncology.org/article/S0923-7534(20)36058-0/fulltext
-- [cite:@chemi2022]
-- 5hmC in cfDNA https://www.nature.com/articles/cr2017121.pdf?origin=ppub
-- dPCR of global tumor methylation signature https://mail.google.com/mail/u/0/#inbox/FMfcgzQZTMLpbcLfPvXqMSjhTrBbzvKk?projector=1&messagePartId=0.1
-- TAPS-seq
-  - [cite:@sun2021tapsseq]
-- [[cite:&li2023cfdna]]
-- TRACERx - https://www.nature.com/articles/s41586-023-05776-4
-- [[cite:&an2023]]
-- https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext
-- https://academic.oup.com/nargab/article/5/2/lqad048/7188752
-- [cite:@shen2019cfmedip] used in [cite:@shen2018]
+- Review of the methylome and cfDNA with current applications in medicine and pediatric disease [cite:@spector2023methylome]
+- Cell-type-specific methylation atlases enable cfDNA-based detection of radiation-induced tissue damage with dose-dependent increases in tissue-specific cfDNA fragments after thoracic irradiation [cite:@barefoot2022rads]
 - [[id:d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6][methylation sequencing]]
-- https://jhoonline.biomedcentral.com/articles/10.1186/s13045-020-00933-y
-- [cite:@barefoot2022rads]
-- ct methylation
-  - [cite:@widschwendter2017]
-  - [cite:@xu2017a]
-  - [cite:@heitzer2017]
-- [cite:@guo2017]
-- meth for early detection
-  - https://www.biorxiv.org/content/10.1101/422675v1
-  - https://www.pnas.org/content/113/16/4338.long
-  - https://www.nature.com/articles/cr2017106
-- https://www.jci.org/articles/view/145973
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]
+- [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
+- [[id:8ffda4e0-8a03-4fa3-aa0d-56c2e6a1dca4][Bisulfite sequencing]]
+- [[id:591dfbf4-48c2-40f0-83e0-56b75b3a6213][DNA and histone methylation cross-talk]]]
+- [[id:4aedf4d5-04e3-46e4-8156-a2e5b601c9e6][DNA methylation in cancer]]
+- [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
+***** Assay platforms
+:PROPERTIES:
+:ID:       0c5359ff-bbd8-4104-a14a-cb0caaea6af4
+:END:
+- TAPS-seq: enzymatic (non-bisulfite) deamination preserves DNA integrity for long-read amplicon sequencing of 5mC and 5hmC at single-base resolution, overcoming bisulfite-induced fragmentation that destroys long-range methylation haplotype information [cite:@sun2021tapsseq]
+- cfMeDIP-seq: low-input (1-10 ng) bisulfite-free immunoprecipitation-based methylome profiling of plasma cfDNA, applicable to urine, CSF, and other low-input sources beyond cancer detection [cite:@shen2019cfmedip] (protocol used in [cite:@shen2018])
+- Simultaneous sequencing of genetic and epigenetic bases in DNA (6-letter sequencing: A, C, G, T, 5mC, 5hmC) enabling joint genotype-methylation profiling from a single library [cite:@fullgrabe2023six]
+***** Tissue deconvolution
+:PROPERTIES:
+:ID:       6d52cdb4-8611-4fd2-a96e-ecb56f30d758
+:END:
+- Liver disease-specific methylation atlas (28M CpG sites) constructed from WGS cfDNA; fragments at cell type-specific unmethylated CpGs were shorter in monocytes, liver macrophages, and liver endothelium in cirrhosis patients but not healthy controls, linking methylation state to fragment length [cite:@annapragada2026]
+- Deep learning-based tissue deconvolution of cfDNA using a 521-sample, 29-tissue-type methylation atlas enables comprehensive disease diagnosis and monitoring from plasma [cite:@li2023cfdna]
+- Methylation haplotype blocks (147,888 tightly coupled CpG regions genome-wide) enable tissue-specific deconvolution and quantitative tumor load estimation from cfDNA in lung and colorectal cancer patients (n=59) [cite:@guo2017]
+- Single-read resolution methylation deconvolution of cfDNA: classifying individual cfDNA fragments by tissue of origin using read-level methylation patterns rather than bulk averaging [cite:@keukeleire2022]
+***** 5hmC biomarkers
+:PROPERTIES:
+:ID:       dfdcad09-8447-4096-b139-b0b5bf56cad5
+:END:
+- 5-hydroxymethylcytosine (5hmC) signatures in circulating cfDNA as diagnostic biomarkers across multiple human cancers [cite:@li20175hmc]
+- 5hmC signatures in cfDNA provide information about tumor types and stages, distinguishing cancer patients from healthy controls [cite:@song20175hmc]
+- 5hmC signatures in circulating cfDNA detected early-stage pancreatic cancer, a disease with poor prognosis due to typically late diagnosis [cite:@collin20185hmc]
+***** Cancer detection markers
+:PROPERTIES:
+:ID:       261880c8-4e5c-432f-bbf0-4233e4a6d232
+:END:
+- cfDNA methylome profiling detects and subtypes small cell lung cancer from plasma, identifying tumor-specific methylation patterns correlated with transcription factor-defined subtypes (NE vs non-NE) [cite:@chemi2022]
+- Empirical validation that best cfDNA methylation cancer markers are Polycomb-associated: optimal 6-marker and 12-marker CGI panels from TCGA (AUC 0.84-1.00 across 33 cancer types) cluster at Polycomb loci — supports rationale for PRC2-target CGI panels as mechanistically grounded cfDNA biomarkers [cite:@vrba2018]
+- CCGA sub-study: targeted methylation sequencing of cfDNA detected >50 cancer types with 99.3% specificity and localized tissue of origin in 93% of cases, establishing the Galleri multi-cancer early detection (MCED) framework [cite:@liu2020]
+- Three-marker ctDNA methylation panel detected ovarian cancer up to 2 years before clinical diagnosis (sensitivity 57.9%, specificity 88.1%) and predicted chemotherapy response superior to CA125 alone [cite:@widschwendter2017]
+- ctDNA methylation markers for diagnosis and prognosis of hepatocellular carcinoma using cfDNA [cite:@xu2017a]
+- Review of liquid biopsy approaches (CTCs, ctDNA, EVs) for early cancer detection including methylation-based methods [cite:@heitzer2017]
+- Noninvasive cfDNA methylation test accurately diagnosed pulmonary nodules as malignant vs benign, reducing unnecessary invasive procedures [cite:@liang2021nodule]
+- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
+- [[id:304d4d4f-8f24-49f1-8718-9490ae40c335][Multi-cancer early detection]]
+- [[id:4aedf4d5-04e3-46e4-8156-a2e5b601c9e6][DNA methylation in cancer]]
+***** Conversion artifacts
+:PROPERTIES:
+:ID:       9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89
+:END:
 - End-repair during double-stranded library preparation artificially reduces inferred CpG methylation globally in cfDNA sequencing data, degrading tissue-of-origin deconvolution accuracy; single-stranded libraries circumvent this artifact [cite:@groth2026]
-- WGBS bisulfite conversion introduces technical alterations to cfDNA fragment length distribution, end motifs, and nucleosome positioning signals; fragmentomic features derived from WGBS libraries require correction or separate benchmarking against standard WGS [cite:@li2025]]
+- WGBS bisulfite conversion introduces technical alterations to cfDNA fragment length distribution, end motifs, and nucleosome positioning signals; fragmentomic features derived from WGBS libraries require correction or separate benchmarking against standard WGS [cite:@li2025]
+- EM-seq fragment-level over-conversion produces fully unmethylated molecules at constitutively methylated loci, creating false-positive background in deconvolution that does not decay with multi-CpG marker depth — unlike WGBS/ONT where per-CpG errors are independent and exponentially suppressed by marker CpG count [cite:@loyfer2026emseqerror]
+- [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
+- [[id:8ffda4e0-8a03-4fa3-aa0d-56c2e6a1dca4][Bisulfite sequencing]]
+- [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
+- [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
+***** Reference                                                      :nohelm:
+:PROPERTIES:
+:ID:       312f3db6-4f68-455f-8fc8-23925d255d24
+:END:
+- dPCR of global tumor methylation signature https://mail.google.com/mail/u/0/#inbox/FMfcgzQZTMLpbcLfPvXqMSjhTrBbzvKk?projector=1&messagePartId=0.1
+- https://www.annalsofoncology.org/article/S0923-7534(23)00087-X/fulltext
+- https://www.pnas.org/content/113/16/4338.long
 **** cfDNA long read sequencing
 :PROPERTIES:
 :ID:       dda1c9d0-59b6-487d-8bdb-86423062cf22
@@ -6488,7 +6521,12 @@ https://hgserver1.amc.nl/cgi-bin/r2/main.cgi?open_page=login
 - [cite:@bie2023] uses EM-seq for multimodal cfDNA analysis including fragmentomics. They validate EM-seq fragments ~ WGS fragments
 - [cite:@an2023] uses EM-seq to show that hypo-methylated fragments are shorte
 - cfNOMe demonstrates that enzymatic cytosine conversion (as in EM-seq) preserves cfDNA fragmentation patterns better than bisulfite conversion, making EM-seq-based libraries suitable for simultaneous nucleosome occupancy and methylation profiling [cite:@erger2020]
-- [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]r
+- EM-seq exhibits a reproducible fragment-level over-conversion error: conditional on one unmethylated CpG, the probability the adjacent CpG is also unmethylated is 72.5% (vs 2% in WGBS), producing fully unmethylated molecules that are indistinguishable from genuine unmethylated cfDNA fragments and impose a ~2.5% false-positive floor on deconvolution regardless of CpG count per marker [cite:@loyfer2026emseqerror]
+- [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
+- [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
+- [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
+- [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
+- [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
 *** Single-cell methods
 :PROPERTIES:
 :ID:       2597b54c-972a-43c3-9630-0e542ba90eeb
@@ -9095,11 +9133,15 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWNbSMxNkbQTTtVwBpvBltDq
 - https://insight.jci.org/articles/view/153559#SEC4
 - Genome-wide cfDNA fragmentation profiles identified tissue of origin to a limited number of candidate sites in 75% of cancer cases across seven tumor types [cite:@cristiano2019]
 - Methylome deconvolution of cfDNA in liver cirrhosis revealed increased blood monocyte and liver endothelium contributions with decreased hepatocyte contributions, linking genome-wide fragmentomic changes to cell type-specific origins in non-cancer disease (n=28 methylomes) [cite:@annapragada2026]
+- EM-seq over-conversion artifacts produce spurious tissue-of-origin signal: in cardiac catheterization cfDNA, EM-seq showed false baseline cardiomyocyte signal that masked procedure-related elevation detected by matched WGBS; negative-control pancreatic beta cell markers also showed false-positive signal only in EM-seq [cite:@loyfer2026emseqerror]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
 - [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]
+- [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
 - [[id:582f644d-c9ef-4aa4-848a-d587f3494ac0][cfDNA sources and fluid types]]]
+- [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
+
 **** cfDNA window protection score
 :PROPERTIES:
 :ID:       2b5a4f91-873a-4c79-a265-f528c52f06bc
@@ -13505,3 +13547,13 @@ bash PathVisio_unix_3.3.0.sh
   #+name: injest_biotools_docker_versions
 - Ideas
    - make test data
+***** Methylome deconvolution
+:PROPERTIES:
+:ID:       2657cf13-a1f7-4dc1-a3e5-2839ddbaa543
+:END:
+https://www-nature-com.mclibrary.idm.oclc.org/articles/s41467-024-48466-z
+- Fragment-level noise structure determines deconvolution specificity ceiling: WGBS/ONT errors are per-CpG independent (exponential suppression with multi-CpG markers), but EM-seq over-conversion produces fully unmethylated molecules at ~2.5% regardless of marker CpG count, generating false-positive tissue signal that masked true cardiomyocyte elevation post-cardiac catheterization and produced spurious pancreatic beta cell signal in negative controls [cite:@loyfer2026emseqerror]
+- [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
+- [[id:8ffda4e0-8a03-4fa3-aa0d-56c2e6a1dca4][Bisulfite sequencing]]
+- [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
+- [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
