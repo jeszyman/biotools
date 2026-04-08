@@ -4619,6 +4619,8 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - cite:vonstechow2017
 - cell type enumeration with RNA-seq
   - https://www.nature.com/articles/s41586-019-1773-3
+- [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
+- [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
 
 ***** immunoprofiling / immunophenotyping
 :PROPERTIES:
@@ -6237,6 +6239,7 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 - https://mail.google.com/mail/u/0/#inbox/FMfcgxwGCtQssVccPJsjlFklhgFHqJGd
 - https://www.sciencedirect.com/science/article/pii/S1874391916304006
 - For protein, SOMAscan has a higher dynamic range and lower limit of detection than comparable Luminex antibody-based assays (cite doi.org/10.1038/s41591-019-0665-2). Moreover, SOMAscan includes targets such as Jagged-1 and -2 not available for multiplexed antibody assays.
+- [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
 **** Proteomics
 :PROPERTIES:
 :ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
@@ -8769,6 +8772,8 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
 - PyClone-VI: scalable inference of clonal population structures using whole genome data [cite:@gillis2020pyclonevi]
 - Modeling clonal structure over narrow time frames via circulating tumor DNA in metastatic breast cancer [cite:@parsons2021clonalcfdna]
+- [[id:0b43e09e-52f7-49fb-8796-87168fe57706][cfDNA small variant calling]]
+- [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
 **** cfDNA copy number calling and CNA-based tumor fraction
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
@@ -8812,7 +8817,9 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 - [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
 - [[id:9c039277-94b1-46cf-81f2-dcedfd63e576][cfDNA fragment length-based methods]]
 - [[id:3f92c60b-c575-419a-95e3-344fd1d5ec0d][Tumor origin, tumor content, tumor fraction]]
-- [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]8
+- [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
+- [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 **** cfDNA fragment end motif analysis
 :PROPERTIES:
 :ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
@@ -8958,6 +8965,8 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - cfDNA and ctDNA sequence variant calling
   - High-intensity sequencing reveals sources of plasma cfDNA variants: clonal hematopoiesis dominates at low variant allele fractions [cite:@razavi2019]
   - Integrating genomic features for non-invasive early lung cancer detection [cite:@chabon2020]
+- [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
+- [[id:c9ce98a3-e54c-4ffd-9819-cf3e59a06c31][cfDNA clonal evolution]]
 
 **** cfDNA tissue of origin discovery
 :PROPERTIES:
@@ -8977,6 +8986,8 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
 - [[id:582f644d-c9ef-4aa4-848a-d587f3494ac0][cfDNA sources and fluid types]]]
 - [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
+- [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
+- [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
 
 **** cfDNA window protection score
 :PROPERTIES:
@@ -9061,6 +9072,7 @@ https://chatgpt.com/c/8648af42-5e94-4eb7-aa89-90712de0e095
   - http://bioconductor.org/books/3.14/csawBook/counting-reads-into-windows.html#
   - https://www.biostars.org/p/320394/
 - [[id:ae0363f3-379e-4521-9184-cbc0d46501cd][Chromatin accessibility profiling]]
+- [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
 - General reference
   - Chromatin accessibility profiling methods: complete list of bulk methods in Box 1 [cite:@minnoye2021]
 - https://github.com/macs3-project/MACS/blob/master/docs/callpeak.md
@@ -9096,6 +9108,7 @@ https://www.biostars.org/p/254848/#:~:text=%22The%20B%2DAllele%20Frequency%20is,
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 - [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
+- [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
 **** Make bwa index                                                :smk_rule:
 :PROPERTIES:
 :ID:       b33fa8d9-014a-4f8e-9f0d-e7bb6d72a48e
@@ -10497,6 +10510,8 @@ https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzE
 - Assay validation: 20 ng cfDNA preferred input (5 ng minimum), 4 mL plasma, MAD <0.20 as QC threshold; EDTA and Streck tubes equivalent within 8 hours; panel of normal from 20 healthy donors sufficient [cite:@ricklesyoung2024]
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
 - [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
+- [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
+- [[id:3f92c60b-c575-419a-95e3-344fd1d5ec0d][Tumor origin, tumor content, tumor fraction]]
 **** INTEGRATE                                                      :biotool:
 :PROPERTIES:
 :use: detect rna fusions
