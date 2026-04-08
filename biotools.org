@@ -4151,12 +4151,11 @@ https://www.datacamp.com/
 :ID:       69F82D91-6DE6-4332-AD0A-7ADF25263858
 :END:
 
-https://www.nature.com/articles/s41467-019-11591-1
-- cite:stuart2019
+- Integrative single-cell analysis [cite:@stuart2019]
 [[id:992de4dc-775e-41f0-a70a-e38c99b87265][Single cell methylation sequencing]]
 https://www.reddit.com/r/bioinformatics/comments/uy9g1j/where_to_start_with_scrnaseq_data/
 https://www.embopress.org/doi/full/10.15252/msb.20188746
-- cite:storrs2022
+- High-dimensional deconstruction of pancreatic ductal adenocarcinoma identifies tumor microenvironmental communities associated with survival [cite:@storrs2022]
 - https://bioengineeringcommunity.nature.com/posts/dialogue-maps-multicellular-programs-in-tissue-from-single-cell-or-spatial-transcriptomics-data
 https://www.nature.com/articles/nmeth.4612
 https://satijalab.org/signac/articles/peak_calling.html
@@ -7312,7 +7311,7 @@ female_tg <- RunPCA(female_tg)
 :PROPERTIES:
 :ID:       800e407d-3980-482b-ba9a-cd57b5938adc
 :END:
-- cite:storrs2022
+- High-dimensional deconstruction of pancreatic ductal adenocarcinoma identifies tumor microenvironmental communities associated with survival [cite:@storrs2022]
 - Li Ding pancreas - https://www.nature.com/articles/s41588-022-01157-1
 - cite:qi2019
 **** single-nucleus RNA-seq
@@ -7339,7 +7338,7 @@ CLOCK: [2021-11-02 Tue 11:01]--[2021-11-02 Tue 11:26] =>  0:25
   - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02048-6
   - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1171-9
 - [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
-- Single cell data integration cite:stuart2019
+- Single cell data integration: integrative single-cell analysis [cite:@stuart2019]
 - applications
   - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
   - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
@@ -7354,7 +7353,7 @@ CLOCK: [2021-11-02 Tue 11:01]--[2021-11-02 Tue 11:26] =>  0:25
   - https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigCp6gJIIgmyhPA
 - Reviews
   - https://www.nature.com/articles/nmeth.4612
-  - cite:stuart2019
+  - Integrative single-cell analysis [cite:@stuart2019]
 - Multi-cell pathway analysis - https://bioengineeringcommunity.nature.com/posts/dialogue-maps-multicellular-programs-in-tissue-from-single-cell-or-spatial-transcriptomics-data
 - Integrating multiple single cell data sets - Harmony - https://www.nature.com/articles/s41592-019-0619-0
 
@@ -7379,7 +7378,7 @@ https://www.nature.com/articles/s41467-018-03149-4
 :PROPERTIES:
 :ID:       1149b091-eabe-4137-a3e9-222f21bfdd57
 :END:
-- cite:grindberg2013
+- RNA-sequencing from single nuclei [cite:@grindberg2013]
 - https://www.nature.com/articles/s41591-020-0844-1
 
 **** single-cell RNA sequencing (scRNA-seq)
@@ -7421,8 +7420,8 @@ https://www.embopress.org/doi/full/10.15252/msb.20188746
 - https://www.sciencedirect.com/science/article/pii/S1097276517300497#fig1
 - https://www.biorxiv.org/content/10.1101/615013v1
 - https://www.youtube.com/watch?v=Wbusqowyu6g&t=147s
-- cite:monaco2019
-- cite:see2018
+- RNA-seq signatures normalized by mRNA abundance allow absolute deconvolution of human immune cell types [cite:@monaco2019]
+- A single-cell sequencing guide for immunologists [cite:@see2018]
 - toolkits
   - Seurat
   - Monocle 2
@@ -7451,19 +7450,19 @@ https://www.embopress.org/doi/full/10.15252/msb.20188746
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6131190/
 - https://www.nature.com/articles/s41598-019-46932-z
 - https://www.biorxiv.org/content/biorxiv/early/2018/03/05/275859.full.pdf
-- cite:wohnhaas2019
-- cite:papalexi2018
+- DMSO cryopreservation is the method of choice to preserve cells for droplet-based scRNA-seq [cite:@wohnhaas2019]
+- Single-cell RNA sequencing to explore immune cell heterogeneity [cite:@papalexi2018]
 - https://support.10xgenomics.com/single-cell-gene-expression/datasets
 - https://www.cell.com/cell-reports/pdf/S2211-1247(19)30059-2.pdf
 - https://www.nature.com/articles/s41591-020-0844-1
 - https://www.workcast.com/AuditoriumAuthenticator.aspx?cpak=8475927829006248&pak=1763506853003757
 
-- cite:qi2019
+- Single-cell sequencing and its applications in head and neck cancer [cite:@qi2019]
 - applications
   - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
   - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
-    - cite:lawson2018
-- cite:stuart2019
+    - Tumour heterogeneity and metastasis at single-cell resolution [cite:@lawson2018]
+- Integrative single-cell analysis (Seurat v3 methods) [cite:@stuart2019]
 - [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
 - inputs and pre-processing
   - - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02048-6
