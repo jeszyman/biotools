@@ -3861,11 +3861,9 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
 :ID:       b8db46d3-8329-4fef-82b1-4d99c2c9312b
 :END:
 - https://www.illumina.com/science/sequencing-method-explorer/kits-and-arrays/medip-seq-dip-seq.html
-- cite:shen2018
-- cite:giacopelli2021prostate
-- cite:liu2020
-- https://www.nature.com/articles/s41591-020-0933-1
-- https://www.nature.com/articles/nm.4045
+- Sensitive tumour detection and classification using plasma cell-free DNA methylomes: cfMeDIP-seq method [cite:@shen2018]
+- Gene-level methylation analysis of prostate cancer using ConferaDx data [cite:@giacopelli2021prostate]
+- Sensitive and specific multi-cancer detection and localization using methylation signatures in cell-free DNA (GRAIL/Galleri CCGA) [cite:@liu2020]
 - [[id:6ad7cfcb-1e8b-4d72-b18a-40f80a00f242][nih liq biopsy]] see [2021-01-26 Tue]
 - "All the cell line datasets generated during and/or analysed during the current study are available in the GEO repository under accession code GSE79838. The
 - cfMeDIP-seq NGS data for patient samples that support the findings of this study are available upon request from the corresponding author (D.D.C) to comply with
@@ -3941,11 +3939,11 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
 :PROPERTIES:
 :ID:       ae0363f3-379e-4521-9184-cbc0d46501cd
 :END:
-- cite:minnoye2021
+- Chromatin accessibility profiling methods (review) [cite:@minnoye2021]
 - [[id:8ca221b7-b51a-4382-9844-5d8ba7193ff6][Chromatin accessibility biology]]
 - [[id:22e31d06-f5df-427e-bd70-3a2ccd3f47ec][ATAC-seq]]
 - [[id:17f978bc-f2f2-497d-a8f1-b1d47927380f][Differential chromatin accessibility]]
-- chromhhm track annotation
+- chromHMM track annotation
   - https://genome.ucsc.edu/cgi-bin/hgTrackUi?db=mm10&g=encode3RenChromHmm
   - http://enhancer.sdsc.edu/enhancer_export/ENCODE/chromHMM/pooled/
 ***** Region or locus-based enrichment analysis
@@ -3960,7 +3958,7 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
 :PROPERTIES:
 :ID:       f600cd95-723e-4893-8b3f-0634d8905920
 :END:
-- cite:minnoye2021
+- Chromatin accessibility profiling methods: comprehensive review of ATAC-seq, DNase-seq, FAIRE-seq, and single-cell methods [cite:@minnoye2021]
 - [[id:22e31d06-f5df-427e-bd70-3a2ccd3f47ec][ATAC-seq]]
 - [[id:8ca221b7-b51a-4382-9844-5d8ba7193ff6][Chromatin accessibility]]
 ****** Chromatin accessibility profiling methods
@@ -9150,15 +9148,10 @@ https://chatgpt.com/c/8648af42-5e94-4eb7-aa89-90712de0e095
 :PROPERTIES:
 :ID:       17f978bc-f2f2-497d-a8f1-b1d47927380f
 :END:
-- Reske
-  - https://github.com/reskejak/ATAC-seq/blob/a7c3ba9a024030eb985e1a7d17ddb4d089446041/ATACseq_workflow.txt
-  - cite:reske2020
+- ATAC-seq normalization method can significantly affect differential accessibility analysis and interpretation: comparison of TMM, spike-in, and other normalization strategies [cite:@reske2020]
+  - [[https://github.com/reskejak/ATAC-seq][Reske ATAC-seq workflow]]
 - [[id:22e31d06-f5df-427e-bd70-3a2ccd3f47ec][ATAC-seq]]
-- Run macs2 with a set q value?
-- https://www.biostars.org/p/308976/
-- cite:gontarz2020
-- https://support.bioconductor.org/p/61604/
-- cite:reske2020
+- Comparison of differential accessibility analysis strategies for ATAC-seq data [cite:@gontarz2020]
 - Homer
   - http://homer.ucsd.edu/homer/ngs/mergePeaks.html
 - Diffbind
@@ -9171,8 +9164,7 @@ https://chatgpt.com/c/8648af42-5e94-4eb7-aa89-90712de0e095
   - https://www.biostars.org/p/320394/
 - [[id:ae0363f3-379e-4521-9184-cbc0d46501cd][Chromatin accessibility profiling]]
 - General reference
-  - cite:minnoye2021
-  - Complete list of bulk methods in cite:minnoye2021 box 1
+  - Chromatin accessibility profiling methods: complete list of bulk methods in Box 1 [cite:@minnoye2021]
 - https://github.com/macs3-project/MACS/blob/master/docs/callpeak.md
 **** [[id:ee030cef-74d4-435d-8228-b85f0e6203db][Differential gene expression]]
 **** DNA-seq pre-alignment processing and QC
@@ -9200,8 +9192,8 @@ https://www.biostars.org/p/254848/#:~:text=%22The%20B%2DAllele%20Frequency%20is,
 :PROPERTIES:
 :ID:       38c00ba1-299f-4a0d-959e-58845d12c712
 :END:
-- cite:mathios2021
-- cite:widman2022
+- Detection and characterization of lung cancer using cell-free DNA fragmentomes: DELFI method with gradient boosting on fragment features [cite:@mathios2021]
+- Machine learning guided signal enrichment for ultrasensitive plasma tumor burden monitoring [cite:@widman2022]
 - Gradient-boosted machine learning model on genome-wide cfDNA fragment coverage and size ratios across 5Mb bins achieved AUC 0.94 for pan-cancer detection [cite:@cristiano2019]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
@@ -9327,62 +9319,14 @@ https://www-nature-com-s.caas.cn/articles/s41568-021-00408-3?error=cookies_not_s
 https://www.sciencedirect.com/science/article/pii/S2666379122000258?via%3Dihub
 https://www.nature.com/articles/s41421-021-00366-y
 https://www.nature.com/articles/s41568-021-00408-3
-cite:bakhoum2021
-https://www.nature.com/articles/s41591-018-0323-0
-https://pubmed.ncbi.nlm.nih.gov/34172972/ https://umgear.org/
-https://www.nature.com/articles/d41586-021-01994-w
-- cite:tarazona2020
-- https://www.sciencedirect.com/science/article/pii/S2001037020302816#s0030
-- https://workflows.omnipathdb.org/
-- https://academic.oup.com/bioinformatics/article/36/8/2632/5689817
-- cite:higdon2015
-- https://jme.bioscientifica.com/view/journals/jme/62/1/JME-18-0055.xml
-- http://mixomics.org/webinar-pls-methods/
-- http://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC3618897&blobtype=pdf
-- https://danielhomola.com/assets/DanielHomola_PhD.pdf
-- cite:bersanelli2016
-- cite:rappoport2018
-- cite:subramanian2020
-- cite:wu2019
-- https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
-***** example papers
-:PROPERTIES:
-:ID:       2f988662-9368-436d-8bf7-8d072eccfb48
-:END:
-- https://www.sciencedirect.com/science/article/pii/S2666379122000258?via%3Dihub
-- https://academic.oup.com/nar/article/47/19/10010/5573547
-***** Omics integration
-:PROPERTIES:
-:ID:       00e4056a-e9b7-48e2-ba0e-3b37e8e36c69
-:END:
-https://www-nature-com-s.caas.cn/articles/s41568-021-00408-3?error=cookies_not_supported&code=ad37411b-42f4-4689-9a3b-1605f1f40eaf
-https://www.sciencedirect.com/science/article/pii/S2666379122000258?via%3Dihub
-https://www.nature.com/articles/s41421-021-00366-y
-https://www.nature.com/articles/s41568-021-00408-3
-cite:bakhoum2021
-https://www.nature.com/articles/s41591-018-0323-0
-https://pubmed.ncbi.nlm.nih.gov/34172972/ https://umgear.org/
-https://www.nature.com/articles/d41586-021-01994-w
-- cite:tarazona2020
-- https://www.sciencedirect.com/science/article/pii/S2001037020302816#s0030
-- https://workflows.omnipathdb.org/
-- https://academic.oup.com/bioinformatics/article/36/8/2632/5689817
-- cite:higdon2015
-- https://jme.bioscientifica.com/view/journals/jme/62/1/JME-18-0055.xml
-- http://mixomics.org/webinar-pls-methods/
-- http://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC3618897&blobtype=pdf
-- https://danielhomola.com/assets/DanielHomola_PhD.pdf
-- cite:bersanelli2016
-- cite:rappoport2018
-- cite:subramanian2020
-- cite:wu2019
-- https://link.springer.com/protocol/10.1007%2F978-1-0716-0849-4_12
-****** example papers
-:PROPERTIES:
-:ID:       2ccd35f7-9b02-43fe-b16b-5368607d6b27
-:END:
-- https://www.sciencedirect.com/science/article/pii/S2666379122000258?via%3Dihub
-- https://academic.oup.com/nar/article/47/19/10010/5573547
+- Harmonization of quality metrics and power calculation in multi-omic studies [cite:@tarazona2020]
+- The promise of multi-omics and clinical data integration to identify and target personalized healthcare approaches [cite:@higdon2015]
+- Methods for the integration of multi-omics data: mathematical aspects [cite:@bersanelli2016]
+- Multi-omic and multi-view clustering algorithms: review and cancer benchmark [cite:@rappoport2018]
+- Multi-omics data integration, interpretation, and its application (review) [cite:@subramanian2020]
+- Tools and resources
+  - [[https://workflows.omnipathdb.org/][OmniPath multi-omics workflows]]
+  - [[http://mixomics.org/][mixOmics: PLS-based integration methods]]
 **** Pathway encoding and diagramming
 :PROPERTIES:
 :ID:       a145b61d-7cd8-476f-899f-3314dca872fe
