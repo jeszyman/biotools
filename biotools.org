@@ -4588,8 +4588,8 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - https://www.nature.com/articles/s43018-022-00356-3#code-availability
 - https://www.ncbi.nlm.nih.gov/pubmed/32036085
 - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1257-4
-- cite:newman2015
-- for rna-seq data, see cite:newman2019 suppliment, do transcript TPM (salmon) and sum to gene
+- Robust enumeration of cell subsets from tissue expression profiles: CIBERSORTx [cite:@newman2015]
+- Digital cytometry with CIBERSORTx: for RNA-seq data, use transcript TPM (Salmon) summed to gene level (see supplement) [cite:@newman2019]
 - The following metrics are provided for each mixture sample:
   - P-value: Statistical significance of the deconvolution result across all cell subsets; useful for filtering out results with a poor "goodness of fit." Increase the number of permutations (input page) to increase the number of significant digits.
   - Correlation: Pearson's correlation coefficient (R), generated from comparing the original mixture with the estimated mixture, the latter of which is calculated using imputed cell fractions and corresponding expression profiles from the signature genes file. Of note, the correlation is restricted to signature genes.
@@ -4598,8 +4598,8 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
   - generating a reference from published data
     - single cell
     - array
-      - cite:chen2017
-        - https://github.com/wuaipinglab/ImmuCC/tree/master/tissue_immucc
+      - Inference of immune cell composition on the expression profiles of mouse tissue: ImmuCC [cite:@chen2017]
+        - [[https://github.com/wuaipinglab/ImmuCC][ImmuCC GitHub]]
   - using pre-compiled reference
     - cite:wang2017a
       - https://github.com/lintian0616/bica
@@ -4608,8 +4608,7 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
   - by ssGSEA
     - ESTIMATE
     - xCell
-- cite:liu2019a
-  - immune repetoire sequencing- see liu2019a ref83, table 4, ref88-92
+- How to read articles that use machine learning: practical guide including immune repertoire sequencing methods (see ref83, table 4, ref88-92) [cite:@liu2019a]
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5996037/
 - https://www.nature.com/articles/s43018-019-0022-x
 - https://www.sciencedirect.com/science/article/pii/S2589004218301871
@@ -6227,10 +6226,10 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 :END:
 - somascan examples
   - https://www.ncbi.nlm.nih.gov/pubmed/27327800
-- cite:yang2020
-- cite:joshi2018
-- cite:candia2017
-- cite:wilcox2016
+- Genomic and multi-tissue proteomic integration for understanding the biology of disease [cite:@yang2020]
+- In Aptamers They Trust: SOMAscan technology review [cite:@joshi2018]
+- Assessment of variability in the SOMAscan assay [cite:@candia2017]
+- The SOMAscan assay and SOMAmer reagents (protocol/overview) [cite:@wilcox2016]
 - isolation for somascan
   - http://mohanlab.bme.uh.edu/wp-content/uploads/2015/09/HOU-SOMAscan-Methods-2016.pdf
 - per-reviewed protocols
@@ -6294,10 +6293,10 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 :END:
 - somascan examples
   - https://www.ncbi.nlm.nih.gov/pubmed/27327800
-- cite:yang2020
-- cite:joshi2018
-- cite:candia2017
-- cite:wilcox2016
+- Genomic and multi-tissue proteomic integration for understanding the biology of disease [cite:@yang2020]
+- In Aptamers They Trust: SOMAscan technology review [cite:@joshi2018]
+- Assessment of variability in the SOMAscan assay [cite:@candia2017]
+- The SOMAscan assay and SOMAmer reagents (protocol/overview) [cite:@wilcox2016]
 - isolation for somascan
   - http://mohanlab.bme.uh.edu/wp-content/uploads/2015/09/HOU-SOMAscan-Methods-2016.pdf
 - per-reviewed protocols
@@ -8857,9 +8856,8 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :PROPERTIES:
 :ID:       c9ce98a3-e54c-4ffd-9819-cf3e59a06c31
 :END:
-https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-020-03919-2
-https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-021-00895-x#Sec2
-https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFWWgNKMCfqmfTbDzSlvgqZDq
+- PyClone-VI: scalable inference of clonal population structures using whole genome data [cite:@gillis2020pyclonevi]
+- Modeling clonal structure over narrow time frames via circulating tumor DNA in metastatic breast cancer [cite:@parsons2021clonalcfdna]
 **** cfDNA copy number calling and CNA-based tumor fraction
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
@@ -9005,19 +9003,16 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - Platelet DNA (pDNA) shows nucleosomal periodicity and TSS depletion patterns mirroring cfDNA, with read-depth depletion around TSSs of highly expressed peripheral blood MNC genes in both pDNA and cfDNA; H3K27ac ChIPmentation confirmed histone modifications are preserved in platelet-sequestered chromatin [cite:@murphy2025]
 - [[id:2d0d13d9-857a-4285-89e6-4614f749afd3][cfDNA topology]]
 - https://www.nature.com/articles/ng.3648
-- cite:foda2022
-- Plasma nucleosome capture and antibody binding [[cite:&fedyuk2022]]
-- OCRDetector, for detecting OCRs from whole-genome cfDNA sequencing data   [[cite:&wang2021ocr]]
-- nucleosome profiling with griffin
-  - [cite:@doebley2022griffin]
-  - https://github.com/adoebley/Griffin/wiki
-  - https://www.medrxiv.org/content/10.1101/2021.08.31.21262867v1.full-text
-  - https://github.com/alexcpan/Griffin
-- tissue-specific nucleosome depleted regions cite:zhu2021
-- inferred gene expression and regulation
-  - w/ Griffin, Gavin Ha method cite:sarkar2022
-  - cite:ulz2016
-- https://github.com/alexcpan/Griffin
+- Detecting liver cancer using cell-free DNA fragmentomes (DELFI) [cite:@foda2022]
+- Plasma nucleosome capture and antibody binding [cite:@fedyuk2022]
+- OCRDetector: detecting open chromatin regions from whole-genome cfDNA sequencing data [cite:@wang2021ocr]
+- Nucleosome profiling with Griffin
+  - Griffin method for GC-corrected nucleosome accessibility profiling from cfDNA [cite:@doebley2022griffin]
+  - [[https://github.com/adoebley/Griffin][Griffin GitHub]]
+- Tissue-specific cfDNA degradation patterns at nucleosome-depleted regulatory regions quantify ctDNA burden [cite:@zhu2021]
+- Inferred gene expression and regulation from cfDNA
+  - Nucleosome patterns in cfDNA reveal transcriptional regulation of advanced prostate cancer phenotypes (Griffin method, Gavin Ha group) [cite:@sarkar2022]
+  - Inferring expressed genes by whole-genome sequencing of plasma DNA [cite:@ulz2016]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]
 - NucPosDB (https://generegulation.org/nucposdb/) curates ~400 publications on nucleosome positioning in vivo and cfDNA from >10,000 individuals; provides stable nucleosome occupancy regions across conditions, processed mapped data for open-access datasets, and a catalogue of computational tools for nucleosome positioning and cfDNA analysis [cite:@shtumpf2022]
 - Deep WGS of cfDNA from healthy individuals reveals genome-wide nucleosome occupancy maps; nucleosome spacing correlates most strongly with lymphoid/myeloid epigenetic features, consistent with hematopoietic origin of normal cfDNA; in cancer patients, nucleosome footprints shift to reflect tumor cell-of-origin [cite:@snyder2016]
