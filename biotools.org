@@ -4674,15 +4674,14 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
 :END:
+- Review of multi-omic liquid biopsy: integrating genomic, epigenomic, transcriptomic, and fragmentomic layers from cfDNA for clinical applications including treatment response monitoring and resistance detection [cite:@tivey2024]
+- Comprehensive review of genomic and fragmentomic cfDNA landscapes for early cancer detection, covering mutation-based, methylation, and fragmentation approaches from the Velculescu group [cite:@bruhm2025]
+- Evaluation of cfDNA approaches for multi-cancer early detection: systematic comparison of mutation-based, methylation, and fragmentomic methods across clinical contexts [cite:@jamshidi2022]
+- SEQC2 consortium benchmarking of ctDNA sequencing assay analytical validity: multi-site evaluation of variant detection performance across platforms, establishing standards for clinical ctDNA assay validation [cite:@deveson2021]
+- ctDNA monitoring after anti-BCMA CAR-T therapy in multiple myeloma: ctDNA levels inversely correlate with time to progression, peripheral blood ctDNA-MRD is concordant with bone marrow MRD, and ctDNA anticipates clinical relapse with emergence of therapy-resistant clones [cite:@cart2025myeloma]
 - https://github.com/kircherlab/cfDNA-UniFlow
-- [cite:@tivey2024]
-- https://mail.google.com/mail/u/0/#inbox/FMfcgzQbfxdHZssqkRxWNGzcMfWWDkdC?projector=1&messagePartId=0.1
-- cfDNA CHIP-seq https://mail.google.com/mail/u/0/#inbox/FMfcgzQbfpLJzcxKvRQxgwBNtVqggNnG
 - https://www.cell.com/cell-reports-methods/fulltext/S2667-2375%2825%2900119-5
-- https://www-nature-com.mclibrary.idm.oclc.org/articles/s41568-025-00795-x?fromPaywallRec=false
-- https://www-sciencedirect-com.mclibrary.idm.oclc.org/science/article/pii/S153561082200513X?via%3Dihub
-- https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-021-00857-z
-- cfDNA for CAR-T resitance https://www.nature.com/articles/s41467-025-56486-6 https://www.sciencedirect.com/science/article/pii/S1535610822005918
+- https://mail.google.com/mail/u/0/#inbox/FMfcgzQbfxdHZssqkRxWNGzcMfWWDkdC?projector=1&messagePartId=0.1
 **** Tumor origin, tumor content, tumor fraction
 :PROPERTIES:
 :ID:       3f92c60b-c575-419a-95e3-344fd1d5ec0d
