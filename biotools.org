@@ -4179,8 +4179,8 @@ https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigC
 :PROPERTIES:
 :ID:       63465d15-73fe-455a-b19e-4de8efd7b563
 :END:
-- cite:buenrostro2015
-- cite:corces2017
+- ATAC-seq: a method for assaying chromatin accessibility genome-wide [cite:@buenrostro2015]
+- An improved ATAC-seq protocol reduces background and enables interrogation of frozen tissues [cite:@corces2017]
 ****** Method guides, tutorials, and good practice
 :PROPERTIES:
 :ID:       ac3e4bfa-e8f2-4de5-b546-6e22af3bbad9
@@ -4198,8 +4198,8 @@ https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigC
 - https://www.hdsu.org/chipatac2020/04_CHIP_Alignment.html
 - https://informatics.fas.harvard.edu/atac-seq-guidelines.html
 - pipeline graphic https://epigeneticsandchromatin.biomedcentral.com/articles/10.1186/s13072-020-00342-y/figures/4
-- cite:yan2020atac
-- cite:corces2017
+- From reads to insight: a hitchhiker's guide to ATAC-seq data analysis [cite:@yan2020atac]
+- Improved ATAC-seq protocol [cite:@corces2017]
 - [[https://informatics.fas.harvard.edu/atac-seq-guidelines.html][Harvard FAS]]
 - [[https://www.scopus.com/results/results.uri?cc=10&sort=cp-f&src=s&nlo=&nlr=&nls=&sid=e3c13d36864e217e2edcf12df7a64b0a&sot=b&sdt=b&sl=59&s=%28TITLE-ABS-KEY%28atac-seq%29+AND+TITLE-ABS-KEY%28bioinformatics%29%29&ss=cp-f&ps=r-f&editSaveSearch=&origin=resultslist&zone=resultslist][scopus atac-seq bioinformatics (42)]]
 - https://snakepipes.readthedocs.io/en/latest/content/workflows/ATAC-seq.html
@@ -4207,12 +4207,12 @@ https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigC
 - https://rockefelleruniversity.github.io/RU_ATAC_Workshop.html
 - https://www.illumina.com/techniques/popular-applications/epigenetics/atac-seq-chromatin-accessibility.html
 - http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/ATACseqQCWorkshop__ATACseqQC_workshop/
-- cite:minnoye2021
-- https://www.encodeproject.org/atac-seq/
+- Chromatin accessibility profiling methods (review) [cite:@minnoye2021]
+- [[https://www.encodeproject.org/atac-seq/][ENCODE ATAC-seq pipeline]]
 - https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
-- https://rockefelleruniversity.github.io/RU_ATACseq/
-- cite:sun2019atac
-- https://training.galaxyproject.org/training-material/topics/epigenetics/tutorials/atac-seq/tutorial.html
+- [[https://rockefelleruniversity.github.io/RU_ATACseq/][Rockefeller ATAC-seq workshop]]
+- Detect accessible chromatin using ATAC-sequencing, from principle to applications [cite:@sun2019atac]
+- [[https://training.galaxyproject.org/training-material/topics/epigenetics/tutorials/atac-seq/tutorial.html][Galaxy ATAC-seq tutorial]]
 - https://nf-co.re/atacseq/1.1.0/output
 - https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/
 - https://github.com/nf-core/atacseq/blob/master/main.nf
@@ -4225,11 +4225,8 @@ https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigC
 :PROPERTIES:
 :ID:       1763ea25-2549-42cb-8e82-1ae75f16e8cb
 :END:
-- cite:corces2017
-- cite:buenrostro2015
-- cite:buenrostro2015
-- for tissue
-  - cite:corces2017
+- ATAC-seq: a method for assaying chromatin accessibility genome-wide (bench protocol) [cite:@buenrostro2015]
+- Improved ATAC-seq protocol for frozen tissues: optimized DNA prep [cite:@corces2017]
 ****** [[id:fe58011b-ca46-4e45-9c4e-d4780fbfa115][Quality control]]
 :PROPERTIES:
 :ID:       bd5dd444-97a3-4d68-8ca6-ee280a1f40d4
@@ -4442,16 +4439,11 @@ consensusToCount
 :END:
 - [[./biotools.org_20220906_122531.png]]
 - Motif analysis
-  - cite:minnoye2021
-  - homer
-    - https://www.biostars.org/p/493498/
-  - https://rockefelleruniversity.github.io/RU_ATACseq/
-    - https://rockefelleruniversity.github.io/RU_ATACseq/presentations/singlepage/RU_ATAC_part3.html
-  - cite:yan2020atac
-  - https://ccg.epfl.ch/pwmtools/pwmscan.php
-  - https://meme-suite.org/meme/
-  - example of homer-jaspar method https://www.sciencedirect.com/science/article/pii/S1535610817302040?via%3Dihub
-  - cite:sun2019atac
+  - Chromatin accessibility profiling methods: motif analysis approaches [cite:@minnoye2021]
+  - HOMER for motif discovery
+  - From reads to insight: guide to ATAC-seq motif analysis [cite:@yan2020atac]
+  - [[https://ccg.epfl.ch/pwmtools/pwmscan.php][PWMScan]] and [[https://meme-suite.org/meme/][MEME Suite]] for motif scanning
+  - Detect accessible chromatin using ATAC-sequencing: motif enrichment methods [cite:@sun2019atac]
 ****** Identifying transcription factor binding sites
 :PROPERTIES:
 :ID:       f2e74bdb-b021-4413-99e9-90ade9a529d4
