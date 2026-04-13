@@ -3402,13 +3402,28 @@ mkdir -p "\${repo}/workflow/scripts"
 - Rationale- cfMeDIP-seq only measures HYPERmethylation (via IP), see [cite:@nassiri2020]
 
 https://pmc.ncbi.nlm.nih.gov/articles/PMC6162482/
+**** Cross-platform methylation data merging: arrays vs bisulfite sequencing
+:PROPERTIES:
+:ID:       a838286c-a769-4d0b-969e-b781936718f9
+:END:
+[[id:9828de42-855a-4787-b73f-6f56e13ba24c][EPIC 850K array has minimal LINE-1 and ERV-L/MaLR coverage — our EM-seq repeat compartment analysis fills a gap]]
+- Methylation array platforms (Illumina EPIC 850K, 450K) and bisulfite sequencing (WGBS, EM-seq) measure fundamentally different CpG populations. "Global methylation" means different things on each platform.
+- EPIC 850K: ~850K probes biased toward CGIs, promoters, regulatory regions. Global = average across this regulatory-biased set.
+- EM-seq/WGBS: ~28M CpGs genome-wide, dominated by repeats and intergenic sequence. Global = truly genome-wide average.
+- Same-platform merging (e.g., EPIC → EPIC) is feasible with proper normalization (SeSAMe/noob, functional normalization) and batch correction (ComBat). Requires tissue-type matching.
+- Cross-platform merging for global methylation is unreliable — the platforms sample different CpG populations, so absolute beta values are not directly comparable.
+- Practical approach: compare direction of effect (hypo vs hyper relative to controls) within each dataset, rather than merging absolute values across platforms.
+- Can extract array-probe-equivalent CpG positions from bisulfite data for a constrained comparison, but this discards the whole-genome advantage of bisulfite-seq.
+- Repeat elements (LINE-1, ERV-L/MaLR) are essentially invisible to arrays — only accessible via whole-genome bisulfite methods. LUMP score on arrays is a crude proxy using a handful of probes.
 *** Spatial methods
 :PROPERTIES:
 :ID:       bac12c9a-6f8a-4d1b-b8a2-041632c814f6
 :END:
-https://mail.google.com/mail/u/0/#inbox/FMfcgzGxTFWDgPhqMLGHBDfJrdBMrWXq
-[[id:4de39606-9232-4cfc-b444-f4a27e577862][Spatial ATAC-seq]]
+Spatial transcriptomics and spatial multi-omics — platforms, preprocessing, analysis, and interpretation. Curriculum scaffolded 2026-04-11 for the ~domain-expert-spatial~ agent; enrichment via Scopus-sourced reviews and primary literature.
 
+Related:
+- [[id:4de39606-9232-4cfc-b444-f4a27e577862][Spatial ATAC-seq]]
+- [[https://mail.google.com/mail/u/0/#inbox/FMfcgzGxTFWDgPhqMLGHBDfJrdBMrWXq][CosMx Gmail thread]]
 
 #+begin_src yaml :tangle ./config/spatial-conda-env.yaml
 name: spatial
@@ -3421,8 +3436,119 @@ dependencies:
   - r-seurat
 #+end_src
 
-- CosMx "cosmic" SMI spatial single cell
-- Xenium 10x panel
+**** Platforms — imaging-based (in situ)
+- CosMx SMI (Bruker/NanoString) — spatial molecular imager; 1K / 6K / Whole-Transcriptome panels; subcellular localization
+- Xenium (10x Genomics) — in situ padlock-probe sequencing; panel-based, multimodal with H&E/IF
+- MERFISH / MERSCOPE (Vizgen) — barcoded smFISH
+- seqFISH+
+- Molecular Cartography (Resolve Biosciences)
+- Canonical Xenium best-practice QC and analysis workflows from [cite:@marcosalas2025] — the reference Nat Methods paper for Xenium chemistry, per-cell QC, negative-probe thresholds, and downstream analysis recommendations.
+
+**** Platforms — sequencing-based (array/capture)
+- [[id:91f85376-3ca9-4a4d-b4ee-9d7dfb651661][Visium and Visium HD (10x Genomics)]] — see dedicated section below
+- Slide-seq / Slide-seqV2 / Curio Seeker
+- Stereo-seq (BGI/STOmics) — nanoball arrays
+- GeoMx DSP (NanoString) — ROI-based WTA / CTA
+- Open-ST, Pixel-seq
+
+**** Visium and Visium HD (10x Genomics)
+:PROPERTIES:
+:ID:       91f85376-3ca9-4a4d-b4ee-9d7dfb651661
+:END:
+Primary deep-dive platform for this knowledge base. Capture-based spatial transcriptomics from 10x Genomics; the dominant platform in published spatial work through the mid-2020s and the reference point for most analysis-method benchmarks.
+
+- Chemistry and spot geometry — 55 μm spots (classic Visium) vs 2 μm binned squares (Visium HD)
+- Sample workflows — fresh-frozen vs FFPE; CytAssist workflow for FFPE
+- Resolution and bin aggregation — 2/8/16 μm bins in HD, tradeoffs for sparsity and cell-level inference
+- QC specifics — under-tissue detection, fiducial alignment, tissue-region masking, destriping
+- Deconvolution of 55 μm spots — cell2location, RCTD, SpatialDWLS, stereoscope, CARD benchmarks on Visium
+- Cell-level inference from Visium HD bins — segmentation-free vs bin-to-cell aggregation approaches
+- Comparison to in-situ platforms (CosMx, Xenium, MERFISH) — sensitivity, resolution, panel-free vs panel-limited
+- Bin2cell reconstructs cell-like units from Visium HD 2 μm bins via segmentation-guided aggregation — one of the primary published strategies for bin→cell inference on HD data [cite:@polaski2024].
+- SpatialBenchVisium is a multi-sample Visium benchmarking dataset characterizing technical variability across replicates; the reference resource for Visium QC and cross-sample comparison [cite:@du2025].
+
+**** Platform comparison and benchmarks
+- Resolution, sensitivity, panel size, cell-boundary fidelity, throughput tradeoffs
+- Cross-platform benchmarking studies on matched tissues
+- Practical guide to seven major commercial spatial transcriptomics platforms with side-by-side chemistry, resolution, and sensitivity comparisons — useful reference for platform selection [cite:@lim2025].
+- Systematic benchmark of high-throughput subcellular in-situ platforms (CosMx, Xenium, MERFISH, Stereo-seq) across human tumor tissues — reports per-platform strengths on cell typing accuracy, detection sensitivity, and spatial specificity [cite:@ren2025].
+- Direct head-to-head comparison of Xenium 5K and Visium HD on identical tissue slides from a pathology perspective — single-section cross-platform evaluation [cite:@long2025].
+
+**** Preprocessing and QC
+- Cell segmentation — Baysor, Cellpose, StarDist, nuclei expansion heuristics
+- Transcript assignment, negative-probe control, false-discovery estimation
+- Per-cell QC metrics — counts, area, negprobe rate, spatial variance inflation
+- Registration across serial sections and to H&E / IF images
+- SpotSweeper performs spatially-aware outlier detection for capture-based spatial transcriptomics — flags artifactual spots that would otherwise masquerade as biological spatial variation [cite:@totty2025].
+- Xenium best-practice QC recommendations (Nat Methods) — per-cell metrics, negative-probe thresholds, and segmentation QC specific to in-situ imaging platforms [cite:@marcosalas2025].
+
+**** Normalization and integration
+- SCTransform vs log-normalization under sparse spatial counts
+- Cross-slide / cross-batch integration — Harmony, RPCA, Seurat v5 anchors
+- Joint scRNA-seq and spatial integration strategies
+
+**** Cell typing and label transfer
+- Reference-based transfer from scRNA-seq atlases
+- Marker-based and supervised classifiers
+- InSituType, Tangram, RCTD, cell2location
+- BANKSY augments each cell's feature vector with the aggregated expression of its spatial neighbors, then clusters in the augmented space — unifies cell typing and tissue-domain detection in one framework [cite:@singhal2024].
+
+**** Spatial-aware analysis
+- Neighborhood and niche analysis — Squidpy, Giotto, Banksy
+- Spatially variable genes — SpatialDE, SPARK, Moran's I
+- Cell-cell communication in spatial context — CellChat spatial, COMMOT, NICHES
+- Tissue domain and region detection — SpaGCN, BayesSpace, STAGATE
+- BANKSY (Nat Genet) treats cell typing and tissue-domain segmentation as a single problem by combining each cell's own expression with a neighbor-aggregated profile — scales to large spatial omics datasets at lower compute cost than graph-neural-net alternatives [cite:@singhal2024].
+
+**** Differential expression with spatial context
+- Pseudobulk by niche or tissue region
+- Within-cell-type spatial DEGs
+- Cross-condition niche differential abundance
+
+**** Deconvolution of capture-based platforms
+- cell2location, RCTD, SpatialDWLS, stereoscope, CARD
+- Comprehensive benchmark of ~10 deconvolution methods (including RCTD, cell2location, SpatialDWLS, stereoscope, CARD) with practical guidelines: method performance is task- and tissue-dependent rather than uniformly in favor of any single method, tempering blanket claims of cell2location superiority on heavily mixed tissues [cite:@li2023].
+
+**** Multi-modal spatial extensions
+- Spatial CITE (protein + RNA), spatial ATAC, spatial CUT&Tag
+- H&E- and IF-aligned analyses
+- See [[id:4de39606-9232-4cfc-b444-f4a27e577862][Spatial ATAC-seq]]
+- Spatial CITE-seq (Nat Biotech) — primary paper for high-plex protein + whole-transcriptome co-mapping at cellular resolution; enables direct comparison of protein and RNA measurements at the same coordinates [cite:@liu2023].
+- Comprehensive Nat Rev Genet review of single-cell and spatial multi-omics methods and applications — canonical reference for the multi-modal spatial landscape (DNA + RNA + protein + chromatin) [cite:@vandereyken2023].
+
+**** Analysis software stacks
+- R — Seurat v5 spatial, Giotto, SpatialExperiment, STUtility
+- Python — Squidpy, scanpy (spatial), SpatialData, cell2location
+
+**** Reviews and field overviews
+- Gulati et al. (2024) Nat Rev Mol Cell Biol — canonical recent field overview: profiling cell identity and tissue architecture with single-cell and spatial transcriptomics. Covers platforms, analysis paradigms, and biological applications [cite:@gulati2024].
+
+**** Spatial methods at the radiotherapy / tumor microenvironment interface
+Methodological notes specific to applying spatial transcriptomics to irradiated tissue (QC, batch structure, niche definition for peak/valley or dose-gradient geometries). Biology is covered separately in [[id:da8f07b9-37a6-4739-912d-7f6b294270ff][Spatially fractionated radiation therapy (SFRT)]].
+
+***** Literature gap: spatial transcriptomics of SFRT/MBRT/GRID/lattice
+Targeted Scopus API search [2026-04-11] for spatial-omics platforms crossed with spatially-fractionated radiation terms returned zero relevant hits. Full API response (queries, result counts, returned entries, DOIs) is captured as durable evidence at [[file:~/repos/spatial-rads/docs/scopus_negative_result_2026-04-11.json][scopus_negative_result_2026-04-11.json]] — inspect this file directly rather than re-running through the Scopus web UI (which requires an authenticated Elsevier session and does not preserve queries via copy-paste URLs).
+
+Summary of the two queries:
+- Q1 ~spatial-omics × SFRT-specific terms~ → 2 total hits, both false positives matching the "MRT" token in non-radiation contexts (laser-capture microdissection of neurons; small-intestine atlas). Zero genuinely relevant.
+- Q2 ~spatial-omics × radiotherapy × dose-gradient/peak/valley/painting terms~ → 0 total hits. No paper frames a spatial-transcriptomics study in dose-gradient, peak/valley, or dose-painting terms.
+
+As of this search, no published study characterizes peak/valley, vertex, or any dose-heterogeneous radiation-therapy geometry using spatial transcriptomics. The [[file:~/repos/spatial-rads/spatial-rads.org][spatial-rads]] CosMx project is accordingly first-in-field for MBRT peak/valley spatial transcriptomics. To re-verify this claim at a later date, re-run the two query strings recorded in the JSON snapshot above.
+
+***** Closest published analogs: uniform-dose RT with spatial or single-cell transcriptomics
+A broader Scopus query for RT crossed with spatial transcriptomics returned 57 hits [2026-04-11], all uniform-dose or post-RT TME mapping with no dose-gradient design. The closest analogs — useful as manuscript-framing references for RT + spatial work, but none address the peak/valley dimension:
+- Oyoshi et al. 2023, Sci Adv — comprehensive single-cell analysis of radiotherapy-induced macrophage infiltration with immune-modulatory phenotype ([[https://doi.org/10.1126/sciadv.adh9069][doi:10.1126/sciadv.adh9069]])
+- Shiau et al. 2024, Nat Genet — spatially resolved analysis of therapy-associated tumor microenvironment remodeling in pancreatic cancer ([[https://doi.org/10.1038/s41588-024-01890-9][doi:10.1038/s41588-024-01890-9]])
+- Cui Zhou et al. 2022, Nat Genet — spatially restricted drivers and transitional cell populations cooperating with the TME in untreated vs treated tumors ([[https://doi.org/10.1038/s41588-022-01157-1][doi:10.1038/s41588-022-01157-1]])
+
+These establish the template for RT-context spatial transcriptomics analyses but lack the dose-geometry dimension that defines SFRT biology.
+
+***** Methodological implications for peak/valley spatial analysis
+- Niche definition must come from beam geometry (physics-registered) rather than expression-derived clustering. Standard spatial-aware methods (BANKSY [cite:@singhal2024], SpaGCN, BayesSpace) are not directly applicable because they learn niches from expression; peak/valley designs need a physics-defined niche assignment registered from beam coordinates or a sentinel IHC marker like gamma-H2AX on an adjacent section.
+- Peak-valley spacing at the sub-millimeter scale puts segmentation errors on in-situ platforms (CosMx, Xenium) into the biologically-meaningful range rather than noise — misassigning a cell across a peak-valley boundary changes its condition label. Prefer subcellular-resolution in-situ platforms (CosMx, Xenium) or Visium HD 2 μm bins over classical Visium 55 μm spots for peak/valley geometries.
+- n=1 per condition is the starting point for SFRT spatial transcriptomics work until replicate cohorts accumulate. Descriptive effect sizes (log2FC, % expressed) are valid; formal p-values from a single slide are not. This matches the spatial-rads Mutter_01 design and is consistent with the general spatial-DE immaturity noted in [[*Differential expression with spatial context][Differential expression with spatial context]].
+- Cross-slide and cross-sample integration for SFRT has no published precedent. Harmony, RPCA, and Seurat v5 anchor approaches from [[*Normalization and integration][Normalization and integration]] will be applied de novo when Mutter_02 biological replicates arrive, without a reference benchmark specific to spatially-fractionated irradiation.
+
 *** Fluorometry
 :PROPERTIES:
 :ID:       fd71d66e-238c-4726-b399-17341a615242
