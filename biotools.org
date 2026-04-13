@@ -3742,28 +3742,10 @@ CLOCK: [2019-06-26 Wed 13:35]--[2019-06-26 Wed 13:59] =>  0:24
   - https://github.com/genepattern/docker-tophat/blob/master/Dockerfile
   - https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/Dockerfile
 
-********* NEXT INTEGRATE RNA aligners
-:PROPERTIES:
-:CREATED:  [2019-02-25 Mon 13:16]
-:ID:       951F10BC-E844-45C5-8CB4-4FA8756D9F85
-:END:
-
-- are combined rna-seq alignment methods just sum of runs?
-- cite:zhang2016a
-- [-] install
-  - [ ] cite:wu2016 in cite:mathe2016
-  - [X] hisat2
-  - [X] star
-  - [X] tophat - but prefer don't use- "TopHat has entered a low maintenance, low support stage as it is now largely superseded by HISAT2" https://ccb.jhu.edu/software/tophat/index.shtml
-- [-] create indexes
-  - [-] star
-  - [ ] hisat2 https://ccb.jhu.edu/software/hisat2/manual.shtml see hista2-build
-  -
-
 ******** NEXT HCC1395 straight align and integrate and compare to published
 :PROPERTIES:
 :CREATED:  [2019-03-13 Wed 10:11]
-:ID:       58F7BED2-DED1-4911-9E8C-104E12126A73
+:ID:       94b8f24e-8073-4188-85ef-97dec985d5d2
 :END:
 :LOGBOOK:
 CLOCK: [2019-03-14 Thu 07:49]--[2019-03-14 Thu 08:45] =>  0:56
@@ -4079,7 +4061,7 @@ https://www.nature.com/articles/s41588-018-0091-2
 ************* RNA-fusion                                            :biopipe:
 :PROPERTIES:
 :CREATED:  [2019-06-25 Tue 09:05]
-:ID:       96634f32-b19a-4390-8e50-e942abd35f90
+:ID:       74c347c1-5b10-4cfb-b215-6606400e5d4d
 :END:
 :LOGBOOK:
 CLOCK: [2019-07-09 Tue 09:19]--[2019-07-09 Tue 09:25] =>  0:06
@@ -4127,14 +4109,6 @@ https://www.pathwaycommons.org/guide/primers/data_analysis/gsea/#:~:text=The%20G
 [[file:~/Box%20Sync/comp_bio/gsea_template/][Folder]]
 [[file:~/Box%20Sync/comp_bio/gsea_template/RNA-seqWorkflow.pdf][pdf]]
 
-
-************** RNA-Seq Workflow Example
-:PROPERTIES:
-:ID:       B687F931-3A5E-4CD0-B2B7-30DF026E0AB9
-:END:
-
-[[file:~/Box%20Sync/comp_bio/gsea_template/][Folder]]
-[[file:~/Box%20Sync/comp_bio/gsea_template/RNA-seqWorkflow.pdf][pdf]]
 
 ************* Commercial
 :PROPERTIES:
@@ -5139,7 +5113,7 @@ https://www.nature.com/articles/s41467-019-10332-8#Sec13
 :END:
 ******* Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
 :PROPERTIES:
-:ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
+:ID:       2a4c5ab8-2dbb-4eba-9362-edce0d695f42
 :END:
 - https://www.nature.com/collections/haffgaicaf
 - https://www.sciencedirect.com/science/article/pii/S0890850819303883#fig1
@@ -5160,7 +5134,7 @@ https://genomebiology.biomedcentral.com/articles/10.1186/s13059-021-02529-2#Sec1
 https://mail.google.com/mail/u/0/#inbox/FMfcgzGrblWQxQHrNZrMjzpGmzjqDNGX
 ******** Landau Group
 :PROPERTIES:
-:ID:       b4b2a35f-e59a-4e84-995e-ca16d7fd190d
+:ID:       267c3c79-6973-4296-9f8e-13c1b9e833d7
 :END:
 cite:widman2022
 
@@ -6122,14 +6096,6 @@ RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
 https://www.sciencedirect.com/science/article/pii/S1097276515003032
 https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 - http://www.visantnet.org/visantnet.html
-**** Metabolomics
-:PROPERTIES:
-:CREATED:  [2020-10-08 Thu 09:15]
-:ID:       fce92cb5-cf68-4944-b2f4-eff55996ec5f
-:END:
-https://www.sciencedirect.com/science/article/pii/S1097276515003032
-https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
-- http://www.visantnet.org/visantnet.html
 *** Bioinformatics visualizations
 :PROPERTIES:
 :ID:       2d0863b4-fe7a-4cc5-b940-2e5f45153432
@@ -6242,7 +6208,7 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 - [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
 **** Proteomics
 :PROPERTIES:
-:ID:       e01aba61-2ea4-4235-a237-b0b90b49f153
+:ID:       1565fbef-afbe-4783-b5f1-875e9fcfeb8e
 :END:
 https://ashpublications.org/blood/article/doi/10.1182/blood.2022016033/486036/Proteomic-and-Phosphoproteomic-Landscapes-of-Acute
 https://www.science.org/doi/10.1126/science.abj1541
@@ -7229,11 +7195,6 @@ female_tg <- RunPCA(female_tg)
 - High-dimensional deconstruction of pancreatic ductal adenocarcinoma identifies tumor microenvironmental communities associated with survival [cite:@storrs2022]
 - Li Ding pancreas - https://www.nature.com/articles/s41588-022-01157-1
 - cite:qi2019
-**** single-nucleus RNA-seq
-:PROPERTIES:
-:ID:       1149b091-eabe-4137-a3e9-222f21bfdd57
-:END:
-- https://www.nature.com/articles/s41591-020-0844-1
 **** Jointly defining cell states from singl-cell multi-omic and spatial tanscriptomic datasest
 :PROPERTIES:
 :ID:       76cd9647-825f-46b4-9344-b7b95049f2f6
@@ -7438,12 +7399,6 @@ https://chatgpt.com/c/67191dd3-e8b4-8005-bacd-6876cf5f524d
 :CREATED:  [2020-12-20 Sun 16:45]
 :ID:       61aac189-1770-4d80-a367-e7c39b46e0d1
 :END:
-**** Adaptive TCR-beta immunosequencing
-:PROPERTIES:
-:CREATED:  [2020-12-20 Sun 16:45]
-:ID:       61aac189-1770-4d80-a367-e7c39b46e0d1
-:END:
-
 **** [#Y] Assess library complexity
 :PROPERTIES:
 :ID:       dd9f6806-1704-444c-8498-f9c50a52022a
@@ -11366,7 +11321,7 @@ net = blockwiseConsensusModules(
 ************* NEXT HCC1395 straight align and integrate and compare to published
 :PROPERTIES:
 :CREATED:  [2019-03-13 Wed 10:11]
-:ID:       58F7BED2-DED1-4911-9E8C-104E12126A73
+:ID:       a0bf103b-d490-4108-9658-ca8f5e5803e9
 :END:
 :LOGBOOK:
 CLOCK: [2019-03-14 Thu 07:49]--[2019-03-14 Thu 08:45] =>  0:56
@@ -11586,7 +11541,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
   - cite:karolchik2011
 *** <<<Integrated Genomics Viewer>>> (<<<IGV>>>)
 :PROPERTIES:
-:ID:       917062AC-32E8-41F5-A511-84AA7B1504B0
+:ID:       ff4813d8-69af-4106-b6a7-28cc26dd432c
 :END:
 
 - cite:robinson2017
@@ -11610,7 +11565,7 @@ CLOCK: [2021-03-03 Wed 19:56]--[2021-03-03 Wed 21:25] =>  1:29
 :END:
 *** [[file:docker/biotools_Dockerfile][Biotools docker]]
 :PROPERTIES:
-:ID:       7ed344ce-373c-4f9e-b24f-87b57374e1a0
+:ID:       d2d576f4-b352-4dc4-a9ca-5330dca8ed56
 :header-args:bash: :tangle ./docker/biotools_Dockerfile
 :END:
 :LOGBOOK:
@@ -11808,7 +11763,7 @@ RUN mkdir /opt/picard-2.18.1/ \
 *** [[file:docker/rna_Dockerfile][RNA docker]]
 :PROPERTIES:
 :header-args:bash: :tangle ./docker/rna_Dockerfile
-:ID:       1338f10d-c3d0-4b29-9c4a-d3a01758a3d2
+:ID:       1e8f7f1f-f0a7-4b5a-bb47-9ee3c0a03879
 :END:
 **** Preamble
 :PROPERTIES:
@@ -12372,7 +12327,7 @@ singularity pull /mnt/ris/aadel/jeszyman/sing_containers/biotools.sif docker://j
 https://pubs.rsc.org/en/content/articlelanding/2020/cs/d0cs00647e
 *** Setup common reference files
 :PROPERTIES:
-:ID:       813ed980-1c55-44d7-84d8-67afdad2e5bc
+:ID:       3bc1c573-a7ed-4d4e-8536-e5da0b509756
 :END:
   #+name: setup_common_references
   #+begin_src bash
