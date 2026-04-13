@@ -4731,10 +4731,10 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 - [[id:d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6][methylation sequencing]]
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
-- [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]
+- [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 - [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
 - [[id:8ffda4e0-8a03-4fa3-aa0d-56c2e6a1dca4][Bisulfite sequencing]]
-- [[id:591dfbf4-48c2-40f0-83e0-56b75b3a6213][DNA and histone methylation cross-talk]]]
+- [[id:591dfbf4-48c2-40f0-83e0-56b75b3a6213][DNA and histone methylation cross-talk]]
 - [[id:4aedf4d5-04e3-46e4-8156-a2e5b601c9e6][DNA methylation in cancer]]
 - [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
 ***** Assay platforms
@@ -4807,8 +4807,8 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 - Penalized logistic regression combining fragmentation profiles (473 5-Mb bins), repeat element landscape (786 elements), and epigenetic hotspot coverage in a single classifier for liver fibrosis/cirrhosis detection; L1 regularization for feature selection with 5-fold cross-validation [cite:@annapragada2026]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
-- [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]
-- [[id:49d00918-aa42-47ab-9232-c81cddbb5b56][ML prediction models in small-sample / rare disease settings]]]
+- [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]]
+- [[id:49d00918-aa42-47ab-9232-c81cddbb5b56][ML prediction models in small-sample / rare disease settings]]
 **** cfDNA quality control (QC)
 :PROPERTIES:
 :ID:       afc0516f-d05e-4d9a-b063-d2b0a03e11b1
@@ -4818,7 +4818,7 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 - [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
 - [[id:498b4485-a6dc-4088-bb25-a17d3df00a4e][Pre-analytic variables]]
 - [[id:cc3e4b92-308d-4323-b18e-1cd07fd6bc32][Molecular assay validation]]
-- [[id:d40fa2c8-dc97-4434-943f-b8fe7d3d9f25][cfDNA and ctDNA preanalytic guidelines]
+- [[id:d40fa2c8-dc97-4434-943f-b8fe7d3d9f25][cfDNA and ctDNA preanalytic guidelines]]
 - Bioinformatics preprocessing choices (trimming, duplicate removal, mapping filters) substantially affect derived cfDNA genetic and epigenetic features and influence downstream cancer vs healthy classification from low-pass WGS; benchmarked on 20 lung cancer and 20 healthy samples [cite:@ivankovi2025]
 - WGBS alters cfDNA fragmentomic characteristics (fragment length distribution, end motifs, nucleosome positioning signals) compared to standard WGS; comprehensive evaluation of WGBS-induced technical artifacts is required when using bisulfite-converted libraries for fragmentomics analyses [cite:@li2025]]
 
@@ -8836,10 +8836,10 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 - Jagged ends of urinary cfDNA: characterization and feasibility in bladder cancer detection [cite:@zhou2021]
 - Plasma DNA end-motif profiling as a fragmentomic marker in cancer, pregnancy, and transplantation [cite:@jiang2020motif]
 - [[id:601c26c9-88d9-4493-a412-87bd362ecf23][Blood plasma entities related to NF1 disease progression]]
-- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - High-resolution characterization of cfDNA end sequence signatures: non-random cleavage produces position-specific dinucleotide biases at fragment termini that correlate with nucleosome rotational positioning and nuclease cutting preferences [cite:@chandrananda2015]
 - [[id:43498606-b9bb-4ab5-b90a-08acb8698ca6][cfDNA biology]]
-- [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucleosome structure]]]
+- [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucleosome structure]]
 **** cfDNA fragmentomics
 :PROPERTIES:
 :ID:       173e0331-9140-47d0-9e5e-ec91672ebdc3
@@ -8874,13 +8874,13 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 - [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
-- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]
+- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
 - [[id:582f644d-c9ef-4aa4-848a-d587f3494ac0][cfDNA sources and fluid types]]
 - Germline TP53 mutation carriers without active cancer show cancer-like cfDNA fragmentation patterns, suggesting constitutional chromatin alterations from p53 loss affect nucleosome positioning and cfDNA fragment profiles prior to malignant transformation [cite:@wong2024lfs]
 - cfDNA fragmentation patterns reflect in vivo gene regulation: nucleosome positioning at promoters, enhancers, and TF binding sites produces characteristic coverage and fragment size profiles that can infer tissue-specific transcriptional programs non-invasively (review) [cite:@liu2022]
 - Ultra-deep WGS with single-stranded library preparation shows ~50% of cfDNA fragments are <120 nt (sub-nucleosomal), systematically absent from standard double-stranded prep; this sub-nucleosomal population is relatively enriched for ctDNA in cancer and likely reflects active TF-bound or nucleosome-free regions [cite:@sanchez2018]
 - Single-stranded cfDNA library preparation reveals strand-specific depth asymmetry between the two DNA strands; this strand bias correlates with transcription direction and methylation patterns and represents a novel cfDNA characteristic capturing protein-DNA interaction footprints invisible to double-stranded approaches [cite:@yang2025]
-- [[id:368e3f72-f8d3-475c-ad84-782993f8a6f6][Early cancer detection in Li-Fraumeni with cfDNA]]]
+- [[id:368e3f72-f8d3-475c-ad84-782993f8a6f6][Early cancer detection in Li-Fraumeni with cfDNA]]
 - [[id:57588960-8260-476a-b191-8e32b998c703][Plexiform neurofibroma]]
 - [[id:e230fd25-63bd-4a4f-888d-715ba1e8e50c][2026 ALSF A]]
 - [[id:3c1e9bc8-37c7-4cdd-a877-3cb55c39e85f][Serial cfDNA assessments in preclinical models]]
@@ -8931,7 +8931,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - Inferred gene expression and regulation from cfDNA
   - Nucleosome patterns in cfDNA reveal transcriptional regulation of advanced prostate cancer phenotypes (Griffin method, Gavin Ha group) [cite:@sarkar2022]
   - Inferring expressed genes by whole-genome sequencing of plasma DNA [cite:@ulz2016]
-- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - NucPosDB (https://generegulation.org/nucposdb/) curates ~400 publications on nucleosome positioning in vivo and cfDNA from >10,000 individuals; provides stable nucleosome occupancy regions across conditions, processed mapped data for open-access datasets, and a catalogue of computational tools for nucleosome positioning and cfDNA analysis [cite:@shtumpf2022]
 - Deep WGS of cfDNA from healthy individuals reveals genome-wide nucleosome occupancy maps; nucleosome spacing correlates most strongly with lymphoid/myeloid epigenetic features, consistent with hematopoietic origin of normal cfDNA; in cancer patients, nucleosome footprints shift to reflect tumor cell-of-origin [cite:@snyder2016]
 - cfDNA harbors footprints of transcription factor binding visible as short protected regions (~50-80 bp) within nucleosome-free regions; TF footprint depth correlates with expression level of the cognate TF in the tissue of origin [cite:@snyder2016]
@@ -8952,7 +8952,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:43498606-b9bb-4ab5-b90a-08acb8698ca6][cfDNA biology]]
 - [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucleosome structure]]
 - [[id:8ca221b7-b51a-4382-9844-5d8ba7193ff6][Chromatin accessibility]]
-- [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]]
+- [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
 **** cfDNA small variant calling
 :PROPERTIES:
 :ID:       0b43e09e-52f7-49fb-8796-87168fe57706
@@ -8974,7 +8974,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 :END:
 - TAPS methylation deconvolution of platelet DNA (pDNA) showed similar cell-of-origin composition to cfDNA, with majority from blood leukocytes and minor hepatocyte contribution; l-pDNA (>600 bp fragments) had higher megakaryocyte-specific locus mapping (35.9% vs 16.8% for s-pDNA), suggesting longer platelet DNA fragments are enriched for megakaryocyte-derived material [cite:@murphy2025]
 - Detection of cell types contributing to cancer from circulating cell-free methylated DNA [cite:@loyfer2021celltypes]
-- Whole-genome sequencing of cfDNA yields genome-wide read distribution patterns to track tissue of origin in cancer patients [cite:@peneder2021toi]
+- Whole-genome sequencing of cfDNA yields genome-wide read distribution patterns to track tissue of origin in cancer patients [cite:@peneder2021]
 - Liquid biopsy reveals collateral tissue damage in cancer: cfDNA tissue-of-origin deconvolution detects non-tumor tissue injury [cite:@mouliere2021collateral]
 - Genome-wide cfDNA fragmentation profiles identified tissue of origin to a limited number of candidate sites in 75% of cancer cases across seven tumor types [cite:@cristiano2019]
 - Methylome deconvolution of cfDNA in liver cirrhosis revealed increased blood monocyte and liver endothelium contributions with decreased hepatocyte contributions, linking genome-wide fragmentomic changes to cell type-specific origins in non-cancer disease (n=28 methylomes) [cite:@annapragada2026]
@@ -8982,9 +8982,9 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
-- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]
+- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
 - [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
-- [[id:582f644d-c9ef-4aa4-848a-d587f3494ac0][cfDNA sources and fluid types]]]
+- [[id:582f644d-c9ef-4aa4-848a-d587f3494ac0][cfDNA sources and fluid types]]
 - [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
 - [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
 - [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
@@ -9051,7 +9051,7 @@ https://chatgpt.com/c/8648af42-5e94-4eb7-aa89-90712de0e095
 - Fragmentome comorbidity index (FCMI): PLR model on genome-wide cfDNA fragmentation features distinguishes high vs low Charlson Comorbidity Index and independently predicts overall survival (HR 1.86, P=0.04) in multivariate Cox model, validated externally (n=231, P=0.016) [cite:@annapragada2026]
 - [[id:49d00918-aa42-47ab-9232-c81cddbb5b56][ML prediction models in small-sample / rare disease settings]]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
-- [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]
+- [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 - Interpretable ML on cfDNA nucleosome enrichment at open chromatin (ATAC-seq peaks) detects cancer-specific chromatin features in breast and pancreatic cancer; enrichment observed at both tumor cell-type-specific and CD4+ T cell-specific peaks, capturing tumor and immune contributions to the cfDNA signal [cite:@gunarathna2025]]
 **** Differential chromatin accessibility
 :PROPERTIES:
