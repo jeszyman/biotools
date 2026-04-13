@@ -8926,25 +8926,12 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :ID:       173e0331-9140-47d0-9e5e-ec91672ebdc3
 :END:
 - Platelet DNA (pDNA) exhibits a fragment length distribution mirroring plasma cfDNA with mono- and dinucleosome peaks at ~166 bp and ~325 bp; s-pDNA (<600 bp) has more even genome coverage than cfDNA (lower Gini index), and selecting fragments <150 bp enriched tumor fraction from 25% to 30% in a pancreatic cancer case, indicating fragmentomic ctDNA enrichment strategies apply to pDNA [cite:@murphy2025]
-- Genome-wide cfDNA fragmentomes (short:long ratio, repeat elements, epigenetic hotspot coverage) detect non-cancer diseases including liver fibrosis/cirrhosis (AUC 0.95), with disease-specific fragmentation signatures across vascular, autoimmune, and neurodegenerative conditions (n=1576) [cite:@annapragada2026]
 - NMF-based fragment length and end motif signatures distinguish peripheral nerve sheath tumor subtypes (PN vs AN vs MPNST) in NF1 patients (n=122, WGS) [cite:@sundby2024ccr]
-- cfDNA fragment size fraction correlates with FDG-PET/CT-derived metabolic tumor volume and total lesion glycolysis in NSCLC, supporting fragmentomics as a "liquid PET" bioactivity readout [cite:@gonzlezdealedocastillo2021]
-- Fragmentomic analysis of circulating tumor DNA from targeted cancer panels: panel-based cfDNA fragmentation profiling enables cancer detection without WGS [cite:@helzer2023panelfrag]
-- Lengthening and shortening of plasma DNA in hepatocellular carcinoma patients: fragment size shifts in HCC reflect tumor-derived cfDNA burden [cite:@jiang2015]
 - NMF-based fragment length signature discovery from cfDNA reveals tumor-specific fragmentation patterns [cite:@renaud2021]
-- Single-molecule sequencing enables long cfDNA fragment detection and direct methylation analysis for cancer patients [cite:@luo2022singlemol]
-- Epigenetics, fragmentomics, and topology of cell-free DNA in liquid biopsies (review) [cite:@lo2021]
-- Inference of transcription factor binding from cell-free DNA enables tumor subtype prediction and early detection [cite:@ulz2019]
-- Cell-free DNA fragmentomics and gene regulation: fragmentation patterns encode epigenomic information including nucleosome positioning and chromatin accessibility (review) [cite:@mathios2021dawn]
-- LIQUORICE: somatic CNA and fragmentation analysis in ctDNA for cancer screening and treatment monitoring in colorectal cancer [cite:@peneder2021]
+- Fragmentomic analysis of circulating tumor DNA from targeted cancer panels: panel-based cfDNA fragmentation profiling enables cancer detection without WGS [cite:@helzer2023panelfrag]
 - mHapTk: comprehensive toolkit for DNA methylation haplotype analysis from cfDNA bisulfite sequencing data [cite:@ding2022]
-- Inferring gene expression from cell-free DNA fragmentation profiles: gene-level cfDNA coverage and fragment size patterns predict tissue-specific transcriptional activity [cite:@esfahani2022]
-- Characteristics, origin, and potential for cancer diagnostics of ultrashort plasma cell-free DNA: fragments <100 bp carry distinct epigenomic signatures [cite:@wang2023ultrashort]
-- Nucleosome footprinting in plasma cfDNA correlates with neoadjuvant chemotherapy response for breast cancer [cite:@ulz2021breast]
-- Cell-free DNA comprises an in vivo nucleosome footprint that informs its tissues-of-origin: nucleosome positioning at regulatory elements produces tissue-specific cfDNA fragmentation signatures [cite:@snyder2016]
-- Integrating genomic features for non-invasive early lung cancer detection: per-molecule fragment size analysis with ctDNA mutation data using R zoo sliding window for relative enrichment per fragment size [cite:@chabon2020]
 - Multimodal analysis of cell-free DNA WGS for pediatric cancers with low mutational burden: LIQUORICE tool for fragment coverage analysis at regulatory regions [cite:@peneder2021]
-  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]
+  - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
 - [[id:47952c81-a288-4a29-9a5d-83b7aea86476][MPNST]]
 - [[id:6c436429-c4a9-423d-a7c4-9e5d3d63d574][Liquid biopsy surveillance in cancer predisposition syndromes]]
 - [[id:f53991ba-f4fb-47b9-b33c-2b935619b0e6][cfDNA size distribution]]
@@ -8956,15 +8943,34 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
 - [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
-- [[id:582f644d-c9ef-4aa4-848a-d587f3494ac0][cfDNA sources and fluid types]]
-- Germline TP53 mutation carriers without active cancer show cancer-like cfDNA fragmentation patterns, suggesting constitutional chromatin alterations from p53 loss affect nucleosome positioning and cfDNA fragment profiles prior to malignant transformation [cite:@wong2024lfs]
-- cfDNA fragmentation patterns reflect in vivo gene regulation: nucleosome positioning at promoters, enhancers, and TF binding sites produces characteristic coverage and fragment size profiles that can infer tissue-specific transcriptional programs non-invasively (review) [cite:@liu2022]
-- Ultra-deep WGS with single-stranded library preparation shows ~50% of cfDNA fragments are <120 nt (sub-nucleosomal), systematically absent from standard double-stranded prep; this sub-nucleosomal population is relatively enriched for ctDNA in cancer and likely reflects active TF-bound or nucleosome-free regions [cite:@sanchez2018]
-- Single-stranded cfDNA library preparation reveals strand-specific depth asymmetry between the two DNA strands; this strand bias correlates with transcription direction and methylation patterns and represents a novel cfDNA characteristic capturing protein-DNA interaction footprints invisible to double-stranded approaches [cite:@yang2025]
 - [[id:368e3f72-f8d3-475c-ad84-782993f8a6f6][Early cancer detection in Li-Fraumeni with cfDNA]]
 - [[id:57588960-8260-476a-b191-8e32b998c703][Plexiform neurofibroma]]
 - [[id:e230fd25-63bd-4a4f-888d-715ba1e8e50c][2026 ALSF A]]
 - [[id:3c1e9bc8-37c7-4cdd-a877-3cb55c39e85f][Serial cfDNA assessments in preclinical models]]
+***** Reviews
+:PROPERTIES:
+:ID:       d96fa258-20c6-489a-9946-8e6bc0ecb364
+:END:
+- Epigenetics, fragmentomics, and topology of cell-free DNA in liquid biopsies (review) [cite:@lo2021]
+- Cell-free DNA fragmentomics and gene regulation: fragmentation patterns encode epigenomic information including nucleosome positioning and chromatin accessibility (review) [cite:@mathios2021dawn]
+- cfDNA fragmentation patterns reflect in vivo gene regulation: nucleosome positioning at promoters, enhancers, and TF binding sites produces characteristic coverage and fragment size profiles that can infer tissue-specific transcriptional programs non-invasively (review) [cite:@liu2022]
+***** Fragment size biology
+:PROPERTIES:
+:ID:       e6a5aea2-099f-4fdd-8b7f-6abbb57f1bb0
+:END:
+- Lengthening and shortening of plasma DNA in hepatocellular carcinoma patients: fragment size shifts in HCC reflect tumor-derived cfDNA burden [cite:@jiang2015]
+- Single-molecule sequencing enables long cfDNA fragment detection and direct methylation analysis for cancer patients [cite:@luo2022singlemol]
+- Characteristics, origin, and potential for cancer diagnostics of ultrashort plasma cell-free DNA: fragments <100 bp carry distinct epigenomic signatures [cite:@wang2023ultrashort]
+- Integrating genomic features for non-invasive early lung cancer detection: per-molecule fragment size analysis with ctDNA mutation data using R zoo sliding window for relative enrichment per fragment size [cite:@chabon2020]
+- Ultra-deep WGS with single-stranded library preparation shows ~50% of cfDNA fragments are <120 nt (sub-nucleosomal), systematically absent from standard double-stranded prep; this sub-nucleosomal population is relatively enriched for ctDNA in cancer and likely reflects active TF-bound or nucleosome-free regions [cite:@sanchez2018]
+***** Disease and clinical contexts
+:PROPERTIES:
+:ID:       47afb80f-7112-4c4b-aa19-3ec4d747f21f
+:END:
+- Genome-wide cfDNA fragmentomes (short:long ratio, repeat elements, epigenetic hotspot coverage) detect non-cancer diseases including liver fibrosis/cirrhosis (AUC 0.95), with disease-specific fragmentation signatures across vascular, autoimmune, and neurodegenerative conditions (n=1576) [cite:@annapragada2026]
+- cfDNA fragment size fraction correlates with FDG-PET/CT-derived metabolic tumor volume and total lesion glycolysis in NSCLC, supporting fragmentomics as a "liquid PET" bioactivity readout [cite:@gonzlezdealedocastillo2021]
+- Nucleosome footprinting in plasma cfDNA correlates with neoadjuvant chemotherapy response for breast cancer [cite:@ulz2021breast]
+- Germline TP53 mutation carriers without active cancer show cancer-like cfDNA fragmentation patterns, suggesting constitutional chromatin alterations from p53 loss affect nucleosome positioning and cfDNA fragment profiles prior to malignant transformation [cite:@wong2024lfs]
 **** cfDNA from patient derived xenograft (PDX) models
 :PROPERTIES:
 :ID:       2e475e89-40a2-4359-903d-6e590f4ab8a0
@@ -8999,6 +9005,8 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 :PROPERTIES:
 :ID:       c4dde8d6-1a02-42c7-a6b6-786b757fcad1
 :END:
+- Inferring gene expression from cell-free DNA fragmentation profiles: gene-level cfDNA coverage and fragment size patterns predict tissue-specific transcriptional activity [cite:@esfahani2022]
+- Single-stranded cfDNA library preparation reveals strand-specific depth asymmetry between the two DNA strands; this strand bias correlates with transcription direction and methylation patterns and represents a novel cfDNA characteristic capturing protein-DNA interaction footprints invisible to double-stranded approaches [cite:@yang2025]
 - Platelet DNA (pDNA) shows nucleosomal periodicity and TSS depletion patterns mirroring cfDNA, with read-depth depletion around TSSs of highly expressed peripheral blood MNC genes in both pDNA and cfDNA; H3K27ac ChIPmentation confirmed histone modifications are preserved in platelet-sequestered chromatin [cite:@murphy2025]
 - [[id:2d0d13d9-857a-4285-89e6-4614f749afd3][cfDNA topology]]
 - https://www.nature.com/articles/ng.3648
