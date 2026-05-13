@@ -4964,6 +4964,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
 - [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
 - [[id:304d4d4f-8f24-49f1-8718-9490ae40c335][Multi-cancer early detection]]
+- [[id:527f1037-c7c5-4024-943d-1068af6ddbd8][cfDNA and ctDNA on-treatment dynamics]]
 
 **** cfDNA window protection score
 :PROPERTIES:
@@ -5522,7 +5523,6 @@ https://www.nature.com/articles/s41467-023-40012-7
 :END:
 - [[file:~/repos/biotools/biotools.org::*Bioinformatics visualizations][Bioinformatics visualizations]]
 https://www.nature.com/articles/s41467-023-38407-7
-*** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 *** Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)
 :PROPERTIES:
 :ID:       0f1f4aa4-c755-42ff-8f81-8a32c14293a0
@@ -5535,6 +5535,12 @@ https://www.nature.com/articles/s41467-023-38407-7
 - https://github.com/kircherlab/cfDNA-UniFlow
 - https://www.cell.com/cell-reports-methods/fulltext/S2667-2375%2825%2900119-5
 - https://mail.google.com/mail/u/0/#inbox/FMfcgzQbfxdHZssqkRxWNGzcMfWWDkdC?projector=1&messagePartId=0.1
+**** Repeat element
+- Alignment challenges
+  - Will result as multimappers
+  - Centromeric repeat elements not present in reference assembly (hg38, better represented in CHM13)
+- [cite:@annapragada2024]
+- ARTEMIS k-mer reference generation: repo [[https://github.com/cancer-genomics/artemis2024][cancer-genomics/artemis2024]] (code/ARTEMIS_Pipeline/01_generate_artemis). Produces ~1.2 billion 24-mer reference (=kmers_all.fasta=) covering 1280 repeat element types (started 1287 RepeatMasker + 14 Altemose HSAT2/HSAT3, 1266 pass filters). Inputs required (not in repo, must download): T2T-CHM13v2.0 FASTA (NCBI GCF_009914755.1), UCSC T2T RepeatMasker BED, Jellyfish package; repo provides x9_altemosereference24.fasta (Altemose 2014 HSAT supplement) + useful.stuff.aa R package. Pipeline a1–a10: split RepeatMasker BED by type → mask chm13 for non-repeat k-mer filter → de novo k-mer count per repeat type (Jellyfish) → filter to k-mers unique to each type AND absent from non-repeat genome → combine with Altemose HSAT supplement → finalize. Multi-day HPC SGE job. Same reference reused by downstream applications (e.g., the 2025 Cancer Discovery brain cancer detection paper, [[https://aacrjournals.org/cancerdiscovery/article/15/8/1593/763853][doi:10.1158/2159-8290.CD-25-0074]]); no separate k-mer set generated in those follow-ups. ARTEMIS-Epi pipeline (=05_epi_pipeline=) uses fragmentation (DELFI) not methylation — "epi" = chromatin/nucleosome inference from short:long ratios, NOT direct 5mC measurement.
 **** Tumor origin, tumor content, tumor fraction
 :PROPERTIES:
 :ID:       3f92c60b-c575-419a-95e3-344fd1d5ec0d
@@ -5624,7 +5630,10 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41587-020-00775-6#Sec2
 - Deep learning-based tissue deconvolution of cfDNA using a 521-sample, 29-tissue-type methylation atlas enables comprehensive disease diagnosis and monitoring from plasma [cite:@li2023cfdna]
 - Methylation haplotype blocks (147,888 tightly coupled CpG regions genome-wide) enable tissue-specific deconvolution and quantitative tumor load estimation from cfDNA in lung and colorectal cancer patients (n=59) [cite:@guo2017]
 - Single-read resolution methylation deconvolution of cfDNA: classifying individual cfDNA fragments by tissue of origin using read-level methylation patterns rather than bulk averaging [cite:@keukeleire2022]
+- Liquid EcoTyper extends cfDNA methylation deconvolution beyond single-cell-type fractions to recover /multicellular/ spatial ecotypes (SEs) — co-localized assemblies of immune, stromal, and malignant cell states — using a CpG-set binary network (CSBN) deep-learning architecture (38,431 CpG features, 400 learned CpG sets, drop-out regularization). Trained on simulated cfDNA from paired TCGA bulk RNA-seq + 450K array methylation profiles from melanomas (n=461, mixed with EM-seq cfDNA from 23 healthy donors at ctDNA fractions 0.2-0.6). Performance stable down to 10x EM-seq depth and robust to CpG imputation strategy. Paired tumour Visium vs plasma EM-seq concordance: Spearman ρ ~0.43-0.74 across 8 SEs (n=20 melanoma patients) [cite:@zhang2026].
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
+- [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]]
+- [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
 ***** 5hmC biomarkers
 :PROPERTIES:
 :ID:       dfdcad09-8447-4096-b139-b0b5bf56cad5
@@ -6868,6 +6877,8 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
 - [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
 
+- [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]]
+- [[id:6fdb7ece-efbb-4523-a7a5-7dd594d199dd][CIBERSORTx and cytotrace]]
 ***** immunoprofiling / immunophenotyping
 :PROPERTIES:
 :CREATED:  [2019-10-30 Wed 10:52]
@@ -8174,7 +8185,7 @@ RUN R -e "install.packages(c('statmod', repos='http://cran.rstudio.com/'))"
 https://www.sciencedirect.com/science/article/pii/S1097276515003032
 https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 - http://www.visantnet.org/visantnet.html
-*** Methylation
+*** Methylation bioinformatics
 - Rationale- cfMeDIP-seq only measures HYPERmethylation (via IP), see [cite:@nassiri2020]
 
 https://pmc.ncbi.nlm.nih.gov/articles/PMC6162482/
@@ -8191,6 +8202,13 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC6162482/
 - Practical approach: compare direction of effect (hypo vs hyper relative to controls) within each dataset, rather than merging absolute values across platforms.
 - Can extract array-probe-equivalent CpG positions from bisulfite data for a constrained comparison, but this discards the whole-genome advantage of bisulfite-seq.
 - Repeat elements (LINE-1, ERV-L/MaLR) are essentially invisible to arrays — only accessible via whole-genome bisulfite methods. LUMP score on arrays is a crude proxy using a handful of probes.
+**** Enrichment-based
+- Batman score- (Bayesian Tool for Methylation Analysis), used to convert raw MeDIP-seq read counts into absolute DNA methylation estimates (0–100%) at CpG-resolution windows
+***** MeDIP-seq
+:PROPERTIES:
+:ID:       13d91fd3-a9bd-4f65-9adf-1ce70f6e5e15
+:END:
+Immunoprecipitation of methylated DNA fragments using an anti-5-methylcytosine antibody, followed by sequencing — provides unbiased whole-genome methylation enrichment profiles at ~150 bp resolution.
 *** Online GUIs
 :PROPERTIES:
 :ID:       f7064e3f-6d40-4fb2-b8cd-1c8c519bd7f8
@@ -9326,7 +9344,9 @@ https://www.embopress.org/doi/full/10.15252/msb.20188746
   - Monocle 2
   - Slingshot
   - TSCAN
-  - Wishbone
+  - Wishbon
+- [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]]
+- [[id:bac12c9a-6f8a-4d1b-b8a2-041632c814f6][Spatial methods]]
 **** Single cell conda yaml
 :PROPERTIES:
 :ID:       48692b20-239f-4392-8100-9ed0ab028ca8
@@ -9387,6 +9407,8 @@ dependencies:
   - r-seurat
 #+end_src
 
+- [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
+- [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][Tumor microenvironment]]
 **** Platforms — imaging-based (in situ)
 - CosMx SMI (Bruker/NanoString) — spatial molecular imager; 1K / 6K / Whole-Transcriptome panels; subcellular localization
 - Xenium (10x Genomics) — in situ padlock-probe sequencing; panel-based, multimodal with H&E/IF
@@ -9454,6 +9476,7 @@ Primary deep-dive platform for this knowledge base. Capture-based spatial transc
 - Cell-cell communication in spatial context — CellChat spatial, COMMOT, NICHES
 - Tissue domain and region detection — SpaGCN, BayesSpace, STAGATE
 - BANKSY (Nat Genet) treats cell typing and tissue-domain segmentation as a single problem by combining each cell's own expression with a neighbor-aggregated profile — scales to large spatial omics datasets at lower compute cost than graph-neural-net alternatives [cite:@singhal2024].
+- Spatial EcoTyper infers conserved multicellular "spatial ecotypes" (SEs) from single-cell ST by computing cell-type-specific gene expression covariance across spatial neighborhoods and integrating via similarity network fusion before NMF clustering. Conceptually orthogonal to BANKSY (which fuses each cell with its neighbors for cell typing): SE inference operates at the multicellular-ecosystem scale rather than the single-cell level. Robust across MERSCOPE/Xenium/Visium HD platforms and 6 cancer types; outperforms CellCharter, SPACE, SEDR, SpatialPCA, STAGATE, UTAG on spatial-cluster identification metrics (spatial colocalization, cell-type mixing, silhouette width). See [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]] for full description and clinical extensions [cite:@zhang2026].
 
 **** Differential expression with spatial context
 - Pseudobulk by niche or tissue region
@@ -9613,7 +9636,18 @@ https://www.reddit.com/r/bioinformatics/comments/15gut08/its_almost_2024_what_la
 :PROPERTIES:
 :ID:       8151ed0d-4b7b-4506-be44-9838291eec2f
 :END:
-https://www.nature.com/articles/s42003-023-05117-1#Sec2
+NMF-based machine-learning framework for discovering recurrent multicellular ecosystems in cancer from bulk and single-cell expression data, originally developed by the Newman lab at Stanford [cite:@luca2021]. Web tools at https://ecotyper.stanford.edu/ and review at https://www.nature.com/articles/s42003-023-05117-1#Sec2.
+
+- Spatial EcoTyper extends the original framework to spatially resolved data: cell-type-specific gene expression in 50 µm spatial neighbourhoods is integrated across cell types via similarity network fusion (SNF), and NMF on the fused covariance matrix yields conserved "spatial ecotypes" (SEs). Discovery on 5 MERSCOPE samples (4 carcinomas + 1 melanoma; ~1.6M cells) and validation across 90 samples and 6 ST platforms (10x Visium, legacy ST, MERSCOPE, Visium HD, Xenium V1, Xenium Prime) identified 9 conserved SEs with reproducible biology, geography, and clinical-outcome associations [cite:@zhang2026].
+- The 9 SEs span a tumour-margin-to-core spatial gradient. SE1 (margin/stroma): early-response programs (FOS, EGR1) and naive T cells. SE7 (margin): lymphoid+myeloid+stromal hub with antigen processing/presentation, IGLL5+ plasma cells, C1QB+ macrophages, CD1E+ dendritic cells, CXCL12+ CAFs. SE8 (tumour core): GZMB+ CD8 T cells, CXCL8+ macrophages, CXCL12+ CAFs, CEACAM1+ endothelium, metabolic enrichment. SE9 (tumour core): angiogenic — TREM2+ macrophages, INSR+ tip endothelium. SE4: myofibroblast (MYH11+) and hypoxia-associated FBLN5+ endothelial ecotype with wound-healing program [cite:@zhang2026].
+- SE bulk RNA-seq deconvolution (Spatial EcoTyper NMF model trained on 1,000 pseudo-bulks per cancer type) outperformed CIBERSORTx, BayesPrism, and DWLS for recovering SE abundances; in 7,076 TCGA samples across 17 cancers, 6/9 SEs were prognostic for overall survival [cite:@zhang2026].
+- Liquid EcoTyper recovers SEs non-invasively from plasma cfDNA methylation: a CpG-set binary network (CSBN) deep-learning model (38,431 CpG features, 400 learned CpG sets) trained on simulated cfDNA from paired TCGA bulk RNA-seq + 450K methylation arrays, with healthy-donor EM-seq cfDNA as background. In 78 melanoma patients on ICI, plasma SE7 high → HR 0.32 OS, SE8 high → HR 0.37 OS, SE4 high → HR 2.29 OS; SE7+SE8+SE4 outperformed TMB and PD-L1 (CD274) in multivariable models. Stable to 10x sequencing depth and robust to imputation strategy [cite:@zhang2026].
+- Code and trained models at https://github.com/digitalcytometry/spatialecotyper and https://spatialecotyper.stanford.edu.
+- See [[id:6fdb7ece-efbb-4523-a7a5-7dd594d199dd][CIBERSORTx and cytotrace]] for related Newman-lab digital cytometry methods, and [[id:bac12c9a-6f8a-4d1b-b8a2-041632c814f6][Spatial methods]] for the broader spatial transcriptomics context
+- [[id:e07fee1b-d7fd-42ce-9639-ff803cfc9c8e][Deconvolution, immunoprofiling/immunophenotyping, cell type enumeration with rnaseq]]
+- [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
+- [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][Tumor microenvironment]]
+- [[id:613fda39-d75b-4c51-ad2b-ff59450ae5e6][Immunotherapy for cancer]].
 **** bioanalyzeR                                                    :biotool:
 :PROPERTIES:
 :ID:       ea6092a7-8c57-4063-a5b5-64e88652c818
@@ -9773,6 +9807,9 @@ https://github.com/Illumina/canvas
 - https://www.cell.com/cell/fulltext/S0092-8674(21)01061-8?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867421010618%3Fshowall%3Dtrue
 - https://ecotyper.stanford.edu/
 - https://cytotrace.stanford.edu/
+- Spatial EcoTyper (NMF on fused similarity networks of spatial-neighborhood gene-expression) extends Newman-lab digital cytometry to spatial transcriptomics. For deconvolving spatial ecotype abundance from bulk RNA-seq, Spatial EcoTyper outperformed CIBERSORTx, BayesPrism, and DWLS on cross-validation across 10 cancer types and 1,000 pseudo-bulks per type [cite:@zhang2026].
+- See [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]]
+- [[id:e07fee1b-d7fd-42ce-9639-ff803cfc9c8e][Deconvolution, immunoprofiling/immunophenotyping, cell type enumeration with rnaseq]].
 **** clusterProfiler
 :PROPERTIES:
 :ID:       8e4c1fb8-cd52-4fac-900a-4b6e6eb5a28a
@@ -13520,3 +13557,4 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41467-024-48466-z
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
 - [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
+- [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
