@@ -4689,6 +4689,8 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 - Modeling clonal structure over narrow time frames via circulating tumor DNA in metastatic breast cancer [cite:@parsons2021clonalcfdna]
 - [[id:0b43e09e-52f7-49fb-8796-87168fe57706][cfDNA small variant calling]]
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
+- [[id:1e830494-6b4f-4c09-80c1-cc1ae918f04c][Non-small cell Lung cancer]]
+- [[id:a4367838-b0f6-4dd5-b4e1-9bddf33642fa][Oligometastasis]]
 **** cfDNA copy number calling and CNA-based tumor fraction
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
