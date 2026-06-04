@@ -4804,7 +4804,7 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :ID:       d96fa258-20c6-489a-9946-8e6bc0ecb364
 :END:
 - Epigenetics, fragmentomics, and topology of cell-free DNA in liquid biopsies (review) [cite:@lo2021]
-- Cell-free DNA fragmentomics and gene regulation: fragmentation patterns encode epigenomic information including nucleosome positioning and chromatin accessibility (review) [cite:@mathios2021dawn]
+- Cell-free DNA fragmentomics and gene regulation: fragmentation patterns encode epigenomic information including nucleosome positioning and chromatin accessibility (review) [cite:@liu2022]
 - cfDNA fragmentation patterns reflect in vivo gene regulation: nucleosome positioning at promoters, enhancers, and TF binding sites produces characteristic coverage and fragment size profiles that can infer tissue-specific transcriptional programs non-invasively (review) [cite:@liu2022]
 ***** Fragment size biology
 :PROPERTIES:
@@ -4973,6 +4973,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
+- [[id:d2ddd3bf-cb2d-4a2e-bbce-a85effa0b548][Long-read methylation analysis]]
 - [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
 - [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
 - [[id:582f644d-c9ef-4aa4-848a-d587f3494ac0][cfDNA sources and fluid types]]
@@ -5155,6 +5156,7 @@ bwa index -p $2 -a bwtsw $3
 - Bisulfite-free approaches
   - [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
   - Six letter [cite:@fullgrabe2023six]
+  - [[id:d2ddd3bf-cb2d-4a2e-bbce-a85effa0b548][Long-read methylation analysis]] — direct single-molecule methylation calling, no conversion
 - https://nf-co.re/methylseq/output
 - https://clinicalepigeneticsjournal.biomedcentral.com/articles/10.1186/s13148-019-0795-x#Sec8
 - https://www.biostars.org/p/164929/
@@ -5559,6 +5561,8 @@ https://www.nature.com/articles/s41467-023-38407-7
   - Centromeric repeat elements not present in reference assembly (hg38, better represented in CHM13)
 - [cite:@annapragada2024]
 - ARTEMIS k-mer reference generation: repo [[https://github.com/cancer-genomics/artemis2024][cancer-genomics/artemis2024]] (code/ARTEMIS_Pipeline/01_generate_artemis). Produces ~1.2 billion 24-mer reference (=kmers_all.fasta=) covering 1280 repeat element types (started 1287 RepeatMasker + 14 Altemose HSAT2/HSAT3, 1266 pass filters). Inputs required (not in repo, must download): T2T-CHM13v2.0 FASTA (NCBI GCF_009914755.1), UCSC T2T RepeatMasker BED, Jellyfish package; repo provides x9_altemosereference24.fasta (Altemose 2014 HSAT supplement) + useful.stuff.aa R package. Pipeline a1–a10: split RepeatMasker BED by type → mask chm13 for non-repeat k-mer filter → de novo k-mer count per repeat type (Jellyfish) → filter to k-mers unique to each type AND absent from non-repeat genome → combine with Altemose HSAT supplement → finalize. Multi-day HPC SGE job. Same reference reused by downstream applications (e.g., the 2025 Cancer Discovery brain cancer detection paper, [[https://aacrjournals.org/cancerdiscovery/article/15/8/1593/763853][doi:10.1158/2159-8290.CD-25-0074]]); no separate k-mer set generated in those follow-ups. ARTEMIS-Epi pipeline (=05_epi_pipeline=) uses fragmentation (DELFI) not methylation — "epi" = chromatin/nucleosome inference from short:long ratios, NOT direct 5mC measurement.
+- UCSC CenSat track (T2T-CHM13, =censat=) is the authoritative centromere-satellite annotation (Hoyt/Altemose). Queryable without download via the UCSC JSON API (=api.genome.ucsc.edu/list/schema= and =/getData/track=). It carries no class/family column — the satellite type is embedded in the item =name= (split on the first =_=): 12 satTypes genome-wide (=hsat1A/1B, hsat2, hsat3, hor, dhor, bsat, gsat, censat, ct, mon, rDNA=). HSat2/HSat3 parentheticals are messy per-array labels (combos like =A4,A2=, chromosome aliases =A6/DYZ1=, =Unknown=), not a clean subfamily vocabulary. Used by [[file:~/repos/repeat-meth/repeat-meth.org][repeat-meth]] as the censat source for its repeat-nomenclature annotation table.
+- Same satellite monomer can be RepeatMasker-classed both =Satellite= and =Simple_repeat=, and the split is *array-length*-driven, not a labeling error: long pericentromeric arrays (kb–hundreds of kb) get the Satellite call; short stray microsatellite runs (~60 bp) stay Simple_repeat. Verified on =(GAATG)n=/=(CATTC)n= (HSat3 pentamers): Satellite rows mean ~2.5–4.4 kb vs Simple_repeat rows ~60 bp. The T2T-CHM13 CenSat curation promoted the long arrays.
 **** Tumor origin, tumor content, tumor fraction
 :PROPERTIES:
 :ID:       3f92c60b-c575-419a-95e3-344fd1d5ec0d
@@ -5712,6 +5716,7 @@ https://www.nature.com/articles/s41467-023-38407-7
 :ID:       dda1c9d0-59b6-487d-8bdb-86423062cf22
 :END:
 - Nanopore sequencing of cfDNA detects cell-of-origin and cancer-specific methylation features, enabling simultaneous methylation and fragmentation analysis from long-read data [cite:@katsman2022cfdnananopore]
+- General computational framework for long-read methylation — signal calling, differential methylation between samples, and cell-type deconvolution — reviewed in [cite:@fu2025longread]; see [[id:d2ddd3bf-cb2d-4a2e-bbce-a85effa0b548][Long-read methylation analysis]] for the genome-wide tool landscape underlying this cfDNA application.
 - https://www.biorxiv.org/content/10.1101/2021.10.18.464684v1.full
 **** [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling]]
 **** cfDNA feature integration
@@ -5809,6 +5814,11 @@ Consolidated into [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucle
 :ID:       10d3a3a4-dbe6-4494-b287-c3e5720932b2
 :END:
 - Phylogenetic ctDNA analysis depicts early-stage lung cancer evolution: tracking clonal dynamics through tumor-informed ctDNA [cite:@abbosh2017]
+- Tumor-informed WGS-bespoke MRD panels (up to 2000 patient-specific variants from 15–50× tumor + PBMC WGS; plasma resequencing at 315–6364× molecular depth) achieved 60% baseline MRD detection in oligometastatic clear-cell renal-cell carcinoma, a low-shedding tumor where first-generation WES-based assays detect ~25%; median plasma tumor fraction was 22.5 ppm at baseline and 18.5 ppm at 3 months, showing the assay class can interrogate sub-100-ppm states in tumors with low mutation burden and intratumor heterogeneity [cite:@tang2025mdt]
+- In the same cohort, baseline and 3-month post-RT MRD status were independently prognostic for systemic-therapy-free survival (HR 2.75, p=0.0064; HR 4.42, p<0.0001) in multivariable Cox adjusted for clinical factors, with 25% of baseline MRD+ patients converting to MRD− at 3 months; ctDNA was prespecified exploratory and did not enter treatment decisions, establishing assay-class precedent for prognostic stratification in low-shedding solid tumors but leaving the cfDNA-modified treatment paradigm to future trials [cite:@tang2025mdt]
+- [[id:a4367838-b0f6-4dd5-b4e1-9bddf33642fa][Oligometastasis]]
+- [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
+- [[id:ca856ab1-dee0-4986-9530-604541773aa1][MRD]]
 **** WGS cfDNA methods
 :PROPERTIES:
 :ID:       67251de4-3c85-4ba5-b5e5-6efefcd8961d
@@ -5827,6 +5837,7 @@ Consolidated into [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucle
 - [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
 - [[id:8ffda4e0-8a03-4fa3-aa0d-56c2e6a1dca4][Bisulfite sequencing]]
 - [[id:e6a5aea2-099f-4fdd-8b7f-6abbb57f1bb0][Fragment size biology]]
+- [[id:10d3a3a4-dbe6-4494-b287-c3e5720932b2][Tumor-informed methods]]
 *** Cell-free RNA (cfRNA), extracellular RNA (exRNA)
 
 - https://www.nature.com/articles/s41586-025-08834-1
@@ -8255,6 +8266,16 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC6162482/
 :ID:       13d91fd3-a9bd-4f65-9adf-1ce70f6e5e15
 :END:
 Immunoprecipitation of methylated DNA fragments using an anti-5-methylcytosine antibody, followed by sequencing — provides unbiased whole-genome methylation enrichment profiles at ~150 bp resolution.
+**** Long-read methylation analysis
+:PROPERTIES:
+:ID:       d2ddd3bf-cb2d-4a2e-bbce-a85effa0b548
+:END:
+Long-read single-molecule platforms (Oxford Nanopore, PacBio HiFi) call DNA methylation directly from raw signal without bisulfite conversion, profiling methylation and sequence variation from the same reads — a distinct computational modality from array, bisulfite/EM-seq, and enrichment-based methods.
+- Related: [[id:dda1c9d0-59b6-487d-8bdb-86423062cf22][cfDNA long read sequencing]] — the plasma cfDNA application of long-read methylation.
+- Related: [[id:d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6][methylation sequencing]] — short-read / wet-lab methylation sequencing approaches.
+- Related: [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]] — cell-type deconvolution, the review's cell-type-diversity task.
+- Computational analysis of long-read methylation spans four task categories: calling methylation signals from raw read data, contrasting methylation between samples, analysing cell-type diversity, and extracting additional genomic insights; tool landscape and future challenges reviewed in [cite:@fu2025longread].
+- Long-read data simultaneously measure epigenetic state (e.g. 5mC) and genomic variation on the same single molecule, avoiding the bisulfite-conversion step required by short-read methods [cite:@fu2025longread].
 *** Online GUIs
 :PROPERTIES:
 :ID:       f7064e3f-6d40-4fb2-b8cd-1c8c519bd7f8
@@ -8289,6 +8310,16 @@ https://www.reddit.com/r/statistics/comments/t3ok40/q_is_there_any_difference_be
 - https://bookdown.org/rdpeng/exdata/k-means-clustering.html
 - https://www.datanovia.com/en/lessons/cluster-analysis-example-quick-start-r-code/
 - https://academic.oup.com/biostatistics/article/19/1/71/3852318
+***** Is the clustering finding real structure? Shuffle-control + cophenetic test
+:PROPERTIES:
+:ID:       3a2f8c1e-6d4b-4e9a-bf17-2c5d9e8a4b71
+:END:
+A hierarchical clustering ALWAYS returns a dendrogram, even on pure noise — the tree is imposed, not discovered. To test whether columns (features) carry shared cross-sample structure versus the algorithm hierarchy-fitting noise, compare the real matrix against a column-shuffled control on two metrics:
+- *Mean |column-column correlation|*: 0 means columns share no cross-row structure. Compute on the real z-scored matrix and on a control where each column is independently permuted across rows (kills cross-row coherence, preserves each column's value set).
+- *Cophenetic correlation* of the column linkage: how faithfully the dendrogram's implied distances reproduce the pairwise distances. Low, or no better than the shuffle, means the tree is fitting noise.
+If real ≈ shuffled on BOTH, the clustering has nothing to cluster — absence of visible blocks in the heatmap is correct, not a plotting artifact. Worked example: repeat-meth cross-copy φ matrix, real |col-col corr| 0.322 vs shuffled 0.313, cophenetic r 0.56 vs 0.52 (indistinguishable). See [[id:41818F56-5469-4D28-A570-BBADE5AE910E][repeat-meth cross-copy coherence]].
+
+A complementary decomposition for a per-feature statistic measured across replicate samples: correlate the feature vector library-vs-library. High raw correlation that survives is the *feature-intrinsic mean* (reproducible but condition-blind); the residual after per-feature z-scoring should be compared to the compositional floor −1/(n−1) for mean-centered rows — landing AT that floor means the residual is pure sampling noise, so no per-(feature,sample) signal exists to serve as a biomarker.
 **** [[*Machine learning in genomics and bioinformatics][LINK TO Machine learning in genomics and bioinformatics]]
 :PROPERTIES:
 :ID:       f514af07-e639-468d-9dea-890de6da16e5
@@ -9247,7 +9278,7 @@ CLOCK: [2021-11-02 Tue 11:01]--[2021-11-02 Tue 11:26] =>  0:25
 - https://event.on24.com/eventRegistration/console/EventConsoleApollo.jsp?&eventid=3478709&sessionid=1&username=&partnerref=&format=fhaudio&mobile=&flashsupportedmobiledevice=&helpcenter=&key=87791679E10838FA9DCF16C96D7F22F8&newConsole=true&nxChe=true&newTabCon=true&consoleEarEventConsole=false&text_language_id=en&playerwidth=748&playerheight=526&eventuserid=488203953&contenttype=A&mediametricsessionid=422205446&mediametricid=4883132&usercd=488203953&mode=launch
 - liger cell welch 2019 linked inference of henomic experimental relationships
 - scalable, iteratifve integration with online iNMF gai nature biotechnology 2021
--
+- Paired single-cell multi-omics method families (reviewed in [cite:@vandereyken2023]): genome + transcriptome (G&T-seq, DR-seq — physical separation of gDNA from poly(A) RNA); methylome/accessibility + transcriptome (scNMT-seq, plus tagmentation methods SHARE-seq/Paired-seq/SNARE-seq); protein + transcriptome (CITE-seq, REAP-seq, and intracellular variants inCITE-seq/NEAT-seq); and CRISPR-perturbation + transcriptome (Perturb-seq, CROP-seq, with chromatin readout in Perturb-ATAC/CRISPR-sciATAC).
 **** General                                                            :ref:
 :PROPERTIES:
 :ID:       c877b498-ca0f-48c7-927c-0d6fe0a82dd0
@@ -9464,6 +9495,7 @@ dependencies:
 - Molecular Cartography (Resolve Biosciences)
 - Canonical Xenium best-practice QC and analysis workflows from [cite:@marcosalas2025] — the reference Nat Methods paper for Xenium chemistry, per-cell QC, negative-probe thresholds, and downstream analysis recommendations.
 - Probe design — not chemistry alone — is a key determinant of imaging-based ST data quality. CosMx panels can carry target gene probes that express at negative-control levels (e.g., CD3D, CD40LG, FOXP3, MS4A1, MYH11), which must be flagged and excluded before cell typing; Xenium-MM had only 0.6% such probes and Xenium-UM none [cite:@ozirmaklermi2025].
+- CosMx SMI foundational platform paper: spatial molecular imaging runs multiple cycles of fluorescent-barcode nucleic-acid hybridization to give 3D super-resolution localization of ~980 RNAs + 108 proteins at subcellular resolution in FFPE tissue (~2 million cells/sample), with antibody-morphology-based cell segmentation. Vendor-reported performance baseline: 1–2 copies/cell sensitivity, 0.0092 false calls/cell, ~0.04 background counts/cell [cite:@he2022cosmx].
 
 **** Platforms — sequencing-based (array/capture)
 - [[id:91f85376-3ca9-4a4d-b4ee-9d7dfb651661][Visium and Visium HD (10x Genomics)]] — see dedicated section below
@@ -9495,6 +9527,7 @@ Primary deep-dive platform for this knowledge base. Capture-based spatial transc
 - Systematic benchmark of high-throughput subcellular in-situ platforms (CosMx, Xenium, MERFISH, Stereo-seq) across human tumor tissues — reports per-platform strengths on cell typing accuracy, detection sensitivity, and spatial specificity [cite:@ren2025].
 - Direct head-to-head comparison of Xenium 5K and Visium HD on identical tissue slides from a pathology perspective — single-section cross-platform evaluation [cite:@long2025].
 - FFPE-specific head-to-head of CosMx (1000-plex), MERFISH (500-plex IO), and Xenium (UM/MM, 339-plex lung + 50 custom) on TMAs of NSCLC and pleural mesothelioma collected 2016-2022, referenced against bulk RNA-seq, GeoMx DSP-WTA, mIF, and pathologist-scored H&E. CosMx had highest per-cell transcript and gene detection but 5.8-11% negative-control FDR and multiple panel target probes (incl. CD3D, FOXP3, MS4A1) at negative-control levels; Xenium had <0.09% FDR. Xenium-MM (multimodal segmentation) had highest pathologist F1-scores and most distinct cell types (14 vs 9 CosMx vs 6 MERFISH); MERFISH lost 60-75% of cells in older ICON tissue. Xenium concordance with bulk RNA-seq was robust to tissue age (R~0.62 on 2016-2018 tissue) where CosMx and MERFISH dropped (R~0.4) [cite:@ozirmaklermi2025].
+- The CosMx SMI platform paper's own validation reports a 0.0092 false-call rate and ~0.04 background counts per cell on NSCLC/breast cancer [cite:@he2022cosmx] — the vendor baseline against which the independent FFPE benchmarks above should be read, since real-world FFPE negative-control FDR (5.8–11%, [cite:@ozirmaklermi2025]) can diverge substantially from the platform paper's figures.
 
 **** Preprocessing and QC
 - Cell segmentation — Baysor, Cellpose, StarDist, nuclei expansion heuristics
@@ -9509,6 +9542,7 @@ Primary deep-dive platform for this knowledge base. Capture-based spatial transc
 - SCTransform vs log-normalization under sparse spatial counts
 - Cross-slide / cross-batch integration — Harmony, RPCA, Seurat v5 anchors
 - Joint scRNA-seq and spatial integration strategies
+- Multi-omics/multi-dataset integration falls into three classes (Argelaguet framework, reviewed here): /horizontal/ (shared features, different cells/batches — what Harmony and Seurat v5 anchors do for cross-slide/cross-dataset alignment), /vertical/ (shared cells, different modalities), and /diagonal/ (neither cells nor features shared — the hardest, requiring autoencoder/optimal-transport couplings). Batch integration and reference-to-query label transfer (Harmony, Seurat anchors/TransferData) are horizontal-integration problems [cite:@vandereyken2023].
 
 **** Cell typing and label transfer
 - Reference-based transfer from scRNA-seq atlases
@@ -9539,7 +9573,9 @@ Primary deep-dive platform for this knowledge base. Capture-based spatial transc
 - H&E- and IF-aligned analyses
 - See [[id:4de39606-9232-4cfc-b444-f4a27e577862][Spatial ATAC-seq]]
 - Spatial CITE-seq (Nat Biotech) — primary paper for high-plex protein + whole-transcriptome co-mapping at cellular resolution; enables direct comparison of protein and RNA measurements at the same coordinates [cite:@liu2023].
-- Comprehensive Nat Rev Genet review of single-cell and spatial multi-omics methods and applications — canonical reference for the multi-modal spatial landscape (DNA + RNA + protein + chromatin) [cite:@vandereyken2023].
+- Comprehensive Nat Rev Genet review specifically of /modality-combining/ single-cell and spatial multi-omics (DNA + RNA + protein + chromatin) and the computational integration of those layers — the multi-omics companion to the transcriptomics-focused [cite:@gulati2024] field overview [cite:@vandereyken2023].
+- True same-section single-cell-resolution spatial multi-omics is still rare; in practice most spatial multi-omics is assembled from /adjacent or serial sections/ assayed with different mono-omics platforms and then computationally integrated — which introduces section-to-section cellular-composition mismatch as a core caveat [cite:@vandereyken2023].
+- The same-section spatial epigenome+transcriptome methods (spatial-ATAC-RNA-seq, spatial-CUT&Tag-RNA-seq) are built on DBiT-seq microfluidic deterministic barcoding — two perpendicular sets of channel-delivered barcodes create an AB-barcoded pixel grid co-capturing chromatin/CUT&Tag signal and poly(A) transcripts [cite:@vandereyken2023].
 
 **** Analysis software stacks
 - R — Seurat v5 spatial, Giotto, SpatialExperiment, STUtility
@@ -9621,7 +9657,7 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 - https://toppgene.cchmc.org/
 - Pathway analysis
   - https://www.pathvisio.org/documentation/tutorials/tutorial-1/
-  - Pathway analysis: current approaches and outstanding challenges (review) [cite:@Khatri_2012]
+  - Pathway analysis: current approaches and outstanding challenges (review) [cite:@khatri2012]
 - GEDI (Gene Expression Dynamics Inspector)
  Website
  Software v.2.1 Manual
