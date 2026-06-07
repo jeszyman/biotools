@@ -4799,6 +4799,8 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 - [[id:3c1e9bc8-37c7-4cdd-a877-3cb55c39e85f][Serial cfDNA assessments in preclinical models]]
 
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
+- [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
+- [[id:de9485e3-5321-45a9-8720-42ea26d02aab][cfDNA modeling from first principles]]
 ***** Reviews
 :PROPERTIES:
 :ID:       d96fa258-20c6-489a-9946-8e6bc0ecb364
@@ -4816,10 +4818,15 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 - Integrating genomic features for non-invasive early lung cancer detection: per-molecule fragment size analysis with ctDNA mutation data using R zoo sliding window for relative enrichment per fragment size [cite:@chabon2020]
 - Ultra-deep WGS with single-stranded library preparation shows ~50% of cfDNA fragments are <120 nt (sub-nucleosomal), systematically absent from standard double-stranded prep; this sub-nucleosomal population is relatively enriched for ctDNA in cancer and likely reflects active TF-bound or nucleosome-free regions [cite:@sanchez2018]
 - cfDNA shows waved methylation patterns at mono-nucleosomal fragment lengths that are absent from gDNA controls — direct evidence that nucleosome-mediated fragmentation imprints methylation state into the cfDNA size distribution and motivates per-fragment methylation reconstruction from WGS [cite:@liu2024finalme]
+- cfDNA size deconvolution models the full fragment-length distribution as a sum of Lorentzian components (center, amplitude, scale) via curve fitting (LMFIT); the scale parameter yields a per-component entropy (h = log(4*pi*sigma)) that captures fragmentation randomness more sensitively than Shannon entropy, since it reflects the sequential pattern of peak heights; code at github.com/nrlab-CRUK/cfDNA_size_deconvolution [cite:@zhou2026sizedeconv]
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
 - [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
+- [[id:9c039277-94b1-46cf-81f2-dcedfd63e576][cfDNA fragment length-based methods]]
+- [[id:61d07182-2526-484b-a889-b07cb9f0c8de][Fragment length window optimization (frag.org)]]
+- [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
+- [[id:de9485e3-5321-45a9-8720-42ea26d02aab][cfDNA modeling from first principles]]
 ***** Disease and clinical contexts
 :PROPERTIES:
 :ID:       47afb80f-7112-4c4b-aa19-3ec4d747f21f
@@ -4911,6 +4918,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - NucPosDB (https://generegulation.org/nucposdb/) curates ~400 publications on nucleosome positioning in vivo and cfDNA from >10,000 individuals; provides stable nucleosome occupancy regions across conditions, processed mapped data for open-access datasets, and a catalogue of computational tools for nucleosome positioning and cfDNA analysis [cite:@shtumpf2022]
 - Deep WGS of cfDNA from healthy individuals reveals genome-wide nucleosome occupancy maps; nucleosome spacing correlates most strongly with lymphoid/myeloid epigenetic features, consistent with hematopoietic origin of normal cfDNA; in cancer patients, nucleosome footprints shift to reflect tumor cell-of-origin [cite:@snyder2016]
+- A ~159 bp Lorentzian component demarcates intra- from inter-nucleosomal cfDNA: it sits ~8 bp off the 10-bp periodic grid, and ssDNA-vs-dsDNA library comparison shows components below 159 bp carry a ~3 bp offset (shared short-fragment nucleosomal protection) while those above show none; proposed structure is a 1+79+79 bp segment with both ends held by linker histone H1 [cite:@zhou2026sizedeconv]
 - cfDNA harbors footprints of transcription factor binding visible as short protected regions (~50-80 bp) within nucleosome-free regions; TF footprint depth correlates with expression level of the cognate TF in the tissue of origin [cite:@snyder2016]
 - Bioinformatics pipeline inferring TF accessibility from cfDNA fragmentation patterns across >1,000 WGS samples; patient-specific TF activity profiles distinguish cancer subtypes and predict treatment response without requiring tumor tissue [cite:@ulz2019]
 - Griffin applies GC-bias correction tailored to variable cfDNA fragment sizes before computing nucleosome accessibility profiles at sites of interest (TSSs, TFBSs); works with as low as 0.1x WGS coverage; demonstrated ER/PR subtyping in breast cancer and cancer detection across multiple tumor types [cite:@doebley2022griffin]
@@ -4936,6 +4944,8 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 - [[id:e6a5aea2-099f-4fdd-8b7f-6abbb57f1bb0][Fragment size biology]]
+- [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
+- [[id:de9485e3-5321-45a9-8720-42ea26d02aab][cfDNA modeling from first principles]]
 **** cfDNA small variant calling
 :PROPERTIES:
 :ID:       0b43e09e-52f7-49fb-8796-87168fe57706
@@ -5614,7 +5624,13 @@ https://www.nature.com/articles/s41467-023-38407-7
 - NMF transferability [cite:@renaud2025] - extends NMF with bias correction for cross-dataset generalization
 - GC-fragment interaction [cite:@wenzel2025gcfix] - fragment length-specific GC bias correction for ichorCNA
 - Fragmentomics review [cite:@mathios2025] - comprehensive taxonomy of fragmentomic features
+- Intra-/inter-nucleosomal entropy ratio (from Lorentzian size deconvolution, split at ~159 bp) outperforms conventional fragment-length metrics for cancer detection: AUC 0.87 (gastric benign vs cancer), 0.81 (Mouliere multi-cancer), 0.85 (DELFI cohort), beating short-to-long ratio and short-fragment proportion in each; stage I-IV AUCs 0.83/0.82/0.86/0.91 [cite:@zhou2026sizedeconv]
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
+- [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
+- [[id:de9485e3-5321-45a9-8720-42ea26d02aab][cfDNA modeling from first principles]]
+- [[id:88bb39a7-f5ac-4994-adfe-496eb4483b9a][cfDNA applications in radiation oncology]]
+- [[id:e6a5aea2-099f-4fdd-8b7f-6abbb57f1bb0][Fragment size biology]]
+- [[id:61d07182-2526-484b-a889-b07cb9f0c8de][Fragment length window optimization (frag.org)]]
 **** cfDNA ChIP-seq
 :PROPERTIES:
 :ID:       31ac8e3f-b37a-43ba-acb9-4964e37a42ae
@@ -6874,7 +6890,7 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666684/
 :END:
 - https://assets.thermofisher.com/TFS-Assets/BID/Technical-Notes/qubit-1x-dsdna-assays-simplified-workflow-tech-note.pdf
 - https://assets.thermofisher.com/TFS-Assets/LSG/manuals/MAN0017455_Qubit_1X_dsDNA_HS_Assay_Kit_UG.pdf
-*** [[id:2a6a5dac-151e-42e8-a80a-74f77ad0d4ca][Gene expression]] - see https://github.com/jeszyman/rna-seq
+*** [[id:2a6a5dac-151e-42e8-a80a-74f77ad0d4ca][Gene expression]] - see https:/https://www.reddit.com/r/bioinformatics/comments/1tuviv2/reducing_go_term_redundancy_for_lollipop_plots//github.com/jeszyman/rna-seq
 *** Genomics language models
 https://www.reddit.com/r/bioinformatics/comments/1nychxo/anyone_recommend_tutorials_on_fine_tuning/
 
@@ -6981,11 +6997,14 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 https://www.reddit.com/r/bioinformatics/comments/1g1j4os/complete_machine_learning_examples_in_bioinfo/
 - https://colab.research.google.com/github/isb-cgc/Community-Notebooks/blob/master/MachineLearning/How_to_build_an_RNAseq_logistic_regression_classifier.ipynb
 - [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]]
-- cite:chiorean2022
+- XGBoost with five-fold-CV recursive feature elimination on plasma proteomics (UK Biobank Olink Explore, 2,923 proteins) yielded a parsimonious 14-protein + 4-clinical-feature model for incident lung-cancer risk, validated across eight external cohorts [cite:@pandya2026lung]
+- [cite:@chiorean2022]
 - https://www.science.org/doi/10.1126/scitranslmed.abk2756
 - https://www.nature.com/articles/s41568-021-00408-3
 - https://www.nature.com/articles/s41576-021-00434-9
 - [[id:1768b182-858a-46f8-97a8-4cd9747a2361][Probability and statistics related to bioinformatics]]
+- [[id:546a7837-36b9-449e-9ce8-6b017c75de2f][Plasma proteomics]]
+- [[id:ee66da5b-aa64-4535-af72-5d98976871ff][clinical prediction models]]
 *** Basic and generalized massively parallel sequencing methods
 :PROPERTIES:
 :ID:       cca285b0-cd5a-4c59-9601-f069512c497f
@@ -8397,6 +8416,7 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 - https://www.sciencedirect.com/science/article/pii/S1874391916304006
 - For protein, SOMAscan has a higher dynamic range and lower limit of detection than comparable Luminex antibody-based assays (cite doi.org/10.1038/s41591-019-0665-2). Moreover, SOMAscan includes targets such as Jagged-1 and -2 not available for multiplexed antibody assays.
 - [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
+- [[id:546a7837-36b9-449e-9ce8-6b017c75de2f][Plasma proteomics]]
 **** Proteomics
 :PROPERTIES:
 :ID:       1565fbef-afbe-4783-b5f1-875e9fcfeb8e
