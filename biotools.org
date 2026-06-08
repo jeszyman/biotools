@@ -1745,7 +1745,7 @@ https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/
 :PROPERTIES:
 :ID:       59c43aa9-cfa1-4e03-b5fb-25c74f626352
 :END:
-cite:consortium2020
+[cite:@consortium2020]
 *** Adapter sequences
 :PROPERTIES:
 :ID:       cf2ea58e-8751-4d90-ab08-a63445925c89
@@ -1788,7 +1788,7 @@ cite:consortium2020
 :END:
 - https://github.com/czbiohub/tabula-muris
 - [[http://www.informatics.jax.org/vocab/gene_ontology][jax mouse gene ontology browser]]
-- cite:lai2016
+- [cite:@lai2016]
 - https://www.biorxiv.org/content/10.1101/082511v1#disqus_thread
 *** by data type
 :PROPERTIES:
@@ -1809,16 +1809,16 @@ cite:consortium2020
 :END:
 - homology
   - http://bioinf.wehi.edu.au/MSigDB/
-  - cite:lai2016
+  - [cite:@lai2016]
     - https://bioconductor.org/packages/release/data/experiment/vignettes/gskb/inst/doc/gskb.pdf
     - http://ge-lab.org/gskb/
   - http://www.informatics.jax.org/homology.shtml
 - gene sets and pathways
-  - cite:liberzon2015
-  - cite:lai2016
+  - [cite:@liberzon2015]
+  - [cite:@lai2016]
   - KEGG- note mostly orthology mapping for non-human organisms
   - http://pathguide.org/
-  - cite:chowdhury2015
+  - [cite:@chowdhury2015]
   - https://www.bioconductor.org/packages/devel/data/experiment/vignettes/gskb/inst/doc/gskb.pdf
   - - https://www.bioconductor.org/packages/release/bioc/vignettes/ReactomePA/inst/doc/ReactomePA.html
   - MSigDB
@@ -1863,7 +1863,7 @@ cite:consortium2020
 - [[https://www.encodeproject.org/][ENCODE]]
   - http://www.reddit.com/r/askscience/comments/znlk6/askscience_special_ama_we_are_the_encyclopedia_of/
 
-- cite:beck2015
+- [cite:@beck2015]
 - [[https://www.reddit.com/r/bioinformatics/comments/601fzr/where_can_i_access_free_sequencing_data/][Where can I access free sequencing data]]
 - [[https://www.aacr.org/professionals/research/aacr-project-genie/][GENIE]]
 **** GDC: Genomic Data Commons
@@ -1909,7 +1909,7 @@ cite:consortium2020
 - polymorphism
   - [[http://www.internationalgenome.org/data#download][IGSR at 1000 Genomes]]
 - [[https://civic.genome.wustl.edu/#/home][CIViC]]
-  - cite:griffith2017civic
+  - [cite:@griffith2017civic]
 *** gene expression
 :PROPERTIES:
 :ID:       333ebad6-9ed4-4d5b-a50e-f9fe9a8c3a92
@@ -1984,7 +1984,7 @@ CLOCK: [2020-07-02 Thu 13:19]--[2020-07-02 Thu 13:29] =>  0:10
 :ID:       F5506BF8-8A6E-4949-9F5E-15B21511E87E
 :END:
 
-- No hits for "custom" in cite:star_2.5_dobin or cite:dobin2015mapping
+- No hits for "custom" in [cite:@star_2.5_dobin] or [cite:@dobin2015mapping]
 
 
 
@@ -2008,7 +2008,7 @@ https://support.bioconductor.org/p/66379/
 
 - Looking for help
   - no info
-    - cite:beadling16_multip_amplic_approac_detec_gene
+    - [cite:@beadling16_multip_amplic_approac_detec_gene]
   - bad ideas
     - don't align to transcriptome- this doesn't save any time
     - don't try to make a gtf from a fa- the info isn't there
@@ -2130,13 +2130,13 @@ https://wiki.dnanexus.com/Scientific-Notes/human-genome
 :END:
 
 chimer-
-cite:Kim01012010
+[cite:@Kim01012010]
 
-cite:wang2015fusioncancer
+[cite:@wang2015fusioncancer]
 
-cite:korla2015fare
+[cite:@korla2015fare]
 
-see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
+see Wellcome Trust db and Chimerdb 2.0- [cite:@scolnick2015efficient]
 
 *** Other Databases and Data Sets
 :PROPERTIES:
@@ -2179,7 +2179,7 @@ see Wellcome Trust db and Chimerdb 2.0- cite:scolnick2015efficient
   - [[http://samtools.github.io/hts-specs/VCFv4.3.pdf][Current documentation]]
   - [[http://www.internationalgenome.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-40/][VCF page at IGSR]]
 - [[https://www.biostars.org/p/84686/][Obi on 1 vs 0 based coordinates]]
-- cite:li2009
+- [cite:@li2009]
 **** Sequence file formats
 :PROPERTIES:
 :ID:       4a86acd3-db60-4a63-979e-43e34070e7c7
@@ -2233,7 +2233,7 @@ mandatory
 :ID:       44889954-63D8-4416-9F28-0691ECF99A9B
 :END:
 - [[https://genome.sph.umich.edu/wiki/SAM][nice visualization of fields]]
-- cite:samspec2017
+- [cite:@samspec2017]
   - 1
     - 1.3 The header section
       - read groups
@@ -2260,10 +2260,10 @@ mandatory
 - GENIE - https://aacrjournals.org/cancerdiscovery/article/7/8/818/6485/AACR-Project-GENIE-Powering-Precision-Medicine
 - https://www.science.org/doi/full/10.1126/scisignal.2004088
 - https://www.nature.com/articles/s41588-021-00791-5#Sec2
-- [[cite:&langmead2018]]
-- [[cite:&grossman2019]]
-- [[cite:&bernasconi2020]]
-- [[cite:&grossman2018]]
+- [cite:@langmead2018]
+- [cite:@grossman2019]
+- [cite:@bernasconi2020]
+- [cite:@grossman2018]
 **** Variant databases
 :PROPERTIES:
 :ID:       86883c33-5647-4da3-9203-ac16e7e2cc97
@@ -3381,18 +3381,18 @@ https://chatgpt.com/c/67191dd3-e8b4-8005-bacd-6876cf5f524d
 :PROPERTIES:
 :ID:       fe58011b-ca46-4e45-9c4e-d4780fbfa115
 :END:
-- see cite:corces2017 sup note 1
-- [X] 80% unique mapping, 50 mil reads per cite:yan2020atac
+- see [cite:@corces2017] sup note 1
+- [X] 80% unique mapping, 50 mil reads per [cite:@yan2020atac]
 - https://docs.google.com/document/d/1f0Cm4vRyDQDu0bMehHD7P7KOMxTOP-HiNoIvL1VcBt8/edit
 - https://yiweiniu.github.io/blog/2019/03/Calculate-FRiP-score/
-- cite:gontarz2020  https://github.com/Zhang-lab
+- [cite:@gontarz2020]  https://github.com/Zhang-lab
 - atacqv https://github.com/ParkerLab/ataqv/
 - mononucleosomal peaks 147 +/- 30 bp
-- Get input cell number (can work as low as 500 cells) cite:minnoye2021
+- Get input cell number (can work as low as 500 cells) [cite:@minnoye2021]
 - [[id:22e31d06-f5df-427e-bd70-3a2ccd3f47ec][ATAC-seq]]
-- cite:alvarez_benayas2021
-- consider batch correction using limma, see- cite:alvarez_benayas2021
-- "A typical way to visually assess the effectiveness of normalization is through an MA plot: a single cloud should be present and the MA distribution should not display an upward or downward shift" cite:minnoye2021
+- [cite:@alvarez_benayas2021]
+- consider batch correction using limma, see- [cite:@alvarez_benayas2021]
+- "A typical way to visually assess the effectiveness of normalization is through an MA plot: a single cloud should be present and the MA distribution should not display an upward or downward shift" [cite:@minnoye2021]
 - [[id:a5b73c70-3f1f-4018-92b2-bfdcaed53cf5][ATACseqQC]]
 - QC
   - https://www.cell.com/cell-systems/pdfExtended/S2405-4712(20)30079-X
@@ -4799,6 +4799,8 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 - [[id:3c1e9bc8-37c7-4cdd-a877-3cb55c39e85f][Serial cfDNA assessments in preclinical models]]
 
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
+- [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
+- [[id:de9485e3-5321-45a9-8720-42ea26d02aab][cfDNA modeling from first principles]]
 ***** Reviews
 :PROPERTIES:
 :ID:       d96fa258-20c6-489a-9946-8e6bc0ecb364
@@ -4816,10 +4818,15 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 - Integrating genomic features for non-invasive early lung cancer detection: per-molecule fragment size analysis with ctDNA mutation data using R zoo sliding window for relative enrichment per fragment size [cite:@chabon2020]
 - Ultra-deep WGS with single-stranded library preparation shows ~50% of cfDNA fragments are <120 nt (sub-nucleosomal), systematically absent from standard double-stranded prep; this sub-nucleosomal population is relatively enriched for ctDNA in cancer and likely reflects active TF-bound or nucleosome-free regions [cite:@sanchez2018]
 - cfDNA shows waved methylation patterns at mono-nucleosomal fragment lengths that are absent from gDNA controls — direct evidence that nucleosome-mediated fragmentation imprints methylation state into the cfDNA size distribution and motivates per-fragment methylation reconstruction from WGS [cite:@liu2024finalme]
+- cfDNA size deconvolution models the full fragment-length distribution as a sum of Lorentzian components (center, amplitude, scale) via curve fitting (LMFIT); the scale parameter yields a per-component entropy (h = log(4*pi*sigma)) that captures fragmentation randomness more sensitively than Shannon entropy, since it reflects the sequential pattern of peak heights; code at github.com/nrlab-CRUK/cfDNA_size_deconvolution [cite:@zhou2026sizedeconv]
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
 - [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
+- [[id:9c039277-94b1-46cf-81f2-dcedfd63e576][cfDNA fragment length-based methods]]
+- [[id:61d07182-2526-484b-a889-b07cb9f0c8de][Fragment length window optimization (frag.org)]]
+- [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
+- [[id:de9485e3-5321-45a9-8720-42ea26d02aab][cfDNA modeling from first principles]]
 ***** Disease and clinical contexts
 :PROPERTIES:
 :ID:       47afb80f-7112-4c4b-aa19-3ec4d747f21f
@@ -4864,7 +4871,7 @@ Three common strategies for human/mouse read separation in PDX data:
 - *Disambiguate*: align to human and mouse independently, compare alignment quality (NM tags), assign each read to the species with fewer mismatches. Requires aligner with accurate NM tags (BISCUIT for EM-seq, not bwa-meth). ~12% of reads tie on NM (ambiguous) — discard or assign to human as sub-variants (3A/3B). Implementation: name-sort both BAMs, streaming merge-walk in lockstep comparing NM per read pair, O(1) RAM. In-memory approach (loading all read names into Python sets) would need ~185 GB at full WGS scale (~250-600M read pairs).
 Reference choice matters for disambiguation: use symmetric references (both without decoys/ALTs) to avoid biasing NM comparison. NCBI GRCh38 no-alt analysis set (195 contigs, no decoys) + UCSC mm10 primary (66 contigs) — both chr-prefixed. hg38 with decoys vs mm10 without creates directional bias.
 For EM-seq/bisulfite data, Xengsort (k-mer classification) is not applicable because C→T conversion breaks k-mer identity. See [[id:A1835C32-1FEB-4902-8127-DCF343353E83][methylation-aware Xengsort idea]] in nf1-mouse.
-- [[cite:&rao2022]] [cite:@rao2022]
+- [cite:@rao2022] [cite:@rao2022]
   - [[https://www.scopus.com/results/citedbyresults.uri?sort=plf-f&cite=2-s2.0-85136454112&src=s&nlo=&nlr=&nls=&imp=t&sid=dacd92e53a1732d3f30ed4e48426dc27&sot=cite&sdt=cl&cluster=scosubtype%2c%22ar%22%2ct&sl=0&origin=resultslist&zone=leftSideBar&editSaveSearch=&txGid=9d3c2ae452ba1a73cc713ec009b5e33f][scopus citing]]
     - https://doi.org/10.1016/j.xcrm.2023.101349
     - https://doi.org/10.1016/j.annonc.2023.06.001
@@ -4878,7 +4885,7 @@ For EM-seq/bisulfite data, Xengsort (k-mer classification) is not applicable bec
 - duplication rate as a measure of lib complexity
 -
 - nonterminal mouse blood draws
-  - cite:campbell2020
+  - [cite:@campbell2020]
 **** cfDNA methylation marker PCR
 :PROPERTIES:
 :ID:       8e0aa543-7033-478b-b66c-bea395db35c8
@@ -4911,6 +4918,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - NucPosDB (https://generegulation.org/nucposdb/) curates ~400 publications on nucleosome positioning in vivo and cfDNA from >10,000 individuals; provides stable nucleosome occupancy regions across conditions, processed mapped data for open-access datasets, and a catalogue of computational tools for nucleosome positioning and cfDNA analysis [cite:@shtumpf2022]
 - Deep WGS of cfDNA from healthy individuals reveals genome-wide nucleosome occupancy maps; nucleosome spacing correlates most strongly with lymphoid/myeloid epigenetic features, consistent with hematopoietic origin of normal cfDNA; in cancer patients, nucleosome footprints shift to reflect tumor cell-of-origin [cite:@snyder2016]
+- A ~159 bp Lorentzian component demarcates intra- from inter-nucleosomal cfDNA: it sits ~8 bp off the 10-bp periodic grid, and ssDNA-vs-dsDNA library comparison shows components below 159 bp carry a ~3 bp offset (shared short-fragment nucleosomal protection) while those above show none; proposed structure is a 1+79+79 bp segment with both ends held by linker histone H1 [cite:@zhou2026sizedeconv]
 - cfDNA harbors footprints of transcription factor binding visible as short protected regions (~50-80 bp) within nucleosome-free regions; TF footprint depth correlates with expression level of the cognate TF in the tissue of origin [cite:@snyder2016]
 - Bioinformatics pipeline inferring TF accessibility from cfDNA fragmentation patterns across >1,000 WGS samples; patient-specific TF activity profiles distinguish cancer subtypes and predict treatment response without requiring tumor tissue [cite:@ulz2019]
 - Griffin applies GC-bias correction tailored to variable cfDNA fragment sizes before computing nucleosome accessibility profiles at sites of interest (TSSs, TFBSs); works with as low as 0.1x WGS coverage; demonstrated ER/PR subtyping in breast cancer and cancer detection across multiple tumor types [cite:@doebley2022griffin]
@@ -4936,6 +4944,8 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 - [[id:e6a5aea2-099f-4fdd-8b7f-6abbb57f1bb0][Fragment size biology]]
+- [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
+- [[id:de9485e3-5321-45a9-8720-42ea26d02aab][cfDNA modeling from first principles]]
 **** cfDNA small variant calling
 :PROPERTIES:
 :ID:       0b43e09e-52f7-49fb-8796-87168fe57706
@@ -5010,7 +5020,7 @@ https://www.nature.com/articles/s41467-021-22463-y#Sec2
 :PROPERTIES:
 :ID:       1e4e06c2-84cd-4b5f-ba02-9b2a7d69d152
 :END:
-[[cite:&kayaokur2019]]
+[cite:@kayaokur2019]
 https://www.protocols.io/view/bench-top-cut-amp-tag-kqdg34qdpl25/v3
 **** design matrix
 :PROPERTIES:
@@ -5142,7 +5152,7 @@ bwa index -p $2 -a bwtsw $3
 :ID:       347d4cc0-a25d-4636-96d4-65e6319022df
 :END:
 - http://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign100mer.bigWig
-- cite:derrien2012
+- [cite:@derrien2012]
 
 ***** Mappability
 :PROPERTIES:
@@ -5178,7 +5188,7 @@ https://www.10xgenomics.com/products/single-cell-multiome-atac-plus-gene-express
 :PROPERTIES:
 :ID:       89b998c1-db24-4e59-b248-f4e5fc246fec
 :END:
-[[cite:&alexandrov2020]]
+[cite:@alexandrov2020]
 https://aacrjournals.org/cancerdiscovery/article/10/4/552/2575/Impaired-Death-Receptor-Signaling-in-Leukemia
 https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-022-01050-w#Sec25
 https://www.nature.com/articles/nature12477
@@ -5263,7 +5273,7 @@ CLOCK: [2022-02-22 Tue 08:00]--[2022-02-22 Tue 09:45] =>  1:45
   - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02181-2#:~:text=In%20the%20end%2C%2065k%20pathway,in%20WikiPathways%20or%20Reactome%20databases.
   - https://gladstone-bioinformatics.shinyapps.io/shiny-25years/
 - [[id:784895e5-0c94-4458-9cfb-f52759718ab3][NDEx]]
-- cite:wikipathways
+- [cite:@wikipathways]
 - [[id:69bfa728-e149-4b8a-9863-347630f86bc4][wikipathways biotool]]
 - [[id:17c865dc-765c-496d-b5c7-60d3d3439de3][pathvisio biotool]]
 **** RNA-seq for mitochondrial transcripts
@@ -5337,7 +5347,7 @@ https://www.google.com/search?q=%22samtools+depth%22+%22wgs%22&oq=%22samtools+de
 - http://www.nytimes.com/2012/07/21/science/in-a-first-an-entire-organism-is-simulated-by-software.html?_r=2
 - https://www.ebi.ac.uk/biomodels-main/
 - https://precision.fda.gov/challenges/
-- Synthetic biology- cite:caschera2014
+- Synthetic biology- [cite:@caschera2014]
 ***** Generating Simulated Reads
 :PROPERTIES:
 :ID:       cc007fa5-7ff2-4847-b566-bc7268ab23c2
@@ -5356,7 +5366,7 @@ https://www.google.com/search?q=%22samtools+depth%22+%22wgs%22&oq=%22samtools+de
   - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02181-2#:~:text=In%20the%20end%2C%2065k%20pathway,in%20WikiPathways%20or%20Reactome%20databases.
   - https://gladstone-bioinformatics.shinyapps.io/shiny-25years/
 - [[id:784895e5-0c94-4458-9cfb-f52759718ab3][NDEx]]
-- cite:wikipathways
+- [cite:@wikipathways]
 - [[id:69bfa728-e149-4b8a-9863-347630f86bc4][wikipathways biotool]]
 - [[id:17c865dc-765c-496d-b5c7-60d3d3439de3][pathvisio biotool]]
 **** Simulate sequencing reads
@@ -5428,7 +5438,7 @@ https://singularity.lbl.gov/install-linux
 :END:
 - https://book.the-turing-way.org/project-design/pd-overview/pd-overview-planning
 - https://www.reddit.com/r/bioinformatics/comments/1c88uoe/git_hooks_in_bioinformatics/
-- cite:griffith2015
+- [cite:@griffith2015]
 - https://www.reddit.com/r/bioinformatics/comments/1apn4f4/what_are_some_criteria_for_my_code_to_have_in_a/
 
 - https://osf.io/4pd9n/
@@ -5522,13 +5532,13 @@ https://www.reddit.com/r/bioinformatics/comments/tgzeya/t_sne_graphs_for_data_vi
   - https://www.biostars.org/p/287512/
   - https://support.bioconductor.org/p/93424/
 - https://jokergoo.github.io/2020/05/06/translate-from-pheatmap-to-complexheatmap/
-- cite:lucas2020 fig3c
+- [cite:@lucas2020] fig3c
 **** <<<Integrated Genomics Viewer>>> (<<<IGV>>>)
 :PROPERTIES:
 :ID:       917062AC-32E8-41F5-A511-84AA7B1504B0
 :END:
 
-- cite:robinson2017
+- [cite:@robinson2017]
 https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Giraud_visualisation-IGV_TP_EBA-2014-10.pdf
 [[http://software.broadinstitute.org/software/igv/UserGuide][User Guide]]
 
@@ -5583,7 +5593,7 @@ https://www.nature.com/articles/s41467-023-38407-7
 :PROPERTIES:
 :ID:       314e4183-bcb9-4029-86c8-fd4654219a6c
 :END:
-- [[file:resources/moding2020fig4b.png]] cite:moding2020 fig4b
+- [[file:resources/moding2020fig4b.png]] [cite:@moding2020] fig4b
 - tumor fraction ratios [[./biotools.org_20220817_135512.png]]
 - https://d0dd8a80-1a24-4cc5-a00a-3f42615181d7.filesusr.com/ugd/ad98ab_846561db683443d3af0664c558849464.pdf
 **** General and miscellaneous
@@ -5614,7 +5624,13 @@ https://www.nature.com/articles/s41467-023-38407-7
 - NMF transferability [cite:@renaud2025] - extends NMF with bias correction for cross-dataset generalization
 - GC-fragment interaction [cite:@wenzel2025gcfix] - fragment length-specific GC bias correction for ichorCNA
 - Fragmentomics review [cite:@mathios2025] - comprehensive taxonomy of fragmentomic features
+- Intra-/inter-nucleosomal entropy ratio (from Lorentzian size deconvolution, split at ~159 bp) outperforms conventional fragment-length metrics for cancer detection: AUC 0.87 (gastric benign vs cancer), 0.81 (Mouliere multi-cancer), 0.85 (DELFI cohort), beating short-to-long ratio and short-fragment proportion in each; stage I-IV AUCs 0.83/0.82/0.86/0.91 [cite:@zhou2026sizedeconv]
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
+- [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
+- [[id:de9485e3-5321-45a9-8720-42ea26d02aab][cfDNA modeling from first principles]]
+- [[id:88bb39a7-f5ac-4994-adfe-496eb4483b9a][cfDNA applications in radiation oncology]]
+- [[id:e6a5aea2-099f-4fdd-8b7f-6abbb57f1bb0][Fragment size biology]]
+- [[id:61d07182-2526-484b-a889-b07cb9f0c8de][Fragment length window optimization (frag.org)]]
 **** cfDNA ChIP-seq
 :PROPERTIES:
 :ID:       31ac8e3f-b37a-43ba-acb9-4964e37a42ae
@@ -5690,6 +5706,7 @@ https://www.nature.com/articles/s41467-023-38407-7
 - ctDNA methylation markers for diagnosis and prognosis of hepatocellular carcinoma using cfDNA [cite:@xu2017a]
 - Review of liquid biopsy approaches (CTCs, ctDNA, EVs) for early cancer detection including methylation-based methods [cite:@heitzer2017]
 - Noninvasive cfDNA methylation test accurately diagnosed pulmonary nodules as malignant vs benign, reducing unnecessary invasive procedures [cite:@liang2021nodule]
+- Epigenetic instability index (EII): metric over 269 cancer-specific CpG island regions (discovered across n=2,084 methylation datasets) quantifying stochastic methylation variation rather than absolute methylation level; ML classifiers on cfDNA detected stage IA lung adenocarcinoma at ~81% sensitivity and early-stage breast cancer at ~68% sensitivity, both at 95% specificity, outperforming absolute-methylation approaches [cite:@thursby2026eii]
 - [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
 - [[id:304d4d4f-8f24-49f1-8718-9490ae40c335][Multi-cancer early detection]]
 - [[id:4aedf4d5-04e3-46e4-8156-a2e5b601c9e6][DNA methylation in cancer]]
@@ -5841,7 +5858,7 @@ Consolidated into [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucle
 *** Cell-free RNA (cfRNA), extracellular RNA (exRNA)
 
 - https://www.nature.com/articles/s41586-025-08834-1
-- cite:illumina2022
+- [cite:@illumina2022]
 *** Chromatin profiling
 :PROPERTIES:
 :ID:       0bec21d1-cc38-4965-8bdf-fddbc803fffb
@@ -5943,7 +5960,7 @@ https://pubmed.ncbi.nlm.nih.gov/35311178/
 :PROPERTIES:
 :ID:       0ea6c74e-bcf8-44c2-b4c3-e725d930d4a3
 :END:
-  - cite:melsted2017
+  - [cite:@melsted2017]
 ****** Gene Fusion Detection
 :PROPERTIES:
 :ID:       492e0fad-ced4-407b-8913-80f3a0ac1202
@@ -5968,9 +5985,9 @@ https://pubmed.ncbi.nlm.nih.gov/35311178/
 :END:
 
 - are combined rna-seq alignment methods just sum of runs?
-- cite:zhang2016a
+- [cite:@zhang2016a]
 - [-] install
-  - [ ] cite:wu2016 in cite:mathe2016
+  - [ ] [cite:@wu2016] in [cite:@mathe2016]
   - [X] hisat2
   - [X] star
   - [X] tophat - but prefer don't use- "TopHat has entered a low maintenance, low support stage as it is now largely superseded by HISAT2" https://ccb.jhu.edu/software/tophat/index.shtml
@@ -6092,7 +6109,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
   - [[https://github.com/nebiolabs/EM-seq/tree/master][EM-seq repo]]
   - Technical note [cite:@emseq2021] (largely mirroring the vaisvila2021 paper)
   - Initial publication: [cite:@vaisvila2021]
-  - [[cite:&emseq2023manual]]
+  - [cite:@emseq2023manual]
 - Initial publication: [cite:@vaisvila2021]
 - Scopus citing vaisvila2021 https://www-scopus-com.mclibrary.idm.oclc.org/search/save/action.uri?activity=allAction&userSearchID=3&origin=savedsearch
 - [[id:d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6][Methylation sequencing biotools process]]
@@ -6118,7 +6135,7 @@ https://www.biorxiv.org/content/10.1101/2023.04.04.535623v1.full.pdf
 :ID:       079e398f-e3b0-49c4-92da-9b4f6a73684c
 :END:
 - [[id:32afbe10-0469-4969-8b8e-1ee14b4101d2][Science of cardiac epigenetics]]
-- cite:smith2017
+- [cite:@smith2017]
 - https://www.nature.com/articles/nature14248?error=cookies_not_supported&code=72ccf3be-3226-467c-b6a1-53bbfe374e27#Sec12
 - https://www.illumina.com/destination/epigenetics-webinar-series.html
 
@@ -6129,7 +6146,7 @@ https://www.biorxiv.org/content/10.1101/2023.04.04.535623v1.full.pdf
     - differential peak analysis-
       - epigen-specific tools DiffBind, MAnorm
       - uses RNA-seq tools for differential expression
-    - peak-calling: identifying enriched signal from ATAC-seq and ChIP-seq, see cite:liu2019a ref 40
+    - peak-calling: identifying enriched signal from ATAC-seq and ChIP-seq, see [cite:@liu2019a] ref 40
       - MACS/MACS2
       - measures of signal-to-noise by ENCODE
         - FRiP fraction of reads in peaks
@@ -6199,7 +6216,7 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
   - Bismark6
   - Bowtie
   -
-- from cite:shen2018
+- from [cite:@shen2018]
   - "The generated SAM files from hg19 alignment were converted to BAM format, ensuring the removal of duplicate reads, and the reads were then sorted and indexed using SAMtools21 before subsequent analysis with the R package MEDIPS22. The CpG enrichment score, as a quality control measure for the immunoprecipitation reaction, was calculated as part of the MEDIPS package."
   - Shell scripts were used to process MeDIP sequencing data to produce RPKM estimates for downstream analysis. Custom R scripts with a collection of R/Bioconductor packages were used to analyse the resulting dataset. The code used for analysis is available in the form of R markdowns deposited onto Zenodo as detailed in Supplementary Table 13.
   -
@@ -6242,7 +6259,7 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
 :ID:       b612a1b1-2c01-49c3-a20c-5a890fa1a6e5
 :END:
 - cut and run - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6302505/
-  - cite:bakhoum2021
+  - [cite:@bakhoum2021]
 **** transcription factor enrichment
 :PROPERTIES:
 :ID:       809e1a39-2a8e-46ec-863c-d7b03511fcfb
@@ -6292,9 +6309,9 @@ https://www.nature.com/articles/s41588-018-0091-2
   - stranded
     - https://www.ecseq.com/support/ngs/how-do-strand-specific-sequencing-protocols-work
   - ffpe
-    - cite:kashofer2013
+    - [cite:@kashofer2013]
     - FFPE Pre-analytic variability
-      - cite:ahlfen2007rnaqual
+      - [cite:@ahlfen2007rnaqual]
         - storage conditions
         - cold ischemia time
         - fixation
@@ -6302,27 +6319,27 @@ https://www.nature.com/articles/s41588-018-0091-2
           - time
         - sample thickness
       - biospecimens.cancer.gov/researchnetwork
-      - cite:unlockingQiagen
+      - [cite:@unlockingQiagen]
       - https://www.ncbi.nlm.nih.gov/pubmed/25357115
       - By effect
         - Yield
           - - prolonged fix reduces yield- Bresters D, Schipper ME, Reesink HW, Boeser-Nunnink BD, Cuypers HT. The duration of fixation influences the yield of HCV cDNA-PCR products from formalin-fixed, paraffin- embedded liver tissue. J Virol Methods 1994;48:267–72.
-          - cite:webster2015mining longer fixation times decrease RNA yields from paraffin-embedded tissues (herein 3 weeks in formalin resulted in half the RNA yield/sec- tion compared with 18 h) and increase RNA input needed during library preparation (see methods). This latter effect is likely due to ‘non-functional’ RNA (eg, adducts or damaged bases) that could be potentially mitigated by treatments like PreCR or other enzymatic and chemical methods.
+          - [cite:@webster2015mining] longer fixation times decrease RNA yields from paraffin-embedded tissues (herein 3 weeks in formalin resulted in half the RNA yield/sec- tion compared with 18 h) and increase RNA input needed during library preparation (see methods). This latter effect is likely due to ‘non-functional’ RNA (eg, adducts or damaged bases) that could be potentially mitigated by treatments like PreCR or other enzymatic and chemical methods.
         - At microarray expression
-          - cite:kashofer2013quality
+          - [cite:@kashofer2013quality]
       - "Formalin fixation introduced major changes into microarray gene expression data and led to marked gene-to-gene variations in delta-ct values of qRT-PCR. We found that qRT-PCR efficiency and gene-to- gene variations were mainly attributed to differences in the efficiency of cDNA synthesis as the most sensitive step. These differences could not be reliably detected by quality assessment of total RNA isolated from formalin-fixed tissues by electrophoresis or spectrophotometry. "
       - At sequencing
-    - cite:graw2015
+    - [cite:@graw2015]
     - Past expression tech
       - goals were biomarker discovery and patient stratification
-      - cite:Zhao_2014 manifests its superiority in terms of the dynamic range, sampling depth, and has independence from pre-existing sequence information [1,2].
-      - cite:webster2015mining When compared with conventional DNA microarrays, RNA-seq enriches for many additional fragments as it is not restricted to predefined probes and has (in principle) no limitations to dynamic range (Li et al., 2014b; SEQC/MAQC-III Consortium, 2014).
+      - [cite:@zhao2014] manifests its superiority in terms of the dynamic range, sampling depth, and has independence from pre-existing sequence information [1,2].
+      - [cite:@webster2015mining] When compared with conventional DNA microarrays, RNA-seq enriches for many additional fragments as it is not restricted to predefined probes and has (in principle) no limitations to dynamic range (Li et al., 2014b; SEQC/MAQC-III Consortium, 2014).
       - - https://www.ncbi.nlm.nih.gov/pubmed/14695316
       - - [[https://www.ncbi.nlm.nih.gov/pubmed/15509548][DASL]]
       - https://www.ncbi.nlm.nih.gov/pubmed/21347257
     - FFPE microarray and RT-PCR was useful
       - AlloMap is a non-invasive gene expression-based blood test that is used to manage the clinical care of heart transplant recipients, providing a quantified score for the risk of rejection based on the measurement of expression of 20 genes, a subset of which are related to immune system activation and signalling15,16.
-      - - cite:penland2007rna
+      - - [cite:@penland2007rna]
       - - - https://www.ncbi.nlm.nih.gov/pubmed/11568892/
       - Mittempergher, L., de Ronde, J.J., Nieuwland, M., Kerkhoven, R.M., Simon, I., Th Rutgers, E.J., Wessels, L.F., Van't Veer, L.J., 2011. Gene expression profiles from formalin fixed paraffin embedded breast cancer tissue are largely comparable to fresh fro- zen matched tissue. PLoS One 6, e17163.
     - But this expression tech is inferior
@@ -6340,15 +6357,15 @@ https://www.nature.com/articles/s41588-018-0091-2
       - semiquan
       - no SNV discovery
       - no fusion
-      - "RNA-seq provides much more detailed information on specific transcript expression patterns in clinico-genetic neuroblastoma subgroups than microarrays. " cite:zhang2015comparison
+      - "RNA-seq provides much more detailed information on specific transcript expression patterns in clinico-genetic neuroblastoma subgroups than microarrays. " [cite:@zhang2015comparison]
   - small RNA sequencing
     - sample processing
       - circulating miRNA stability
-        - serum cite:gautam2016
-        - plasma  cite:glinge2017
+        - serum [cite:@gautam2016]
+        - plasma  [cite:@glinge2017]
     - library preparation
-      - with low input, use same kit for reproducibility cite:yeri2018
-      - cite:dard-dascot2018
+      - with low input, use same kit for reproducibility [cite:@yeri2018]
+      - [cite:@dard-dascot2018]
     - https://rnajournal.cshlp.org/content/18/6/1279.long
     - qc
       - https://www.agilent.com/en/product/automated-electrophoresis/bioanalyzer-systems/bioanalyzer-rna-kits-reagents/bioanalyzer-small-rna-analysis-228257#howitworks
@@ -6362,16 +6379,16 @@ https://www.nature.com/articles/s41588-018-0091-2
     - https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0212031
     - http://www.nature.com/nbt/journal/v34/n2/full/nbt.3445.html
   - Clinical applications of RNA-seq
-    - cite:byron2016translating
-    - cite:Kalari_2014
-    - cite:Van_Keuren_Jensen_2014
+    - [cite:@byron2016translating]
+    - [cite:@kalari2014]
+    - [cite:@vankeuren-jensen2014]
   - deconvolution
     - tools
       - ISOpure
         - https://link.springer.com/article/10.1186/s12859-015-0597-x#Sec1
-    - cite:newman2015
+    - [cite:@newman2015]
   - time course
-    - cite:spies2017
+    - [cite:@spies2017]
     - https://support.bioconductor.org/p/65676/#66860
     - https://www.biostars.org/p/138988/
     - https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#group-specific-condition-effects-individuals-nested-within-groups
@@ -6496,7 +6513,7 @@ https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigC
 - https://fonseca.lab.mcgill.ca/resources/20220810_ATAC_Analysis_Demo/guide.html
 - https://rockefelleruniversity.github.io/RU_ATAC_Workshop.html
 - https://github.com/maxplanck-ie/snakepipes/tree/master/snakePipes/workflows/ATAC-seq
-- cite:reske20s20
+- [cite:@reske2020]
   - https://github.com/reskejak/ATAC-seq
 - https://github.com/crazyhottommy/pyflow-ATACseq/blob/master/Snakefile
 - https://www.sciencedirect.com/science/article/pii/S2666166720302768
@@ -6567,15 +6584,15 @@ https://mobile.twitter.com/nomad421/status/1522554692202598403?s=20&t=UObG4oqigC
 https://www.nature.com/articles/s41590-019-0312-6/figures/2
 - Integration
   - atac-seq and mirna-seq https://www.sciencedirect.com/science/article/pii/S193459091730320X?via%3Dihub
-  - ATAC-seq and miRNA-seq cite:abernathy2017
+  - ATAC-seq and miRNA-seq [cite:@abernathy2017]
 ****** Footprinting
 :PROPERTIES:
 :ID:       29f42466-d0f0-457e-89d6-9bb0c4cd5bf9
 :END:
 - https://github.com/Zhang-lab/ATAC-seq_QC_analysis/blob/master/documents/ifr_documentation.md
-- cite:bentsen2020
+- [cite:@bentsen2020]
   - https://github.com/loosolab/TOBIAS
-- cite:vierstra2020
+- [cite:@vierstra2020]
 #+begin_src R
 source("./src/setup.R")
 dataDIR = file.path("/mnt/ris/jschwarz/cardiac-radiobiology")
@@ -6790,18 +6807,18 @@ consensusToCount
 - Differential peak matrix
   - [[file:resources/wang2018amdfig2b.png]]
 - global accessibility change
-  - bar graph of counts of peak change cite:wang2018amd fig3d
-  - line graph of signal intensity through time cite:wang2018 fig3e
-  - cite:wang2018amd fig2d
+  - bar graph of counts of peak change [cite:@wang2018amd] fig3d
+  - line graph of signal intensity through time [cite:@wang2018] fig3e
+  - [cite:@wang2018amd] fig2d
     - [[file:resources/wang2018amdfig2d.png]]
 - accessibility difference at gene
-  - cite:wang2018amd fig2a
+  - [cite:@wang2018amd] fig2a
 - peak heatmaps
-  - cite:wang2018amd fig1c
+  - [cite:@wang2018amd] fig1c
 - peak annotation across cohorts
-  - [[./biotools.org_20220906_113352.png]] cite:merrill2022 fig1D
+  - [[./biotools.org_20220906_113352.png]] [cite:@merrill2022] fig1D
 - annotation correlation to gene expression
-  - [[./biotools.org_20220906_113853.png]] cite:merrill2022 fig2
+  - [[./biotools.org_20220906_113853.png]] [cite:@merrill2022] fig2
 - https://tobiasrausch.com/courses/atac/atac-seq-data-analysis.html#data-exploration
 - peak to feature proportion  https://nf-co.re/atacseq/1.1.0/output
 - fragment depth vs genome-wide feature
@@ -6815,8 +6832,8 @@ consensusToCount
 - accessibility by chromosome https://nf-co.re/atacseq/1.1.0/output
 - feature-aligned heatmaps
   - https://www.bioconductor.org/packages/devel/bioc/vignettes/ChIPpeakAnno/inst/doc/ChIPpeakAnno.html
-- cite:wilson2019
-- cite:wang2018amd
+- [cite:@wilson2019]
+- [cite:@wang2018amd]
 ******* [[id:29821fa1-acfe-4a74-9c5d-a24adddf2969][Coordinate-based genomics visualization tracks]]
 :PROPERTIES:
 :ID:       fe02ecd1-9077-4887-996a-bc27f608fa3b
@@ -6859,7 +6876,7 @@ consensusToCount
 :ID:       fc282da0-9739-4d91-94d9-8ca338740b4d
 :END:
 
-  - cite:buenrostro2013
+  - [cite:@buenrostro2013]
 
 
 
@@ -6874,7 +6891,7 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666684/
 :END:
 - https://assets.thermofisher.com/TFS-Assets/BID/Technical-Notes/qubit-1x-dsdna-assays-simplified-workflow-tech-note.pdf
 - https://assets.thermofisher.com/TFS-Assets/LSG/manuals/MAN0017455_Qubit_1X_dsDNA_HS_Assay_Kit_UG.pdf
-*** [[id:2a6a5dac-151e-42e8-a80a-74f77ad0d4ca][Gene expression]] - see https://github.com/jeszyman/rna-seq
+*** [[id:2a6a5dac-151e-42e8-a80a-74f77ad0d4ca][Gene expression]] - see https:/https://www.reddit.com/r/bioinformatics/comments/1tuviv2/reducing_go_term_redundancy_for_lollipop_plots//github.com/jeszyman/rna-seq
 *** Genomics language models
 https://www.reddit.com/r/bioinformatics/comments/1nychxo/anyone_recommend_tutorials_on_fine_tuning/
 
@@ -6885,7 +6902,7 @@ https://www.reddit.com/r/bioinformatics/comments/1nychxo/anyone_recommend_tutori
 - https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0213684
 - methods
   - [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
-- cite:saloura2019
+- [cite:@saloura2019]
 - https://en.wikipedia.org/wiki/Immunological_Genome_Project#Gene-expression_compendium
 **** Deconvolution, immunoprofiling/ immunophenotyping, cell type ennumeriation with rnaseq
 :PROPERTIES:
@@ -6912,7 +6929,7 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
       - Inference of immune cell composition on the expression profiles of mouse tissue: ImmuCC [cite:@chen2017]
         - [[https://github.com/wuaipinglab/ImmuCC][ImmuCC GitHub]]
   - using pre-compiled reference
-    - cite:wang2017a
+    - [cite:@wang2017a]
       - https://github.com/lintian0616/bica
     - convert to human and use lm22
 - enrichment- ID at pathway or gene set
@@ -6924,11 +6941,11 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 - https://www.nature.com/articles/s43018-019-0022-x
 - https://www.sciencedirect.com/science/article/pii/S2589004218301871
 - https://www.nature.com/articles/nbt.3724
-- cite:yalcin2012
+- [cite:@yalcin2012]
 - https://mixcr.readthedocs.io/en/master/index.html
 - https://www.nature.com/articles/s41592-019-0529-1
 - https://www.biostars.org/p/354696/
-- cite:vonstechow2017
+- [cite:@vonstechow2017]
 - cell type enumeration with RNA-seq
   - https://www.nature.com/articles/s41586-019-1773-3
 - [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
@@ -6941,8 +6958,8 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :CREATED:  [2019-10-30 Wed 10:52]
 :ID:       a143e3d0-35b3-4579-8831-9710791e0a6a
 :END:
-- cite:liu2019a
-- cite:papalexi2018 - immune cell heterogeneity by scRNAseq
+- [cite:@liu2019a]
+- [cite:@papalexi2018] - immune cell heterogeneity by scRNAseq
 
 **** Cytometry
 :PROPERTIES:
@@ -6962,15 +6979,15 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 :END:
 
 
-- cite:Denny_2011
-- cite:Kho_2011
+- [cite:@denny2011]
+- [cite:@kho2011]
 
 
 **** Immune cell sequencing
 :PROPERTIES:
 :ID:       4b2bb8e8-9945-44f3-8181-73bc14e975ab
 :END:
-- cite:bentham2021
+- [cite:@bentham2021]
 
 *** Machine learning in genomics and bioinformatics
 :PROPERTIES:
@@ -6981,11 +6998,14 @@ CLOCK: [2020-02-13 Thu 10:41]--[2020-02-13 Thu 11:05] =>  0:24
 https://www.reddit.com/r/bioinformatics/comments/1g1j4os/complete_machine_learning_examples_in_bioinfo/
 - https://colab.research.google.com/github/isb-cgc/Community-Notebooks/blob/master/MachineLearning/How_to_build_an_RNAseq_logistic_regression_classifier.ipynb
 - [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]]
-- cite:chiorean2022
+- XGBoost with five-fold-CV recursive feature elimination on plasma proteomics (UK Biobank Olink Explore, 2,923 proteins) yielded a parsimonious 14-protein + 4-clinical-feature model for incident lung-cancer risk, validated across eight external cohorts [cite:@pandya2026lung]
+- [cite:@chiorean2022]
 - https://www.science.org/doi/10.1126/scitranslmed.abk2756
 - https://www.nature.com/articles/s41568-021-00408-3
 - https://www.nature.com/articles/s41576-021-00434-9
 - [[id:1768b182-858a-46f8-97a8-4cd9747a2361][Probability and statistics related to bioinformatics]]
+- [[id:546a7837-36b9-449e-9ce8-6b017c75de2f][Plasma proteomics]]
+- [[id:ee66da5b-aa64-4535-af72-5d98976871ff][clinical prediction models]]
 *** Basic and generalized massively parallel sequencing methods
 :PROPERTIES:
 :ID:       cca285b0-cd5a-4c59-9601-f069512c497f
@@ -7056,24 +7076,24 @@ https://www.reddit.com/r/bioinformatics/comments/te1f5w/what_is_important_to_kno
 :ID:       80c916d2-5028-43f2-acbf-00e12f380827
 :END:
 
-cite:mitelman2007impact
+[cite:@mitelman2007impact]
 
-cite:lieber2016mechanisms
+[cite:@lieber2016mechanisms]
 
 ********* Human Pathological Translocations
 :PROPERTIES:
 :ID:       92C7145A-9535-4E74-B4FF-88A90EE6A78F
 :END:
 
-cite:lipson2012identification
+[cite:@lipson2012identification]
 
-cite:bunting2013end
+[cite:@bunting2013end]
 
-cite:zheng2013oncogenic
+[cite:@zheng2013oncogenic]
 
-cite:greaves14_janet_rowley
+[cite:@greaves14_janet_rowley]
 
-cite:wheeler2013human
+[cite:@wheeler2013human]
 
 ********* [[Clinical Fusion Protein Databases]]
 :PROPERTIES:
@@ -7085,27 +7105,27 @@ cite:wheeler2013human
 :ID:       9786E312-B8BC-4F14-BAF2-C9B682703FB7
 :END:
 
-cite:beadling16_multip_amplic_approac_detec_gene
+[cite:@beadling16_multip_amplic_approac_detec_gene]
 
-cite:qadir2014childseq
+[cite:@qadir2014childseq]
 
 
-cite:scolnick2015efficient
+[cite:@scolnick2015efficient]
 
 ********** Specific Cancers
 :PROPERTIES:
 :ID:       E44CCF9D-6D9A-4F01-B90F-929D038CF4F4
 :END:
 
-cite:alves2015next
+[cite:@alves2015next]
 
-cite:smallridge2013rna
+[cite:@smallridge2013rna]
 
-cite:edgren2011identification
+[cite:@edgren2011identification]
 
-cite:pekar2015fluorescence
+[cite:@pekar2015fluorescence]
 
-cite:duncavage2012targeted
+[cite:@duncavage2012targeted]
 
 ********* [[FISH]]
 :PROPERTIES:
@@ -7122,7 +7142,7 @@ https://rdrr.io/bioc/chimera/man/starReads.html
 http://www.bioconductor.org/packages/release/bioc/vignettes/chimera/inst/doc/chimera.pdf
 https://github.com/STAR-Fusion/STAR-Fusion/wiki
 
-cite:chimera_r
+[cite:@chimera_r]
 
 ******* Variant Calling
 :PROPERTIES:
@@ -7136,13 +7156,12 @@ https://pubmed.ncbi.nlm.nih.gov/33580225/
 - clonal evolution- https://cancerdiscovery.aacrjournals.org/content/8/11/1390.long
 - HRDtools for homologous recombination index
   - https://github.com/eyzhao/hrdtools
-- cite:ainscough2018
-- - cite:barnell2018
+- [cite:@ainscough2018]
+- - [cite:@barnell2018]
 - [[https://software.broadinstitute.org/gatk/best-practices/bp_3step.php?case=GermShortWGS][GATK Best Practices Germline SNP and Indel]]
 - [[http://www.htslib.org/workflow/][WGS/WES Mapping to Variant Calls - Version 1.0]]
 - [[https://software.broadinstitute.org/gatk/documentation/tooldocs/org_broadinstitute_gatk_tools_walkers_genotyper_UnifiedGenotyper.php][Broad UnifiedGenotyper]]
 - [[https://software.broadinstitute.org/gatk/documentation/article?id=3238][Broad best practices DNAseq variant]]
-- cite:vcf
 http://swog.org/Visitors/Fall13GpMtg/plenary/03-Corless-SWOG-Genomics-TM-ver1.pdf
 
 ******** GATK Tool Set
@@ -7184,9 +7203,9 @@ CLOSED: [2016-12-05 Mon 14:22]
 - SCNAs
   - https://pmbio.org/module-05-somatic/0005/04/02/Somatic_CNV_FilteringAnnotationReview/
   - https://www.annualreviews.org/doi/full/10.1146/annurev-genom-082410-101404?url_ver=Z39.88-2003&rfr_id=ori%3Arid%3Acrossref.org&rfr_dat=cr_pub%3Dpubmed
-  - cite:quigley2018
+  - [cite:@quigley2018]
   - https://bioconductor.org/packages/release/bioc/html/DNAcopy.html
-  - cite:talevich2016
+  - [cite:@talevich2016]
   - [[file:~/repos/copy-number/]]
   - [[file:~/repos/copy-number/copy-number.org]]
   - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-S11-S1
@@ -7214,7 +7233,7 @@ CLOCK: [2019-05-29 Wed 14:46]--[2019-05-29 Wed 14:47] =>  0:01
 - [cite:@baslan2012]
 - https://link.springer.com/protocol/10.1007/978-1-4939-9004-7_8
 - https://bioinformaticsdotca.github.io/bicg_2017_module4_lab
-- cite:hehir-kwa2015
+- [cite:@hehir-kwa2015]
 - https://www.nature.com/scitable/topicpage/copy-number-variation-and-human-disease-741737/
 - https://www.frontiersin.org/articles/10.3389/fonc.2020.00321/full
 - [[id:8c535c38-9310-4fd0-a8fe-c300639493da][ichorcna]]
@@ -7280,7 +7299,7 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGrblWQxQHrNZrMjzpGmzjqDNGX
 :PROPERTIES:
 :ID:       267c3c79-6973-4296-9f8e-13c1b9e833d7
 :END:
-cite:widman2022
+[cite:@widman2022]
 
 ******** [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling]]
 :PROPERTIES:
@@ -7310,19 +7329,19 @@ cite:widman2022
 :PROPERTIES:
 :ID:       aedb606f-bfae-419b-845d-38a85c231218
 :END:
-- phylogenic for cancer evolution cite:abbosh2017
+- phylogenic for cancer evolution [cite:@abbosh2017]
 ******** WGS cfDNA methods
 :PROPERTIES:
 :ID:       1b87f575-dd0f-41c3-bc01-fe17edb0db3d
 :END:
 - https://www.biorxiv.org/content/10.1101/2022.01.17.476508v1.full.pdf
-- cite:zviran2020 [cite:@zviran2020]
+- [cite:@zviran2020] [cite:@zviran2020]
 ******** cfDNA and ctDNA-specific visualizations
 :PROPERTIES:
 :ID:       f3252217-66be-4dad-aa81-c20e55b55b66
 :END:
-  - cite:moding2020
-  - cite:everett2020
+  - [cite:@moding2020]
+  - [cite:@everett2020]
   - - https://d0dd8a80-1a24-4cc5-a00a-3f42615181d7.filesusr.com/ugd/ad98ab_846561db683443d3af0664c558849464.pdf
 
 ******** cfDNA from nonterminal mouse blood draws
@@ -7330,8 +7349,8 @@ cite:widman2022
 :ID:       b801d977-af25-48a9-aeff-de8ff97b8ef2
 :END:
 
-- Mouse non-terminal cfDNA WGBS at 0.2 mL per draw via pooling - [[cite:&maggi2018]]
-- [[https://www.scopus.com/results/citedbyresults.uri?sort=plf-f&cite=2-s2.0-85041307621&src=s&imp=t&sid=34d94cc055a157a403a73abf20dce6bb&sot=cite&sdt=a&sl=0&origin=resultslist&editSaveSearch=&txGid=0be803296f96ab0d3c7cff7b5c1c816a][scopus citing]] cite:maggi2018
+- Mouse non-terminal cfDNA WGBS at 0.2 mL per draw via pooling - [cite:@maggi2018]
+- [[https://www.scopus.com/results/citedbyresults.uri?sort=plf-f&cite=2-s2.0-85041307621&src=s&imp=t&sid=34d94cc055a157a403a73abf20dce6bb&sot=cite&sdt=a&sl=0&origin=resultslist&editSaveSearch=&txGid=0be803296f96ab0d3c7cff7b5c1c816a][scopus citing]] [cite:@maggi2018]
   -
 
 ******** General reference
@@ -7345,7 +7364,7 @@ cite:widman2022
 - https://royalsocietypublishing.org/doi/10.1098/rsob.200119
 - cfDNA datasets-  https://generegulation.org/cfdna/
 - see  [[https://mail.google.com/mail/u/0/#inbox/FMfcgxwGDNNMGQwVvHMjSKjBHhrkMLrS][jake's ulpwgs cfdna preprocessing]]
-- cite:heberts2021
+- [cite:@herberts2021]
 ******* cfRNA
 :PROPERTIES:
 :ID:       f4d64349-0202-41e5-9143-39de3dd63d90
@@ -7355,11 +7374,11 @@ cite:widman2022
 - https://oaepublishstorage.blob.core.windows.net/b918d521-af58-4cf0-bc57-db03c5c43f33/4446.pdf
 - https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFgqmWTzSTxFbqlqjBLnzFsWT
 [cite:@rozowsky2019]
-- cite:rozowsky2019
+- [cite:@rozowsky2019]
 - https://www.nature.com/articles/s41586-022-04410-z
 - https://www.nature.com/articles/d41586-021-03801-y
-- [[cite:&larson2021]]
-- [[cite:&griffith2016a]]
+- [cite:@larson2021]
+- [cite:@griffith2016a]
 - https://mail.google.com/mail/u/0/#inbox/FMfcgzGlksDcrLMrdlPVPsVnzpdCNTsx
  [[#larson2021][larson2021]]
 https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
@@ -7459,8 +7478,8 @@ http://tucf.com/htseq_GenomicSeq_DataSheet.pdf
 - https://www.youtube.com/user/IlluminaInc/playlists
 - https://docs.nvidia.com/clara/parabricks/v3.0/index.html#
 - https://support.illumina.com/training.html
-- cite:goodwin2016
-- cite:lee2016
+- [cite:@goodwin2016]
+- [cite:@lee2016]
 ******* High Throughput Sequencing Platforms
 :PROPERTIES:
 :ID:       DF6FFA19-8867-49AC-947D-FD57B403761A
@@ -7482,8 +7501,8 @@ http://tucf.com/htseq_GenomicSeq_DataSheet.pdf
   - Evaluate coverage by comparison to snp array
   - Clinical sequencing false positive if variants have patterns
 - Sequencing platform overview and limitations
-  - cite:payton2016
-- cite:glenn2011
+  - [cite:@payton2016]
+- [cite:@glenn2011]
 ******** Ion Torrent
 :PROPERTIES:
 :ID:       EC631BCD-1A9B-4B8B-877E-7861C27D948B
@@ -7498,7 +7517,7 @@ http://tucf.com/htseq_GenomicSeq_DataSheet.pdf
   - only 3' adapters need trim https://support.illumina.com/bulletins/2016/04/adapter-trimming-why-are-adapter-sequences-trimmed-from-only-the--ends-of-reads.html
   - indexing goes on outside of adapter seq- so routine trim will find and clip
   - https://support.illumina.com/bulletins/2016/12/what-sequences-do-i-use-for-adapter-trimming.html
-- cite:illumina2015nextseq
+- [cite:@illumina2015nextseq]
 - table
     | series  | platform |
     |---------+----------|
@@ -7631,7 +7650,7 @@ data analysis. PLoS One, 8, e85024.
 - https://sequencing.qcfail.com/software/fastqc/
 - RNA
   - Do not
-    - quality-trim RNA- cite:williams2016a
+    - quality-trim RNA- [cite:@williams2016a]
       - see also - http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0085024
         - w/ commentary here- http://genomebio.org/is-trimming-is-beneficial-in-rna-seq/
       - - https://www.michaelchimenti.com/2016/06/trim-rna-seq-reads/
@@ -7642,7 +7661,7 @@ data analysis. PLoS One, 8, e85024.
   - https://sequencing.qcfail.com/applications/mrna-seq/
 - [[id:c0c0ee28-2e41-41a7-9a3b-ae195117a93e][LINK TO common sequence file manipulation]]
 - QC outputs explained- https://sequencing.qcfail.com/
-- see - cite:chen2013 for GC bias and effects on assembly
+- see - [cite:@chen2013] for GC bias and effects on assembly
 - [[http://bioinformatics-core-shared-training.github.io/cruk-bioinf-sschool/Day1/fastqc_sweave.pdf][de Santiago,15]]
 - [[https://www.danielecook.com/double-checking-fastqs/][nice fastq python]]
 - https://wikis.utexas.edu/display/bioiteam/Evaluating+your+raw+sequencing+data
@@ -7678,7 +7697,7 @@ data analysis. PLoS One, 8, e85024.
     - [[file:~/Box%20Sync/org/compend.org::*UNIX][UNIX]]
     - [[file:~/.emacs.d/settings.org::*Emacs][Emacs]]
     - git
-  - [ ] information management- see cite:griffith2015b
+  - [ ] information management- see [cite:@griffith2015b]
   - https://github.com/cbcrg/lncrna-annotation-nf
   - set alias https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
   - https://www.nextflow.io/blog/2016/docker-and-nextflow.html
@@ -7724,7 +7743,7 @@ data analysis. PLoS One, 8, e85024.
   - for immuno regulatory regions- https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-016-0220-7
   - for chromatin accessibility
     - ATAC-seq
-      - cite:buenrostro2015
+      - [cite:@buenrostro2015]
       - FAST ATAC- ATAC-Seq optimized for blood
   - DNA for sequence variation
     - variation
@@ -7736,9 +7755,9 @@ data analysis. PLoS One, 8, e85024.
     - https://gatk.broadinstitute.org/hc/en-us/articles/360035535912-Data-pre-processing-for-variant-discovery
     - https://gatk.broadinstitute.org/hc/en-us/sections/360007226651-Best-Practices-Workflows
     - https://mail.google.com/mail/u/0/#inbox/FMfcgxwHNWHJNLRlZwfGkGJHwJnBxFlh
-  - for sequence homology- cite:stoeger2018
+  - for sequence homology- [cite:@stoeger2018]
   - cfDNA
-    - cite:huang2019
+    - [cite:@huang2019]
 - marking duplicates :process:
   - consider picard markduplicates - https://gatkforums.broadinstitute.org/gatk/discussion/6945/picard-tools-markduplicates-using-cram-format-how-to-pass-a-valid-cram-reference
   - samtools
@@ -7763,7 +7782,7 @@ data analysis. PLoS One, 8, e85024.
 :END:
 - https://ascopubs.org/doi/full/10.1200/CCI.19.00130
 - https://www.cell.com/cell-reports/pdfExtended/S2211-1247(18)31635-8
-- cite:carter2012 ABSOLUTE
+- [cite:@carter2012] ABSOLUTE
   - https://software.broadinstitute.org/cancer/cga/absolute
   - https://www.biostars.org/p/175131/
 ******** DNA Bioinformatics
@@ -7778,8 +7797,8 @@ data analysis. PLoS One, 8, e85024.
 - https://software.broadinstitute.org/gatk/documentation/tooldocs/current/picard_illumina_IlluminaBasecallsToFastq.php
 
 - ffpe
-  - cite:munchel2015
-  - cite:spencer2013
+  - [cite:@munchel2015]
+  - [cite:@spencer2013]
 - Fonseca,12 Tools for mapping high throughput sequencing data(2)
 - [[file:~/Box%20Sync/scientific_technique/Cruchaga%20lab%20eQTLs.pptx][Cruchaga eQTLs]]
 
@@ -7796,7 +7815,7 @@ data analysis. PLoS One, 8, e85024.
       - [[http://www.htslib.org/doc/][documentation]]
         - [[http://www.htslib.org/doc/#publications][publications]]
     - [[https://github.com/samtools/][github]]
-    - cite:li2009
+    - [cite:@li2009]
     - samtools view sorted.bam | awk '{sum+=$5} END { print "Mean MAPQ =",sum/NR}'
     - [[https://www.biostars.org/p/15953/][biostars: calculate MAPQ]]
     - calc mapq w/ samtools- https://www.biostars.org/p/15953/][Malachi Griffith biostars
@@ -7853,7 +7872,7 @@ data analysis. PLoS One, 8, e85024.
 :ID:       22097A02-1E18-40BD-BA2F-0D3BC645F0D5
 :END:
 
-- cite:Novocraft
+- [cite:@Novocraft]
 - [[http://www.novocraft.com/support/download/][Novoalign]]
 
 ********** BWA
@@ -7928,7 +7947,7 @@ https://software.broadinstitute.org/gatk/documentation/topic?name=methods
 :END:
 - https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
 - coverage
-  - cite:illumina2014
+  - [cite:@illumina2014]
   - Picard CollectWgsMetrics
 ********* coverage and depth
 :PROPERTIES:
@@ -7963,9 +7982,9 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245947/
   - 10x
 - https://pdfs.semanticscholar.org/310b/3bac42989485c98406848217418ff22c22e7.pdf
 - barcodes and adaptors for increased sensitivity
-  - cite:kennedy2014
-  - cite:newman2016
-  - cite:wang2019
+  - [cite:@kennedy2014]
+  - [cite:@newman2016]
+  - [cite:@wang2019]
   - https://www.youtube.com/watch?v=HIVCQ7iaowk
   - newman2016
     - adaptor informatics
@@ -8291,7 +8310,7 @@ https://hgserver1.amc.nl/cgi-bin/r2/main.cgi?open_page=login
 [[id:ee66da5b-aa64-4535-af72-5d98976871ff][clinical prediction models]]
 - https://www.nature.com/articles/s41576-019-0130-6
 - https://www.pnas.org/content/107/21/9546
-- cite:tarazona2020
+- [cite:@tarazona2020]
 - https://cran.r-project.org/web/packages/NMF/vignettes/NMF-vignette.pdf
 - Pavlou M, Ambler G, Seaman SR, Guttmann O, Elliott P, King M, et al. How to develop a more accurate risk prediction model when there are few events. BMJ 2015;351:h3868.
 - https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
@@ -8397,6 +8416,7 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 - https://www.sciencedirect.com/science/article/pii/S1874391916304006
 - For protein, SOMAscan has a higher dynamic range and lower limit of detection than comparable Luminex antibody-based assays (cite doi.org/10.1038/s41591-019-0665-2). Moreover, SOMAscan includes targets such as Jagged-1 and -2 not available for multiplexed antibody assays.
 - [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
+- [[id:546a7837-36b9-449e-9ce8-6b017c75de2f][Plasma proteomics]]
 **** Proteomics
 :PROPERTIES:
 :ID:       1565fbef-afbe-4783-b5f1-875e9fcfeb8e
@@ -9256,10 +9276,10 @@ female_tg <- RunPCA(female_tg)
 :PROPERTIES:
 :ID:       f6418486-9a29-4a65-9145-2a2a3ac788a7
 :END:
-- [[cite:&slyper2020]]
-- [[cite:&luecken2019]]
-- cite:heumos2023 and associated [[https://www.sc-best-practices.org/preamble.html#peer-review][ebook]]
-- cite:slyper2020
+- [cite:@slyper2020]
+- [cite:@luecken2019]
+- [cite:@heumos2023] and associated [[https://www.sc-best-practices.org/preamble.html#peer-review][ebook]]
+- [cite:@slyper2020]
 - https://www.nature.com/articles/s41576-023-00586-w
 **** Well-done applications
 :PROPERTIES:
@@ -9267,7 +9287,7 @@ female_tg <- RunPCA(female_tg)
 :END:
 - High-dimensional deconstruction of pancreatic ductal adenocarcinoma identifies tumor microenvironmental communities associated with survival [cite:@storrs2022]
 - Li Ding pancreas - https://www.nature.com/articles/s41588-022-01157-1
-- cite:qi2019
+- [cite:@qi2019]
 **** Jointly defining cell states from singl-cell multi-omic and spatial tanscriptomic datasest
 :PROPERTIES:
 :ID:       76cd9647-825f-46b4-9344-b7b95049f2f6
@@ -9291,7 +9311,7 @@ CLOCK: [2021-11-02 Tue 11:01]--[2021-11-02 Tue 11:26] =>  0:25
 - applications
   - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
   - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
-    - cite:lawson2018
+    - [cite:@lawson2018]
 - simulated data https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-02904-1
 - https://www.sciencedirect.com/science/article/pii/S1097276516301861?via%3Dihub
 - Tutorials, guides, good practice
@@ -9679,7 +9699,7 @@ https://www.reddit.com/r/bioinformatics/comments/11ym1x9/multiomics_integration_
 - JCO top cited biomarker studies
       - with cfDNA copy number
         - cfDNA tumor fraction and somatic CNAs with survival in TNBC [cite:@stover2018]
-        - cite:slaven2018
+        - [cite:@slaven2018]
       - past 1 year
         - innocenti2019.pdf
         - loi2019.pdf
@@ -9802,7 +9822,7 @@ https://support.illumina.com/content/dam/illumina-support/documents/documentatio
 **** bedtools                                                       :biotool:
 :PROPERTIES:
 :doc: [[http://bedtools.readthedocs.io/en/latest/][doc]]
-:paper: cite:quinlan2010       |
+:paper: [cite:@quinlan2010]       |
 :CREATED:  [2021-09-01 Wed 13:42]
 :ID:       05f314e8-f402-45cb-ac1f-e3dece4f3114
 :END:
@@ -9994,7 +10014,7 @@ https://www.biostars.org/p/497108/
 :END:
 - https://rstudio-pubs-static.s3.amazonaws.com/329027_593046fb6d7a427da6b2c538caf601e1.html
 - remove factor levels https://support.bioconductor.org/p/61875/
-| DESeq2 | diff express |   |   |   |   | cite:love2014 |
+| DESeq2 | diff express |   |   |   |   | [cite:@love2014] |
 - Notes
   - a negative binomial GLM
 - https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
@@ -10455,14 +10475,14 @@ https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSe
 :ID:       32BB77F2-0283-4A52-86AC-CDF2CB6A7315
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
-| edgeR | diff express |   |   | [[https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf][vignette]] |   | cite:robinson2010 |
+| edgeR | diff express |   |   | [[https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf][vignette]] |   | [cite:@robinson2010] |
 https://academic.oup.com/nar/article/40/10/4288/2411520?login=true
 - GLM asking whether exons are used proportionally across experiment conditions
 - DEXSeq is an extension to exons
 - [[file:~/Box%20Sync/comp_bio/RNA-seq/Rueda,15%20Differential%20expression%20analysis%20using%20edgeR.pdf][Rueda,15 Differential expression analysis using edgeR]]
 - [[file:~/Box%20Sync/comp_bio/RNA-seq/edgeRUsersGuide.pdf][User Guide]]
 - [[file:~/Box%20Sync/comp_bio/RNA-seq/edgeR_manual.pdf][Manual]]
-- cite:robinson2010
+- [cite:@robinson2010]
 - [[file:~/Box%20Sync/library/Robinson,09%20edgeR%20a%20Bioconductor%20package%20for%20differential%20expression%20analysis%20of%20digitial%20gene%20expression%20data.pdf][Robinson,09 edgeR a Bioconductor package for differential expression analysis of digitial gene expression data]]
 
 
@@ -10477,11 +10497,11 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGpFgtGDXpvjWgzHdQjhXHVlSvf
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 - [[https://www.scopus.com/results/citedbyresults.uri?sort=cp-f&cite=2-s2.0-85063257542&src=s&nlo=&nlr=&nls=&imp=t&sid=f566de7056a65b814af39a1c988abbfb&sot=cite&sdt=a&sl=0&origin=resultslist&offset=21&txGid=1f850b1319595ca2e1efdc578c6f60bb&isValidNewDocSearchRedirection=false][scopus citing exceRpt]]
-- cite:rozowsky2019
+- [cite:@rozowsky2019]
 - http://github.gersteinlab.org/exceRpt/
 - used in
-  - cite:godoy2019
-  - cite:giraldez2018
+  - [cite:@godoy2019]
+  - [cite:@giraldez2018]
 **** faSplit
 :PROPERTIES:
 :ID:       05969880-e00b-4c38-9ae8-77dddf2ef628
@@ -10491,7 +10511,7 @@ https://www.biostars.org/p/13270/
 :PROPERTIES:
 :ID:       ab74a5ca-9cdf-48b6-8050-e48dc1d7eef3
 :END:
-| fastp | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]] | fastq | [[https://github.com/OpenGene/fastp][repo]] |   | [[https://watermark.silverchair.com/bty560.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAAuEwggLdBgkqhkiG9w0BBwagggLOMIICygIBADCCAsMGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMUQnq5IYxgkrFnt0WAgEQgIIClChzxtpO28QYuBn1woUVAMnQOwkPRZWSY20cwnzbVuF3DlOcpwjeNjNrO_ixNp6csW5pOdBZ81CHjV65BMcqsZmP9KOT-yVGy4r_7mWKLuzm7Siid24pM9-xF3k7y1RoBK4-PrnZgzp-J1svrUvOZAphbBPmsezuOowSuj9o9EZyTciDJbUQ2klUbYSRDO_InWNOVu23eOzGpJQwer81BL2iS8TsCfeWF-eZtzNBRuZZr1UZ2PhX_mVQGu4bHvKn1Bmoe64CFYkEJGLoka87zVVfo--J_hAledjiW1_-wEj8kZSyb2diZoP9ABDGOJA6aQ7fzx8qNGgNAb_oK-uAmEdfAfepI_0LECDdlk9EIxIJITC-Z59gk_vNVophJOydBimGZHFK0iACl-N-nZNALjIqRXeRmqOxcEdRFmNy6onzLalfCV0wyqFae42JIVzEYFSLW1oQVC0ugMfKTTmOfysRZ8-4bboBo1UbskpGVlKvrSBTFuDyvuBlPoUTECbOrO6bsdeNk8yfTMTeMQzNzOzZYZ1mQVCULZtuE_YDCuKmwukT3EeUy8iOJbp7pD2Ew5kphJ9q0sV-_io3h0jBZEdJmUr6dTPSRcv56pLP6gtqso6ZdB9bWk3sFNt--tBwIGhQvnLXgyV7xGqRYNPrDeMbs2tPLlK-v4D8XKj-BHGi1sOVuzL1rCvFve0knpL4btsqw_BDp8P2XuFDyp0OOXtmE3dKJktLR0QyQZ3u4-aKksDMfkqrglbPoBjEhInpdpfiDQbEDTFO9qiaL9iajdsV8T636x_KHXpdGkFqO3GpcFyJv1QJyPW2qhAXuneiqWx6t60pJ8f0IyAzRV9BIUoQ4B3soV9TXIuSP171Tf0JYmcY5Q][paper]] | cite:chen2018b |
+| fastp | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]] | fastq | [[https://github.com/OpenGene/fastp][repo]] |   | [[https://watermark.silverchair.com/bty560.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAAuEwggLdBgkqhkiG9w0BBwagggLOMIICygIBADCCAsMGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMUQnq5IYxgkrFnt0WAgEQgIIClChzxtpO28QYuBn1woUVAMnQOwkPRZWSY20cwnzbVuF3DlOcpwjeNjNrO_ixNp6csW5pOdBZ81CHjV65BMcqsZmP9KOT-yVGy4r_7mWKLuzm7Siid24pM9-xF3k7y1RoBK4-PrnZgzp-J1svrUvOZAphbBPmsezuOowSuj9o9EZyTciDJbUQ2klUbYSRDO_InWNOVu23eOzGpJQwer81BL2iS8TsCfeWF-eZtzNBRuZZr1UZ2PhX_mVQGu4bHvKn1Bmoe64CFYkEJGLoka87zVVfo--J_hAledjiW1_-wEj8kZSyb2diZoP9ABDGOJA6aQ7fzx8qNGgNAb_oK-uAmEdfAfepI_0LECDdlk9EIxIJITC-Z59gk_vNVophJOydBimGZHFK0iACl-N-nZNALjIqRXeRmqOxcEdRFmNy6onzLalfCV0wyqFae42JIVzEYFSLW1oQVC0ugMfKTTmOfysRZ8-4bboBo1UbskpGVlKvrSBTFuDyvuBlPoUTECbOrO6bsdeNk8yfTMTeMQzNzOzZYZ1mQVCULZtuE_YDCuKmwukT3EeUy8iOJbp7pD2Ew5kphJ9q0sV-_io3h0jBZEdJmUr6dTPSRcv56pLP6gtqso6ZdB9bWk3sFNt--tBwIGhQvnLXgyV7xGqRYNPrDeMbs2tPLlK-v4D8XKj-BHGi1sOVuzL1rCvFve0knpL4btsqw_BDp8P2XuFDyp0OOXtmE3dKJktLR0QyQZ3u4-aKksDMfkqrglbPoBjEhInpdpfiDQbEDTFO9qiaL9iajdsV8T636x_KHXpdGkFqO3GpcFyJv1QJyPW2qhAXuneiqWx6t60pJ8f0IyAzRV9BIUoQ4B3soV9TXIuSP171Tf0JYmcY5Q][paper]] | [cite:@chen2018b] |
 
 **** fastqc                                                         :biotool:
 :PROPERTIES:
@@ -10522,7 +10542,7 @@ https://www.biostars.org/p/13270/
     - for partial sequences in a variety of longer sequences
   - https://sequencing.qcfail.com/software/fastqc/
   - https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=The%20output%20from%20FastQC%2C%20after,or%20%E2%80%9CFail%E2%80%9D%20is%20assigned.
-- cite:williams2014 for a FastQC aggregator Perl script
+- [cite:@williams2014] for a FastQC aggregator Perl script
 - [[https://www.biostars.org/p/56088/#56102][Fastq Quality Read And Score Length Check]]
 -
 **** fastx
@@ -10551,12 +10571,12 @@ https://www.biostars.org/p/13270/
   - tutorial https://bioconductor.org/packages/release/bioc/vignettes/fgsea/inst/doc/fgsea-tutorial.html
 - Gene set enrichment analysis :: coexpression method that determines enrichment of gene sets by the set's genes ranked differential expression positions
 - Historical development
-  - Developed in cite:mootha2003
-  - Proposed in cite:subramanian2005
+  - Developed in [cite:@mootha2003]
+  - Proposed in [cite:@subramanian2005]
 - Outputs
   - ES (enrichment score)- maximum deviantion from zero in random walk of running sums of genes in a list. Corresponds to Kolmogorov-Smirnov
   - p-value of ES- versus null of permutated gene labels
-  - Leading edge analysis :: "A subset of genes found in the ranking at or just before the maximal ES in a GSEA analysis. This subset of genes often accounts for a pathway being defined as enriched." cite:reimand2019
+  - Leading edge analysis :: "A subset of genes found in the ranking at or just before the maximal ES in a GSEA analysis. This subset of genes often accounts for a pathway being defined as enriched." [cite:@reimand2019]
 - Used in
   - [[id:91d46e60-eec3-48c7-97f1-b53eb1559b3f][Used in Co-expression / pathway enrichment process]]
   - Used in [[id:8e4c1fb8-cd52-4fac-900a-4b6e6eb5a28a][clusterProfiler]]
@@ -10589,7 +10609,7 @@ https://www.biostars.org/p/13270/
 :doc: https://github.com/seqan/flexbar/wiki/Manual
 :ID:       5c20daf7-d02e-4447-bd1e-f991e1366c48
 :END:
-| flexbar |   |   |   | [[https://github.com/seqan/flexbar/wiki/Manual][doc]] |   | cite:roehr2017 |
+| flexbar |   |   |   | [[https://github.com/seqan/flexbar/wiki/Manual][doc]] |   | [cite:@roehr2017] |
 
 - [[https://github.com/seqan/flexbar/wiki/Manual][Documentation]]
 - https://www.google.com/search?q=flexbar+sequencing+manual
@@ -10670,7 +10690,7 @@ save(gage_results,
 - https://genviz.org/module-04-expression/0004/03/01/pathwayAnalysis/
 - https://www.bioconductor.org/packages/devel/data/experiment/manuals/gageData/man/gageData.pdf
 - https://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf
-- cite:luo2009
+- [cite:@luo2009]
 **** GATK
 :PROPERTIES:
 :ID:       479aaa09-f483-4a0d-b593-0cd157954668
@@ -10764,7 +10784,7 @@ https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.html
 :substrate: bam
 :repo: [[https://github.com/broadinstitute/ichorCNA][repo]]
 :doc:  [[https://github.com/broadinstitute/ichorCNA/wiki][doc]]
-:paper: | [[https://www.nature.com/articles/s41467-017-00965-y][paper]] | cite:adalsteinsson2017 |
+:paper: | [[https://www.nature.com/articles/s41467-017-00965-y][paper]] | [cite:@adalsteinsson2017] |
 :ID:       8c535c38-9310-4fd0-a8fe-c300639493da
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
@@ -10805,7 +10825,7 @@ https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzE
 :PROPERTIES:
 :use: detect rna fusions
 :substrate: bam
-:paper:  cite:zhang2014a        |
+:paper:  [cite:@zhang2014a]        |
 :ID:       7519d47f-18e8-4a28-be11-9d081b68b52d
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
@@ -10940,10 +10960,10 @@ chr1 3120443 3120560 118 3120499 6.00 7.58942 5.43209 5.03290 ct01_aut_blk_ddp_o
 :PROPERTIES:
 :ID:       496e62cd-3138-4120-a499-a10246ce77b5
 :END:
-- cite:corces2017 macs2 callpeak --nomodel --nolambda --keep-dup all --call-summits
-- cite:corces2018 macs2 callpeak --shift -75--extsize 150 --nomodel --call-summits --nolambda --keep-dup all -p 0.01
-- cite:hendrickson2017 macs2 callpeak --f BAMPE --B --SPMR
-- cite:scott-browne2016 macs2 callpeak --nomodel -q 0.01 --keep-dup all --call-summits
+- [cite:@corces2017] macs2 callpeak --nomodel --nolambda --keep-dup all --call-summits
+- [cite:@corces2018] macs2 callpeak --shift -75--extsize 150 --nomodel --call-summits --nolambda --keep-dup all -p 0.01
+- [cite:@hendrickson2017] macs2 callpeak --f BAMPE --B --SPMR
+- [cite:@scott-browne2016] macs2 callpeak --nomodel -q 0.01 --keep-dup all --call-summits
 **** msigdbr
 :PROPERTIES:
 :ID:       edf39ef6-df91-40c2-a71a-c612d60b5582
@@ -11058,7 +11078,7 @@ https://www.pnas.org/content/115/4/E743.long
 - [[id:d84cf649-32f4-46e6-b041-4a8a76b31ffc][Pathway encoding]]
 - https://github.com/PathVisio/GPML
 - https://github.com/PathVisio
-- cite:wikipathways
+- [cite:@wikipathways]
 - used in [[id:69bfa728-e149-4b8a-9863-347630f86bc4][wikipathways]]
 - https://pathvisio.github.io/
 - to switch to java 8 https://askubuntu.com/questions/1133216/downgrading-java-11-to-java-8
@@ -11102,11 +11122,11 @@ https://www.bioconductor.org/packages/release/bioc/vignettes/rGREAT/inst/doc/loc
 :PROPERTIES:
 :ID:       85db5c34-b5fd-4b6c-bdb7-88263e553ba3
 :CREATED:  [2021-09-13 Mon 07:29]
-:paper:  cite:li2011
+:paper:  [cite:@li2011]
 :use: transcript quantification
 :substrate: bam
 :repo: [[https://github.com/deweylab/RSEM][repo]]
-:paper: |          | [[https://doi.org/10.1186/1471-2105-12-323][paper]] | cite:li2011            |
+:paper: |          | [[https://doi.org/10.1186/1471-2105-12-323][paper]] | [cite:@li2011]            |
 :END:
 -
 - https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#rsem
@@ -11122,7 +11142,7 @@ https://www.bioconductor.org/packages/release/bioc/vignettes/rGREAT/inst/doc/loc
 :use: rna-seq qc
 :substrate: bam
 :doc:  [[http://rseqc.sourceforge.net/][repo]]
-:paper:  [[https://doi.org/10.1093/bioinformatics/bts356][paper]] | cite:wang2012
+:paper:  [[https://doi.org/10.1093/bioinformatics/bts356][paper]] | [cite:@wang2012]
 :ID:       72b60889-8b03-4b30-b893-3c61886342a6
 :END:
 **** salmon                                                         :biotool:
@@ -11131,7 +11151,7 @@ https://www.bioconductor.org/packages/release/bioc/vignettes/rGREAT/inst/doc/loc
 :use: RNA-seq pseudoalignment
 :repo:  [[https://github.com/COMBINE-lab/salmon][repo]]
 :doc:    [[https://salmon.readthedocs.io/en/latest/][doc]]
-:paper:    [[https://doi.org/10.1038/nmeth.4197][paper]] | cite:patro2017
+:paper:    [[https://doi.org/10.1038/nmeth.4197][paper]] | [cite:@patro2017]
 :ID:       c0d79be1-f887-460e-9142-4d43c6632126
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
@@ -11286,7 +11306,7 @@ find "${sra_dir}" -type d | parallel 'fastq-dump --split-files {}'
 :PROPERTIES:
 :ID:       d1d5d554-57c4-4b9c-8385-2bb72369375e
 :CREATED:  [2021-09-13 Mon 07:29]
-:paper:  cite:dobin2019
+:paper:  [cite:@dobin2019]
 :doc:  [[https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf][doc]]
 :END:
  UPDATE- STAR should handle adaptors (and maybe low quality reads as well, although there aren't many of those).
@@ -11294,7 +11314,7 @@ find "${sra_dir}" -type d | parallel 'fastq-dump --split-files {}'
 
 - used in [[id:326ecd60-8cd4-4815-a389-967b2c3fef0a][alignment]]
 - star-rsem pipeline
-  - cite:djebali2017
+  - [cite:@djebali2017]
 **** tophat2                                                        :biotool:
 :PROPERTIES:
 :doc:  [[https://ccb.jhu.edu/software/tophat/manual.html][doc]]
@@ -11710,7 +11730,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 :ID:       69bfa728-e149-4b8a-9863-347630f86bc4
 :END:
 - uses [[id:17c865dc-765c-496d-b5c7-60d3d3439de3][pathvisio]]
-- cite:wikipathways
+- [cite:@wikipathways]
 *** Table
 :PROPERTIES:
 :ID:       acd826b6-dad7-49df-9cc7-8f3eff2aa363
@@ -11888,13 +11908,13 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
     - https://genomebrowser.wustl.edu/goldenPath/help/hgTextHelp.html#Introduction
   - https://www.biostars.org/p/19029/
   - http://genome.ucsc.edu/FAQ/FAQreleases.html
-  - cite:karolchik2011
+  - [cite:@karolchik2011]
 *** <<<Integrated Genomics Viewer>>> (<<<IGV>>>)
 :PROPERTIES:
 :ID:       ff4813d8-69af-4106-b6a7-28cc26dd432c
 :END:
 
-- cite:robinson2017
+- [cite:@robinson2017]
 https://www.france-bioinformatique.fr/sites/default/files/EBA/V3-2014/Elodie_Giraud_visualisation-IGV_TP_EBA-2014-10.pdf
 [[http://software.broadinstitute.org/software/igv/UserGuide][User Guide]]
 *** Reference
@@ -12298,7 +12318,7 @@ https://www.biostars.org/p/219541/
 :PROPERTIES:
 :ID:       5fe9c572-c692-4aad-bb48-8b2fb2b86760
 :END:
-- [[cite:&larson2021]]
+- [cite:@larson2021]
 - [[https://www.illumina.com/products/by-type/sequencing-kits/library-prep-kits/truseq-rna-access.html][Illumina link]]
   - TruSeq RNA Exome kit (Illumina, 20020189) 2x @ 2480
   - enrichments 2x @ 2995
@@ -13184,13 +13204,13 @@ https://datacommons.cancer.gov/
 :ID:       f7651553-d983-4ff5-828d-339e32c9fda1
 :END:
 https://portal.imaging.datacommons.cancer.gov/about/
-[[cite:&fedorov2021]]
+[cite:@fedorov2021]
 https://github.com/ImagingDataCommons
 ***** Cancer Genomics Cloud (CGC)
 :PROPERTIES:
 :ID:       1c0828de-ce18-46d8-9303-7b2dc1ca93e7
 :END:
-[[cite:&reynolds2017]]
+[cite:@reynolds2017]
 https://docs.cancergenomicscloud.org/docs/collaborating-on-the-cgc-a-guide-for-consortia
 
 ** General Reference
@@ -13294,10 +13314,10 @@ https://www.reddit.com/r/bioinformatics/comments/wtnu0f/staying_up_to_date_with_
 - https://www.reddit.com/r/bioinformatics/comments/m2o63g/best_courses_or_material_to_learn_bioinformatics/
 
 - https://learn.gencore.bio.nyu.edu/
-- cite:buffalo2015
+- [cite:@buffalo2015]
 - biotools bash functions in ./src
 - https://www.reddit.com/r/bioinformatics/comments/lfusag/skills_required_for_being_a_proficient/
-- cite:peters2018
+- [cite:@peters2018]
 - https://github.com/jdidion/biotools
 - https://support.bioconductor.org/#search-anchor
 - https://informatics.fas.harvard.edu/category/tutorials.html
@@ -13445,8 +13465,8 @@ https://genome.ucsc.edu/FAQ/index.html
   - https://satijalab.org/scgd/
   - https://www.genomeweb.com/resources/webinars
   - books
-    - cite:low2017
-    - cite:sinha2014
+    - [cite:@low2017]
+    - [cite:@sinha2014]
 
 **** Notes
 :PROPERTIES:
@@ -13473,7 +13493,7 @@ because computation removes redundancy, you will more frequently be at a new, tr
 :PROPERTIES:
 :ID:       585e27b3-3c79-46d5-aeab-9430251d4318
 :END:
-- cite:becker2011
+- [cite:@becker2011]
 - https://www.annualreviews.org/doi/10.1146/annurev-genom-090413-025448#_i21
 *** General reference                                                   :ref:
 :PROPERTIES:
