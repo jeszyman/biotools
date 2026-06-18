@@ -4682,6 +4682,32 @@ CLOCK: [2020-10-08 Thu 10:05]--[2020-10-08 Thu 10:15] =>  0:10
 :END:
 - [[id:D2FAA88D-70CC-4450-BBB3-8A446CB43AF3][Docker software]]
 
+**** Blood/leukocyte contamination of solid-tissue specimens
+:PROPERTIES:
+:ID:       6e7c5b6c-1647-4bf9-963b-5f4ed622a137
+:END:
+Handling blood contamination of bulk solid-tissue specimens uses a two-pronged strategy across modalities: experimental depletion at library prep, plus computational deconvolution to estimate and correct the contaminating leukocyte/erythroid fraction. Methods to detect, quantify, and correct exist, but no canonical numeric QC exclusion threshold (globin- or leukocyte-fraction cutoff) appears standardized in the literature. Compiled [2026-06-17 Wed] via research-swarm deep run (19/25 claims confirmed under 3-vote adversarial verification).
+- Gene expression (RNA-seq)
+  - Hemoglobin transcripts dominate blood RNA (50--80% of reads in pure whole blood); quantitative transfer to a minor solid-tissue blood admixture is plausible but not directly validated [cite:@uellendahlwerth2020globin]
+  - Globin depletion at library prep is the standard pre-analytical control (e.g. Lexogen QuantSeq Globin Block: mean Hb fraction 43% -> 8%, recovering ~1,397 additional detected genes via depth reallocation) [cite:@uellendahlwerth2020globin]
+  - Leukocyte/immune fraction quantified in silico via =immunedeconv= (R), one interface to CIBERSORT/-abs, EPIC, quanTIseq, MCP-counter, xCell, TIMER, ABIS, ConsensusTME, ESTIMATE [cite:@sturm2019immunedeconv]
+  - Transcriptome purity/admixture estimators by distinct mechanism: ESTIMATE = ssGSEA immune+stromal enrichment score (an enrichment score, not a calibrated purity oracle) [cite:@yoshihara2014]; EPIC = non-malignant reference-profile constrained deconvolution [cite:@racle2017epic]; DeMixT = stromal vs cancer component
+  - See [[id:e07fee1b-d7fd-42ce-9639-ff803cfc9c8e][Deconvolution, immunoprofiling / immunophenotyping, cell type enumeration with rnaseq]]
+- Whole-genome methylation seq (WGBS / EM-seq)
+  - Reference-based (supervised) deconvolution dominates; the foundational algorithm is Houseman 2012 constrained projection [cite:@houseman2012celltype]
+  - =EpiDISH= implements Robust Partial Correlation (RPC), a consistent top performer for cell-type heterogeneity correction [cite:@teschendorff2017epidish]
+  - =MethylResolver= (Least Trimmed Squares, 11 leukocyte types) estimates tumor purity cancer-agnostically (no per-cancer reference); run across 9,756 TCGA samples [cite:@arneson2020methylresolver]
+  - =CAMDAC= performs copy-number-aware tumor--normal deconvolution, outputting purity + allele-specific copy number + purity-corrected methylation (validated on TRACERx NSCLC) [cite:@cadieux2020camdac]
+  - Reference panels: Loyfer WGBS atlas (39 cell types / 205 samples) [cite:@loyfer2023]; Salas/IDOL blood library (12 leukocyte subtypes, EPIC + 450k, flow-cytometry-validated, RMSE ~2--3%) [cite:@salas2022leukocyte]
+  - Blood lineages numerically dominate methylation mixtures (healthy cfDNA ~55% WBC + ~30% erythroid vs ~1% hepatocyte, 2018 baseline; lineage splits later refined), so leukocyte signal must be modeled explicitly [cite:@moss2018]
+  - cfDNA tissue-of-origin benchmark of five methods (MethAtlas, cfNOMe, CelFiE, CelFEER, UXM): CelFEER and UXM most accurate [cite:@sun2024cfdnadeconv]
+  - See [[id:0834ef36-2d05-492f-af41-e700d7af188b][Methylation bioinformatics]]
+- Caveats and open questions
+  - Strongest globin evidence is from pure whole blood, not blood-contaminated solid tissue -- the magnitude in solid specimens (blood as minor admixture) is unvalidated.
+  - No canonical globin- or leukocyte-fraction exclusion cutoff was confirmed by any source; studies appear to set thresholds ad hoc.
+  - EM-seq vs WGBS reference transfer is untested -- established atlases/tools may need protocol-specific reference rebuilding [cite:@loyfer2026emseqerror]
+  - Refuted during source verification (do NOT rely on): HBB/HBA2 as THE globin-block targets; ESTIMATE as a calibrated purity oracle; HiTIMED 6-layer / 20-carcinoma hierarchy as established.
+
 **** cfDNA clonal evolution
 :PROPERTIES:
 :ID:       c9ce98a3-e54c-4ffd-9819-cf3e59a06c31
@@ -8264,6 +8290,9 @@ https://www.sciencedirect.com/science/article/pii/S1097276515003032
 https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 - http://www.visantnet.org/visantnet.html
 *** Methylation bioinformatics
+:PROPERTIES:
+:ID:       0834ef36-2d05-492f-af41-e700d7af188b
+:END:
 - Rationale- cfMeDIP-seq only measures HYPERmethylation (via IP), see [cite:@nassiri2020]
 
 https://pmc.ncbi.nlm.nih.gov/articles/PMC6162482/
