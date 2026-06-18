@@ -4,6 +4,7 @@
 :ID:       b03025b7-4b60-4196-8d7f-d947c7d64b28
 :header-args: :tangle no :tangle-mode (identity #o555) :mkdirp yes :noweb yes :comments org
 :END:
+[[file:~/career/scientific-technique/figure-templates/cfdna-analysis-landscape.png]]
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][Basecamp org file]]
 ** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics pipeline]]
 ** [[id:d482d49c-9dbe-43cd-a188-b1662a9ce348][Bioinformatics research project module]]
@@ -6248,6 +6249,7 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
     - heatmap
     - canyon plot- methylation proportion vs distance from target locus
   - Bisulfite per-CpG errors are independent and sporadic, meaning noise is exponentially suppressed in multi-CpG markers — a property not shared by EM-seq, where fragment-level over-conversion produces correlated errors across all CpGs in a molecule [cite:@loyfer2026emseqerror]
+  - C→T (3-letter) reduction makes the two genomic strands non-complementary — a top-strand C pairs with a bottom-strand G, so collapsing C→T on each strand alters different positions and the collapsed top/bottom k-mers are no longer reverse complements. Reverse-complement canonicalization / strand-merge (valid in standard 4-letter WGS, e.g. ARTEMIS) is therefore invalid in collapsed space: a C→T-collapsed k-mer reference must keep two strand-specific sets, and matching is made conversion-invariant by collapsing the read (residual C→T), not by merging strands. [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
   - [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
   - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
   - [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
