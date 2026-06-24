@@ -5593,10 +5593,19 @@ https://www.nature.com/articles/s41467-023-38407-7
 - https://www.cell.com/cell-reports-methods/fulltext/S2667-2375%2825%2900119-5
 - https://mail.google.com/mail/u/0/#inbox/FMfcgzQbfxdHZssqkRxWNGzcMfWWDkdC?projector=1&messagePartId=0.1
 **** Repeat element
+:PROPERTIES:
+:ID:       2914d2ac-27c0-49b4-9632-9cadd0629b63
+:END:
+- [[id:4aedf4d5-04e3-46e4-8156-a2e5b601c9e6][DNA methylation in cancer]]
+- [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
+- [[id:412ece8f-7f6c-48d6-a4e8-9b8b257271a9][Transposable elements]]
 - Alignment challenges
   - Will result as multimappers
+    - ~50% of the human genome is repetitive; correspondingly only ~70–80% of short reads (≥25 bp) map uniquely (read-length dependent). Three multi-read strategies, each with failure modes: ignore (discards multi-copy signal), best-match (ties → random/split, biases SNP/CNV), report-all up to d (cost/ambiguity) — the occ-gating tradeoff in repeat k-mer methods [cite:@treangen2011repeats]
   - Centromeric repeat elements not present in reference assembly (hg38, better represented in CHM13)
+    - Repeats drive two assembly errors: near-identical tandem copies collapse into fewer copies (the 2001 B. anthracis forensic investigation miscounted diagnostic tandem repeats this way), and interspersed-repeat collapse joins non-adjacent regions into chimeric contigs — why short-read assemblies lose satellite/centromeric arrays and CHM13/T2T is needed to represent them [cite:@treangen2011repeats]
 - [cite:@annapragada2024]
+- Human repeat landscape (hg19, RepeatMasker; [cite:@treangen2011repeats] Box 1): LINE 21%, SINE 15%, LTR 9%, DNA transposon 3%, tandem mini/micro/satellite 3%, rDNA 0.01%, segmental duplication 0.2% — ~50% total. Interspersed (transposon-derived) classes dominate by genome coverage; the satellite fraction is underrepresented because the table predates T2T centromere resolution.
 - ARTEMIS k-mer reference generation: repo [[https://github.com/cancer-genomics/artemis2024][cancer-genomics/artemis2024]] (code/ARTEMIS_Pipeline/01_generate_artemis). Produces ~1.2 billion 24-mer reference (=kmers_all.fasta=) covering 1280 repeat element types (started 1287 RepeatMasker + 14 Altemose HSAT2/HSAT3, 1266 pass filters). Inputs required (not in repo, must download): T2T-CHM13v2.0 FASTA (NCBI GCF_009914755.1), UCSC T2T RepeatMasker BED, Jellyfish package; repo provides x9_altemosereference24.fasta (Altemose 2014 HSAT supplement) + useful.stuff.aa R package. Pipeline a1–a10: split RepeatMasker BED by type → mask chm13 for non-repeat k-mer filter → de novo k-mer count per repeat type (Jellyfish) → filter to k-mers unique to each type AND absent from non-repeat genome → combine with Altemose HSAT supplement → finalize. Multi-day HPC SGE job. Same reference reused by downstream applications (e.g., the 2025 Cancer Discovery brain cancer detection paper, [[https://aacrjournals.org/cancerdiscovery/article/15/8/1593/763853][doi:10.1158/2159-8290.CD-25-0074]]); no separate k-mer set generated in those follow-ups. ARTEMIS-Epi pipeline (=05_epi_pipeline=) uses fragmentation (DELFI) not methylation — "epi" = chromatin/nucleosome inference from short:long ratios, NOT direct 5mC measurement.
 - UCSC CenSat track (T2T-CHM13, =censat=) is the authoritative centromere-satellite annotation (Hoyt/Altemose). Queryable without download via the UCSC JSON API (=api.genome.ucsc.edu/list/schema= and =/getData/track=). It carries no class/family column — the satellite type is embedded in the item =name= (split on the first =_=): 12 satTypes genome-wide (=hsat1A/1B, hsat2, hsat3, hor, dhor, bsat, gsat, censat, ct, mon, rDNA=). HSat2/HSat3 parentheticals are messy per-array labels (combos like =A4,A2=, chromosome aliases =A6/DYZ1=, =Unknown=), not a clean subfamily vocabulary. Used by [[file:~/repos/repeat-meth/repeat-meth.org][repeat-meth]] as the censat source for its repeat-nomenclature annotation table.
 - Same satellite monomer can be RepeatMasker-classed both =Satellite= and =Simple_repeat=, and the split is *array-length*-driven, not a labeling error: long pericentromeric arrays (kb–hundreds of kb) get the Satellite call; short stray microsatellite runs (~60 bp) stay Simple_repeat. Verified on =(GAATG)n=/=(CATTC)n= (HSat3 pentamers): Satellite rows mean ~2.5–4.4 kb vs Simple_repeat rows ~60 bp. The T2T-CHM13 CenSat curation promoted the long arrays.
@@ -5678,6 +5687,7 @@ https://www.nature.com/articles/s41467-023-38407-7
 :PROPERTIES:
 :ID:       79dfda7e-8b6d-45c7-88d5-804979155763
 :END:
+- [[id:2914d2ac-27c0-49b4-9632-9cadd0629b63][Repeat element]]
 - Applied: [[id:a41f63f9-a728-410e-861d-2d05a49fee23][Build methylation pipeline]] (career)
 - Review of the methylome and cfDNA with current applications in medicine and pediatric disease [cite:@spector2023methylome]
 - Cell-type-specific methylation atlases enable cfDNA-based detection of radiation-induced tissue damage with dose-dependent increases in tissue-specific cfDNA fragments after thoracic irradiation [cite:@barefoot2022rads]
