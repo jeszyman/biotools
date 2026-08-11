@@ -4809,6 +4809,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - Applied: [[id:a23fcc77-804a-4da7-90e1-5bbfedf37974][Build fragmentomics + nuc module]] (career)
 - Platelet DNA (pDNA) exhibits a fragment length distribution mirroring plasma cfDNA with mono- and dinucleosome peaks at ~166 bp and ~325 bp; s-pDNA (<600 bp) has more even genome coverage than cfDNA (lower Gini index), and selecting fragments <150 bp enriched tumor fraction from 25% to 30% in a pancreatic cancer case, indicating fragmentomic ctDNA enrichment strategies apply to pDNA [cite:@murphy2025]
 - NMF-based fragment length and end motif signatures distinguish peripheral nerve sheath tumor subtypes (PN vs AN vs MPNST) in NF1 patients (n=122, WGS) [cite:@sundby2024ccr]
+- No study has yet demonstrated cfDNA fragmentomics for detecting lung precancerous lesions; a review of lung cancer screening cites this NF1 peripheral nerve sheath tumour fragmentomics assay [cite:@sundby2024ccr] as the closest existing precedent for premalignant detection [cite:@zhang2026lung]
 - NMF-based fragment length signature discovery from cfDNA reveals tumor-specific fragmentation patterns [cite:@renaud2021]
 - Fragmentomic analysis of circulating tumor DNA from targeted cancer panels: panel-based cfDNA fragmentation profiling enables cancer detection without WGS [cite:@helzer2023panelfrag]
 - mHapTk: comprehensive toolkit for DNA methylation haplotype analysis from cfDNA bisulfite sequencing data [cite:@ding2022]
@@ -4836,6 +4837,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
 - [[id:de9485e3-5321-45a9-8720-42ea26d02aab][cfDNA modeling from first principles]]
 - [[id:33c6b066-5d16-4d58-9284-2f265128cba1][Genomics language models]]
+- [[id:8fe0ffa8-378e-4951-8763-fdc5f182751b][Lung SU2C early detection (Chaudhuri, career)]]
 ***** Reviews
 :PROPERTIES:
 :ID:       d96fa258-20c6-489a-9946-8e6bc0ecb364
@@ -4843,6 +4845,8 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - Epigenetics, fragmentomics, and topology of cell-free DNA in liquid biopsies (review) [cite:@lo2021]
 - Cell-free DNA fragmentomics and gene regulation: fragmentation patterns encode epigenomic information including nucleosome positioning and chromatin accessibility (review) [cite:@liu2022]
 - cfDNA fragmentation patterns reflect in vivo gene regulation: nucleosome positioning at promoters, enhancers, and TF binding sites produces characteristic coverage and fragment size profiles that can infer tissue-specific transcriptional programs non-invasively (review) [cite:@liu2022]
+- Cell type inference in cell-free nucleic acid liquid biopsy: comprehensive review of computational frameworks for deconvolving cfDNA and cfRNA at cell type resolution using single-cell transcriptome atlases as reference (review) [cite:@vorperian2025celltype]
+- [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
 ***** Fragment size biology
 :PROPERTIES:
 :ID:       e6a5aea2-099f-4fdd-8b7f-6abbb57f1bb0
@@ -4866,6 +4870,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 :PROPERTIES:
 :ID:       47afb80f-7112-4c4b-aa19-3ec4d747f21f
 :END:
+- A cfDNA fragment-size classifier reaching 57–100% sensitivity at 98% specificity in a post-breast-cancer cohort fell to a 1.3% PPV (58% specificity; stage I and II sensitivity 71% and 89%) when validated in a lung cancer screening population, showing the prevalence and spectrum penalty fragmentomic classifiers pay in true screening settings [cite:@zhang2026lung]
 - Genome-wide cfDNA fragmentomes (short:long ratio, repeat elements, epigenetic hotspot coverage) detect non-cancer diseases including liver fibrosis/cirrhosis (AUC 0.95), with disease-specific fragmentation signatures across vascular, autoimmune, and neurodegenerative conditions (n=1576) [cite:@annapragada2026]
 - cfDNA fragment size fraction correlates with FDG-PET/CT-derived metabolic tumor volume and total lesion glycolysis in NSCLC, supporting fragmentomics as a "liquid PET" bioactivity readout [cite:@gonzlezdealedocastillo2021]
 - Nucleosome footprinting in plasma cfDNA correlates with neoadjuvant chemotherapy response for breast cancer [cite:@ulz2021breast]
@@ -5018,6 +5023,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - cfChIP-seq identifies bone marrow megakaryocytes (GP6, PPBP, PF4 signatures) as major healthy-donor cfDNA contributors and finds erythroblast-specific promoters (GYPA/B, AHSP) largely absent — contradicting CpG methylation deconvolution that attributed 20-40% to erythroblasts (Moss 2018, Lam 2017); authors propose lineage adjacency / shared methylation between megakaryocyte and erythroblast progenitors as the source of methylation-TOO miscalling, with erythroblast signal recoverable only in severe hypoxia [cite:@sadeh2021cfchipseq]
 - FinaleMe-inferred methylation from cfDNA WGS supports tissues-of-origin deconvolution without requiring WGBS, opening the millions of NIPT and MCED WGS samples to methylation-based TOO; validated at deep (16-39X) and shallow (~0.1X) WGS coverage [cite:@liu2024finalme]
 - CANSCAN WGS-based TOO classifier across 13 cancer types achieved TOP1 accuracy 82.3-83.5% and TOP2 80.6-86.4% in case-control validation (n=1,465), with per-cancer variation from 98.6% (liver) to 45.7% (gastric); in prospective asymptomatic screening (Jinling, n=3,724), TOO TOP1 dropped to 63.2% but TOP2 remained 89.5%, suggesting second-best predictions partially recover the accuracy loss at lower tumor burden [cite:@bao2025canscan]
+- Single-cell transcriptome atlases (Tabula Sapiens, Fetal Cell Atlas) enable comprehensive cell type deconvolution of cfDNA fragmentation without pre-selected tissue-specific markers, ranking >450 cell types by correlation of gene-body WPS with scRNA-seq expression; applicable at ultra-low (<0.3x) WGS coverage (review) [cite:@vorperian2025celltype]
 - [[id:31ac8e3f-b37a-43ba-acb9-4964e37a42ae][cfDNA ChIP-seq]]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
@@ -5034,6 +5040,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
 - [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
+- [[id:0d368294-8b95-419b-ae4b-ba0112de9acc][exRNA / cfRNA]]
 
 **** cfDNA window protection score
 :PROPERTIES:
@@ -5724,6 +5731,21 @@ https://www.nature.com/articles/s41467-023-38407-7
 :PROPERTIES:
 :ID:       0c5359ff-bbd8-4104-a14a-cb0caaea6af4
 :END:
+
+****** Whole-genome methylation sequencing platforms for cfDNA
+:PROPERTIES:
+:ID:       72952b5f-31a1-487c-a1e4-ad2cd8c6f238
+:END:
+
+- *WGBS* (bisulfite): 10-200 ng input. Does not distinguish 5mC/5hmC. Fragments cfDNA ~2x, GC bias, degrades unmethylated C-rich sequences (misses 5.4M CpGs vs EM-seq/ONT). Highest dup rate at low input. CLIA precedent (Galleri). Kits: TruSeq, Swift Accel-NGS.
+- *EM-seq* (NEB, TET2+APOBEC): 0.1-200 ng input (v2). Converts unmethylated C to T (TET2 oxidizes 5mC/5hmC to protect them, then APOBEC deaminates unprotected C). Does not distinguish 5mC/5hmC (reports sum). Preserves fragment length. Lowest dups at low input (3.7% at 25 ng). Fragment-level over-conversion artifact: failed TET2 protection produces entire fragments that appear fully unmethylated (~2.5% rate at constitutively methylated regions, independent of CpG count), correlated within-fragment (not random per-CpG noise), indistinguishable from genuine unmethylated signal in cfDNA deconvolution (Loyfer et al. 2026 preprint, DOI 10.64898/2026.03.24.713040). This error is invisible to bulk methylation averages but limits specificity for fragment-resolved applications (deconvolution, rare-cell detection). No CLIA precedent. Kit: NEBNext EM-seq v2 (E8015).
+- *biomodal duet evoC* (enzymatic, 6-base): 5-30 ng input. Converts unmethylated C to T (same direction as EM-seq): protects 5mC and 5hmC, then deaminates unprotected C. Distinguishes 5mC from 5hmC via hairpin-tethered copy strand: a methyltransferase copies 5mC (but not 5hmC) to the copy, then bioinformatics compares original vs copy to resolve the two marks. 6 bases: A, C, G, T, 5mC, 5hmC. ssDNA ligation preserves native cfDNA fragment features. Also provides variant calling from the copy strand. Lower library complexity than Illumina 5-Base (converts the unmethylated majority). Limited head-to-head benchmarking data. No CLIA precedent. [cite:@fullgrabe2023six]
+- *Illumina 5-Base DNA Prep* (enzymatic, 5-base): cfDNA-compatible input. Converts methylated C → T (opposite direction from EM-seq/bisulfite, which convert unmethylated C → T). Because most cytosines are unmethylated, retaining them preserves higher nucleotide diversity. Key advantages over EM-seq: ~20% more CpGs at ≥10× coverage for equivalent read depth (27M vs 22M at 500M read pairs), simultaneous germline variant calling at WGS-comparable accuracy (99.5% F1 for SNVs vs poor variant calling from EM-seq), better GC uniformity at low-GC regions, and longer median insert length from nondamaging conversion. Reads 5mC but does not resolve 5hmC. Requires Illumina DRAGEN analysis pipeline. Compatible with targeted enrichment + UMI error correction. Kit: Illumina 5-Base DNA Prep (20140364), also available with Enrichment. No CLIA precedent.
+- *TAPS/TAPS+* (Watchmaker, TET+pyridine borane): 1-200 ng. Standard TAPS does not distinguish 5mC/5hmC; TAPS+ does. Non-destructive, high library complexity (94.8% unique mapping at 10 ng vs 63.6% WGBS). C-to-T readout. No CLIA precedent. Kit: Watchmaker TAPS+.
+- *ONT nanopore* (native basecalling): higher input typical, cfDNA protocol exists. Distinguishes 5mC, 5hmC, 4mC, 6mA natively. No conversion step. Hypermethylation bias in current basecallers; lower per-CpG quantitative accuracy vs short-read. No CLIA precedent. Hardware: MinION/PromethION + Dorado.
+
+Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigenetics & Chromatin); Nat Commun 2025; NEB, Illumina, Watchmaker, ONT product pages; Fullgrabe et al. 2023; Liu et al. 2022 (cfTAPS).
+
 - TAPS-seq: enzymatic (non-bisulfite) deamination preserves DNA integrity for long-read amplicon sequencing of 5mC and 5hmC at single-base resolution, overcoming bisulfite-induced fragmentation that destroys long-range methylation haplotype information [cite:@sun2021tapsseq]
 - cfMeDIP-seq: low-input (1-10 ng) bisulfite-free immunoprecipitation-based methylome profiling of plasma cfDNA, applicable to urine, CSF, and other low-input sources beyond cancer detection [cite:@shen2019cfmedip] (protocol used in [cite:@shen2018])
 - Simultaneous sequencing of genetic and epigenetic bases in DNA (6-letter sequencing: A, C, G, T, 5mC, 5hmC) enabling joint genotype-methylation profiling from a single library [cite:@fullgrabe2023six]
@@ -5739,6 +5761,11 @@ https://www.nature.com/articles/s41467-023-38407-7
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 - [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]]
 - [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
+- Systematic taxonomy of methylation-based cfDNA deconvolution: reference-based methods (MethAtlas/NNLS, CelFiE/EM, cfSort/deep learning) differ in whether they model unknown contributors and whether they operate at CpG-level ratios vs fragment-level methylation patterns; fragment-level approaches (UXM, CelFEER) gain sensitivity for rare cell types by leveraging within-fragment CpG correlation (review) [cite:@vorperian2025celltype]
+- [[id:f4d64349-0202-41e5-9143-39de3dd63d90][cfRNA]]
+- [[id:0d368294-8b95-419b-ae4b-ba0112de9acc][exRNA / cfRNA]]
+- [[id:d96fa258-20c6-489a-9946-8e6bc0ecb364][Reviews]]
+- [[id:e07fee1b-d7fd-42ce-9639-ff803cfc9c8e][Deconvolution, immunoprofiling/immunophenotyping, cell type enumeration with rnaseq]]
 ***** 5hmC biomarkers
 :PROPERTIES:
 :ID:       dfdcad09-8447-4096-b139-b0b5bf56cad5
@@ -7462,6 +7489,9 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGrblWQxQHrNZrMjzpGmzjqDNGX
 - https://mail.google.com/mail/u/0/#inbox/FMfcgzGlksDcrLMrdlPVPsVnzpdCNTsx
  [[#larson2021][larson2021]]
 https://www.frontiersin.org/articles/10.3389/fgene.2021.742496/full
+- cfRNA captures cell-type-specific transcriptional programs (mRNA, miRNA, lncRNA) released via EVs, apoptotic bodies, and RNA-binding protein complexes; complements cfDNA by detecting active gene expression changes and cell types that shed little DNA, with demonstrated clinical utility in NIPT, cancer detection, and organ transplant monitoring (review) [cite:@vorperian2025celltype]
+- [[id:0d368294-8b95-419b-ae4b-ba0112de9acc][exRNA / cfRNA]]
+- [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
 ****** Allele-specific expression
 :PROPERTIES:
 :ID:       a52b4ca3-c3ca-4aec-b68a-01c1de39fc8a
