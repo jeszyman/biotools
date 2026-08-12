@@ -13796,3 +13796,6 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41467-024-48466-z
 - [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:992de4dc-775e-41f0-a70a-e38c99b87265][Single cell methylation sequencing]]
+- [[id:046ca1f7-175c-48ae-86af-4f9fbaa29126][Tissue viability for sequencing]]
+- [[id:046ca1f7-175c-48ae-86af-4f9fbaa29126][Tissue viability for sequencing]]
+- [[id:046ca1f7-175c-48ae-86af-4f9fbaa29126][Tissue viability for sequencing]]
