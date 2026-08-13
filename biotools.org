@@ -6322,7 +6322,7 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
   - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
   - [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
   - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
-  - Bisulfite treatment damages cfDNA fragment ends, producing an artificial double peak at 150 and 167 bp in mononucleosomal fragment size distributions. PE read merging (BBMerge) before alignment eliminates this artifact by reconstructing true fragment boundaries; adopted as standard for all BS-treated cfDNA samples at a ~5% net loss of usable reads. Not applicable to EM-seq (enzymatic conversion does not damage fragment ends the same way) [cite:@cheng2024]
+  - Bisulfite treatment damages cfDNA fragment ends, producing an artificial double peak at 150 and 167 bp in mononucleosomal fragment size distributions. PE read merging (BBMerge) before alignment eliminates this artifact by reconstructing true fragment boundaries; adopted as standard for all BS-treated cfDNA samples at a ~5% net loss of usable reads. Not applicable to EM-seq (enzymatic conversion does not damage fragment ends the same way) [cite:@cheng2024sscfdna]
 
 
 **** protein-DNA interactions
