@@ -7,7 +7,7 @@
 [[file:~/career/scientific-technique/figure-templates/cfdna-analysis-landscape.png]]
 ** [[file:~/repos/basecamp/basecamp.org::*Basecamp][Basecamp org file]]
 ** [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics pipeline]]
-** [[id:d482d49c-9dbe-43cd-a188-b1662a9ce348][Bioinformatics research project module]]
+** Bioinformatics research project module
 ** [[id:0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 ** [[id:39F11977-BE11-47CF-98B1-14CE6D9B97C4][Information Science / Data Science]]
 ** Repository administration
@@ -1592,7 +1592,7 @@ When new category needed, update schema and increment version.
 :PROPERTIES:
 :ID:       8ddb3ced-a572-43cd-82d9-69fe449fe320
 :END:
-- See [[id:593672e1-82b2-44e0-aa00-d28825860706][Computer programming style Guide]]
+- See Computer programming style Guide
   - Prefer Ensembl identifiers as a final reference
 ** Biotools conda yaml
 :PROPERTIES:
@@ -2607,7 +2607,7 @@ echo "Biotools setup completed successfully"
 # done
 
 #+end_src
-- example [[id:8263e3b1-3ba4-4c4f-8d39-9dd9bb06e2bb][publish to box]]
+- example publish to box
   #+begin_src bash
 #!/usr/bin/env bash
 git pull &&
@@ -5347,6 +5347,9 @@ https://bioinformatics.stackexchange.com/questions/7458/what-is-a-quick-way-to-f
 https://www.google.com/search?q=%22samtools+depth%22+%22wgs%22&oq=%22samtools+depth%22+%22wgs%22&aqs=chrome..69i57.25710j0j4&sourceid=chrome-mobile&ie=UTF-8
 
 - samtools for depth https://www.biostars.org/p/356937/
+
+- mosdepth =--fast-mode= / =-x= skips paired-end overlap correction and internal CIGAR operations. On short-insert libraries (cfDNA ~167 bp, RRBS) with 2x150 bp reads, nearly all fragments overlap and =-x= counts both mates at overlapping positions, inflating reported depth by 70-80%. Default mode (no =-x=) corrects for overlap. When comparing mosdepth depth to per-CpG depth from MethylDackel (which always handles PE overlap), drop =-x= to get comparable numbers.
+
 **** Sequencing testing, modeling, and read simulation
 :PROPERTIES:
 :ID:       f44b9dce-d7fa-4b6a-9949-49ff3c02547c
@@ -5850,6 +5853,8 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:d40fa2c8-dc97-4434-943f-b8fe7d3d9f25][cfDNA and ctDNA preanalytic guidelines]]
 - Bioinformatics preprocessing choices (trimming, duplicate removal, mapping filters) substantially affect derived cfDNA genetic and epigenetic features and influence downstream cancer vs healthy classification from low-pass WGS; benchmarked on 20 lung cancer and 20 healthy samples [cite:@ivankovi2025]
 - WGBS alters cfDNA fragmentomic characteristics (fragment length distribution, end motifs, nucleosome positioning signals) compared to standard WGS; comprehensive evaluation of WGBS-induced technical artifacts is required when using bisulfite-converted libraries for fragmentomics analyses [cite:@li2025]]
+- With ~167 bp cfDNA inserts and 2x150 bp reads, nearly 100% of read pairs overlap. This is by design: the overlap enables read-pair consensus error correction (NGmerge, fastp), adapter readthrough detection, and fragment-level size determination. Tools that skip PE overlap correction (mosdepth =-x=) will double-count overlapping positions and inflate reported depth by 70-80%. Per-CpG callers like MethylDackel handle overlap natively.
+
 
 **** [[*cfDNA fragmentomics][cfDNA fragmentomics]]
 **** [[id:2e475e89-40a2-4359-903d-6e590f4ab8a0][cfDNA from nonterminal mouse blood draws]]
@@ -6285,7 +6290,7 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
 - Sensitive tumour detection and classification using plasma cell-free DNA methylomes: cfMeDIP-seq method [cite:@shen2018]
 - Gene-level methylation analysis of prostate cancer using ConferaDx data [cite:@giacopelli2021prostate]
 - Sensitive and specific multi-cancer detection and localization using methylation signatures in cell-free DNA (GRAIL/Galleri CCGA) [cite:@liu2020]
-- [[id:6ad7cfcb-1e8b-4d72-b18a-40f80a00f242][nih liq biopsy]] see [2021-01-26 Tue]
+- nih liq biopsy see [2021-01-26 Tue]
 - "All the cell line datasets generated during and/or analysed during the current study are available in the GEO repository under accession code GSE79838. The
 - cfMeDIP-seq NGS data for patient samples that support the findings of this study are available upon request from the corresponding author (D.D.C) to comply with
 - to add
@@ -6487,7 +6492,7 @@ https://www.nature.com/articles/s41588-018-0091-2
     - https://www.sciencedirect.com/science/article/pii/S2001037015000392
 - [[*cell enumeration through bulk RNA-seq][cell enumeration through bulk RNA-seq]]
 - https://www.rna-seqblog.com/optimization-of-mirna-seq-data-preprocessing/
-- [[id:e4351ef3-6d41-4121-a2cc-c63d89f997ac][pathway analysis]]
+- pathway analysis
 - [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
 - [[id:57E81A44-3233-479B-8264-2CD5F1904A60][Sequence variation and variant calling]]
 
@@ -9377,7 +9382,7 @@ female_tg <- ScaleData(female_tg)
 female_tg <- RunPCA(female_tg)
 #+end_src
 
-**** [[id:99ee4bd0-060e-4109-9901-29aa7fafd816][Single nucleus and single cell methods applied to heart]]
+**** Single nucleus and single cell methods applied to heart
 :PROPERTIES:
 :ID:       c6f0444d-cc0d-4ace-aa59-cc643b993b7b
 :END:
@@ -9419,7 +9424,7 @@ CLOCK: [2021-11-02 Tue 11:01]--[2021-11-02 Tue 11:26] =>  0:25
 - inputs and pre-processing
   - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02048-6
   - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1171-9
-- [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
+- single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]
 - Single cell data integration: integrative single-cell analysis [cite:@stuart2019]
 - applications
   - [[id:7bb87c84-6b06-44ef-9a1d-1bb9b9e57295][immunoprofiling]]
@@ -9546,7 +9551,7 @@ https://www.embopress.org/doi/full/10.15252/msb.20188746
   - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
     - Tumour heterogeneity and metastasis at single-cell resolution [cite:@lawson2018]
 - Integrative single-cell analysis (Seurat v3 methods) [cite:@stuart2019]
-- [[id:1acf73b6-ca1e-458c-91c1-b93f17b80a02][single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]​]]
+- single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]
 - inputs and pre-processing
   - - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02048-6
   - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-017-1171-9
@@ -10631,7 +10636,7 @@ https://www.biostars.org/p/13270/
 :CREATED:  [2021-09-13 Mon 07:29]
 :ID:       96281891-d1df-46ec-8e55-f82a0ef225cf
 :END:
-| [[id:0a319950-3215-4846-a020-a08b78f3323d][FastQC]] | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]] |   |   | [[https://www.bioinformatics.babraham.ac.uk/projects/fastqc/INSTALL.txt][site]] |   |   |
+| FastQC | [[id:1EE731A3-83DD-46AF-B988-2311307C335F][seq qc]] |   |   | [[https://www.bioinformatics.babraham.ac.uk/projects/fastqc/INSTALL.txt][site]] |   |   |
 - [[https://www.youtube.com/watch?v=bz93ReOv87Y][Intro video]]
 - Only non-truncated fastqs can be processed by fastqc.
 - Interpretation
@@ -11268,7 +11273,7 @@ https://www.bioconductor.org/packages/release/bioc/vignettes/rGREAT/inst/doc/loc
 :ID:       c0d79be1-f887-460e-9142-4d43c6632126
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
-- see [[id:a0923938-4021-44cd-a8f3-94c0eb10cdb5][table of tools]]
+- see table of tools
 - https://support.bioconductor.org/p/9140398/
 - https://www.biostars.org/p/397086/
 - https://www.scopus.com/results/citedbyresults.uri?sort=cp-f&cite=2-s2.0-85014549629&src=s&nlo=&nlr=&nls=&imp=t&sid=b3adb06908021bf68bd2e4cbb741bd78&sot=cite&sdt=a&sl=0&origin=resultslist&offset=1&txGid=8f3b391583118470ef66b945cc173d58
