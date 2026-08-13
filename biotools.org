@@ -2100,31 +2100,6 @@ https://wiki.dnanexus.com/Scientific-Notes/human-genome
 :ID:       D18360E5-0B07-4AB6-92F6-D4B717A2E159
 :END:
 
-******
-:PROPERTIES:
-:ID:       B94A8093-3229-41A6-92A6-104D03128BAE
-:END:
-
-*******
-:PROPERTIES:
-:ID:       D47888B2-1210-4C9D-B30C-81672143987A
-:END:
-
-*******
-:PROPERTIES:
-:ID:       68A22065-D788-4653-9BBC-2B5F67AD218A
-:END:
-
-*******
-:PROPERTIES:
-:ID:       687708C8-78BF-4EB9-8C48-F5456E9CF63D
-:END:
-
-*******
-:PROPERTIES:
-:ID:       B0449C36-57B8-4A2A-AE44-67C96C51706D
-:END:
-
 *** Clinical Fusion Protein Databases
 :PROPERTIES:
 :ID:       51EC0C78-7164-43CA-97B1-1FF2205B46A7
@@ -5853,7 +5828,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:d40fa2c8-dc97-4434-943f-b8fe7d3d9f25][cfDNA and ctDNA preanalytic guidelines]]
 - Bioinformatics preprocessing choices (trimming, duplicate removal, mapping filters) substantially affect derived cfDNA genetic and epigenetic features and influence downstream cancer vs healthy classification from low-pass WGS; benchmarked on 20 lung cancer and 20 healthy samples [cite:@ivankovi2025]
 - WGBS alters cfDNA fragmentomic characteristics (fragment length distribution, end motifs, nucleosome positioning signals) compared to standard WGS; comprehensive evaluation of WGBS-induced technical artifacts is required when using bisulfite-converted libraries for fragmentomics analyses [cite:@li2025]]
-- With ~167 bp cfDNA inserts and 2x150 bp reads, nearly 100% of read pairs overlap. This is by design: the overlap enables read-pair consensus error correction (NGmerge, fastp), adapter readthrough detection, and fragment-level size determination. Tools that skip PE overlap correction (mosdepth =-x=) will double-count overlapping positions and inflate reported depth by 70-80%. Per-CpG callers like MethylDackel handle overlap natively.
+- With ~167 bp cfDNA inserts and 2x150 bp reads, nearly 100% of read pairs overlap. Standard WGS and methylation pipelines do not merge overlapping reads: fragment sizes come from alignment coordinates (TLEN), methylation callers discard one read's calls in the overlap (Bismark =--no_overlap=, MethylDackel Phred adjustment), and fragmentomics tools (Griffin, fRagmentomics) ignore the overlap entirely. Freefly (Liu et al., Cell Reports Methods 2024) is an exception: it stitches PE reads via FLASH for alignment-free fragment size and end motif profiling. Tools that skip PE overlap correction in depth counting (mosdepth =-x=) will double-count overlapping positions and inflate reported depth by 70-80%.
 
 
 **** [[*cfDNA fragmentomics][cfDNA fragmentomics]]
@@ -6347,6 +6322,8 @@ https://github.com/crazyhottommy/ChIP-seq-analysis
   - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
   - [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
   - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
+  - Bisulfite treatment damages cfDNA fragment ends, producing an artificial double peak at 150 and 167 bp in mononucleosomal fragment size distributions. PE read merging (BBMerge) before alignment eliminates this artifact by reconstructing true fragment boundaries; adopted as standard for all BS-treated cfDNA samples at a ~5% net loss of usable reads. Not applicable to EM-seq (enzymatic conversion does not damage fragment ends the same way) [cite:@cheng2024]
+
 
 **** protein-DNA interactions
 :PROPERTIES:
@@ -6543,17 +6520,17 @@ https://www.pathwaycommons.org/guide/primers/data_analysis/gsea/#:~:text=The%20G
 :ID:       441F7686-9969-4F8D-8092-C4429377214C
 :END:
 
-[[file:~/Box%20Sync/comp_bio/gsea_template/][Folder]]
-[[file:~/Box%20Sync/comp_bio/gsea_template/gage.pdf][Manual]]
-[[file:~/Box%20Sync/comp_bio/gsea_template/gsea_template.R][Rscript]]
+Folder
+Manual
+Rscript
 
 ************** RNA-Seq Workflow Example
 :PROPERTIES:
 :ID:       B687F931-3A5E-4CD0-B2B7-30DF026E0AB9
 :END:
 
-[[file:~/Box%20Sync/comp_bio/gsea_template/][Folder]]
-[[file:~/Box%20Sync/comp_bio/gsea_template/RNA-seqWorkflow.pdf][pdf]]
+Folder
+pdf
 
 
 ************* Commercial
@@ -7608,7 +7585,7 @@ http://tucf.com/htseq_GenomicSeq_DataSheet.pdf
 - https://dnatech.genomecenter.ucdavis.edu/
 - [[https://www.youtube.com/watch?v=v1DbcJD4Ry0][youtube Mardis NGS]]
 - [[http://www.broadinstitute.org/scientific-community/science/platforms/genome-sequencing/broadillumina-genome-analyzer-boot-camp][Broad / Illumina Genome Analyzer Boot Camp]]
-- [[file:~/Box%20Sync/library/Mardis,08%20Next-Generation%20DNA%20%20Sequencing%20Methods.pdf][Mardis,08 Next-Generation DNA  Sequencing Methods]]
+- Mardis,08 Next-Generation DNA Sequencing Methods
 - 150924.1600Mardis talk
   - Illumina read length limit is signal to noise
   - Ion torrent difficult for indels with runs of single nucleotide
@@ -7809,7 +7786,7 @@ data analysis. PLoS One, 8, e85024.
   - associated mods
     - [[id:43331BB8-4234-48FE-B510-E92F631D5D7B][Code]]
   - compendia
-    - [[file:~/Box%20Sync/org/compend.org::*UNIX][UNIX]]
+    - UNIX
     - [[file:~/.emacs.d/settings.org::*Emacs][Emacs]]
     - git
   - [ ] information management- see [cite:@griffith2015b]
@@ -7915,7 +7892,7 @@ data analysis. PLoS One, 8, e85024.
   - [cite:@munchel2015]
   - [cite:@spencer2013]
 - Fonseca,12 Tools for mapping high throughput sequencing data(2)
-- [[file:~/Box%20Sync/scientific_technique/Cruchaga%20lab%20eQTLs.pptx][Cruchaga eQTLs]]
+- Cruchaga eQTLs
 
 ********* Post-alignment Samtools
 :PROPERTIES:
@@ -7966,7 +7943,7 @@ data analysis. PLoS One, 8, e85024.
 :ID:       4B340D6D-E38D-42E5-AD1F-3CB0BDF62545
 :END:
 
-[[file:~/Box%20Sync/library/Spencer,12%20Detection%20of%20FLT3%20ITD%20in%20short%20read%20length%20NGS.pdf][Spencer,12 Detection of FLT3 ITD in short read length NGS]]
+[[file:~/library/Spencer,12%20Detection%20of%20FLT3%20ITD%20in%20short%20read%20length%20NGS.pdf][Spencer,12 Detection of FLT3 ITD in short read length NGS]]
 
 ********* DNA Alignment
 :PROPERTIES:
@@ -9899,9 +9876,6 @@ https://daler.github.io/pybedtools/sh-comparison.html#shell-comparison
 :CREATED:  [2021-09-13 Mon 07:29]
 :function: qc
 :input: bam
-:repo:
-:doc:
-:paper:
 :END:
 - ATAC fraction of reads in peaks
 - http://biocworkshops2019.bioconductor.org.s3-website-us-east-1.amazonaws.com/page/ATACseqQCWorkshop__ATACseqQC_workshop/
@@ -9955,8 +9929,6 @@ https://bioconductor.org/packages/devel/bioc/vignettes/BiocParallel/inst/doc/Int
 :doc: https://huishenlab.github.io/biscuit/
 :paper: https://doi.org/10.1093/nar/gkae097
 :repo: https://github.com/huishenlab/biscuit
-:input:
-:function:
 :ID:       5e9e8bfa-ac9e-4103-9cc5-7123337b4e24
 :END:
 - NM tag = true mismatches only (conversion mismatches separated into ZC tag). This is critical for PDX Disambiguate workflows where alignment-score comparison between species requires accurate mismatch counts. bwa-meth does NOT correct NM after converting back from C→T space, so its NM is inflated in methylated regions.
@@ -10138,7 +10110,7 @@ https://www.biostars.org/p/497108/
 - https://genviz.org/module-04-expression/0004/02/01/DifferentialExpression/
 
 - https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf
-- [[file:~/Box%20Sync/library/Love,14%20Moderated%20estimation%20of%20fold%20change%20and%20dispersion%20for%20RNA%20seq%20data%20with%20DESeq2.pdf][Love,14 Moderated estimation of fold change and dispersion for RNA seq data with DESeq2]]
+- Love,14 Moderated estimation of fold change and dispersion for RNA seq data with DESeq2
 - http://www.nathalievilla.org/doc/html/solution-DESeq2-rnaseq.html
 
 
@@ -10166,7 +10138,7 @@ https://www.biostars.org/p/497108/
 - reset design https://support.bioconductor.org/p/9135927/
 - Subset https://www.google.com/search?q=subset+deseqdataset
   - https://www.biostars.org/p/442188/
-***** Examples- see [[file:~/Box%20Sync/comp_bio/deseq2_template/][deseq2_template]]
+***** Examples- see deseq2_template
 :PROPERTIES:
 :ID:       5C8E2A3B-2C16-4FB3-9F86-5A1D8AD4802F
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -10174,7 +10146,7 @@ https://www.biostars.org/p/497108/
 - vignettes
   - [[https://bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html#exploratory-analysis-and-visualization][gene workflow 19]]
   - [[http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#using-parallelization][package vignette]]
-****** DONE Example 1: [[file:~/Box%20Sync/comp_bio/deseq2_template/Love,15%20RNA%20seq%20workflow%20gene%20level%20exploratory%20analysis%20and%20differential%20expression.pdf][Love,15 Airway]]
+****** DONE Example 1: Love,15 Airway
 CLOSED: [2016-06-27 Mon 14:45]
 :PROPERTIES:
 :ID:       791A1ABC-4138-4CD2-82AE-63905C053571
@@ -10189,7 +10161,7 @@ CLOCK: [2016-06-22 Wed 12:09]--[2016-06-22 Wed 12:57] =>  0:48
 CLOCK: [2016-06-22 Wed 11:40]--[2016-06-22 Wed 11:46] =>  0:06
 :END:
 
-****** DONE Example 2: [[file:~/Box%20Sync/comp_bio/deseq2_template/https___software.rc.fas.harvard.edu_ngsdata_workshops_2015_March_DESeq2_fruitfly.pdf][Drosophila]]
+****** DONE Example 2: Drosophila
 CLOSED: [2016-06-27 Mon 14:45]
 :PROPERTIES:
 :ID:       CC047BA0-35A3-420B-BB60-CA1AA7AE275B
@@ -10207,7 +10179,7 @@ CLOSED: [2016-06-28 Tue 13:48]
 
 http://www.gettinggeneticsdone.com/2015/12/tutorial-rna-seq-differential.html
 
-****** Example 4 [[file:~/Box%20Sync/comp_bio/Love,16%20Differential%20analysis%20of%20RNA%20seq%20data%20using%20the%20DESeq2%20package.pdf][Love,16 Differential analysis of RNA seq data the DESeq2 package]]
+****** Example 4 Love,16 Differential analysis of RNA seq data the DESeq2 package
 :PROPERTIES:
 :ID:       61BDAC0E-3F02-482A-868E-93AC26B33361
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -10570,13 +10542,13 @@ results function maximizes p values less than * over quantiles of mean normalize
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-[[file:~/Box%20Sync/comp_bio/Love,14%20Beginners%20guide%20to%20using%20the%20DESeq2%20package.pdf][Love,14 Beginners guide to using the DESeq2 package]]
-[[file:~/Box%20Sync/comp_bio/Love,15%20DESeq2%20User%20Guide.pdf][User Guide]]
+Love,14 Beginners guide to using the DESeq2 package
+User Guide
 [[https://support.bioconductor.org/local/search/page/?q=deseq2][Bioconductor Support]]
-[[file:~/Box%20Sync/library/Love,16%20DESeq2%20manual.pdf][Manual]]
+[[file:~/library/Love,16%20DESeq2%20manual.pdf][Manual]]
 A negative binomial GLM
 [[https://www.youtube.com/results?search_query=deseq2&page=&utm_source=opensearch][Youtube]]
-[[file:~/Box%20Sync/library/Love,14%20Moderated%20estimation%20of%20fold%20change%20and%20dispersion%20for%20RNA%20seq%20data%20with%20DESeq2.pdf][Love,14 Moderated estimation of fold change and dispersion for RNA seq data with DESeq2]]
+Love,14 Moderated estimation of fold change and dispersion for RNA seq data with DESeq2
 [[ftp://ftp.jax.org/dgatti/ShortCourse2015/tutorials/Differential-Expression.html][Workflow example]]
 [[http://www.sthda.com/english/wiki/rna-seq-differential-expression-work-flow-using-deseq2][Another workflow example]]
 [[https://dwheelerau.com/2014/02/17/how-to-use-deseq2-to-analyse-rnaseq-data/][And another workflow example]]
@@ -10597,11 +10569,11 @@ https://bioconductor.org/packages/release/bioc/vignettes/DRIMSeq/inst/doc/DRIMSe
 https://academic.oup.com/nar/article/40/10/4288/2411520?login=true
 - GLM asking whether exons are used proportionally across experiment conditions
 - DEXSeq is an extension to exons
-- [[file:~/Box%20Sync/comp_bio/RNA-seq/Rueda,15%20Differential%20expression%20analysis%20using%20edgeR.pdf][Rueda,15 Differential expression analysis using edgeR]]
-- [[file:~/Box%20Sync/comp_bio/RNA-seq/edgeRUsersGuide.pdf][User Guide]]
-- [[file:~/Box%20Sync/comp_bio/RNA-seq/edgeR_manual.pdf][Manual]]
+- Rueda,15 Differential expression analysis using edgeR
+- User Guide
+- Manual
 - [cite:@robinson2010]
-- [[file:~/Box%20Sync/library/Robinson,09%20edgeR%20a%20Bioconductor%20package%20for%20differential%20expression%20analysis%20of%20digitial%20gene%20expression%20data.pdf][Robinson,09 edgeR a Bioconductor package for differential expression analysis of digitial gene expression data]]
+- Robinson,09 edgeR a Bioconductor package for differential expression analysis of digitial gene expression data
 
 
 **** epicseq                                                       :biotools:
@@ -10964,12 +10936,12 @@ https://genome.ucsc.edu/cgi-bin/hgLiftOver
 :paper:  | count   |      |          | [[https://dx.doi.org/10.1093%2Fnar%2Fgkv007][paper]] |                        |
 :END:
 - https://www.coursera.org/lecture/bioconductor/limma-aoNwW
-- [[file:~/Box%20Sync/comp_bio/RNA-seq/Ritchie,15%20limma%20powers%20differential%20expression%20analysis%20for%20RNA%20sequencing%20and%20microarray%20results.pdf][Ritchie,15 limma powers differential expression analysis for RNA sequencing and microarray results]]
+- Ritchie,15 limma powers differential expression analysis for RNA sequencing and microarray results
 - raw counts transformed to continuous values w/ confidence weight
-- [[file:~/Box%20Sync/comp_bio/RNA-seq/limma%20Manual.pdf][manual]]
-- Math, concept- [[file:~/Box%20Sync/comp_bio/RNA-seq/Law,14%20voom%20precision%20weights%20unlock%20linear%20model%20analysis%20tools%20for%20RNA%20seq.pdf][Law,14 voom precision weights unlock linear model analysis tools for RNA seq]]
+- manual
+- Math, concept- Law,14 voom precision weights unlock linear model analysis tools for RNA seq
 - voom transformation- from counts to log-counts per million w/ associated weight (just think of it as if microarray data)
-***** [[file:~/Box%20Sync/comp_bio/RNA-seq/limma%20User%20Guide.pdf][User Guide]]
+***** User Guide
 :PROPERTIES:
 :ID:       15C1AE68-19D2-4FBD-B51E-DA37C605F0D7
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -10982,13 +10954,13 @@ https://genome.ucsc.edu/cgi-bin/hgLiftOver
     - design- which RNA to which sample (i.e. specify groups)
     - contrast- which group comparions to make
 
-***** [[file:~/Box%20Sync/comp_bio/limma_voom_template/][Examples and Template]]
+***** Examples and Template
 :PROPERTIES:
 :ID:       D1B28C0A-9AAD-4245-BE85-61300CE4A02B
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-****** WEHI example ([[file:~/Box%20Sync/comp_bio/RNA-seq/wehi_limma_example/wehi_limma_example.Rproj][Rproject]], [[file:~/Box%20Sync/comp_bio/RNA-seq/wehi_limma_example/wehi_limma_example.R][Rscript]]), [[http://bioinf.wehi.edu.au/RNAseqCaseStudy/][link]]
+****** WEHI example (Rproject, Rscript), [[http://bioinf.wehi.edu.au/RNAseqCaseStudy/][link]]
 :PROPERTIES:
 :ID:       1E96E985-8BD2-4D8F-AC88-FB509B99F513
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -11005,7 +10977,7 @@ CLOCK: [2016-05-09 Mon 12:25]--[2016-05-09 Mon 13:13] =>  0:48
 :CREATED:  [2021-09-13 Mon 07:29]
 :END:
 
-******* 18.1 [[file:~/Box%20Sync/comp_bio/limma_voom_template/yoruba_hapmap/][Profiles of Yoruba HapMap]]
+******* 18.1 Profiles of Yoruba HapMap
 :PROPERTIES:
 :ID:       1E8CAB25-19C2-4745-B157-FA46D84549CD
 :CREATED:  [2021-09-13 Mon 07:29]
@@ -13707,7 +13679,6 @@ for title in titles:
     print(f"Title: {title}\nPMID: {pmid}\n")
 #+end_src
 https://nf-co.re/sarek/3.5.0/
-***
 *** CellDesigner
 #+begin_src bash
 chmod +x CellDesigner-4.4.2-linux-x64-installer.run
