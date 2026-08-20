@@ -4751,6 +4751,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - [[id:60e22b92-202e-40ec-9ad4-ca9e8f16d23c][somatic copy number alteration (SCNA)]]
 - [[id:0b43e09e-52f7-49fb-8796-87168fe57706][cfDNA small variant calling]]
 - [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]]
+- [[id:e131276d-ecf7-4a2f-b115-79c65cf0543d][Differentiation from DIAMOND, the closest prior art (2026-08-13)]]
 **** cfDNA fragment end motif analysis
 :PROPERTIES:
 :ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
@@ -4792,6 +4793,8 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
   - [[https://ega-archive.org/studies/EGAS00001003611][peneder data (restricted)]]
 - CES (ctDNA estimation score) integrates fragment size and CNV structure: =(Σ|Z_seg × l_seg|) / N_seg × SLR=, where Z_seg is segment-level z-score from size-selected (50-150 bp) ichorCNA, l_seg is bin count per segment, N_seg is total segments, SLR is short-to-long ratio (100-150 bp / 151-250 bp) from cfdnakit; benchmarked at AUC 0.94 vs ichorCNA 0.61 and S/L 0.77 on pediatric RMS, though against the unselected ichorCNA configuration [cite:@schad2026rhabdo]
 - Fragmentia-AI, an LLM-based classifier operating directly on BPE-tokenized cfDNA sequences, statistically outperformed six established fragmentomic methods (DELFI, Griffin, FRAGMA, FDI, nucleosome, subnucleosome features) in head-to-head ULP-WGS benchmarking (AUC 0.9561 vs next-best DELFI 0.935 via XGBoost, p=0.014), demonstrating that learned sequence-level representations capture non-linear fragment interactions that predefined feature bins discard [cite:@xu2026fragmentia]
+- TE-specific fragmentomic features (relative sequencing depth, E-index, fragment size, CCCA end-motif across 16 TE families) achieved pan-cancer detection AUC 0.96 with only 80 features vs 500-1,280 for DELFI/ARTEMIS-DELFI, and tissue-of-origin prediction (n=7 cancer types) [cite:@gong2026teana]
+- Repetitive-element-specific cfDNA fragmentomics (fragment ratio, length, distribution, complexity, expansion across Alu, STR, and other repeat classes) from ultra-low-pass WGS (0.1x) achieved cancer detection AUC 0.9824 and tissue-of-origin accuracy 0.8286 (n=144, 5 cancer types); Alu and STR were the dominant informative repeat classes [cite:@zhang2025repeatfrag]
 - [[id:47952c81-a288-4a29-9a5d-83b7aea86476][MPNST]]
 - [[id:6c436429-c4a9-423d-a7c4-9e5d3d63d574][Liquid biopsy surveillance in cancer predisposition syndromes]]
 - [[id:f53991ba-f4fb-47b9-b33c-2b935619b0e6][cfDNA size distribution]]
@@ -5479,6 +5482,7 @@ https://singularity.lbl.gov/install-linux
 CLOCK: [2021-06-05 Sat 09:36]--[2021-06-05 Sat 09:39] =>  0:03
 :END:
 https://www.reddit.com/r/bioinformatics/comments/12ddk5r/what_genomics_plot_types_are_appealing_to_wet/
+- Sequence logo vs base composition plot: a sequence logo (information content on the y-axis) weights each position by Shannon entropy, so tall letters indicate conservation above background. A stacked-bar plot where four bases sum to 1.0 at every position is a base-composition plot, not a logo, regardless of axis label. Mislabeling composition as information content overstates the signal. When reviewing: check whether the y-axis reaches 2 bits (logo) or 1.0 (composition), and verify that the panel labels identify which sample set each panel represents. See [[id:de9c6398-4ffe-48bf-9ef9-31028edf9873][cfDNA fragment end motif analysis]] for a field where this error recurs
 - [[id:c0359d9c-246a-41fb-a9b4-05ea5cb546ab][Biomarker visualizations]]
 - Nice cross-method serial sample vignette from [cite:@schad2026rhabdo]
   [[file:resources/media/schad2026rhabdo-fig6.png]]
@@ -5680,7 +5684,19 @@ https://www.nature.com/articles/s41467-023-38407-7
 - [[id:6df3a31f-966a-4a95-a6b4-9431849956dd][Histone modifications]] (science.org)
 - Applied: [[id:AFCC6051-54D6-400F-B99E-AEC088F974DB][Planned cfChIP-seq Integration (breast)]]
 **** Retrotransposons in cfDNA
+:PROPERTIES:
+:ID:       09d3c557-7aed-475a-8820-4c4c81b70ef2
+:END:
 - Noninvasive multicancer detection using DNA hypomethylation of LINE-1 retrotransposons in cfDNA [cite:@michel2024line1]
+- The DIAMOND assay is reference-free (reads clustered into representative sequences per primer set, no genome mapping) and classifies on per-molecule methylation haplotype proportions, which outperformed single-CpG means; healthy-vs-cancer AUC 88-100% across six cancer types in two cohorts (N=747), plus arm-level CNA z-scores from the same reads fused at the decision level [cite:@michel2024line1]
+- [[id:e131276d-ecf7-4a2f-b115-79c65cf0543d][Differentiation from DIAMOND, the closest prior art (2026-08-13)]]
+- TEANA: cfDNA fragmentomic features (depth, size, end-motif) computed per TE family outperform genome-wide metrics for cancer detection (AUC 0.96, 80 features, stage I/II 0.92/0.96); on the same EM-seq cohort, per-TE-family mean methylation outperformed genome-wide methylation for diagnosis in most cancers (DeLong p<0.05 in stomach); 16 TE families, hg38 [cite:@gong2026teana]
+- Genome-scale retrotransposon methylation profiling (LTR, LINE-1, Alu from EPIC array) in 200 HGSOC tumors from Black women identified two RE methylation clusters: a hypomethylated "Active" cluster and a hypermethylated "Repressed" cluster; the Repressed cluster was associated with worse survival (HR 2.41, 95% CI 1.04-5.59) and lower T-cell infiltration [cite:@colinleitzinger2025retrotransposon]
+- Repeat-aware profiling of cell-free RNA (COMPLETE-seq, nanopore) found TE-derived transcripts enriched in cancer plasma; pancreatic cancer was characterized by specific Alu subfamily cfRNAs, and repeat-aware classification outperformed gene-only classifiers across liver, lung, esophageal, colorectal, and stomach cancers [cite:@reggiardo2023repeatrna]
+- Targeted amplicon sequencing of HSAT2 repeat sequences in plasma cfDNA revealed differential copy-number gains and losses across specific HSAT2 variants in breast cancer patients vs healthy controls (n=10 vs 10); cfDNA fragmentation caused loss of longer (>180 bp) amplicons, complicating CNV interpretation [cite:@gezer2024hsat2]
+- HSAT2 hybridization capture from plasma cfDNA showed the 114bp-to-95bp HSAT2 ratio was lower in colon cancer patients (median 62) than polyp controls (78, p=0.23) and polyp-free controls (79, p=0.067); the 95bp chr10-derived variant showed greater cancer enrichment than the parental 114bp sequence (n=60 per group) [cite:@yoruker2026hsat2]
+- Three-step fusion of mutation (MaxVAF from 571-gene panel), L1PA methylation (DIAMOND MethPCancer), and genome-wide CNV lifted baseline ctDNA detection from 62.5% to 93.8% in 32 advanced pan-cancer patients (SHIVA02 trial); L1PA methylation changes preceded radiologic progression by approximately 4 months (preprint) [cite:@nedara2026shiva]
+- LINE-1 ORF1p protein detected in plasma at mid-attomolar concentrations by Simoa/MOSAIC single-molecule immunoassay, undetectable in >99% of >400 controls; showed early-detection promise for ovarian cancer, therapeutic response monitoring in gastroesophageal cancers, and prognostic value for overall survival in gastroesophageal and colorectal cancers [cite:@taylor2023orf1p]
 
 **** cfDNA methylation
 :PROPERTIES:
@@ -5726,6 +5742,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 
 - TAPS-seq: enzymatic (non-bisulfite) deamination preserves DNA integrity for long-read amplicon sequencing of 5mC and 5hmC at single-base resolution, overcoming bisulfite-induced fragmentation that destroys long-range methylation haplotype information [cite:@sun2021tapsseq]
 - cfMeDIP-seq: low-input (1-10 ng) bisulfite-free immunoprecipitation-based methylome profiling of plasma cfDNA, applicable to urine, CSF, and other low-input sources beyond cancer detection [cite:@shen2019cfmedip] (protocol used in [cite:@shen2018])
+- LABS (linear amplification-based bisulfite sequencing) enables genome-wide 5mC profiling from sub-nanogram cfDNA input (down to 10 pg), preserving underrepresented tumor DNA fragments lost during exponential amplification; applied to 100 cfDNA samples (50 CRC, 16 PDAC, 34 healthy) with cancer-specific methylation patterns, CNA, and tissue-of-origin identification [cite:@cui2024labs]
 - Simultaneous sequencing of genetic and epigenetic bases in DNA (6-letter sequencing: A, C, G, T, 5mC, 5hmC) enabling joint genotype-methylation profiling from a single library [cite:@fullgrabe2023six]
 ***** Tissue deconvolution
 :PROPERTIES:
@@ -5763,6 +5780,8 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - Review of liquid biopsy approaches (CTCs, ctDNA, EVs) for early cancer detection including methylation-based methods [cite:@heitzer2017]
 - Noninvasive cfDNA methylation test accurately diagnosed pulmonary nodules as malignant vs benign, reducing unnecessary invasive procedures [cite:@liang2021nodule]
 - Epigenetic instability index (EII): metric over 269 cancer-specific CpG island regions (discovered across n=2,084 methylation datasets) quantifying stochastic methylation variation rather than absolute methylation level; ML classifiers on cfDNA detected stage IA lung adenocarcinoma at ~81% sensitivity and early-stage breast cancer at ~68% sensitivity, both at 95% specificity, outperforming absolute-methylation approaches [cite:@thursby2026eii]
+- iMethyl: targeted bisulfite sequencing of 10 young LINE-1 probes (~2,000 genomic loci, >400k reads/sample) in cfDNA predicted ICB response in lung (n=167 cfDNA), breast (n=91 cfDNA), and ovarian cancer (n=74 tissue), outperforming TMB, neoantigen load, and PD-L1 expression [cite:@kim2023hypometh]
+- Hypomethylation at TE promoters in cfDNA discriminated ovarian malignancy from benign adnexal masses (AUC 0.970, accuracy 0.936 from top 25 differentially methylated TE promoters by LABS-seq 5mC; AUC 0.854 plasma / 0.893 serum from top 38 differentially hydroxymethylated TEs by 5hmC-Seal; n=522, preprint) [cite:@weigert2026ovarian]
 - [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
 - [[id:304d4d4f-8f24-49f1-8718-9490ae40c335][Multi-cancer early detection]]
 - [[id:4aedf4d5-04e3-46e4-8156-a2e5b601c9e6][DNA methylation in cancer]]
@@ -6186,6 +6205,7 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 - [cite:@an2023] uses EM-seq to show that hypo-methylated fragments are shorte
 - cfNOMe demonstrates that enzymatic cytosine conversion (as in EM-seq) preserves cfDNA fragmentation patterns better than bisulfite conversion, making EM-seq-based libraries suitable for simultaneous nucleosome occupancy and methylation profiling [cite:@erger2020]
 - EM-seq exhibits a reproducible fragment-level over-conversion error: conditional on one unmethylated CpG, the probability the adjacent CpG is also unmethylated is 72.5% (vs 2% in WGBS), producing fully unmethylated molecules that are indistinguishable from genuine unmethylated cfDNA fragments and impose a ~2.5% false-positive floor on deconvolution regardless of CpG count per marker [cite:@loyfer2026emseqerror]
+- Excess DNA input (500 ng-2 ug, the standard protocol amount) into bisulfite conversion produces artifactual LINE-1 and Alu HYPOmethylation; reducing input to 0.5 ng revealed LINE-1 and Alu HYPERmethylation in 407 breast/colon/lung tumors (P<0.001 vs paired normal) and in 296 lung cancer cfDNA samples (P<0.0001 vs 477 controls), reversing the canonical direction [cite:@tran2024bisulfiteinput]
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
 - [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
@@ -6969,6 +6989,7 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666684/
 :ID:       33c6b066-5d16-4d58-9284-2f265128cba1
 :END:
 https://www.reddit.com/r/bioinformatics/comments/1nychxo/anyone_recommend_tutorials_on_fine_tuning/
+- Training label bias from variant class restriction: when somatic variants define positive-label fragments in a supervised cfDNA classifier, the classes of variant admitted as anchors (SNVs only vs. including indels, SVs, CNAs) determine the sequence-context composition of the training set. Restricting anchors to point mutations enriches the positive set for trinucleotide contexts in which substitutions arise (e.g., CpG transitions), introducing a confound for models that claim to learn intrinsic fragmentomic sequence patterns rather than mutation-context signatures. Specify callers, versions, variant classes admitted with counts, and how indels and coordinate-ambiguous variants were handled
 - Fragmentia-AI applies DNABERT-2 with byte-pair encoding tokenization to cfDNA fragment sequences (including 6 bp flanking genomic context), fine-tuned via LoRA; attention-based MIL pooling over 128,000 fragments per sample enables cancer classification from ~0.1-1% of conventional sequencing depth, achieving AUC 0.885 across 17 cancer types on 0.1x ULP-WGS (n=3,249) and AUC 0.978 on targeted panel (n=184), outperforming DELFI, Griffin, FRAGMA, FDI, nucleosome, and subnucleosome feature sets in head-to-head benchmarking (AUC 0.9561 vs next-best 0.935, p=0.014) [cite:@xu2026fragmentia]
 - Stochastic pool sampling (SPS), randomly drawing K fragments (K<<N) per sample per epoch, is critical for preventing overfitting in MIL-based cfDNA classifiers; without SPS, validation AUC collapses to ~0.5 within 1,000 epochs despite decreasing training loss, while SPS-trained models sustain AUC >0.95 over 5,000 epochs [cite:@xu2026fragmentia]
 - DNABERT-2 replaces k-mer tokenization with byte-pair encoding (BPE) for genome foundation models, achieving comparable performance to state-of-the-art with 21x fewer parameters and 92x less GPU pre-training time; introduces the Genome Understanding Evaluation (GUE) benchmark spanning 36 datasets across 9 tasks with input lengths 70-10,000 bp [cite:@zhou2023dnabert2]
@@ -8390,6 +8411,16 @@ Long-read single-molecule platforms (Oxford Nanopore, PacBio HiFi) call DNA meth
 - Related: [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]] — cell-type deconvolution, the review's cell-type-diversity task.
 - Computational analysis of long-read methylation spans four task categories: calling methylation signals from raw read data, contrasting methylation between samples, analysing cell-type diversity, and extracting additional genomic insights; tool landscape and future challenges reviewed in [cite:@fu2025longread].
 - Long-read data simultaneously measure epigenetic state (e.g. 5mC) and genomic variation on the same single molecule, avoiding the bisulfite-conversion step required by short-read methods [cite:@fu2025longread].
+**** Beta vs M-value methylation metrics
+:PROPERTIES:
+:ID:       cffef7a0-1ba8-4bfe-a314-ec4bfed799f1
+:END:
+- Beta = n_meth/n_total: the fraction of molecules methylated at a CpG or region. Bounded [0,1]; directly interpretable as percent methylation.
+- M-value = log2(beta/(1-beta)), the log odds. Unbounded; stretches the compressed ends of the beta scale.
+- Beta is heteroscedastic because the bounds compress differences and variance near 0 and 1: a site at beta 0.97 has 0.03 of room, so equal fold-change effects yield shrinking delta-beta near the boundaries, and SD of beta is proportional to beta(1-beta) (delta method) - maximal at 0.5, collapsing at the ends. M is approximately variance-stable, matching the constant-variance assumption of t-tests and linear models [cite:@du2010mvalue].
+- Beta stays in use for three reasons: (1) interpretability - delta-beta is an absolute effect size (percent of molecules), and a difference can be significant on M yet biologically trivial in beta; (2) boundary behavior on count data - finite coverage produces beta = 0 or 1, where M is infinite, forcing pseudo-counts, and M amplifies sampling noise at low coverage; (3) mixture linearity - an observed level in a mixed sample is the coverage-weighted mean of component betas (beta_obs = f*beta_tumor + (1-f)*beta_background), with no such linearity on the log-odds scale, so deconvolution and tumor-fraction arithmetic operate in beta space.
+- Standard division of labor: test on M, report/filter/threshold on beta [cite:@du2010mvalue].
+- No monotone transform of a mean recovers within-population heterogeneity the mean discarded: identical mean beta is compatible with homogeneous half-methylated molecules or a bimodal mix of fully-methylated and fully-unmethylated molecules; only molecule-level features (fully-unmethylated fraction, MHL) separate these.
 *** Online GUIs
 :PROPERTIES:
 :ID:       f7064e3f-6d40-4fb2-b8cd-1c8c519bd7f8
