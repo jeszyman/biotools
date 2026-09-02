@@ -4700,6 +4700,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - Applied: [[id:f5de3355-81c7-453f-a164-b352eabc6a15][MRD-EDGE^CNV pipeline]] (career)
 - Applied: [[id:8df909f1-7edd-442c-9a8d-f1cddd856a05][Build CNA detection module]] (career)
 - Biopipe: [[https://github.com/jeszyman/cfdna-cna][cfdna-cna]] (v3 branch) — ichorCNA + Fragle, configurable {library} x {window} x {pon} x {preset} matrix. Consolidates old cfdna-cna and cfdna repos. Uses [[https://github.com/jeszyman/ichorCNA-patched][ichorCNA-patched]] (=--libdir= mode, pre-computed seqinfo).
+- [[id:a17e00b2-d503-4dd0-90bd-8854a47a23ee][Pediatric brain tumors]]
 - Fragle: DL-based ctDNA quantification from fragment length profiles ([[https://github.com/skandlab/FRAGLE][GitHub]]). 16 FC layers + SVM selector. AUC 0.96 vs ichorCNA 0.85. Works at 0.05x depth (~50s runtime, 20MB memory). Trained on 8 cancer types + healthy controls.
 - Phase 2 tools: [[https://github.com/CenterForMedicalGeneticsGhent/WisecondorX][WisecondorX]] (Z-score CNA), [[https://github.com/lottaer/BayesCNA][BayesCNA]] (Bayesian changepoint for low-purity)
 - cfDNA SCNA patterns serve as prognostic biomarkers and predict tumor PRC2/H3K27me3 status in MPNST [cite:@cortes-ciriano2023]
@@ -4773,6 +4774,10 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - Fragmentia-AI's transformer attention independently prioritizes the 5' terminal 3 tokens (~12 nt) of cfDNA fragments, confirming that end-motif positions carry cancer-discriminant signal without explicit feature engineering; DREME analysis of the top 1% cancer-predictive fragments identified distinct upstream (GTGARCY, GATCVCGC, GAGGCDGA, CCRGCTA, AGVTTGCA, DANTA) and downstream (CCCRGCTA, ATGCTTGC, GTCGCCMA, CACATAGA, GCTATCGA, AGCTWCCC) sequence motifs enriched in ctDNA-like fragments [cite:@xu2026fragmentia]
 - iLLMAC (instruction-tuned LLM for assessment of cancer) applies instruction-tuned large language models to cfDNA end-motif profiles for cancer detection; AUROC 0.912 for cancer diagnosis and 0.938 for HCC detection with 64 end-motifs on external validation (n=1135 cancer, 1106 controls across 3 datasets), outperforming benchmarked methods; performance scales with number of motifs (16 to 64) [cite:@liu2024illmac]
 - EMIT (end-motif inspection via transformer) uses self-supervised learning to model rankings of cfDNA end-motifs, producing cancer-discriminative representations via linear projection; AUROC 0.895-0.996 across 6 datasets spanning WGS, WGBS, and 5hmC sequencing (n=4606), and 0.962 for lung cancer on independent WES validation [cite:@shen2024emit]
+- End-motif tetramer z-scores in VTE, SLE, DM, and SSc plasma highly correlated with high-TF cancer (R=0.88 VTE, 0.76 DM, 0.72 SSc, 0.475 SLE; all P<0.00001); MDS significantly elevated in all four conditions, indicating that inflammatory/vascular-derived cfDNA carries similar end-motif biases as tumor-derived fragments [cite:@curtis2025fragsig]
+- [[id:47afb80f-7112-4c4b-aa19-3ec4d747f21f][Disease and clinical contexts]]
+- [[id:304d4d4f-8f24-49f1-8718-9490ae40c335][Multi-cancer early detection]]
+- [[id:9c039277-94b1-46cf-81f2-dcedfd63e576][cfDNA fragment length-based methods]]
 - [[id:43498606-b9bb-4ab5-b90a-08acb8698ca6][cfDNA biology]]
 - [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucleosome structure]]
 - [[id:33c6b066-5d16-4d58-9284-2f265128cba1][Genomics language models]]
@@ -4853,6 +4858,11 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - cfDNA fragment size fraction correlates with FDG-PET/CT-derived metabolic tumor volume and total lesion glycolysis in NSCLC, supporting fragmentomics as a "liquid PET" bioactivity readout [cite:@gonzlezdealedocastillo2021]
 - Nucleosome footprinting in plasma cfDNA correlates with neoadjuvant chemotherapy response for breast cancer [cite:@ulz2021breast]
 - Germline TP53 mutation carriers without active cancer show cancer-like cfDNA fragmentation patterns, suggesting constitutional chromatin alterations from p53 loss affect nucleosome positioning and cfDNA fragment profiles prior to malignant transformation [cite:@wong2024lfs]
+- VTE, SLE, dermatomyositis, and scleroderma patients show cancer-resembling cfDNA fragmentation signatures (iwFAF, FLR, end-motif z-scores all significantly elevated vs controls); signatures correlate with inflammatory markers in blood, suggesting a shared inflammatory mechanism rather than occult malignancy (n=882 across 7 groups) [cite:@curtis2025fragsig]
+- [[id:304d4d4f-8f24-49f1-8718-9490ae40c335][Multi-cancer early detection]]
+- [[id:de9c6398-4ffe-48bf-9ef9-31028edf9873][cfDNA fragment end motif analysis]]
+- [[id:368e3f72-f8d3-475c-ad84-782993f8a6f6][Early cancer detection in Li-Fraumeni with cfDNA]]
+- [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 **** cfDNA from patient derived xenograft (PDX) models
 :PROPERTIES:
 :ID:       2e475e89-40a2-4359-903d-6e590f4ab8a0
@@ -4909,6 +4919,8 @@ For EM-seq/bisulfite data, Xengsort (k-mer classification) is not applicable bec
 :ID:       8e0aa543-7033-478b-b66c-bea395db35c8
 :END:
 https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
+- MS-ddPCR for ESR1 promoter methylation (promA, promB): feasibility demonstrated in cfDNA from HR+/HER2- MBC (n=49); dynamic change (≥2-fold rise at 3 months) prognostic while baseline values were not [cite:@gerratana2020esr1meth]
+- qMSP for ESR1 methylation in cfDNA: age-related leukocyte ESR1 methylation confounds tumor-specific signal; not correlated with ctDNA VAF; feasible but not clinically predictive at baseline [cite:@bos2022esr1meth]
 **** cfDNA nucleosome profiling
 :PROPERTIES:
 :ID:       c4dde8d6-1a02-42c7-a6b6-786b757fcad1
@@ -5704,6 +5716,7 @@ https://www.nature.com/articles/s41467-023-38407-7
 :END:
 - [[id:2914d2ac-27c0-49b4-9632-9cadd0629b63][Repeat element]]
 - Applied: [[id:a41f63f9-a728-410e-861d-2d05a49fee23][Build methylation pipeline]] (career)
+- M-PACT: deep neural network for CNS tumor classification from subnanogram-input cfDNA methylomes (CSF); 92% benchmarking / 88% validation accuracy across embryonal and nonembryonal tumors; same workflow enables methylation-based cellular deconvolution and copy number variation detection [cite:@smith2026mpact]
 - Review of the methylome and cfDNA with current applications in medicine and pediatric disease [cite:@spector2023methylome]
 - Cell-type-specific methylation atlases enable cfDNA-based detection of radiation-induced tissue damage with dose-dependent increases in tissue-specific cfDNA fragments after thoracic irradiation [cite:@barefoot2022rads]
 - FinaleMe: non-homogeneous HMM predicts per-CpG methylation status of individual cfDNA fragments from WGS alone (no bisulfite), using fragment length, normalized coverage, and CpG distance-to-fragment-center; auROC 0.91 in CpG-rich regions (≥5 CpGs/fragment), validated on paired deep WGS+WGBS [cite:@liu2024finalme]
@@ -5721,6 +5734,8 @@ https://www.nature.com/articles/s41467-023-38407-7
 - [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]]
+- [[id:a17e00b2-d503-4dd0-90bd-8854a47a23ee][Pediatric brain tumors]]
+- [[id:f2ce37ed-ba4b-463d-a43f-92d02d13c92b][Pediatric solid tumor liquid biopsy]]
 ***** Assay platforms
 :PROPERTIES:
 :ID:       0c5359ff-bbd8-4104-a14a-cb0caaea6af4
@@ -5792,6 +5807,10 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - End-repair during double-stranded library preparation artificially reduces inferred CpG methylation globally in cfDNA sequencing data, degrading tissue-of-origin deconvolution accuracy; single-stranded libraries circumvent this artifact [cite:@groth2026]
 - WGBS bisulfite conversion introduces technical alterations to cfDNA fragment length distribution, end motifs, and nucleosome positioning signals; fragmentomic features derived from WGBS libraries require correction or separate benchmarking against standard WGS [cite:@li2025]
 - EM-seq fragment-level over-conversion produces fully unmethylated molecules at constitutively methylated loci, creating false-positive background in deconvolution that does not decay with multi-CpG marker depth — unlike WGBS/ONT where per-CpG errors are independent and exponentially suppressed by marker CpG count [cite:@loyfer2026emseqerror]
+- EM-seq incomplete (under-)conversion runs ~0.5-2% residual unconverted C in practice: NEB spec is lambda ≤0.5% (200 ng input) to ≤1% (0.1 ng) [cite:@emseq2023manual]; properly sheared cell-line gDNA gives CHG/CHH <0.6% [cite:@vaisvila2021]; real-world plasma cfDNA EM-seq measured 98.4% conversion vs >99.5% for bisulfite comparators run on the same samples [cite:@ezegbogu2026emseqcfdna]; conversion degrades and loses reproducibility below ~5-10 ng input [cite:@simons2025qbico]
+- EM-seq under-conversion concentrates in molecules that escape conversion entirely (incomplete denaturation, all-or-none per read): filtering reads with >5 unconverted non-CpG C cut background from 2% to 0.4% [cite:@dai2025umbs]; NEB's [[https://www.neb.com/en-us/tools-and-resources/troubleshooting-guides/em-seq-troubleshooting-guide][troubleshooting guide]] attributes lambda methylation >1% to under-fragmented/too-long DNA that fails to denature and to renaturation before the APOBEC step
+- Spike-in-free under-conversion diagnostics from raw reads: residual non-CpG %C estimates the failure rate; its dinucleotide context split separates chemistry from biology (conversion failure is context-uniform; genuine mCH is CpA-skewed); a per-read residual-C histogram detects the all-or-none mode
+- No publication found (2026-08) that directly tabulates EM-seq conversion for tissue gDNA vs cfDNA side by side; the mechanism (fragmentation/denaturation) predicts sheared high-input gDNA converts worse than short cfDNA fragments, observed as tissue 1.8-2.4% vs cfDNA 0.4-0.7% residual CpH C in [[id:283ad769-343d-4e3a-8e2a-ea7140dad44b][repeat-meth ovarian tissue conversion QC]]
 - [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
 - [[id:8ffda4e0-8a03-4fa3-aa0d-56c2e6a1dca4][Bisulfite sequencing]]
 - [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
@@ -5919,6 +5938,7 @@ Consolidated into [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucle
 - [[id:a4367838-b0f6-4dd5-b4e1-9bddf33642fa][Oligometastasis]]
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:ca856ab1-dee0-4986-9530-604541773aa1][MRD]]
+- [[id:527f1037-c7c5-4024-943d-1068af6ddbd8][cfDNA and ctDNA on-treatment dynamics]]
 **** WGS cfDNA methods
 :PROPERTIES:
 :ID:       67251de4-3c85-4ba5-b5e5-6efefcd8961d
