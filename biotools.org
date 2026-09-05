@@ -5003,6 +5003,9 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 :PROPERTIES:
 :ID:       47c4ed56-1dea-48dc-bb25-ddbb0a4cd359
 :END:
+- [[id:4aedf4d5-04e3-46e4-8156-a2e5b601c9e6][DNA methylation in cancer]]
+- [[id:dfdcad09-8447-4096-b139-b0b5bf56cad5][5hmC biomarkers]]
+- [[id:2b1d109f-24b3-4022-a0c9-bd1f30549a1f][Tissue-atlas novelty sweep and WGMS input-data inventory]]
 - TAPS methylation deconvolution of platelet DNA (pDNA) showed similar cell-of-origin composition to cfDNA, with majority from blood leukocytes and minor hepatocyte contribution; l-pDNA (>600 bp fragments) had higher megakaryocyte-specific locus mapping (35.9% vs 16.8% for s-pDNA), suggesting longer platelet DNA fragments are enriched for megakaryocyte-derived material [cite:@murphy2025]
 - Detection of cell types contributing to cancer from circulating cell-free methylated DNA [cite:@loyfer2021celltypes]
 - Whole-genome sequencing of cfDNA yields genome-wide read distribution patterns to track tissue of origin in cancer patients [cite:@peneder2021]
@@ -5781,6 +5784,8 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 :PROPERTIES:
 :ID:       dfdcad09-8447-4096-b139-b0b5bf56cad5
 :END:
+- [[id:4aedf4d5-04e3-46e4-8156-a2e5b601c9e6][DNA methylation in cancer]]
+- [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 - 5-hydroxymethylcytosine (5hmC) signatures in circulating cfDNA as diagnostic biomarkers across multiple human cancers [cite:@li20175hmc]
 - 5hmC signatures in cfDNA provide information about tumor types and stages, distinguishing cancer patients from healthy controls [cite:@song20175hmc]
 - 5hmC signatures in circulating cfDNA detected early-stage pancreatic cancer, a disease with poor prognosis due to typically late diagnosis [cite:@collin20185hmc]
