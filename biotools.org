@@ -4800,6 +4800,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - Fragmentia-AI, an LLM-based classifier operating directly on BPE-tokenized cfDNA sequences, statistically outperformed six established fragmentomic methods (DELFI, Griffin, FRAGMA, FDI, nucleosome, subnucleosome features) in head-to-head ULP-WGS benchmarking (AUC 0.9561 vs next-best DELFI 0.935 via XGBoost, p=0.014), demonstrating that learned sequence-level representations capture non-linear fragment interactions that predefined feature bins discard [cite:@xu2026fragmentia]
 - TE-specific fragmentomic features (relative sequencing depth, E-index, fragment size, CCCA end-motif across 16 TE families) achieved pan-cancer detection AUC 0.96 with only 80 features vs 500-1,280 for DELFI/ARTEMIS-DELFI, and tissue-of-origin prediction (n=7 cancer types) [cite:@gong2026teana]
 - Repetitive-element-specific cfDNA fragmentomics (fragment ratio, length, distribution, complexity, expansion across Alu, STR, and other repeat classes) from ultra-low-pass WGS (0.1x) achieved cancer detection AUC 0.9824 and tissue-of-origin accuracy 0.8286 (n=144, 5 cancer types); Alu and STR were the dominant informative repeat classes [cite:@zhang2025repeatfrag]
+- GEMINI regional single-molecule mutation frequencies from low-coverage WGS, extended to strand-resolved C:G>A:T asymmetry within transcribed genes (1 kb bins, TCGA HCC expression TPM > 1), recovered a liver-cancer T>C signature in all three cohorts and an aflatoxin-like C>A excess on the transcribed strand only in Guatemala, the first genome-wide exposure signature read from cfDNA [cite:@orjuela2026hcc]
 - [[id:47952c81-a288-4a29-9a5d-83b7aea86476][MPNST]]
 - [[id:6c436429-c4a9-423d-a7c4-9e5d3d63d574][Liquid biopsy surveillance in cancer predisposition syndromes]]
 - [[id:f53991ba-f4fb-47b9-b33c-2b935619b0e6][cfDNA size distribution]]
@@ -4821,6 +4822,8 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - [[id:de9485e3-5321-45a9-8720-42ea26d02aab][cfDNA modeling from first principles]]
 - [[id:33c6b066-5d16-4d58-9284-2f265128cba1][Genomics language models]]
 - [[id:8fe0ffa8-378e-4951-8763-fdc5f182751b][Lung SU2C early detection (Chaudhuri, career)]]
+- [[id:2914d2ac-27c0-49b4-9632-9cadd0629b63][Repeat element]]
+- [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
 ***** Reviews
 :PROPERTIES:
 :ID:       d96fa258-20c6-489a-9946-8e6bc0ecb364
@@ -4855,6 +4858,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 :END:
 - A cfDNA fragment-size classifier reaching 57–100% sensitivity at 98% specificity in a post-breast-cancer cohort fell to a 1.3% PPV (58% specificity; stage I and II sensitivity 71% and 89%) when validated in a lung cancer screening population, showing the prevalence and spectrum penalty fragmentomic classifiers pay in true screening settings [cite:@zhang2026lung]
 - Genome-wide cfDNA fragmentomes (short:long ratio, repeat elements, epigenetic hotspot coverage) detect non-cancer diseases including liver fibrosis/cirrhosis (AUC 0.95), with disease-specific fragmentation signatures across vascular, autoimmune, and neurodegenerative conditions (n=1576) [cite:@annapragada2026]
+- The locked DELFI HCC classifier (US/EU training, cutpoint at 90% specificity) transported unchanged to Guatemala (aflatoxin and metabolic etiology: 81% sensitivity, 92% specificity) and Romania (viral and alcohol: 62%, 92%), pooled 70% at 92% with stage 0/A 54%, B 83%, C/D 84%; scores were independent of age, sex, cirrhosis, diabetes, and DNASE1L3 R206C genotype, rose with tumor size and macrovascular invasion, correlated only with liver-related labs, and a score above 0.5 predicted shorter overall survival in the Romanian follow-up (HR 2.28) [cite:@orjuela2026hcc]
 - cfDNA fragment size fraction correlates with FDG-PET/CT-derived metabolic tumor volume and total lesion glycolysis in NSCLC, supporting fragmentomics as a "liquid PET" bioactivity readout [cite:@gonzlezdealedocastillo2021]
 - Nucleosome footprinting in plasma cfDNA correlates with neoadjuvant chemotherapy response for breast cancer [cite:@ulz2021breast]
 - Germline TP53 mutation carriers without active cancer show cancer-like cfDNA fragmentation patterns, suggesting constitutional chromatin alterations from p53 loss affect nucleosome positioning and cfDNA fragment profiles prior to malignant transformation [cite:@wong2024lfs]
@@ -4863,6 +4867,8 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - [[id:de9c6398-4ffe-48bf-9ef9-31028edf9873][cfDNA fragment end motif analysis]]
 - [[id:368e3f72-f8d3-475c-ad84-782993f8a6f6][Early cancer detection in Li-Fraumeni with cfDNA]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
+- [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection (science)]]
+- [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 **** cfDNA from patient derived xenograft (PDX) models
 :PROPERTIES:
 :ID:       2e475e89-40a2-4359-903d-6e590f4ab8a0
@@ -4950,7 +4956,9 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - Deep WGS of cfDNA from healthy individuals reveals genome-wide nucleosome occupancy maps; nucleosome spacing correlates most strongly with lymphoid/myeloid epigenetic features, consistent with hematopoietic origin of normal cfDNA; in cancer patients, nucleosome footprints shift to reflect tumor cell-of-origin [cite:@snyder2016]
 - A ~159 bp Lorentzian component demarcates intra- from inter-nucleosomal cfDNA: it sits ~8 bp off the 10-bp periodic grid, and ssDNA-vs-dsDNA library comparison shows components below 159 bp carry a ~3 bp offset (shared short-fragment nucleosomal protection) while those above show none; proposed structure is a 1+79+79 bp segment with both ends held by linker histone H1 [cite:@zhou2026sizedeconv]
 - cfDNA harbors footprints of transcription factor binding visible as short protected regions (~50-80 bp) within nucleosome-free regions; TF footprint depth correlates with expression level of the cognate TF in the tissue of origin [cite:@snyder2016]
+- Cell-type-specific TF expression reference: Tabula Sapiens 2.0 maps transcripts of nearly all human transcription factors across 701 cell-type by tissue populations, with 890 TFs showing cell-type-specific expression, giving putative cell-type specificity for nearly every human TF [cite:@jones2026tabulasapiens]
 - Bioinformatics pipeline inferring TF accessibility from cfDNA fragmentation patterns across >1,000 WGS samples; patient-specific TF activity profiles distinguish cancer subtypes and predict treatment response without requiring tumor tissue [cite:@ulz2019]
+- WGS-only expression inference tuned against matched tumor RNA-seq: the nucleosome-depleted window that best tracks expression is -250/+200 bp around the TSS, between the windows Ulz used; 10x coverage beats 7x, 5x, 3x, and 1x with a sharp drop below 5x; dividing the NDR count by flanking 1-3 kb coverage as a local copy-number offset adds concordance only at 5x and above (p < 0.003). H3K4me3 cfChIP-seq at the same TSSs outperformed the fragmentomic estimate in every sample (p = 1.5e-5), WGS keeping an edge only for very low expressers [cite:@chandrananda2026sniper]
 - Griffin applies GC-bias correction tailored to variable cfDNA fragment sizes before computing nucleosome accessibility profiles at sites of interest (TSSs, TFBSs); works with as low as 0.1x WGS coverage; demonstrated ER/PR subtyping in breast cancer and cancer detection across multiple tumor types [cite:@doebley2022griffin]
 - Gene body region-level fragmentomic features (PN spacing, fragment length diversity) contribute as much as promoter features to cfDNA-based expression prediction; SHAP analysis shows increased PN spacing in gene body reflects sparser nucleosome positioning during active transcription, while previous studies focused almost exclusively on TSS [cite:@patton2026triton]
 - Tissue-specific cfDNA degradation patterns at promoters and first exon-intron junctions quantify ctDNA burden independent of genomic aberrations; a model using just 6 regulatory regions accurately predicted ctDNA levels in colorectal cancer, enabling mutation-agnostic tumor monitoring [cite:@zhu2021]
@@ -5012,12 +5020,14 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - Liquid biopsy reveals collateral tissue damage in cancer: cfDNA tissue-of-origin deconvolution detects non-tumor tissue injury [cite:@mouliere2021collateral]
 - Genome-wide cfDNA fragmentation profiles identified tissue of origin to a limited number of candidate sites in 75% of cancer cases across seven tumor types [cite:@cristiano2019]
 - Methylome deconvolution of cfDNA in liver cirrhosis revealed increased blood monocyte and liver endothelium contributions with decreased hepatocyte contributions, linking genome-wide fragmentomic changes to cell type-specific origins in non-cancer disease (n=28 methylomes) [cite:@annapragada2026]
+- In HCC plasma (34 HCC, 25 cirrhosis, 4 no liver disease), MethID cell fractions explained the DELFI fragmentation principal components: PC1 and PC3 correlated with hepatocyte fraction (Spearman rho 0.66 and 0.62) and PC4 with vascular endothelial fraction (rho 0.59, retained after controlling for plasma aneuploidy score); host shifts were CD8 T cells up, NK cells down, endothelial cells up, megakaryocytes down in advanced disease; a DELFI + MethID model did not raise AUC over DELFI alone (0.98 both) though hepatocyte fraction was its top feature [cite:@orjuela2026hcc]
 - EM-seq over-conversion artifacts produce spurious tissue-of-origin signal: in cardiac catheterization cfDNA, EM-seq showed false baseline cardiomyocyte signal that masked procedure-related elevation detected by matched WGBS; negative-control pancreatic beta cell markers also showed false-positive signal only in EM-seq [cite:@loyfer2026emseqerror]
 - cfChIP-seq identifies bone marrow megakaryocytes (GP6, PPBP, PF4 signatures) as major healthy-donor cfDNA contributors and finds erythroblast-specific promoters (GYPA/B, AHSP) largely absent — contradicting CpG methylation deconvolution that attributed 20-40% to erythroblasts (Moss 2018, Lam 2017); authors propose lineage adjacency / shared methylation between megakaryocyte and erythroblast progenitors as the source of methylation-TOO miscalling, with erythroblast signal recoverable only in severe hypoxia [cite:@sadeh2021cfchipseq]
 - 5hmC-Seal tissue atlas (217 tumors, 50 normals, 5 cancer types) identified tissue-specific differential hydroxymethylation regions (DhmRs) that, when used to train a multinomial logistic regression on cfDNA (n=2,687), predicted tissue of tumor origin with 85.2% accuracy; cancer-specific 5hmC changes were established in early-stage tumors and persisted into late-stage [cite:@xue20255hmcseal]
 - FinaleMe-inferred methylation from cfDNA WGS supports tissues-of-origin deconvolution without requiring WGBS, opening the millions of NIPT and MCED WGS samples to methylation-based TOO; validated at deep (16-39X) and shallow (~0.1X) WGS coverage [cite:@liu2024finalme]
 - CANSCAN WGS-based TOO classifier across 13 cancer types achieved TOP1 accuracy 82.3-83.5% and TOP2 80.6-86.4% in case-control validation (n=1,465), with per-cancer variation from 98.6% (liver) to 45.7% (gastric); in prospective asymptomatic screening (Jinling, n=3,724), TOO TOP1 dropped to 63.2% but TOP2 remained 89.5%, suggesting second-best predictions partially recover the accuracy loss at lower tumor burden [cite:@bao2025canscan]
 - Single-cell transcriptome atlases (Tabula Sapiens, Fetal Cell Atlas) enable comprehensive cell type deconvolution of cfDNA fragmentation without pre-selected tissue-specific markers, ranking >450 cell types by correlation of gene-body WPS with scRNA-seq expression; applicable at ultra-low (<0.3x) WGS coverage (review) [cite:@vorperian2025celltype]
+- Tabula Sapiens 2.0, the reference atlas behind that deconvolution, holds 1.1 million cells from 24 donors and 28 tissues (182 fine and 38 broad cell types; 701 cell-type by tissue populations), with four multi-organ donors so genetic background, age, and epigenetic effects are controlled within donor; open data on CELLxGENE [cite:@jones2026tabulasapiens]
 - [[id:31ac8e3f-b37a-43ba-acb9-4964e37a42ae][cfDNA ChIP-seq]]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
@@ -5035,6 +5045,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:0d368294-8b95-419b-ae4b-ba0112de9acc][exRNA / cfRNA]]
+- [[id:47afb80f-7112-4c4b-aa19-3ec4d747f21f][Disease and clinical contexts (cfDNA fragmentomics)]]
 
 **** cfDNA window protection score
 :PROPERTIES:
@@ -5618,12 +5629,16 @@ https://www.nature.com/articles/s41467-023-38407-7
 - [[id:4aedf4d5-04e3-46e4-8156-a2e5b601c9e6][DNA methylation in cancer]]
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
 - [[id:412ece8f-7f6c-48d6-a4e8-9b8b257271a9][Transposable elements]]
+- [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
+- [[id:09d3c557-7aed-475a-8820-4c4c81b70ef2][Retrotransposons in cfDNA]]
 - Alignment challenges
   - Will result as multimappers
     - ~50% of the human genome is repetitive; correspondingly only ~70–80% of short reads (≥25 bp) map uniquely (read-length dependent). Three multi-read strategies, each with failure modes: ignore (discards multi-copy signal), best-match (ties → random/split, biases SNP/CNV), report-all up to d (cost/ambiguity) — the occ-gating tradeoff in repeat k-mer methods [cite:@treangen2011repeats]
   - Centromeric repeat elements not present in reference assembly (hg38, better represented in CHM13)
     - Repeats drive two assembly errors: near-identical tandem copies collapse into fewer copies (the 2001 B. anthracis forensic investigation miscounted diagnostic tandem repeats this way), and interspersed-repeat collapse joins non-adjacent regions into chimeric contigs — why short-read assemblies lose satellite/centromeric arrays and CHM13/T2T is needed to represent them [cite:@treangen2011repeats]
 - [cite:@annapragada2024]
+- ARTEMIS in HCC: 473 repeat element types altered in 54 PCAWG liver tumor/normal pairs were scored in plasma; 73 differed between HCC and non-cancer across two cohorts, 28 consistently (including L1MB2 and L1MDa LINE-1 elements) and 45 population-specific (MER124 in Guatemala, HAL1 in Romania), so repeat-landscape features carry etiology or ancestry structure a locked classifier must tolerate [cite:@orjuela2026hcc]
 - Human repeat landscape (hg19, RepeatMasker; [cite:@treangen2011repeats] Box 1): LINE 21%, SINE 15%, LTR 9%, DNA transposon 3%, tandem mini/micro/satellite 3%, rDNA 0.01%, segmental duplication 0.2% — ~50% total. Interspersed (transposon-derived) classes dominate by genome coverage; the satellite fraction is underrepresented because the table predates T2T centromere resolution.
 - ARTEMIS k-mer reference generation: repo [[https://github.com/cancer-genomics/artemis2024][cancer-genomics/artemis2024]] (code/ARTEMIS_Pipeline/01_generate_artemis). Produces ~1.2 billion 24-mer reference (=kmers_all.fasta=) covering 1280 repeat element types (started 1287 RepeatMasker + 14 Altemose HSAT2/HSAT3, 1266 pass filters). Inputs required (not in repo, must download): T2T-CHM13v2.0 FASTA (NCBI GCF_009914755.1), UCSC T2T RepeatMasker BED, Jellyfish package; repo provides x9_altemosereference24.fasta (Altemose 2014 HSAT supplement) + useful.stuff.aa R package. Pipeline a1–a10: split RepeatMasker BED by type → mask chm13 for non-repeat k-mer filter → de novo k-mer count per repeat type (Jellyfish) → filter to k-mers unique to each type AND absent from non-repeat genome → combine with Altemose HSAT supplement → finalize. Multi-day HPC SGE job. Same reference reused by downstream applications (e.g., the 2025 Cancer Discovery brain cancer detection paper, [[https://aacrjournals.org/cancerdiscovery/article/15/8/1593/763853][doi:10.1158/2159-8290.CD-25-0074]]); no separate k-mer set generated in those follow-ups. ARTEMIS-Epi pipeline (=05_epi_pipeline=) uses fragmentation (DELFI) not methylation — "epi" = chromatin/nucleosome inference from short:long ratios, NOT direct 5mC measurement.
 - UCSC CenSat track (T2T-CHM13, =censat=) is the authoritative centromere-satellite annotation (Hoyt/Altemose). Queryable without download via the UCSC JSON API (=api.genome.ucsc.edu/list/schema= and =/getData/track=). It carries no class/family column — the satellite type is embedded in the item =name= (split on the first =_=): 12 satTypes genome-wide (=hsat1A/1B, hsat2, hsat3, hor, dhor, bsat, gsat, censat, ct, mon, rDNA=). HSat2/HSat3 parentheticals are messy per-array labels (combos like =A4,A2=, chromosome aliases =A6/DYZ1=, =Unknown=), not a clean subfamily vocabulary. Used by [[file:~/repos/repeat-meth/repeat-meth.org][repeat-meth]] as the censat source for its repeat-nomenclature annotation table.
@@ -5693,6 +5708,8 @@ https://www.nature.com/articles/s41467-023-38407-7
 - cfChIP-seq: chromatin immunoprecipitation of cell-free nucleosomes carrying active histone marks (H3K4me1/2/3, H3K36me3) directly from <2 mL plasma, enabled by covalent antibody-bead conjugation (overcomes high native plasma IgG) and on-bead adapter ligation; reads out cell-of-origin transcriptional programs at low sequencing depth across 268 samples from 100+ individuals (61 healthy, 29 AMI, 38 liver disease, 56 metastatic CRC) [cite:@sadeh2021cfchipseq]
 - H3K4me3 cfChIP-seq signal at promoters correlates with gene expression (Pearson 0.28-0.99 across 10,150/14,313 genes; R^2 = 0.40 vs RNA across 56 Roadmap samples), providing transcriptional-state readout orthogonal to methylation-based lineage inference [cite:@sadeh2021cfchipseq]
 - 0.1% signature contribution detectable at biologically relevant signature size; mono/di/tri-nucleosome fragment ladder at 170/320/466 bp [cite:@sadeh2021cfchipseq]
+- SNIPER (Dawson lab, Peter Mac, under review 2026) turns the Sadeh promoter readout into a copy-number-aware expression estimate: H3K4me3 fragments in a -1 kb/+2 kb TSS window are scaled by a GLM-style offset from the cfChIP library size (TMM) and the matched ~10x WGS fragment count in the same window, so local dosage and depth act as exposure rather than signal. Tuned on 6 metastatic breast cancer patients with matched tumor RNA-seq (ctDNA 10-53%), tested on 11 healthy donors against GTEx blood and on K562 MNase supernatant against cellular RNA-seq (r 0.8); integration beat H3K4me3-only concordance (p = 4.2e-5) and improved triplicate-IP reproducibility (p = 0.0039); ~5x WGS is the practical floor; Hallmark ssGSEA concordance with tissue median 0.79 [cite:@chandrananda2026sniper]
+- cfChIP-seq QC thresholds used by SNIPER: Baca enrichment ratio > 5 (EpiMap chromHMM H3K4me3 states shared by at least half of 98 tissues as on-target, regions 10 kb or more from them as off-target), active/silent TSS AUC ratio > 2 (Sadeh's 4,395 commonly active genes vs 1,879 genes with TPM 0 across PBMC RNA-seq), > 15K MACS2 peaks at q 0.05 with the matched WGS as input, > 60% promoter peaks; a library failing two metrics is repeated or dropped; Somalier relatedness > 0.9 between each cfChIP library and its WGS catches swaps [cite:@chandrananda2026sniper]
 - [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 - [[id:4c8cbcad-4523-4883-b041-a8eb548f01ac][ChIP-seq]]
@@ -5713,6 +5730,7 @@ https://www.nature.com/articles/s41467-023-38407-7
 - HSAT2 hybridization capture from plasma cfDNA showed the 114bp-to-95bp HSAT2 ratio was lower in colon cancer patients (median 62) than polyp controls (78, p=0.23) and polyp-free controls (79, p=0.067); the 95bp chr10-derived variant showed greater cancer enrichment than the parental 114bp sequence (n=60 per group) [cite:@yoruker2026hsat2]
 - Three-step fusion of mutation (MaxVAF from 571-gene panel), L1PA methylation (DIAMOND MethPCancer), and genome-wide CNV lifted baseline ctDNA detection from 62.5% to 93.8% in 32 advanced pan-cancer patients (SHIVA02 trial); L1PA methylation changes preceded radiologic progression by approximately 4 months (preprint) [cite:@nedara2026shiva]
 - LINE-1 ORF1p protein detected in plasma at mid-attomolar concentrations by Simoa/MOSAIC single-molecule immunoassay, undetectable in >99% of >400 controls; showed early-detection promise for ovarian cancer, therapeutic response monitoring in gastroesophageal cancers, and prognostic value for overall survival in gastroesophageal and colorectal cancers [cite:@taylor2023orf1p]
+- [[id:2914d2ac-27c0-49b4-9632-9cadd0629b63][Repeat element]]
 
 **** cfDNA methylation
 :PROPERTIES:
@@ -5768,6 +5786,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 :ID:       6d52cdb4-8611-4fd2-a96e-ecb56f30d758
 :END:
 - Liver disease-specific methylation atlas (28M CpG sites) constructed from WGS cfDNA; fragments at cell type-specific unmethylated CpGs were shorter in monocytes, liver macrophages, and liver endothelium in cirrhosis patients but not healthy controls, linking methylation state to fragment length [cite:@annapragada2026]
+- MethID: another reference-based methylation deconvolution algorithm, Moss-style bulk NNLS (limSolve lsei) on per-CpG methylation fractions rather than UXM-style per-read classification; reference is the Loyfer sorted-cell WGBS atlas (GSE186458) subset to the cell types of interest, plus any added methylome (they added megakaryocytes GSE206818 and HCC tissue GSE212391), and sites are the top 5% of CpGs by between-cell-type F-statistic (~1.4M) instead of a few hundred marker regions, which is what lets it run on sparse (<2x) data; output is the fraction of cfDNA per reference cell type, so anything absent from the reference is not reported; in vitro admixture MAE 1.45% vs 2.58% UXM vs 3.19% Moss, stable to 0.27M sites in silico; code github.com/cancer-genomics/MethID [cite:@orjuela2026hcc]
 - Deep learning-based tissue deconvolution of cfDNA using a 521-sample, 29-tissue-type methylation atlas enables comprehensive disease diagnosis and monitoring from plasma [cite:@li2023cfdna]
 - Methylation haplotype blocks (147,888 tightly coupled CpG regions genome-wide) enable tissue-specific deconvolution and quantitative tumor load estimation from cfDNA in lung and colorectal cancer patients (n=59) [cite:@guo2017]
 - Single-read resolution methylation deconvolution of cfDNA: classifying individual cfDNA fragments by tissue of origin using read-level methylation patterns rather than bulk averaging [cite:@keukeleire2022]
@@ -5780,6 +5799,9 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:0d368294-8b95-419b-ae4b-ba0112de9acc][exRNA / cfRNA]]
 - [[id:d96fa258-20c6-489a-9946-8e6bc0ecb364][Reviews]]
 - [[id:e07fee1b-d7fd-42ce-9639-ff803cfc9c8e][Deconvolution, immunoprofiling/immunophenotyping, cell type enumeration with rnaseq]]
+- [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
+- [[id:dda1c9d0-59b6-487d-8bdb-86423062cf22][cfDNA long read sequencing]]
+- [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 ***** 5hmC biomarkers
 :PROPERTIES:
 :ID:       dfdcad09-8447-4096-b139-b0b5bf56cad5
@@ -5835,6 +5857,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - Nanopore sequencing of cfDNA detects cell-of-origin and cancer-specific methylation features, enabling simultaneous methylation and fragmentation analysis from long-read data [cite:@katsman2022cfdnananopore]
 - General computational framework for long-read methylation — signal calling, differential methylation between samples, and cell-type deconvolution — reviewed in [cite:@fu2025longread]; see [[id:d2ddd3bf-cb2d-4a2e-bbce-a85effa0b548][Long-read methylation analysis]] for the genome-wide tool landscape underlying this cfDNA application.
 - https://www.biorxiv.org/content/10.1101/2021.10.18.464684v1.full
+- [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
 **** [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling]]
 **** cfDNA feature integration
 :PROPERTIES:
@@ -5846,6 +5869,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:3f92c60b-c575-419a-95e3-344fd1d5ec0d][Tumor origin, tumor content, tumor fraction]]
 - Combining genome-wide fragmentation profiling with mutation-based cfDNA analysis detected 91% of cancer patients, exceeding either modality alone [cite:@cristiano2019]
 - Penalized logistic regression combining fragmentation profiles (473 5-Mb bins), repeat element landscape (786 elements), and epigenetic hotspot coverage in a single classifier for liver fibrosis/cirrhosis detection; L1 regularization for feature selection with 5-fold cross-validation [cite:@annapragada2026]
+- Late fusion of a locked fragmentome score with orthogonal markers for HCC: DELFI OR AFP at fixed cutoffs gave 84% sensitivity at 87% specificity pooled (71% in stage 0/A); DELFI + clinical risk used a logit-scale weighted average theta*DELFI + (1-theta)*CR, with CR the age and sex terms of the GALAD model, theta chosen by propensity-weighted nested cross-validation in the discovery set (5 outer folds x 10 repeats, modal theta locked) and the 90% specificity cutpoint set from bootstrapped non-cancer scores reweighted to the GBD age and sex distribution of the surveillance population; DELFI + AFP + CR reached 89% sensitivity (79% early stage) at a small specificity cost, while adding 3-mer and 4-mer end motifs to DELFI gave no gain (end motifs alone 42% sensitivity at 90% specificity) [cite:@orjuela2026hcc]
 - Proteus integrates 7 bp-resolution cfDNA signals (coverage, fragment ends, nucleosome positioning, fragment length ratios, diversity, entropy) with gene-level metadata and estimated tumor fraction via parallel CNN + beta-VAE architecture; semi-supervised training on in silico PDX/healthy donor admixtures enables tumor/background expression disentanglement without requiring per-sample matched tissue [cite:@patton2026triton]
 - Fragmentia-AI implicitly integrates fragment length, GC content, end-motif sequence, and broader sequence context via end-to-end transformer learning on BPE-tokenized cfDNA reads, bypassing explicit feature engineering; attention analysis confirms the model independently weights fragment termini (5' end-motif positions), fragment length (via token span), and GC composition, achieving cross-platform generalizability (panel-trained model retains AUC 0.839 on ULP-WGS and vice versa AUC 0.956) that explicit multi-feature pipelines have not demonstrated [cite:@xu2026fragmentia]
 - CANSCAN combines engineered multidimensional cfDNA features (fragmentation patterns, inferred methylation profiles, gene expression indicators) from a single low-coverage WGS library (~5x, PCR-free) through sequential DOC and TOO classifiers, achieving 87.4% pan-cancer sensitivity at 97.8% specificity across 13 tumor types (n=1,465 independent validation); this explicit multi-feature fusion from one assay contrasts with Fragmentia-AI's implicit learned integration and demonstrates that the WGS backbone enables computational feature expansion without re-sequencing [cite:@bao2025canscan]
@@ -5860,6 +5884,8 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
 - [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
+- [[id:2914d2ac-27c0-49b4-9632-9cadd0629b63][Repeat element]]
+- [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
 **** cfDNA quality control (QC)
 :PROPERTIES:
 :ID:       afc0516f-d05e-4d9a-b063-d2b0a03e11b1
@@ -9586,6 +9612,7 @@ https://www.embopress.org/doi/full/10.15252/msb.20188746
   - intra-tumor heterogeneity / [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][tumor microenvironment]]
     - Tumour heterogeneity and metastasis at single-cell resolution [cite:@lawson2018]
 - Integrative single-cell analysis (Seurat v3 methods) [cite:@stuart2019]
+- Reference atlas: Tabula Sapiens 2.0 (1.1 million cells, 24 donors, 28 tissues; 1,093,048 droplet cells plus 43,170 FACS-sorted plate cells; Cell Ontology annotation with manual QC to 182 fine cell types) [cite:@jones2026tabulasapiens]
 - single-cell illumina workshop [2019-09-10 Tue 09:00-15:30]
 - inputs and pre-processing
   - - https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02048-6
