@@ -4689,6 +4689,10 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 :END:
 - PyClone-VI: scalable inference of clonal population structures using whole genome data [cite:@gillis2020pyclonevi]
 - Modeling clonal structure over narrow time frames via circulating tumor DNA in metastatic breast cancer [cite:@parsons2021clonalcfdna]
+- Noninvasive subclone tracking via personalized ctDNA panels in localized STS (SARC032): patients with multiple tumor clones detected by ctDNA after surgery had inferior outcomes, establishing post-surgical clonal diversity as a prognostic biomarker [cite:@subramanian2026sarc032]
+- [[id:261addc7-5307-4439-81d8-6298269fb51a][soft tissue sarcomas]]
+- [[id:313e7a81-daf8-4cd5-a806-2c3755977222][Minimal residual disease]]
+- [[id:10d3a3a4-dbe6-4494-b287-c3e5720932b2][Tumor-informed methods]]
 - [[id:0b43e09e-52f7-49fb-8796-87168fe57706][cfDNA small variant calling]]
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
 - [[id:1e830494-6b4f-4c09-80c1-cc1ae918f04c][Non-small cell Lung cancer]]
@@ -4984,6 +4988,11 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:e6a5aea2-099f-4fdd-8b7f-6abbb57f1bb0][Fragment size biology]]
 - [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
 - [[id:de9485e3-5321-45a9-8720-42ea26d02aab][cfDNA modeling from first principles]]
+- [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
+- [[id:29f42466-d0f0-457e-89d6-9bb0c4cd5bf9][Footprinting]]
+- [[id:0f3916db-6545-439f-a6ee-f529ec53c48c][Transcription factor binding]]
+- [[id:ae0363f3-379e-4521-9184-cbc0d46501cd][Chromatin accessibility profiling]]
+- [[id:debbd153-b877-4d0c-be1d-c5af76da140b][Can mouse PDX on-tx cfDNA track treatment response via TF activity?]]
 **** cfDNA small variant calling
 :PROPERTIES:
 :ID:       0b43e09e-52f7-49fb-8796-87168fe57706
@@ -5046,6 +5055,8 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:0d368294-8b95-419b-ae4b-ba0112de9acc][exRNA / cfRNA]]
 - [[id:47afb80f-7112-4c4b-aa19-3ec4d747f21f][Disease and clinical contexts (cfDNA fragmentomics)]]
+- [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
+- [[id:c6a260b2-2f89-45ad-8e56-f3b47fd9f0de][Can we infer immune status and rare cell pops from cfDNA using liquid cell atlas?]]
 
 **** cfDNA window protection score
 :PROPERTIES:
@@ -5781,6 +5792,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - cfMeDIP-seq: low-input (1-10 ng) bisulfite-free immunoprecipitation-based methylome profiling of plasma cfDNA, applicable to urine, CSF, and other low-input sources beyond cancer detection [cite:@shen2019cfmedip] (protocol used in [cite:@shen2018])
 - LABS (linear amplification-based bisulfite sequencing) enables genome-wide 5mC profiling from sub-nanogram cfDNA input (down to 10 pg), preserving underrepresented tumor DNA fragments lost during exponential amplification; applied to 100 cfDNA samples (50 CRC, 16 PDAC, 34 healthy) with cancer-specific methylation patterns, CNA, and tissue-of-origin identification [cite:@cui2024labs]
 - Simultaneous sequencing of genetic and epigenetic bases in DNA (6-letter sequencing: A, C, G, T, 5mC, 5hmC) enabling joint genotype-methylation profiling from a single library [cite:@fullgrabe2023six]
+- [2026-09-09 Wed] Group moving toward Illumina 5-base over EM-seq; Taylor checking Daniels comparison data; pursuing free Illumina kits. ([[file:~/meetings/canpredict-weekly/2026-09-09-notes.md][canpredict-weekly 2026-09-09]])
 ***** Tissue deconvolution
 :PROPERTIES:
 :ID:       6d52cdb4-8611-4fd2-a96e-ecb56f30d758
@@ -5802,6 +5814,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 - [[id:dda1c9d0-59b6-487d-8bdb-86423062cf22][cfDNA long read sequencing]]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
+- [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
 ***** 5hmC biomarkers
 :PROPERTIES:
 :ID:       dfdcad09-8447-4096-b139-b0b5bf56cad5
@@ -5967,6 +5980,10 @@ Consolidated into [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucle
 - Phylogenetic ctDNA analysis depicts early-stage lung cancer evolution: tracking clonal dynamics through tumor-informed ctDNA [cite:@abbosh2017]
 - Tumor-informed WGS-bespoke MRD panels (up to 2000 patient-specific variants from 15–50× tumor + PBMC WGS; plasma resequencing at 315–6364× molecular depth) achieved 60% baseline MRD detection in oligometastatic clear-cell renal-cell carcinoma, a low-shedding tumor where first-generation WES-based assays detect ~25%; median plasma tumor fraction was 22.5 ppm at baseline and 18.5 ppm at 3 months, showing the assay class can interrogate sub-100-ppm states in tumors with low mutation burden and intratumor heterogeneity [cite:@tang2025mdt]
 - In the same cohort, baseline and 3-month post-RT MRD status were independently prognostic for systemic-therapy-free survival (HR 2.75, p=0.0064; HR 4.42, p<0.0001) in multivariable Cox adjusted for clinical factors, with 25% of baseline MRD+ patients converting to MRD− at 3 months; ctDNA was prespecified exploratory and did not enter treatment decisions, establishing assay-class precedent for prognostic stratification in low-shedding solid tumors but leaving the cfDNA-modified treatment paradigm to future trials [cite:@tang2025mdt]
+- SARC032 STS ctDNA: tumor-informed personalized panels tracking median 46 somatic mutations per patient achieved 85% baseline detection in localized STS (n=106), a low-mutational-burden tumor type; demonstrates assay-class feasibility in rare heterogeneous tumors with limited mutation catalogs [cite:@subramanian2026sarc032]
+- [[id:261addc7-5307-4439-81d8-6298269fb51a][soft tissue sarcomas]]
+- [[id:313e7a81-daf8-4cd5-a806-2c3755977222][Minimal residual disease]]
+- [[id:c9ce98a3-e54c-4ffd-9819-cf3e59a06c31][cfDNA clonal evolution]]
 - [[id:a4367838-b0f6-4dd5-b4e1-9bddf33642fa][Oligometastasis]]
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:ca856ab1-dee0-4986-9530-604541773aa1][MRD]]
@@ -6901,6 +6918,7 @@ consensusToCount = soGGi:::runConsensusRegions(GRangesList(reducedConsensus), "n
 
 consensusToCount
 #+end_src
+- [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
 
 ****** Motifs
 :PROPERTIES:
@@ -9625,6 +9643,11 @@ https://www.embopress.org/doi/full/10.15252/msb.20188746
   - Wishbon
 - [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]]
 - [[id:bac12c9a-6f8a-4d1b-b8a2-041632c814f6][Spatial methods]]
+- [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
+- [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
+- [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
+- [[id:324b9c09-a535-49c9-aefe-0dc97b456b8d][Transcription factors]]
+- [[id:49ae936b-c3a4-47e7-815e-7ab24ac491b3][Human Tumor Atlas Network (HTAN)]]
 **** Single cell conda yaml
 :PROPERTIES:
 :ID:       48692b20-239f-4392-8100-9ed0ab028ca8
