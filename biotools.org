@@ -3378,6 +3378,8 @@ https://chatgpt.com/c/67191dd3-e8b4-8005-bacd-6876cf5f524d
 :PROPERTIES:
 :ID:       ccc5beb6-da8d-4d0a-959a-80d556d7dba7
 :END:
+- Case-control cfDNA comparisons across biobanks: controls collected elsewhere differ in tube type, processing, and library depth (6.6M vs 18M unique reads in one cfChIP-seq study), and depth-normalized CPM stays depth-sensitive at low library size, so a cancer-vs-healthy AUC near 1 in low-tumor-fraction samples is a batch result until libraries are downsampled to a common depth and batch-matched controls are processed with the cases. General form: [[id:8487e290-9abe-4836-a55e-60301e37375a][Confounding]]
+- [[id:afc0516f-d05e-4d9a-b063-d2b0a03e11b1][cfDNA quality control (QC)]]
 
 **** Bioinformatics project management
 :PROPERTIES:
@@ -4690,6 +4692,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - PyClone-VI: scalable inference of clonal population structures using whole genome data [cite:@gillis2020pyclonevi]
 - Modeling clonal structure over narrow time frames via circulating tumor DNA in metastatic breast cancer [cite:@parsons2021clonalcfdna]
 - Noninvasive subclone tracking via personalized ctDNA panels in localized STS (SARC032): patients with multiple tumor clones detected by ctDNA after surgery had inferior outcomes, establishing post-surgical clonal diversity as a prognostic biomarker [cite:@subramanian2026sarc032]
+- Post-mortem cfDNA from metastatic BLCA captures intra-patient genomic and transcriptional heterogeneity across metastatic sites, enabling noninvasive assessment of subtype identity and aggressiveness (n = 8 patients, WGS + targeted cfDNA) [cite:@itagi2026blca]
 - [[id:261addc7-5307-4439-81d8-6298269fb51a][soft tissue sarcomas]]
 - [[id:313e7a81-daf8-4cd5-a806-2c3755977222][Minimal residual disease]]
 - [[id:10d3a3a4-dbe6-4494-b287-c3e5720932b2][Tumor-informed methods]]
@@ -4697,6 +4700,9 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
 - [[id:1e830494-6b4f-4c09-80c1-cc1ae918f04c][Non-small cell Lung cancer]]
 - [[id:a4367838-b0f6-4dd5-b4e1-9bddf33642fa][Oligometastasis]]
+- [[id:527f1037-c7c5-4024-943d-1068af6ddbd8][cfDNA and ctDNA on-treatment dynamics]]
+- [[id:a9fe66f2-2d6f-4565-957d-5c277c84fd12][Bladder cancer]]
+- [[id:613fda39-d75b-4c51-ad2b-ff59450ae5e6][Immunotherapy for cancer]]
 **** cfDNA copy number calling and CNA-based tumor fraction
 :PROPERTIES:
 :ID:       21d876e8-8646-4773-91c1-c4385c3218c7
@@ -4739,6 +4745,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
   - Detection of ctDNA in leiomyosarcoma with progressive disease [cite:@hemming2019]
   - Comprehensive ctDNA assay for translocation and copy-number changes in pediatric sarcomas: ichorCNA on off-target reads [cite:@shah2021]
   - Urothelial carcinoma detection from urinary cfDNA copy number profiles by shallow WGS; tumor vs cfDNA CN comparison (fig2C) [cite:@ge2020]
+  - Post-mortem cfDNA CNA profiles from metastatic BLCA concordant with matched tumor WGS; cfDNA captures subtype-specific CNA burden differences (PUC/NE highest coding mutational burden; UC/UCSD moderate CNAs and SVs) [cite:@itagi2026blca]
   - cfDNA tumor fraction and somatic CNAs with survival in metastatic triple-negative breast cancer [cite:@stover2018]
   - Scalable whole-exome sequencing of cfDNA reveals high concordance with metastatic tumors: method-establishing ichorCNA paper [cite:@adalsteinsson2017]
 - Chromosomal instability score
@@ -5663,6 +5670,8 @@ https://www.nature.com/articles/s41467-023-38407-7
 - Foundation Medicine TF derivation: primary method tumor aneuploidy with fallback to fragmentomics and maximum somatic VAF when aneuploidy not detectable; validated in Lung-MAP n=194 advanced NSCLC [cite:@mack2025]
 - SNP aneuploidy-based TF prognostic across 4 advanced cancer types (n=1725: 198 mCRPC, 402 mBC, 902 aNSCLC, 223 mCRC); TF ≥10% univariate OS HR 1.68-3.3 across all cancers; tumor-agnostic prognostic biomarker [cite:@reichert2023]
 - Methylation-based ctDNA TF (NGS methylation assay) for chemo response monitoring across advanced solid tumors (n=278); ≥98% TF decrease at any timepoint optimal predictor (rwTTNT aHR 0.40, rwOS aHR 0.54); rising TF lead time 2.27 mo to next treatment event [cite:@rolfo2025]
+- Tumor fraction as confounder of plasma-inferred expression: inferred dynamic range scales with ctDNA fraction, so PC1, GSVA indices, and clusters built on inferred expression can be fraction proxies; a Cox adjustment for fraction is necessary but not sufficient at n = 25 with collinear covariates. Report gene-wise and index-wise correlations with fraction, the fraction-only model (Kaplan-Meier at a cut-point, C-index, continuous Cox) against fraction plus index, and a full multivariable model with HRs, CIs, and event count. General form: [[id:8487e290-9abe-4836-a55e-60301e37375a][Confounding]]
+- Terminology: tumor purity is a tissue quantity; for plasma write ctDNA fraction or tumor fraction consistently in text and figure axes.
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 - [[id:0b43e09e-52f7-49fb-8796-87168fe57706][cfDNA small variant calling]]
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
@@ -5879,6 +5888,8 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - Applied: [[id:3ed99425-014d-4aa1-9435-3ec180f05da1][Build ML integration]] (career)
 - Applied: [[id:abbb143e-2bc6-4f45-b7e3-f5346d6ceb65][Multimodal cfDNA platform]] (career)
 - Multi-modal cfDNA genomic and fragmentomic patterns enhance cancer survival and recurrence analysis [cite:@moldovan2024]
+- Ablation for WGS plus cfChIP-seq expression inference: when the WGS term is an offset from a -1 kb to +2 kb window around the promoter, it is local coverage (copy number and tumor-fraction-weighted dosage), not a nucleosome-depleted-region signal; compare H3K4me3 CPM normalized by (i) flanking counts alone, (ii) an ichorCNA copy-number estimate, and (iii) the full offset before claiming integration. A median per-sample correlation gain of 0.625 to 0.645 with a term that reduces to coverage is normalization. General form: [[id:b734f912-a8c8-49b6-8965-469bf3ba6fa6][Model performance evaluation]]
+- Serial-monitoring metric for plasma-inferred expression: genome-wide cross-gene Spearman of 0.6-0.7 against tissue RNA-seq mostly separates expressed from silent genes; for tracking report correlation restricted to expressed deciles, within-gene across-sample correlation against matched tissue, single-gene detectability, and a titration limit of detection (MNase-digested cell-line nucleosomes into healthy plasma across 0.1-20% tumor fraction). General form: [[id:b734f912-a8c8-49b6-8965-469bf3ba6fa6][Model performance evaluation]]
 - [[id:3f92c60b-c575-419a-95e3-344fd1d5ec0d][Tumor origin, tumor content, tumor fraction]]
 - Combining genome-wide fragmentation profiling with mutation-based cfDNA analysis detected 91% of cancer patients, exceeding either modality alone [cite:@cristiano2019]
 - Penalized logistic regression combining fragmentation profiles (473 5-Mb bins), repeat element landscape (786 elements), and epigenetic hotspot coverage in a single classifier for liver fibrosis/cirrhosis detection; L1 regularization for feature selection with 5-fold cross-validation [cite:@annapragada2026]
@@ -5912,6 +5923,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - Bioinformatics preprocessing choices (trimming, duplicate removal, mapping filters) substantially affect derived cfDNA genetic and epigenetic features and influence downstream cancer vs healthy classification from low-pass WGS; benchmarked on 20 lung cancer and 20 healthy samples [cite:@ivankovi2025]
 - WGBS alters cfDNA fragmentomic characteristics (fragment length distribution, end motifs, nucleosome positioning signals) compared to standard WGS; comprehensive evaluation of WGBS-induced technical artifacts is required when using bisulfite-converted libraries for fragmentomics analyses [cite:@li2025]]
 - With ~167 bp cfDNA inserts and 2x150 bp reads, nearly 100% of read pairs overlap. Standard WGS and methylation pipelines do not merge overlapping reads: fragment sizes come from alignment coordinates (TLEN), methylation callers discard one read's calls in the overlap (Bismark =--no_overlap=, MethylDackel Phred adjustment), and fragmentomics tools (Griffin, fRagmentomics) ignore the overlap entirely. Freefly (Liu et al., Cell Reports Methods 2024) is an exception: it stitches PE reads via FLASH for alignment-free fragment size and end motif profiling. Tools that skip PE overlap correction in depth counting (mosdepth =-x=) will double-count overlapping positions and inflate reported depth by 70-80%.
+- Reviewer check on stated QC exclusion rules: recompute the rule against the supplementary QC table (a "fail two of four thresholds" rule in one cfChIP-seq manuscript left three failing samples retained), require the count of repeated and excluded samples with representative failure profiles, and assess the effect of a wide library-depth range (29-fold) on CPM precision when low-depth samples enter differential analyses. Also check coverage claims against the table: 200-500M read pairs at 7-16x is not "low-coverage" WGS, and samples below the stated performance floor need explicit handling.
 
 
 **** [[*cfDNA fragmentomics][cfDNA fragmentomics]]
@@ -5943,6 +5955,12 @@ Consolidated into [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucle
 :ID:       55b77210-fcb6-438d-a546-0c3605f6f5c4
 :END:
 - Massively parallel enrichment of low-frequency alleles enables duplex sequencing at low depth (MAESTRO) [cite:@gydush2022]
+- Oncodetect V2 (Exact Sciences, licensed MAESTRO workflow): expanded variant selection and probe design to track median 4,882 mutations/patient (up to 5,000), producing median 2.5-fold LoD95 improvement over MAESTRO-Pool; 99.8% specificity across 11,515 patient-unmatched MAESTRO assays; detected ctDNA in 17 additional samples missed by MAESTRO-Pool, 16 at <5 ppm VAF [cite:@rhoades2026esophagealmrd]
+- [[id:313e7a81-daf8-4cd5-a806-2c3755977222][Minimal residual disease]]
+- [[id:aedb606f-bfae-419b-845d-38a85c231218][Tumor-informed methods]]
+- [[id:ca856ab1-dee0-4986-9530-604541773aa1][MRD]]
+- [[id:527f1037-c7c5-4024-943d-1068af6ddbd8][cfDNA and ctDNA on-treatment dynamics]]
+- [[id:0b43e09e-52f7-49fb-8796-87168fe57706][cfDNA small variant calling]]
 **** Promenent research groups
 :PROPERTIES:
 :ID:       d806c115-915b-4a15-ba00-3713797d2d48
@@ -5981,6 +5999,7 @@ Consolidated into [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucle
 - Tumor-informed WGS-bespoke MRD panels (up to 2000 patient-specific variants from 15–50× tumor + PBMC WGS; plasma resequencing at 315–6364× molecular depth) achieved 60% baseline MRD detection in oligometastatic clear-cell renal-cell carcinoma, a low-shedding tumor where first-generation WES-based assays detect ~25%; median plasma tumor fraction was 22.5 ppm at baseline and 18.5 ppm at 3 months, showing the assay class can interrogate sub-100-ppm states in tumors with low mutation burden and intratumor heterogeneity [cite:@tang2025mdt]
 - In the same cohort, baseline and 3-month post-RT MRD status were independently prognostic for systemic-therapy-free survival (HR 2.75, p=0.0064; HR 4.42, p<0.0001) in multivariable Cox adjusted for clinical factors, with 25% of baseline MRD+ patients converting to MRD− at 3 months; ctDNA was prespecified exploratory and did not enter treatment decisions, establishing assay-class precedent for prognostic stratification in low-shedding solid tumors but leaving the cfDNA-modified treatment paradigm to future trials [cite:@tang2025mdt]
 - SARC032 STS ctDNA: tumor-informed personalized panels tracking median 46 somatic mutations per patient achieved 85% baseline detection in localized STS (n=106), a low-mutational-burden tumor type; demonstrates assay-class feasibility in rare heterogeneous tumors with limited mutation catalogs [cite:@subramanian2026sarc032]
+- SV breakpoint-based bespoke ctDNA panels (4-16 breakpoints/patient) achieved 97% baseline sensitivity in localized STS (n=32), outperforming the SNV-based approach in SARC032 (85% with median 46 variants/patient); SV tracking exploits the high SV prevalence in STS and may be particularly suited to tumors with low point-mutation burden but recurrent structural rearrangements [cite:@park2026sts]
 - [[id:261addc7-5307-4439-81d8-6298269fb51a][soft tissue sarcomas]]
 - [[id:313e7a81-daf8-4cd5-a806-2c3755977222][Minimal residual disease]]
 - [[id:c9ce98a3-e54c-4ffd-9819-cf3e59a06c31][cfDNA clonal evolution]]
@@ -5988,6 +6007,8 @@ Consolidated into [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucle
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:ca856ab1-dee0-4986-9530-604541773aa1][MRD]]
 - [[id:527f1037-c7c5-4024-943d-1068af6ddbd8][cfDNA and ctDNA on-treatment dynamics]]
+- [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
+- [[id:aedb606f-bfae-419b-845d-38a85c231218][Tumor-informed methods]]
 **** WGS cfDNA methods
 :PROPERTIES:
 :ID:       67251de4-3c85-4ba5-b5e5-6efefcd8961d
@@ -7187,6 +7208,7 @@ https://www.reddit.com/r/bioinformatics/comments/1g1j4os/complete_machine_learni
 - [[id:33c6b066-5d16-4d58-9284-2f265128cba1][Genomics language models]]
 - [[id:de9c6398-4ffe-48bf-9ef9-31028edf9873][cfDNA fragment end motif analysis]]
 - [[id:0b43e09e-52f7-49fb-8796-87168fe57706][cfDNA small variant calling]]
+- A null from an L1-penalised model over hundreds of features at a few dozen samples is not evidence that the features carry no signal: with few informative columns among many noise columns, the inner cross-validation that chooses the penalty shrinks the model to the intercept. Seen [2026-09-21 Mon] in repeat-meth: a lasso on 751 residual features at 27 libraries read AUC 0.56 while single features had d above 1.6; a univariate filter fitted inside each outer training fold (top-k by Welch t on the training samples only, then the lasso) is the fold-honest instrument and is reported beside the full-matrix row ([[file:~/repos/repeat-meth/repeat-meth.org::*Cohort classifier: the checklist every cohort readout must satisfy][repeat-meth checklist, item 14]]).
 *** Basic and generalized massively parallel sequencing methods
 :PROPERTIES:
 :ID:       cca285b0-cd5a-4c59-9601-f069512c497f
@@ -7511,6 +7533,9 @@ https://mail.google.com/mail/u/0/#inbox/FMfcgzGrblWQxQHrNZrMjzpGmzjqDNGX
 :ID:       aedb606f-bfae-419b-845d-38a85c231218
 :END:
 - phylogenic for cancer evolution [cite:@abbosh2017]
+- MAESTRO tumor-informed enrichment: WGS of tumor tissue and matched buffy coat identifies patient-specific somatic SNVs; custom MAESTRO probes enrich these variants in cfDNA at low sequencing depth; fingerprints of hundreds to thousands of mutations per patient enable detection at or below part-per-million VAF (background error rate 1e-7); LoD95 scales with mutation count and cfDNA molecule input [cite:@gydush2022] [cite:@rhoades2026esophagealmrd]
+- [[id:55b77210-fcb6-438d-a546-0c3605f6f5c4][Integrated hybrid capture and genome-wide- MAESTRO]]
+- [[id:10d3a3a4-dbe6-4494-b287-c3e5720932b2][Tumor-informed methods]]
 ******** WGS cfDNA methods
 :PROPERTIES:
 :ID:       1b87f575-dd0f-41c3-bc01-fe17edb0db3d
@@ -8492,6 +8517,8 @@ Long-read single-molecule platforms (Oxford Nanopore, PacBio HiFi) call DNA meth
 - Beta stays in use for three reasons: (1) interpretability - delta-beta is an absolute effect size (percent of molecules), and a difference can be significant on M yet biologically trivial in beta; (2) boundary behavior on count data - finite coverage produces beta = 0 or 1, where M is infinite, forcing pseudo-counts, and M amplifies sampling noise at low coverage; (3) mixture linearity - an observed level in a mixed sample is the coverage-weighted mean of component betas (beta_obs = f*beta_tumor + (1-f)*beta_background), with no such linearity on the log-odds scale, so deconvolution and tumor-fraction arithmetic operate in beta space.
 - Standard division of labor: test on M, report/filter/threshold on beta [cite:@du2010mvalue].
 - No monotone transform of a mean recovers within-population heterogeneity the mean discarded: identical mean beta is compatible with homogeneous half-methylated molecules or a bimodal mix of fully-methylated and fully-unmethylated molecules; only molecule-level features (fully-unmethylated fraction, MHL) separate these.
+**** Foreign reads in feature-summed readouts: the per-feature over-coverage check
+Any readout that sums calls or matches over many sequence features (k-mers, probes, bins, the CpGs of a region) is moved by DNA that is in the library but is not the sample's genome, because such DNA lands on a few features and its share differs between sequencing runs, so the aggregate reads as a between-arm biological effect. The sources present in every methylation-sequencing library: the kit's conversion controls (EM-seq: unmethylated lambda, CpG-methylated pUC19), the Illumina phiX174 run control, microbial and mitochondrial DNA, adapter fragments. Library-level QC (depth, duplication, conversion, GC) does not see them; a per-feature check does: per library and feature set, flag the features whose count is many times the set's median feature (a single-copy CpG site gets about 20 calls at 100 M pairs; a site receiving spike-in reads gets 1,000 to 1,600 at beta near 0), report the share of the set's calls on flagged features, and keep the flagged sequences so the source can be named. Found the hard way in the repeat-meth EM-seq cohorts on [2026-09-20 Sun]: lambda 24-mers equal repeat k-mers in converted space, the healthy arm carried twice the spike-in share, and ten families read as hypermethylated in cancer in two cohorts ([[file:~/repos/repeat-meth/repeat-meth.org::*Spike-in collision artefact and the masked reruns (2026-09-21)][repeat-meth record]]). Build-time complement: put the control genomes into the reference so their k-mers are counted as their own units and colliding features are dropped; ARTEMIS checks its k-mers against 1,545 microbial genomes the same way. Spike-in share by arm is a design covariate like duplication.
 *** Online GUIs
 :PROPERTIES:
 :ID:       f7064e3f-6d40-4fb2-b8cd-1c8c519bd7f8
