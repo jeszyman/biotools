@@ -5413,6 +5413,7 @@ https://www.google.com/search?q=%22samtools+depth%22+%22wgs%22&oq=%22samtools+de
 #     base=`basename -s .bam $1`
 #     sambamba view -f sam -t 30 $1 | shuf -n $2 > $3/${base}_${2}_sample
 # }
+- [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
 
 ***** modeling
 :PROPERTIES:
@@ -5865,6 +5866,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:8ffda4e0-8a03-4fa3-aa0d-56c2e6a1dca4][Bisulfite sequencing]]
 - [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
+- [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]]
 ***** Reference                                                      :nohelm:
 :PROPERTIES:
 :ID:       312f3db6-4f68-455f-8fc8-23925d255d24
@@ -9814,12 +9816,24 @@ Primary deep-dive platform for this knowledge base. Capture-based spatial transc
 - Label transfer from matched scRNA-seq via Seurat FindTransferAnchors/TransferData outperformed manual cluster-based annotation for difficult tumor types (pleural mesothelioma) where panel marker coverage is sparse — but only when matched scRNA-seq from the same cohort is available. For panels with non-specific probe attachment to canonical lineage markers (e.g., B-cell markers absent from CosMx clusters), manual annotation collapses entire lineages into "unknown" clusters [cite:@ozirmaklermi2025].
 
 **** Spatial-aware analysis
+:PROPERTIES:
+:ID:       97101f19-be10-4eb9-89ec-cb92082cee62
+:END:
 - Neighborhood and niche analysis — Squidpy, Giotto, Banksy
 - Spatially variable genes — SpatialDE, SPARK, Moran's I
 - Cell-cell communication in spatial context — CellChat spatial, COMMOT, NICHES
 - Tissue domain and region detection — SpaGCN, BayesSpace, STAGATE
 - BANKSY (Nat Genet) treats cell typing and tissue-domain segmentation as a single problem by combining each cell's own expression with a neighbor-aggregated profile — scales to large spatial omics datasets at lower compute cost than graph-neural-net alternatives [cite:@singhal2024].
 - Spatial EcoTyper infers conserved multicellular "spatial ecotypes" (SEs) from single-cell ST by computing cell-type-specific gene expression covariance across spatial neighborhoods and integrating via similarity network fusion before NMF clustering. Conceptually orthogonal to BANKSY (which fuses each cell with its neighbors for cell typing): SE inference operates at the multicellular-ecosystem scale rather than the single-cell level. Robust across MERSCOPE/Xenium/Visium HD platforms and 6 cancer types; outperforms CellCharter, SPACE, SEDR, SpatialPCA, STAGATE, UTAG on spatial-cluster identification metrics (spatial colocalization, cell-type mixing, silhouette width). See [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]] for full description and clinical extensions [cite:@zhang2026].
+- Validation battery for spatial niche/ecotype calls, as applied to Spatial EcoTyper [cite:@zhang2026]:
+  - Colocalization index: the probability of each cell state within 50 µm of another, corrected for background expectation and combined across samples by Stouffer's method, with per-sample scores capped at |5|. It replicated in held-out MERSCOPE, Xenium and Visium HD cohorts (r = 0.84 and 0.78).
+  - Moran's I z-score for spatial coherence of each niche.
+  - Radius sweep from 20 to 100 µm, scored by correlation with distance to the tumour margin.
+  - Parameter perturbation shown as confusion matrices against the default result: HVGs, PCA on/off, Louvain resolution scored by ARI, and Louvain vs spectral vs NMF.
+  - Archetypal analysis as an independent method on the same embedding.
+  - De novo rediscovery on a platform held out from discovery (Xenium Prime).
+- Labelling tumour core vs adjacent stroma in single-cell ST without a pathologist: a 200 µm grid of the non-immune/non-stromal cell fraction is bimodal, and a threshold between the two modes separates tumour from stroma (a 100 µm grid if no bimodality appears). Cells are then refined by rule: more than 5 cancer cells within 100 µm means tumour. The result supports a continuous distance-to-margin covariate. For spot-based ST, a logistic regression on 4 spot and neighbour features reached a leave-one-cancer-out median AUC of 0.82 against pathologist labels. Spatial EcoTyper discovery scales as O(n²) in neighbourhoods: 436 min and 169 GB for 18.5k neighbourhoods. Subsampling to 6.6k neighbourhoods reproduced the embedding (ρ = 0.85) [cite:@zhang2026].
+- [[id:3e2e8976-461c-4943-89b5-05889c8ae2bb][Model validity and model validation]]
 
 **** Differential expression with spatial context
 - Pseudobulk by niche or tissue region
@@ -9987,12 +10001,22 @@ NMF-based machine-learning framework for discovering recurrent multicellular eco
 - The 9 SEs span a tumour-margin-to-core spatial gradient. SE1 (margin/stroma): early-response programs (FOS, EGR1) and naive T cells. SE7 (margin): lymphoid+myeloid+stromal hub with antigen processing/presentation, IGLL5+ plasma cells, C1QB+ macrophages, CD1E+ dendritic cells, CXCL12+ CAFs. SE8 (tumour core): GZMB+ CD8 T cells, CXCL8+ macrophages, CXCL12+ CAFs, CEACAM1+ endothelium, metabolic enrichment. SE9 (tumour core): angiogenic — TREM2+ macrophages, INSR+ tip endothelium. SE4: myofibroblast (MYH11+) and hypoxia-associated FBLN5+ endothelial ecotype with wound-healing program [cite:@zhang2026].
 - SE bulk RNA-seq deconvolution (Spatial EcoTyper NMF model trained on 1,000 pseudo-bulks per cancer type) outperformed CIBERSORTx, BayesPrism, and DWLS for recovering SE abundances; in 7,076 TCGA samples across 17 cancers, 6/9 SEs were prognostic for overall survival [cite:@zhang2026].
 - Liquid EcoTyper recovers SEs non-invasively from plasma cfDNA methylation: a CpG-set binary network (CSBN) deep-learning model (38,431 CpG features, 400 learned CpG sets) trained on simulated cfDNA from paired TCGA bulk RNA-seq + 450K methylation arrays, with healthy-donor EM-seq cfDNA as background. In 78 melanoma patients on ICI, plasma SE7 high → HR 0.32 OS, SE8 high → HR 0.37 OS, SE4 high → HR 2.29 OS; SE7+SE8+SE4 outperformed TMB and PD-L1 (CD274) in multivariable models. Stable to 10x sequencing depth and robust to imputation strategy [cite:@zhang2026].
+- Specificity and technical-robustness checks for Liquid EcoTyper [cite:@zhang2026]:
+  - Negative control: PBMC EM-seq in 7 patients. PBMC-vs-tumour and PBMC-vs-plasma correlations of ecotype levels were near zero and not significant, so the plasma signal does not come from circulating leukocytes.
+  - Ablation: removing one ecotype's CpG sets removed only that ecotype's accuracy.
+  - Depth: =samtools= downsampling to 20x, 15x, 10x and 5x. No loss down to 10x; a significant drop at 5x (p = 0.023).
+  - FFPE vs fresh-frozen tumour EM-seq agreed (n = 5 pairs).
+  - Sample QC gates: read pass rate > 0.75; median depth > 10x at 450K CpGs; reads with more than 3 unconverted Cs dropped (processed with fastp, bwa-meth and biscuit).
 - Code and trained models at https://github.com/digitalcytometry/spatialecotyper and https://spatialecotyper.stanford.edu.
 - See [[id:6fdb7ece-efbb-4523-a7a5-7dd594d199dd][CIBERSORTx and cytotrace]] for related Newman-lab digital cytometry methods, and [[id:bac12c9a-6f8a-4d1b-b8a2-041632c814f6][Spatial methods]] for the broader spatial transcriptomics context
 - [[id:e07fee1b-d7fd-42ce-9639-ff803cfc9c8e][Deconvolution, immunoprofiling/immunophenotyping, cell type enumeration with rnaseq]]
 - [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
 - [[id:12cfb78c-7912-4c68-b0f4-e2f90c112185][Tumor microenvironment]]
 - [[id:613fda39-d75b-4c51-ad2b-ff59450ae5e6][Immunotherapy for cancer]].
+- [[id:ff665723-5f74-4cf7-977b-469fff7e0524][PROMISE breast cfDNA ideas]]
+- [[id:2657cf13-a1f7-4dc1-a3e5-2839ddbaa543][Methylome deconvolution]]
+- [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
+- [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
 **** bioanalyzeR                                                    :biotool:
 :PROPERTIES:
 :ID:       ea6092a7-8c57-4063-a5b5-64e88652c818
@@ -13909,6 +13933,7 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41467-024-48466-z
 - Fragment-level noise structure determines deconvolution specificity ceiling: WGBS/ONT errors are per-CpG independent (exponential suppression with multi-CpG markers), but EM-seq over-conversion produces fully unmethylated molecules at ~2.5% regardless of marker CpG count, generating false-positive tissue signal that masked true cardiomyocyte elevation post-cardiac catheterization and produced spurious pancreatic beta cell signal in negative controls [cite:@loyfer2026emseqerror]
 - Tumor-tissue-trained sarcoma methylation classifier failed on plasma cfDNA in a pediatric RMS cohort (correct entity prediction in 2/18 samples), prompting a reference-free RefFreeEWAS deconvolution restricted to classifier RMS reference samples + healthy tissues to derive 8 plasma-projectable signatures; the strategy collapses dimensionality before plasma projection and recovered ARMS vs ERMS discrimination at AUC 0.75 [cite:@schad2026rhabdo]
 - FinaleMe-predicted methylation from cfDNA WGS provides an alternative deconvolution input that bypasses bisulfite-induced fragmentation artifacts entirely (validated at deep 16-39X and shallow ~0.1X WGS coverage on 80 paired samples) [cite:@liu2024finalme]
+- Simulated-admixture validation design for cfDNA methylation deconvolution: tumour methylomes (TCGA 450K, split 346 train / 115 test) mixed with healthy-donor plasma EM-seq at background fraction 0.2-0.6, with donors split disjointly between train and test (18/5). The healthy background pool was expanded by mixing random donor triplets with multiplicative noise (M̂ = min((1+0.02ν)M, 1)). To check that the simulations resemble real plasma, simulated and real plasma were placed in one PCA and coloured by AVENIO ctDNA fraction. Accuracy on simulated data predicted accuracy on real plasma across ecotypes (r = 0.86) [cite:@zhang2026]
 - [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
 - [[id:8ffda4e0-8a03-4fa3-aa0d-56c2e6a1dca4][Bisulfite sequencing]]
 - [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
@@ -13920,5 +13945,7 @@ https://www-nature-com.mclibrary.idm.oclc.org/articles/s41467-024-48466-z
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:992de4dc-775e-41f0-a70a-e38c99b87265][Single cell methylation sequencing]]
 - [[id:046ca1f7-175c-48ae-86af-4f9fbaa29126][Tissue viability for sequencing]]
-- [[id:046ca1f7-175c-48ae-86af-4f9fbaa29126][Tissue viability for sequencing]]
-- [[id:046ca1f7-175c-48ae-86af-4f9fbaa29126][Tissue viability for sequencing]]
+- [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]]
+- [[id:45d89f4a-a1ed-4201-9806-b93a09529d82][Cross validation]]
+- [[id:f44b9dce-d7fa-4b6a-9949-49ff3c02547c][Sequencing testing, modeling, and read simulation]]
+- [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
