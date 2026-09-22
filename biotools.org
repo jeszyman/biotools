@@ -8540,6 +8540,18 @@ https://hgserver1.amc.nl/cgi-bin/r2/main.cgi?open_page=login
 - https://www.liebertpub.com/doi/abs/10.1089/cmb.2004.11.714
 **** Power and effect
 https://claude.ai/chat/38a931af-e3c0-459a-a7ad-1429b2800d80
+**** A coverage or completeness fraction is not a quality gate until it predicts the outcome
+:PROPERTIES:
+:ID:       1411A90E-A961-448B-A940-61C9E63AD025
+:END:
+A fraction that describes how much of a feature an assay can address (CpGs covered, exons tiled, bases at depth) reads like a quality measure and is routinely used as a filter. It can run in the wrong direction, because the fraction is a ratio and its denominator is the feature's size. Small single-copy features are easy to cover completely and carry few observations; large multi-copy features are covered in a small share and carry many. The quantity that sets measurement precision is the absolute count of usable observations, not the share of the feature they represent, so a fraction confounded with feature size can be anti-correlated with the precision it is meant to gate.
+
+Test it before it becomes a filter: regress the candidate metric against the outcome you care about, on real data, in one command. If the outcome already has a measured criterion, the fraction has to beat it to earn a place, and usually it does not.
+
+Worked example (rmeth, 2026-09-22): a repeat subfamily's CpG-coverage fraction against the cohort's per-subfamily noise ratio, over 1,257 subfamilies, gives Spearman +0.39, the wrong sign, because the subfamilies near 100 percent coverage are tiny single-copy elements with a few hundred CpGs while AluY's 10 percent is 129,345 CpGs. The absolute covered-CpG count gives -0.92. Applied as a floor at 0.5 the fraction would have discarded 47 subfamilies that pass the cohort's binomial-error filter and kept 491 that fail it. Nearly a day of design rested on the fraction before anyone regressed it.
+
+The same shape as [[id:3a2f8c1e-6d4b-4e9a-bf17-2c5d9e8a4b71][the shuffle control for clustering]]: a number that is always computable, always interpretable-looking, and says nothing until tested against something measured.
+
 **** Clustering and cluster analysis
 :PROPERTIES:
 :ID:       5372195f-b5fd-41da-8020-a87533c6e74a
