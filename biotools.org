@@ -8708,6 +8708,17 @@ Mass Spectrometry
 :ID:       052b5d06-5f71-4a86-b4eb-5d59cbb6b622
 :END:
 - ~10k targets
+*** Repeat element k-mer analysis
+:PROPERTIES:
+:ID:       5ec5fd00-cbb7-44c6-a292-4f22c7ad8605
+:END:
+
+Compute and memory for a k-mer pipeline over repeat annotation scale with the number of distinct k-mers, not with the annotated sequence in bases. The two diverge by family architecture. Alu copies are about 300 bp and near-identical, so a megabase of Alu annotation yields few distinct k-mers. L1 copies are about 6 kb and divergent, so a megabase of L1 annotation yields many.
+
+Measured on chm13 at k=24 over both strands ([[file:~/repos/rmeth/rmeth.org][rmeth]], [2026-09-22 Tue]): 100 Mb of intervals across four Alu subfamilies gave 48.8 M distinct candidate k-mers, and 25 Mb across four L1 subfamilies gave 36.4 M. That is 1.34 times the k-mers from a quarter of the sequence.
+
+An estimate built on interval bases is therefore wrong in the direction that matters, because Alu dominates repeat annotation by base count. Size a repeat k-mer build by counting distinct k-mers for a sample of targets, and measure at two different family architectures before trusting the rate.
+
 *** Sequence motif analysis
 :PROPERTIES:
 :ID:       85b93607-9338-47b6-82c3-6f59d7d319cf
