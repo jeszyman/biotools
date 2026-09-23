@@ -4690,6 +4690,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 :ID:       c9ce98a3-e54c-4ffd-9819-cf3e59a06c31
 :END:
 - PyClone-VI: scalable inference of clonal population structures using whole genome data [cite:@gillis2020pyclonevi]
+- Tissue reference (no plasma): in one primary MPNST and its multifocal recurrence, copy number heterogeneity acted as a native barcode that, with mutations, resolved a branching clonal tree consistent with ongoing chromosomal instability; the subclonal CNA structure that plasma CNA tracking of MPNST would need to resolve (preprint) [cite:@yan2026mpnst]
 - Modeling clonal structure over narrow time frames via circulating tumor DNA in metastatic breast cancer [cite:@parsons2021clonalcfdna]
 - Noninvasive subclone tracking via personalized ctDNA panels in localized STS (SARC032): patients with multiple tumor clones detected by ctDNA after surgery had inferior outcomes, establishing post-surgical clonal diversity as a prognostic biomarker [cite:@subramanian2026sarc032]
 - Post-mortem cfDNA from metastatic BLCA captures intra-patient genomic and transcriptional heterogeneity across metastatic sites, enabling noninvasive assessment of subtype identity and aggressiveness (n = 8 patients, WGS + targeted cfDNA) [cite:@itagi2026blca]
@@ -8499,6 +8500,7 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC6162482/
 :ID:       13d91fd3-a9bd-4f65-9adf-1ce70f6e5e15
 :END:
 Immunoprecipitation of methylated DNA fragments using an anti-5-methylcytosine antibody, followed by sequencing — provides unbiased whole-genome methylation enrichment profiles at ~150 bp resolution.
+- cfMeDIP-seq on 1.6 mL of banked pre-diagnosis plasma resolved cancer-associated hypermethylated regions years before diagnosis in breast and prostate cancer [cite:@cheng2026prediagnosis]
 **** Long-read methylation analysis
 :PROPERTIES:
 :ID:       d2ddd3bf-cb2d-4a2e-bbce-a85effa0b548
