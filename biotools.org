@@ -4770,6 +4770,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 :ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
 :END:
 - 4-mer end motif features contribute to multimodal fragmentomics classifier discriminating NF1-associated tumor subtypes [cite:@sundby2024ccr]
+- Extraction must choose each read's 5′ end by strand (SAM bit 16), not by mate (flags 64/128). Keying on mate takes the read's 3′ end for the ~50% of pairs with R1 on the minus strand; when the fragment is longer than the read that end is interior, so ~40% of motifs are not cut sites and AAAA/TTTT rise above the CCCA/CCTG/CCAG DNASE1L3 motifs. Reads motifs from the reference, so it holds for EM-seq/bisulfite alignments. Reference implementation: [[file:~/repos/frag/resources/motif_extract_axel_20260918/EXTRACT.md][Axel's strand-aware extractor]]; fix in progress: [[id:8d58fbdd-d672-48bf-8dd1-dde7d7cdc8fa][frag end-motif overhaul]] (career). [2026-09-23 Wed]
 - [[file:~/data/career/golkaram2022.pdf]]
 - [[#0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 - DNA methylation analysis explores the molecular basis of plasma cfDNA fragmentation [cite:@an2023]
@@ -5780,6 +5781,7 @@ https://www.nature.com/articles/s41467-023-38407-7
 - [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]]
 - [[id:a17e00b2-d503-4dd0-90bd-8854a47a23ee][Pediatric brain tumors]]
 - [[id:f2ce37ed-ba4b-463d-a43f-92d02d13c92b][Pediatric solid tumor liquid biopsy]]
+- [[id:304d4d4f-8f24-49f1-8718-9490ae40c335][Multi-cancer early detection]]
 ***** Assay platforms
 :PROPERTIES:
 :ID:       0c5359ff-bbd8-4104-a14a-cb0caaea6af4
