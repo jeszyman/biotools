@@ -2240,6 +2240,7 @@ mandatory
 - [cite:@grossman2019]
 - [cite:@bernasconi2020]
 - [cite:@grossman2018]
+- [[id:8d60abc7-07e0-4263-8ec2-de3e810cb029][NCI Cancer Research Data Commons]]
 **** Variant databases
 :PROPERTIES:
 :ID:       86883c33-5647-4da3-9203-ac16e7e2cc97
@@ -6059,6 +6060,7 @@ Consolidated into [[id:359f3390-1e3c-43fe-93c4-4d0c6d8c87d9][Chromatin and nucle
 
 - https://www.nature.com/articles/s41586-025-08834-1
 - [cite:@illumina2022]
+- uRARE-seq profiles urine cfRNA by random priming and affinity capture of cfRNA fragments, then sequencing [cite:@liu2026urareseq] ([[file:~/library/liu2026urareseq.pdf][pdf]])
 *** Chromatin profiling
 :PROPERTIES:
 :ID:       0bec21d1-cc38-4965-8bdf-fddbc803fffb
@@ -13517,6 +13519,9 @@ CLOCK: [2022-08-31 Wed 08:20]--[2022-08-31 Wed 09:11] =>  0:51
 :END:
 https://datacommons.cancer.gov/support-crdc-cloud-resources
 https://datacommons.cancer.gov/
+- Pediatric data resources used at the 2025 NCI Data Jamboree included the CCDI Data Hub, C3DC, NCCR Explorer and Data Platform, Kids First Data Resource Portal, St Jude Cloud, ScPCA Portal, Treehouse, and dbGaP. Teams computed on CRDC and the Seven Bridges Cancer Genomics Cloud [cite:@boja2026jamboree]
+- [[id:52df3362-6377-4620-aaf5-2bc37b4f38fa][Pediatric cancers]]
+- [[id:0e7d0c19-22cc-4502-a3c2-4be5b537f375][Bioinformatics consortia, data portals and commons]]
 ***** ISB Cancer Gateway in the Cloud (ISB-CGC)
 :PROPERTIES:
 :ID:       cc8ecad2-1a98-49bc-aeb8-6ce6658905bd
