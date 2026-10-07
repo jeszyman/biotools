@@ -4950,6 +4950,7 @@ For EM-seq/bisulfite data, Xengsort (k-mer classification) is not applicable bec
 https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - MS-ddPCR for ESR1 promoter methylation (promA, promB): feasibility demonstrated in cfDNA from HR+/HER2- MBC (n=49); dynamic change (≥2-fold rise at 3 months) prognostic while baseline values were not [cite:@gerratana2020esr1meth]
 - qMSP for ESR1 methylation in cfDNA: age-related leukocyte ESR1 methylation confounds tumor-specific signal; not correlated with ctDNA VAF; feasible but not clinically predictive at baseline [cite:@bos2022esr1meth]
+- [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
 **** cfDNA nucleosome profiling
 :PROPERTIES:
 :ID:       c4dde8d6-1a02-42c7-a6b6-786b757fcad1
@@ -5774,9 +5775,13 @@ https://www.nature.com/articles/s41467-023-38407-7
 - Applied: [[id:a41f63f9-a728-410e-861d-2d05a49fee23][Build methylation pipeline]] (career)
 - M-PACT: deep neural network for CNS tumor classification from subnanogram-input cfDNA methylomes (CSF); 92% benchmarking / 88% validation accuracy across embryonal and nonembryonal tumors; same workflow enables methylation-based cellular deconvolution and copy number variation detection [cite:@smith2026mpact]
 - Review of the methylome and cfDNA with current applications in medicine and pediatric disease [cite:@spector2023methylome]
+- Methylation-based detection was more sensitive than mutation-based detection at low tumor fraction in dilution experiments. cfMeDIP-seq detected differentially methylated regions down to 0.001% tumor fraction, where somatic mutations were not detectable below 1% [cite:@shen2018]. Block-level methylation haplotype metrics add single-read robustness for tissue-of-origin inference [cite:@guo2017]. Both studies are reviewed together in [cite:@chatterjee2026methylation].
 - Cell-type-specific methylation atlases enable cfDNA-based detection of radiation-induced tissue damage with dose-dependent increases in tissue-specific cfDNA fragments after thoracic irradiation [cite:@barefoot2022rads]
 - FinaleMe: non-homogeneous HMM predicts per-CpG methylation status of individual cfDNA fragments from WGS alone (no bisulfite), using fragment length, normalized coverage, and CpG distance-to-fragment-center; auROC 0.91 in CpG-rich regions (≥5 CpGs/fragment), validated on paired deep WGS+WGBS [cite:@liu2024finalme]
 - [[id:d9b52bbd-ec6a-4b9e-af4b-17f6efafdcf6][methylation sequencing]]
+- [[id:13d91fd3-a9bd-4f65-9adf-1ce70f6e5e15][MeDIP-seq]]
+- [[id:8e0aa543-7033-478b-b66c-bea395db35c8][cfDNA methylation marker PCR]]
+- [[id:a838286c-a769-4d0b-969e-b781936718f9][Cross-platform methylation data merging: arrays vs bisulfite sequencing]]
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
@@ -8536,6 +8541,7 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC6162482/
 - Practical approach: compare direction of effect (hypo vs hyper relative to controls) within each dataset, rather than merging absolute values across platforms.
 - Can extract array-probe-equivalent CpG positions from bisulfite data for a constrained comparison, but this discards the whole-genome advantage of bisulfite-seq.
 - Repeat elements (LINE-1, ERV-L/MaLR) are essentially invisible to arrays — only accessible via whole-genome bisulfite methods. LUMP score on arrays is a crude proxy using a handful of probes.
+- [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
 **** Enrichment-based
 - Batman score- (Bayesian Tool for Methylation Analysis), used to convert raw MeDIP-seq read counts into absolute DNA methylation estimates (0–100%) at CpG-resolution windows
 ***** MeDIP-seq
@@ -8544,6 +8550,7 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC6162482/
 :END:
 Immunoprecipitation of methylated DNA fragments using an anti-5-methylcytosine antibody, followed by sequencing — provides unbiased whole-genome methylation enrichment profiles at ~150 bp resolution.
 - cfMeDIP-seq on 1.6 mL of banked pre-diagnosis plasma resolved cancer-associated hypermethylated regions years before diagnosis in breast and prostate cancer [cite:@cheng2026prediagnosis]
+- [[id:79dfda7e-8b6d-45c7-88d5-804979155763][cfDNA methylation]]
 **** Long-read methylation analysis
 :PROPERTIES:
 :ID:       d2ddd3bf-cb2d-4a2e-bbce-a85effa0b548
