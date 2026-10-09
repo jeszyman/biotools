@@ -4734,9 +4734,11 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
   - https://ashpublications.org/blood/article/140/Supplement%201/10712/491124/Accurate-Detection-of-Clinically-Actionable-Copy
 - Integrating genomic features for non-invasive early lung cancer detection: includes CNA features [cite:@chabon2020]
 - Clinical validation of ULP-WGS ichorCNA TFx assay: LoD 3% TFx (97.2-100% sensitivity at 1x and 0.1x depth), 95% repeatability, cross-platform concordance (HiSeqX/NovaSeq); CNLOH causes TFx underestimation (62% vs 82% by WES/ABSOLUTE in one case) [cite:@ricklesyoung2024]
+- Shallow-WGS tumor fraction has four proposed uses, as a stand-alone prognostic assay, as tumor-fraction dynamics for treatment response, as a low-cost and low-input ctDNA quality check before targeted panel sequencing, and as a base for orthogonal ctDNA features such as homologous recombination deficiency, nucleosome positioning, and cancer-type-specific CNAs. Tumor-fraction quantification is part of commercial ctDNA assays including Guardant360, FoundationOne Liquid CDx, and cf-IMPACT, and the cf-IMPACT group tested shallow-WGS tumor fraction and fragment size for interpreting negative cfDNA results [cite:@ricklesyoung2024].
 - MSK augmented CNA-based tumor fraction estimation [cite:@tsui2021]
 - [[#0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 - SNV-based purity/ploidy estimation: ABSOLUTE (Carter et al. Nat Biotechnol 2012) and PureCN (Bioconductor) for allele-specific CNA and tumor fraction from cfDNA
+- WES of cfDNA with TITAN or ABSOLUTE can serve as a gold standard for tumor fraction, but it is expensive and depends on adequate tumor DNA [cite:@ricklesyoung2024].
 - Genome-wide cfDNA mutational integration enables ultra-sensitive cancer monitoring: includes post-CN call denoising and BIC-seq segmentation [cite:@zviran2020]
 - Low-pass WGS of circulating cfDNA demonstrates dynamic changes in genomic copy number in squamous lung cancer clinical cohort (proprietary method) [cite:@chen2019cna]
 - Ultra-sensitive mutation detection and genome-wide DNA copy number reconstruction by error-corrected ctDNA sequencing: CNVkit on duplex hybrid capture reads [cite:@mansukhani2018]
@@ -4769,6 +4771,9 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - [[id:0b43e09e-52f7-49fb-8796-87168fe57706][cfDNA small variant calling]]
 - [[id:38c00ba1-299f-4a0d-959e-58845d12c712][Machine learning of whole genome sequencing data]]
 - [[id:e131276d-ecf7-4a2f-b115-79c65cf0543d][Differentiation from DIAMOND, the closest prior art (2026-08-13)]]
+- [[id:cc3e4b92-308d-4323-b18e-1cd07fd6bc32][Molecular assay validation]]
+- [[id:290d7be0-d47b-4055-9180-373ed6f3fce5][Copy-neutral loss of heterozygosity]]
+- [[id:afc0516f-d05e-4d9a-b063-d2b0a03e11b1][cfDNA quality control (QC)]]
 **** cfDNA fragment end motif analysis
 :PROPERTIES:
 :ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
@@ -5096,6 +5101,8 @@ https://www.google.com/search?q=biostars+mouse+human+homology+match+genes&oq=bio
 :ID:       290d7be0-d47b-4055-9180-373ed6f3fce5
 :END:
 https://www.biostars.org/p/254848/#:~:text=%22The%20B%2DAllele%20Frequency%20is,alleles%20(e.g.%20AB).%22
+- [[id:8c535c38-9310-4fd0-a8fe-c300639493da][ichorcna]]
+- [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
 **** ctDNA burden by cfDNA degragation
 :PROPERTIES:
 :ID:       1c8be64c-2579-4e7b-95bf-578d9c38af3c
@@ -5952,6 +5959,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:FAA84A20-A851-4830-B98D-F1CA8EC3384A][rmeth: Duplicate reads, per-subfamily duplicate-pair rates]]
 - [[id:dd9f6806-1704-444c-8498-f9c50a52022a][Assess library complexity]]
 - [[id:de9c6398-4ffe-48bf-9ef9-31028edf9873][cfDNA fragment end motif analysis]]
+- [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
 
 
 **** [[*cfDNA fragmentomics][cfDNA fragmentomics]]
@@ -11147,6 +11155,7 @@ https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzE
 - https://www.biostars.org/local/search/page/?q=ichorcna
 - for install see [[file:/ssh:chaudhuri-roche:/home/jszymanski/repos/biotools/Dockerfile][biotools Dockerfile]]
 - Assay validation: 20 ng cfDNA preferred input (5 ng minimum), 4 mL plasma, MAD <0.20 as QC threshold; EDTA and Streck tubes equivalent within 8 hours; panel of normal from 20 healthy donors sufficient [cite:@ricklesyoung2024]
+- ichorCNA was optimized for detection and tumor-fraction estimation below 20% tumor fraction. Above 20%, ULP-WGS and WES estimates diverged, which the authors attribute to copy-neutral LOH, since coverage alone cannot distinguish it from truly copy-neutral segments, and they propose subclonal CNAs as a further source [cite:@ricklesyoung2024].
 - 100 pg cfDNA input (Bioanalyzer 160-500 bp peak quantification, not Qubit total) produced usable lcWGS data at 3× coverage in a 30-patient pediatric RMS cohort, extending below the published 5 ng minimum-input regime [cite:@ricklesyoung2024]; threshold set in-sample as max of n=10 healthy [cite:@schad2026rhabdo]
 - Size selection to 50-150 bp fragments before ichorCNA materially improves CNV resolution in CNV-poor cohorts; default ichorCNA scored AUC 0.61 vs 0.94 for a fragment-aware composite (CES) on 30 RMS patients (cohort skewed CNV-poor by ~60% fusion-positive ARMS, ~125 vs ~224 cumulative CNVs by GISTIC), so the gap reflects cohort biology + comparator configuration as much as algorithm difference [cite:@schad2026rhabdo]
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
@@ -11154,6 +11163,8 @@ https://www.google.com/search?q=ichorcna&sxsrf=ALeKk02zeu_rSdEZVMYYCyip37Gt2XFzE
 - [[id:67251de4-3c85-4ba5-b5e5-6efefcd8961d][WGS cfDNA methods]]
 - [[id:3f92c60b-c575-419a-95e3-344fd1d5ec0d][Tumor origin, tumor content, tumor fraction]]
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
+- [[id:cc3e4b92-308d-4323-b18e-1cd07fd6bc32][Molecular assay validation]]
+- [[id:290d7be0-d47b-4055-9180-373ed6f3fce5][Copy-neutral loss of heterozygosity]]
 **** INTEGRATE                                                      :biotool:
 :PROPERTIES:
 :use: detect rna fusions
