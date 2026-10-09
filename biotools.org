@@ -7797,6 +7797,8 @@ output- *.bcl files- base call and quality score per cycle
 convert *.bcl to .fastq.gz w/ CASAVA
 also demultiplexes
 - [[https://www.illumina.com/systems.html][system specs]]
+- NovaSeq X 25B flow cells give 26-35B read pairs over 8 lanes, and 10B flow cells give 10-13B ([[https://www.illumina.com/systems/sequencing-platforms/novaseq-x-plus/specifications.html][specs]]).
+- Low-diversity libraries such as EM-seq need a PhiX spike-in. NEB reports 5% on NovaSeq, and Illumina lists a minimum of 5% on NovaSeq X control software 1.3 and 10-20% on version 1.2 or earlier ([[https://www.neb.com/en/faqs/what-percentage-of-phix-is-needed-for-em-seq-libraries][NEB]], [[https://knowledge.illumina.com/instrumentation/general/instrumentation-general-reference_material-list/000001527][Illumina]]).
 - PhiX phasing and cluster ctrl https://www.illumina.com/content/dam/illumina-marketing/documents/products/technotes/hiseq-phix-control-v3-technical-note.pdf
 - library preparation kits
   - [[https://www.illumina.com/library-prep-array-kit-selector.html][selector]]
@@ -11448,6 +11450,8 @@ https://www.pnas.org/content/115/4/E743.long
 :END:
 - http://smithlabresearch.org/manuals/preseqmanual.pdf
 - library complexity- preseqr http://smithlabresearch.org/manuals/preseqmanual.pdf
+- lc_extrap builds the duplicate-count histogram (molecules seen once, twice, and so on) and extrapolates distinct molecules against reads sequenced with an estimator based on the Good-Toulmin model ([[https://github.com/smithlabcode/preseq][README]]). c_curve interpolates within the sequenced depth. Input is a BAM before duplicate removal.
+- The read pairs a library needs follow from the distinct fragments the analysis needs and from the curve's slope at that depth ([[id:76f5b4f0-9500-4bf8-9a52-80e5815175f2][Target depth]]).
 
 **** rGREAT
 :PROPERTIES:
