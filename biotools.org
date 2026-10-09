@@ -5132,7 +5132,7 @@ https://chatgpt.com/c/8648af42-5e94-4eb7-aa89-90712de0e095
   - https://www.biostars.org/p/104063/
   - https://sarahpenir.github.io/bioinformatics/awk/calculating-mapping-stats-from-a-bam-file-using-samtools-and-awk/
 - expected
-  - [[mu4e:msgid:33C61570-8F28-4ED8-B061-60E315F153D8@wustl.edu][Coverage for WGS]]
+  - Coverage for WGS
 - need depth plots depth (y) vs. 10kb bin x smooth across genome
   - https://www.biostars.org/p/104063/
 
