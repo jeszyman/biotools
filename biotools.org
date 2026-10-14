@@ -5947,6 +5947,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - cfDNA QC metrics for WGS: see supplementary table S1 of Quigley 2018 for metastatic prostate cancer cfDNA analysis QC thresholds [cite:@quigley2018]
 - AMP/CAP consensus reporting requirements for ctDNA assay QC: extraction method (78% reported), collection tube type (72%), sequencing depth (only 27% of NGS pubs reported mean coverage), template cfDNA input quantity (only 35% reported), and analytical sensitivity per variant class [cite:@lockwood2023]
 - Coordinate-based duplicate removal overcounts duplicates in cfDNA: at 270× PCR-free, 25% of fragments shared both end coordinates with another fragment against 1.45% expected under random fragmentation, so with a PCR-amplified library 14% of fragments "would have been wrongly assumed to be PCR duplicates" and filtered off [cite:@chan2016fetal]
+- Natural duplicates (independent molecules that share both end coordinates) come from preferred end sites, not from the narrow length distribution. The 1.45% random-cleavage expectation already used the observed plasma size distribution, so preferred ends account for the roughly 17-fold excess [cite:@chan2016fetal]. Collisions need depth, and the natural share of a coordinate-based duplicate rate grows with it. The 14% at 270× scales to at least about 0.5% at 10× and 1.6% at 30× (estimate, with linear scaling as a lower bound). At matched depth, differences in duplication between plasma libraries reflect library complexity rather than natural duplicates (inference). At deep targeted depth, earlier CAPP-Seq data showed redundant start/end coordinates in "<50% of cfDNA and <10% of acoustically shorn gDNA molecules" [cite:@newman2016]. Telling a natural duplicate from a PCR copy molecule by molecule needs a UMI ([[id:6fa7a179-bc69-4d79-b6b9-a2f498e8bf89][UMI designs and processing]]). Without UMIs, the natural fraction can be estimated in aggregate from duplicate clusters whose reads carry opposite alleles at a heterozygous site [cite:@bansal2017pcrdup; @newman2016].
 - [[id:cd9b6764-c96f-42f8-ba3f-eb9e166bd5e3][cfDNA and ctDNA clinical validation]]
 - [[id:498b4485-a6dc-4088-bb25-a17d3df00a4e][Pre-analytic variables]]
 - [[id:cc3e4b92-308d-4323-b18e-1cd07fd6bc32][Molecular assay validation]]
@@ -7315,6 +7316,7 @@ https://www.nature.com/articles/nrg3642/tables/2
 - An end-to-end run on real data proves mechanics (tag parsed on every read, tools interoperate, family-size distribution non-pathological) but not correctness of the partition; at shallow depth UMI-aware and position-only duplicate rates necessarily coincide because endpoint collisions require depth
 - Correctness checks by failure mode: UMI composition or whitelist check (wrong-bases parsing); heterozygous-site family concordance, a family showing both alleles holds two molecules (over-merging); UMI-aware vs position-only molecule counts as a function of depth (quantifies what the UMI buys); truth-known simulation scored against the recovered partition (the only true proof of the algorithm); edit-tolerance audit, reads rescued by the 1-edit merge should match the expected UMI error rate (about 1% for a 9-mer at Q30)
 - Applied: [[id:853a5279-60fd-479c-a5b0-6cd5eb8fd5c6][UMI-start workflow and pilot processing]] (mrd repo; xGen UDI-UMI, one-sided 9 bp on the i7 arm)
+- cfDNA natural duplicates (preferred ends, depth scaling, estimating them without UMIs): [[id:afc0516f-d05e-4d9a-b063-d2b0a03e11b1][cfDNA quality control (QC)]]
 
 **** Sequence alignment
 :PROPERTIES:
@@ -7856,6 +7858,7 @@ https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-017-4428-5#Sec5
 - seq error correction
   - as an information model, propogation of errors, random vs. nonrandom
   - random start-stop- allows ID of PCR duplicates- by start/stop regardless of internal seq
+    - holds for randomly sheared paired-end libraries (under 10% of duplicates in sonicated 1000 Genomes exomes were natural) but not for biased fragmentation (55-70% natural in 12 Nextera exomes, 45-50% in the abstract). Without UMIs, the natural fraction is estimated from duplicate clusters with opposite alleles at heterozygous sites [cite:@bansal2017pcrdup]
     - cfDNA start/stop positions are not random: preferred ends make independent molecules share both coordinates (25% of fragments at 270× PCR-free), so coordinate-based duplicate calls include real molecules [cite:@chan2016fetal]
   - ligation umi
     - umi strategies
