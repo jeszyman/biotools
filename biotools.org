@@ -9955,10 +9955,14 @@ A broader Scopus query for RT crossed with spatial transcriptomics returned 57 h
 These establish the template for RT-context spatial transcriptomics analyses but lack the dose-geometry dimension that defines SFRT biology.
 
 ***** Methodological implications for peak/valley spatial analysis
+:PROPERTIES:
+:ID:       f19fa437-96cc-44de-b084-513ce733f127
+:END:
 - Niche definition must come from beam geometry (physics-registered) rather than expression-derived clustering. Standard spatial-aware methods (BANKSY [cite:@singhal2024], SpaGCN, BayesSpace) are not directly applicable because they learn niches from expression; peak/valley designs need a physics-defined niche assignment registered from beam coordinates or a sentinel IHC marker like gamma-H2AX on an adjacent section.
 - Peak-valley spacing at the sub-millimeter scale puts segmentation errors on in-situ platforms (CosMx, Xenium) into the biologically-meaningful range rather than noise — misassigning a cell across a peak-valley boundary changes its condition label. Prefer subcellular-resolution in-situ platforms (CosMx, Xenium) or Visium HD 2 μm bins over classical Visium 55 μm spots for peak/valley geometries.
 - n=1 per condition is the starting point for SFRT spatial transcriptomics work until replicate cohorts accumulate. Descriptive effect sizes (log2FC, % expressed) are valid; formal p-values from a single slide are not. This matches the spatial-rads Mutter_01 design and is consistent with the general spatial-DE immaturity noted in [[*Differential expression with spatial context][Differential expression with spatial context]].
 - Cross-slide and cross-sample integration for SFRT has no published precedent. Harmony, RPCA, and Seurat v5 anchor approaches from [[*Normalization and integration][Normalization and integration]] will be applied de novo when Mutter_02 biological replicates arrive, without a reference benchmark specific to spatially-fractionated irradiation.
+- An automated γH2AX band detector that scores peak-to-valley stain contrast can fail on whole-slide exports near 3 µm/px (contrast 1.0 to 1.4) even when bands are plain by eye. Check zone calls against the images by eye and against an independent biological readout (macrophage p21 higher in peak than valley, above a shifted-band chance level) before using them ([[id:c9c36e15-04fe-4e3e-8890-bbc6c90744e1][spatial-rads own method]]; results/pv/om/readout_validation.tsv, chance_level.tsv).
 
 *** Spectrophotometry
 :PROPERTIES:
