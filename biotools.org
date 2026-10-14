@@ -5019,6 +5019,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:ae0363f3-379e-4521-9184-cbc0d46501cd][Chromatin accessibility profiling]]
 - [[id:debbd153-b877-4d0c-be1d-c5af76da140b][Can mouse PDX on-tx cfDNA track treatment response via TF activity?]]
 - [[id:de9c6398-4ffe-48bf-9ef9-31028edf9873][cfDNA fragment end motif analysis]]
+- [[id:5f03ca80-6e12-4ebe-a6e9-f0b0f013f7dd][CDKN2A status]]
 **** cfDNA small variant calling
 :PROPERTIES:
 :ID:       0b43e09e-52f7-49fb-8796-87168fe57706
@@ -8720,6 +8721,7 @@ CLOCK: [2021-08-30 Mon 13:28]--[2021-08-30 Mon 14:10] =>  0:42
 - For protein, SOMAscan has a higher dynamic range and lower limit of detection than comparable Luminex antibody-based assays (cite doi.org/10.1038/s41591-019-0665-2). Moreover, SOMAscan includes targets such as Jagged-1 and -2 not available for multiplexed antibody assays.
 - [[id:abb6fc6c-07d9-4375-a8f6-a87370f5c0ea][Multivariate biomarker discovery methods]]
 - [[id:546a7837-36b9-449e-9ce8-6b017c75de2f][Plasma proteomics]]
+- [[id:0e54d82a-6355-4946-8816-51b2f41df531][Set up NF1 protein prep run]]
 **** Proteomics
 :PROPERTIES:
 :ID:       1565fbef-afbe-4783-b5f1-875e9fcfeb8e
@@ -9765,6 +9767,8 @@ https://www.embopress.org/doi/full/10.15252/msb.20188746
 - [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
 - [[id:324b9c09-a535-49c9-aefe-0dc97b456b8d][Transcription factors]]
 - [[id:49ae936b-c3a4-47e7-815e-7ab24ac491b3][Human Tumor Atlas Network (HTAN)]]
+- [[id:d65cc4fa-ab05-4f87-be56-158e2b3977e8][Molecular evolution of NF1-associated tumors]]
+- [[id:23c13ac3-d01b-418d-aa1d-29e96aa81184][Cell typing and label transfer]]
 **** Single cell conda yaml
 :PROPERTIES:
 :ID:       48692b20-239f-4392-8100-9ed0ab028ca8
@@ -9891,6 +9895,8 @@ Primary deep-dive platform for this knowledge base. Capture-based spatial transc
 - InSituType, Tangram, RCTD, cell2location
 - BANKSY augments each cell's feature vector with the aggregated expression of its spatial neighbors, then clusters in the augmented space — unifies cell typing and tissue-domain detection in one framework [cite:@singhal2024].
 - Label transfer from matched scRNA-seq via Seurat FindTransferAnchors/TransferData outperformed manual cluster-based annotation for difficult tumor types (pleural mesothelioma) where panel marker coverage is sparse — but only when matched scRNA-seq from the same cohort is available. For panels with non-specific probe attachment to canonical lineage markers (e.g., B-cell markers absent from CosMx clusters), manual annotation collapses entire lineages into "unknown" clusters [cite:@ozirmaklermi2025].
+- Scoring transferred labels against aneuploidy. After Seurat FindTransferAnchors and TransferData from a 55-tumor NF1 reference, each query cell labeled malignant received a score equal to its label confidence (prediction.score.max) multiplied by an inferCNV deviation score, so label similarity and copy-number evidence are combined per cell. Applied to 19 new tumors and 20 public single-nucleus samples with no confusion matrix against histology reported, and one public MPNST scored 0 of 2,823 cells malignant [cite:@shern2025]
+- [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
 
 **** Spatial-aware analysis
 :PROPERTIES:
