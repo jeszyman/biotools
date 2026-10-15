@@ -3266,6 +3266,7 @@ https://chatgpt.com/c/67191dd3-e8b4-8005-bacd-6876cf5f524d
 - Case-control cfDNA comparisons across biobanks: controls collected elsewhere differ in tube type, processing, and library depth (6.6M vs 18M unique reads in one cfChIP-seq study), and depth-normalized CPM stays depth-sensitive at low library size, so a cancer-vs-healthy AUC near 1 in low-tumor-fraction samples is a batch result until libraries are downsampled to a common depth and batch-matched controls are processed with the cases. General form: [[id:8487e290-9abe-4836-a55e-60301e37375a][Confounding]]
 - When all cases are sequenced in one batch and all controls in another, every feature is confounded with case status, not only the batch-sensitive ones (end motifs first, but also fragment size, DELFI ratios, and copy-number noise). Only contrasts within one batch stay clean, such as pre- against post-treatment samples inside the case batch, paired where a patient has both. ([[file:~/meetings/su2c-project/2026-09-25-notes.md][SU2C 2026-09-25]], Axel Hidalgo's lung radiotherapy cohort)
 - [[id:afc0516f-d05e-4d9a-b063-d2b0a03e11b1][cfDNA quality control (QC)]]
+- [[id:f250d37d-4b99-4462-a772-1920acf3d8ab][Preprocessing and QC]]
 
 **** Bioinformatics project management
 :PROPERTIES:
@@ -5731,6 +5732,7 @@ https://www.nature.com/articles/s41467-023-38407-7
 - Three-step fusion of mutation (MaxVAF from 571-gene panel), L1PA methylation (DIAMOND MethPCancer), and genome-wide CNV lifted baseline ctDNA detection from 62.5% to 93.8% in 32 advanced pan-cancer patients (SHIVA02 trial); L1PA methylation changes preceded radiologic progression by approximately 4 months (preprint) [cite:@nedara2026shiva]
 - LINE-1 ORF1p protein detected in plasma at mid-attomolar concentrations by Simoa/MOSAIC single-molecule immunoassay, undetectable in >99% of >400 controls; showed early-detection promise for ovarian cancer, therapeutic response monitoring in gastroesophageal cancers, and prognostic value for overall survival in gastroesophageal and colorectal cancers [cite:@taylor2023orf1p]
 - [[id:2914d2ac-27c0-49b4-9632-9cadd0629b63][Repeat element]]
+- [[id:1312bfd9-23b2-45a8-99ac-a06aff81b267][LINEs (long interspersed nuclear elements)]]
 
 **** cfDNA methylation
 :PROPERTIES:
@@ -5840,6 +5842,9 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:fb9de1ff-9a15-46e9-a042-924a8182b0b4][Screening and early cancer detection]]
 - [[id:304d4d4f-8f24-49f1-8718-9490ae40c335][Multi-cancer early detection]]
 - [[id:4aedf4d5-04e3-46e4-8156-a2e5b601c9e6][DNA methylation in cancer]]
+- [[id:9b411384-3c84-4984-815a-363767cb43b3][Galleri trials (PATHFINDER, NHS-Galleri)]]
+- [[id:41cae00a-ee27-4f42-9e34-3215a5ae5f5c][Scope of hypermethylation: genome-wide vs Polycomb-specific]]
+- [[id:1a63acc7-af92-4060-be2d-8363465f7241][Tomczak 2024 — first plasma cfDNA methylation classifier for MPNST in NF1]]
 ***** Conversion artifacts
 :PROPERTIES:
 :ID:       9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89
@@ -9330,6 +9335,9 @@ Primary deep-dive platform for this knowledge base. Capture-based spatial transc
 - The CosMx SMI platform paper's own validation reports a 0.0092 false-call rate and ~0.04 background counts per cell on NSCLC/breast cancer [cite:@he2022cosmx] — the vendor baseline against which the independent FFPE benchmarks above should be read, since real-world FFPE negative-control FDR (5.8–11%, [cite:@ozirmaklermi2025]) can diverge substantially from the platform paper's figures.
 
 **** Preprocessing and QC
+:PROPERTIES:
+:ID:       f250d37d-4b99-4462-a772-1920acf3d8ab
+:END:
 - Cell segmentation — Baysor, Cellpose, StarDist, nuclei expansion heuristics
 - Transcript assignment, negative-probe control, false-discovery estimation
 - Per-cell QC metrics — counts, area, negprobe rate, spatial variance inflation
@@ -9346,6 +9354,7 @@ Primary deep-dive platform for this knowledge base. Capture-based spatial transc
 - Across Xenium and CosMx samples, the platform was the largest determinant of the principal components, ahead of the sample or dataset; spatial autocorrelation per sample was measured with Moran's I [cite:@plummer2025spatial].
 - Segmentation error, measured by decomposing each cell into pure cell types with RCTD against an snPATHO-seq reference: stroma is the worst case (fibroblast transcripts often contaminate cells annotated as immune), but the overall misassignment was modest. Nuclear-only segmentation gives the purest profiles at a large cost in assigned transcripts (43.3 vs 81.6 TPC with 5 µm expansion); morphology-stain (multimodal) segmentation balances the two [cite:@plummer2025spatial].
 - Coarse cell typing can tolerate some off-target hybridization and segmentation noise when the dynamic range of the marker transcripts is high [cite:@plummer2025spatial].
+- [[id:ccc5beb6-da8d-4d0a-959a-80d556d7dba7][Batch effect]]
 
 **** Normalization and integration
 - SCTransform vs log-normalization under sparse spatial counts
