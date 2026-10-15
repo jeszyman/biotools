@@ -1499,6 +1499,7 @@ Foreign key fields should be minimal:
 
 - Include pattern constraint to validate format before checking referential integrity
 - Detailed metadata lives in parent table only - avoid redundancy
+- An exception is the extra lookup columns in the xlsx sample sheet, which are a form of denormalization. Each is an =INDEX(MATCH())= formula that copies a field held in a parent table into the child row (for example, =participant_id= and =collection_date= on the fastqs sheet, copied from samples), so the parent table remains the source of that field.
 
 ***** Field Ordering
 1. Primary key first
@@ -4689,7 +4690,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 :PROPERTIES:
 :ID:       de9c6398-4ffe-48bf-9ef9-31028edf9873
 :END:
-- Extraction must choose each read's 5′ end by strand (SAM bit 16), not by mate (flags 64/128). Keying on mate takes the read's 3′ end for the ~50% of pairs with R1 on the minus strand; when the fragment is longer than the read that end is interior, so ~40% of motifs are not cut sites and AAAA/TTTT rise above the CCCA/CCTG/CCAG DNASE1L3 motifs. Reads motifs from the reference, so it holds for EM-seq/bisulfite alignments. Reference implementation: [[file:~/repos/frag/resources/motif_extract_axel_20260918/EXTRACT.md][Axel's strand-aware extractor]]; fix in progress: [[id:8d58fbdd-d672-48bf-8dd1-dde7d7cdc8fa][frag end-motif overhaul]] (career). [2026-09-23 Wed]
+- Extraction must choose each read's 5′ end by strand (SAM bit 16), not by mate (flags 64/128). Keying on mate takes the read's 3′ end for the ~50% of pairs with R1 on the minus strand; when the fragment is longer than the read that end is interior, so ~40% of motifs are not cut sites and AAAA/TTTT rise above the CCCA/CCTG/CCAG DNASE1L3 motifs. Reads motifs from the reference, so it holds for EM-seq/bisulfite alignments. Reference implementation: [[file:~/repos/frag/frag.org::*End motifs][Axel's strand-aware extractor]]; fix in progress: [[id:8d58fbdd-d672-48bf-8dd1-dde7d7cdc8fa][frag end-motif overhaul]] (career). [2026-09-23 Wed]
 - [[#0f1f4aa4-c755-42ff-8f81-8a32c14293a0][Cell-free DNA (cfDNA) and circulating-tumor DNA (ctDNA)]]
 - [[id:601c26c9-88d9-4493-a412-87bd362ecf23][Blood plasma entities related to NF1 disease progression]]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
