@@ -1571,6 +1571,11 @@ Keep entities in one table when:
 - Structural similarity between subtypes
 - Add discriminator field for subtype and leave subtype-specific fields optional
 
+***** Wide Tables Versus Entity-Attribute-Value (EAV)
+- Hand-entered project metadata is kept as one wide table per entity type (one column per attribute). Repeated measurements go in long tables with fixed, typed columns, as in the nf1-mouse tumor measurements sheet.
+- In entity-attribute-value (EAV) form every value sits in one string column, so Frictionless column types and enum constraints no longer apply. One entity also spreads over many rows (15 for one mouse in nf1-mouse), and Excel cannot offer a dropdown that changes with the attribute.
+- EAV fits a source with hundreds of mostly empty attributes that keep growing, and then only that source. The nf1-mouse sheets have fixed attribute sets, each column 50 to 100% filled (mice: 145 rows by 15 columns).
+
 **** Schema Evolution
 
 ***** Constraint Defaults
