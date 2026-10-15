@@ -4720,6 +4720,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - Plasma DNA ends are non-random: in PCR-free maternal plasma WGS at 270× haploid coverage, fragments carrying the most prevalent 0.5% of end positions made up 3.5% of all fragments, and a subset of preferred ends was fetal- or maternal-selective, with the fetal:maternal preferred-end ratio tracking fetal DNA fraction [cite:@chan2016fetal]
 - High-resolution characterization of cfDNA end sequence signatures: non-random cleavage produces position-specific dinucleotide biases at fragment termini that correlate with nucleosome rotational positioning and nuclease cutting preferences [cite:@chandrananda2015]
 - End-motif tetramer z-scores in VTE, SLE, DM, and SSc plasma highly correlated with high-TF cancer (R=0.88 VTE, 0.76 DM, 0.72 SSc, 0.475 SLE; all P<0.00001); MDS significantly elevated in all four conditions, indicating that inflammatory/vascular-derived cfDNA carries similar end-motif biases as tumor-derived fragments [cite:@curtis2025fragsig]
+- In plasma WGS of 969 individuals, cfDNA fragment ends were enriched for CC and CG dinucleotides; ends carrying CG were enriched, and ends carrying CCG depleted, at methylated CpG positions [cite:@noe2024].
 ***** Cancer detection methods
 :PROPERTIES:
 :ID:       90bf7e2c-aee9-4cb1-953f-9c7e1e25dab1
@@ -4860,6 +4861,7 @@ Three common strategies for human/mouse read separation in PDX data:
 - *Direct-to-human*: align to human ref only. Simplest. Mouse reads with homologous regions may falsely align.
 - *ICRG combined reference*: concatenate human + mouse ref (prefix mouse chroms with =mm10_=), align once, filter reads mapping to human chroms. One alignment, competitive mapping handles ambiguous reads. Achieves 99.9% accuracy for WES, RRBS, and RNA-seq [cite:@callari2018], but fails for whole-genome EM-seq — C→T conversion collapses sequence complexity at orthologous loci, causing systematic MAPQ=0 and species assignment bias (see nf1-mouse PDX read handling eval).
 - *Disambiguate*: align to human and mouse independently, compare alignment quality (NM tags), assign each read to the species with fewer mismatches. Requires aligner with accurate NM tags (BISCUIT for EM-seq, not bwa-meth). ~12% of reads tie on NM (ambiguous) — discard or assign to human as sub-variants (3A/3B). Implementation: name-sort both BAMs, streaming merge-walk in lockstep comparing NM per read pair, O(1) RAM. In-memory approach (loading all read names into Python sets) would need ~185 GB at full WGS scale (~250-600M read pairs).
+- A benchmark of 12 mouse-read removal protocols on RNA-seq, WES and WGS from 21 PDXs found that unremoved mouse reads raise immune- and stromal-gene expression and inflate somatic mutation counts, while gene fusion and copy-number calls are barely affected; pseudo-alignment protocols performed best, and Xengsort was the top tool [cite:@bhandari2025].
 Reference choice matters for disambiguation: use symmetric references (both without decoys/ALTs) to avoid biasing NM comparison. NCBI GRCh38 no-alt analysis set (195 contigs, no decoys) + UCSC mm10 primary (66 contigs) — both chr-prefixed. hg38 with decoys vs mm10 without creates directional bias.
 For EM-seq/bisulfite data, Xengsort (k-mer classification) is not applicable because C→T conversion breaks k-mer identity. See [[id:A1835C32-1FEB-4902-8127-DCF343353E83][methylation-aware Xengsort idea]] in nf1-mouse.
 - [cite:@rao2022] [cite:@rao2022]
@@ -4878,6 +4880,7 @@ For EM-seq/bisulfite data, Xengsort (k-mer classification) is not applicable bec
   - [cite:@campbell2020]
   - Mouse non-terminal cfDNA WGBS at 0.2 mL per draw via pooling [cite:@maggi2018]
     - [[https://www.scopus.com/results/citedbyresults.uri?sort=plf-f&cite=2-s2.0-85041307621&src=s&imp=t&sid=34d94cc055a157a403a73abf20dce6bb&sot=cite&sdt=a&sl=0&origin=resultslist&editSaveSearch=&txGid=0be803296f96ab0d3c7cff7b5c1c816a][scopus citing]]
+- Commentary on blood-based cfDNA analysis in xenograft models and how ctDNA monitoring maps onto tumor evolution, therapy and relapse [cite:@heidrich2022].
 **** cfDNA methylation marker PCR
 :PROPERTIES:
 :ID:       8e0aa543-7033-478b-b66c-bea395db35c8
@@ -5649,6 +5652,7 @@ https://www.nature.com/articles/s41467-023-38407-7
 - ARTEMIS k-mer reference generation: repo [[https://github.com/cancer-genomics/artemis2024][cancer-genomics/artemis2024]] (code/ARTEMIS_Pipeline/01_generate_artemis). Produces ~1.2 billion 24-mer reference (=kmers_all.fasta=) covering 1280 repeat element types (started 1287 RepeatMasker + 14 Altemose HSAT2/HSAT3, 1266 pass filters). Inputs required (not in repo, must download): T2T-CHM13v2.0 FASTA (NCBI GCF_009914755.1), UCSC T2T RepeatMasker BED, Jellyfish package; repo provides x9_altemosereference24.fasta (Altemose 2014 HSAT supplement) + useful.stuff.aa R package. Pipeline a1–a10: split RepeatMasker BED by type → mask chm13 for non-repeat k-mer filter → de novo k-mer count per repeat type (Jellyfish) → filter to k-mers unique to each type AND absent from non-repeat genome → combine with Altemose HSAT supplement → finalize. Multi-day HPC SGE job. Same reference reused by downstream applications (e.g., the 2025 Cancer Discovery brain cancer detection paper, [[https://aacrjournals.org/cancerdiscovery/article/15/8/1593/763853][doi:10.1158/2159-8290.CD-25-0074]]); no separate k-mer set generated in those follow-ups. ARTEMIS-Epi pipeline (=05_epi_pipeline=) uses fragmentation (DELFI) not methylation — "epi" = chromatin/nucleosome inference from short:long ratios, NOT direct 5mC measurement.
 - UCSC CenSat track (T2T-CHM13, =censat=) is the authoritative centromere-satellite annotation (Hoyt/Altemose). Queryable without download via the UCSC JSON API (=api.genome.ucsc.edu/list/schema= and =/getData/track=). It carries no class/family column — the satellite type is embedded in the item =name= (split on the first =_=): 12 satTypes genome-wide (=hsat1A/1B, hsat2, hsat3, hor, dhor, bsat, gsat, censat, ct, mon, rDNA=). HSat2/HSat3 parentheticals are messy per-array labels (combos like =A4,A2=, chromosome aliases =A6/DYZ1=, =Unknown=), not a clean subfamily vocabulary. Used by [[file:~/repos/repeat-meth/repeat-meth.org][repeat-meth]] as the censat source for its repeat-nomenclature annotation table.
 - Same satellite monomer can be RepeatMasker-classed both =Satellite= and =Simple_repeat=, and the split is *array-length*-driven, not a labeling error: long pericentromeric arrays (kb–hundreds of kb) get the Satellite call; short stray microsatellite runs (~60 bp) stay Simple_repeat. Verified on =(GAATG)n=/=(CATTC)n= (HSat3 pentamers): Satellite rows mean ~2.5–4.4 kb vs Simple_repeat rows ~60 bp. The T2T-CHM13 CenSat curation promoted the long arrays.
+- [[id:1312bfd9-23b2-45a8-99ac-a06aff81b267][LINEs (long interspersed nuclear elements)]]
 **** Tumor origin, tumor content, tumor fraction
 :PROPERTIES:
 :ID:       3f92c60b-c575-419a-95e3-344fd1d5ec0d
@@ -5658,12 +5662,14 @@ https://www.nature.com/articles/s41467-023-38407-7
 - Foundation Medicine TF derivation: tumor aneuploidy as primary method, with fallback to fragmentomics and maximum somatic VAF when aneuploidy is not detectable, on the commercial 324-gene panel; clinically validated for tissue-plasma concordance and OS prognostication in advanced NSCLC (Lung-MAP n=194); TF ≥1% boosts short-variant PPA from 51% to 95% [cite:@mack2025]
 - SNP aneuploidy-based TF (Foundation Medicine + Flatiron clinico-genomic database) prognostic across 4 advanced cancer types (n=1725: 198 mCRPC, 402 mBC, 902 aNSCLC, 223 mCRC); TF ≥10% univariate OS HR 1.68-3.3 across all cancers, with multivariate associations stable across multiple cutpoints; tumor-agnostic prognostic biomarker [cite:@reichert2023]
 - Methylation-based ctDNA TF (NGS methylation assay) for chemo response monitoring across advanced solid tumors (n=278); ≥98% TF decrease at any timepoint optimal predictor (rwTTNT aHR 0.40, rwOS aHR 0.54); rising TF lead time 2.27 mo to next treatment event [cite:@rolfo2025]
+- Tumor methylated fraction (TMeF), a tissue-free methylation estimate of ctDNA abundance: counts cfDNA fragments matching cancer-specific hyper- and hypomethylated patterns in DMRs learned from cancer tissue versus non-cancer cfDNA. TMeF correlated with small-variant allele fraction (Spearman 0.73), recovered synthetic dilutions of 10^-3 and 10^-4 within two-fold in 95% and 77% of samples, rose with stage and tumor size, and fell with survival probability [cite:@melton2023]
 - Tumor fraction as confounder of plasma-inferred expression: inferred dynamic range scales with ctDNA fraction, so PC1, GSVA indices, and clusters built on inferred expression can be fraction proxies; a Cox adjustment for fraction is necessary but not sufficient at n = 25 with collinear covariates. Report gene-wise and index-wise correlations with fraction, the fraction-only model (Kaplan-Meier at a cut-point, C-index, continuous Cox) against fraction plus index, and a full multivariable model with HRs, CIs, and event count. General form: [[id:8487e290-9abe-4836-a55e-60301e37375a][Confounding]]
 - Terminology: tumor purity is a tissue quantity; for plasma write ctDNA fraction or tumor fraction consistently in text and figure axes.
 - [[id:434f2b3a-cd86-4d1a-955d-b84e98005a71][cfDNA feature integration]]
 - [[id:0b43e09e-52f7-49fb-8796-87168fe57706][cfDNA small variant calling]]
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
 - [[id:8c535c38-9310-4fd0-a8fe-c300639493da][ichorcna]]
+- [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
 **** cfDNA and ctDNA-specific visualizations
 :PROPERTIES:
 :ID:       314e4183-bcb9-4029-86c8-fd4654219a6c
@@ -5766,6 +5772,7 @@ https://www.nature.com/articles/s41467-023-38407-7
 - [[id:a17e00b2-d503-4dd0-90bd-8854a47a23ee][Pediatric brain tumors]]
 - [[id:f2ce37ed-ba4b-463d-a43f-92d02d13c92b][Pediatric solid tumor liquid biopsy]]
 - [[id:304d4d4f-8f24-49f1-8718-9490ae40c335][Multi-cancer early detection]]
+- [[id:0834ef36-2d05-492f-af41-e700d7af188b][Methylation bioinformatics]]
 ***** Assay platforms
 :PROPERTIES:
 :ID:       0c5359ff-bbd8-4104-a14a-cb0caaea6af4
@@ -5790,6 +5797,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - cfMeDIP-seq: low-input (1-10 ng) bisulfite-free immunoprecipitation-based methylome profiling of plasma cfDNA, applicable to urine, CSF, and other low-input sources beyond cancer detection [cite:@shen2019cfmedip] (protocol used in [cite:@shen2018])
 - LABS (linear amplification-based bisulfite sequencing) enables genome-wide 5mC profiling from sub-nanogram cfDNA input (down to 10 pg), preserving underrepresented tumor DNA fragments lost during exponential amplification; applied to 100 cfDNA samples (50 CRC, 16 PDAC, 34 healthy) with cancer-specific methylation patterns, CNA, and tissue-of-origin identification [cite:@cui2024labs]
 - [2026-09-09 Wed] Group moving toward Illumina 5-base over EM-seq; Taylor checking Daniels comparison data; pursuing free Illumina kits. ([[file:~/meetings/canpredict-weekly/2026-09-09-notes.md][canpredict-weekly 2026-09-09]])
+- Deep (80x) whole-genome cfDNA TAPS reads genome and methylome from one library: in symptomatic patients across cancer types it reached 94.9% sensitivity and 88.8% specificity, held 86% AUC in silico at 0.7% ctDNA fraction, and tracked tumor burden after treatment without matched tumor biopsies [cite:@vavoulis2025].
 ***** Tissue deconvolution
 :PROPERTIES:
 :ID:       6d52cdb4-8611-4fd2-a96e-ecb56f30d758
@@ -5813,6 +5821,8 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:dda1c9d0-59b6-487d-8bdb-86423062cf22][cfDNA long read sequencing]]
 - [[id:173e0331-9140-47d0-9e5e-ec91672ebdc3][cfDNA fragmentomics]]
 - [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
+- MethylBERT, a Transformer model, classifies individual reads as tumor-derived from their methylation pattern and local sequence and estimates tumor cell fraction in bulk samples, outperforming existing deconvolution methods across pattern complexity, read length and coverage; also applied to cell-type deconvolution and liquid-biopsy early detection [cite:@jeong2025].
+- [[id:3f92c60b-c575-419a-95e3-344fd1d5ec0d][Tumor origin, tumor content, tumor fraction]]
 ***** 5hmC biomarkers
 :PROPERTIES:
 :ID:       dfdcad09-8447-4096-b139-b0b5bf56cad5
@@ -5845,6 +5855,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:9b411384-3c84-4984-815a-363767cb43b3][Galleri trials (PATHFINDER, NHS-Galleri)]]
 - [[id:41cae00a-ee27-4f42-9e34-3215a5ae5f5c][Scope of hypermethylation: genome-wide vs Polycomb-specific]]
 - [[id:1a63acc7-af92-4060-be2d-8363465f7241][Tomczak 2024 — first plasma cfDNA methylation classifier for MPNST in NF1]]
+- Prognosis rather than detection: targeted cfDNA methylation sequencing in 96 prostate cancer patients found 77 methylation haplotype blocks differing from organ-confined disease to mCRPC; a 20-block risk score combined with clinical variables and ctDNA fraction predicted mCRPC survival (AUC 0.99 at 6 months, 0.84 at 1 year, 0.82 at 2 years) [cite:@wong2025].
 ***** Conversion artifacts
 :PROPERTIES:
 :ID:       9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89
@@ -8044,6 +8055,7 @@ https://www.medrxiv.org/content/10.1101/2021.02.05.21251173v1
 :END:
 
 https://pmc.ncbi.nlm.nih.gov/articles/PMC6162482/
+- wgbstools: a suite for methylation sequencing data from any conversion or library chemistry, built on a compact anonymized epiread format (over 100x smaller than the input BAM), with genomic segmentation, biomarker discovery, genetic-epigenetic integration and fragment-level visualization [cite:@loyfer2026wgbstools].
 **** Cross-platform methylation data merging: arrays vs bisulfite sequencing
 :PROPERTIES:
 :ID:       a838286c-a769-4d0b-969e-b781936718f9
@@ -8154,6 +8166,7 @@ https://www.reddit.com/r/statistics/comments/t3ok40/q_is_there_any_difference_be
 - https://bookdown.org/rdpeng/exdata/k-means-clustering.html
 - https://www.datanovia.com/en/lessons/cluster-analysis-example-quick-start-r-code/
 - https://academic.oup.com/biostatistics/article/19/1/71/3852318
+- On four TCGA cancer RNA-seq sets, more samples helped clustering little (breast n=40 performed like n=330), disproportionate subtype sizes made subtypes hard to recover, method rankings varied by data set, and clustering one sex at a time sometimes performed much better than mixed data [cite:@vidman2019].
 ***** Is the clustering finding real structure? Shuffle-control + cophenetic test
 :PROPERTIES:
 :ID:       3a2f8c1e-6d4b-4e9a-bf17-2c5d9e8a4b71
@@ -9307,6 +9320,7 @@ dependencies:
 - Slide-seq / Slide-seqV2 / Curio Seeker
 - Stereo-seq (BGI/STOmics) — nanoball arrays
 - GeoMx DSP (NanoString) — ROI-based WTA / CTA
+  - Antibodies or probes carry photocleavable DNA oligos released by UV light only within a chosen region of interest and counted on nCounter; at its 2019 launch it profiled up to 40 proteins per FFPE section. A user's evaluation on cancer FFPE tissue covers ROI selection and its use for tumor heterogeneity and microenvironment work [cite:@van2019]
 - Open-ST, Pixel-seq
 
 **** Visium and Visium HD (10x Genomics)
@@ -10309,6 +10323,7 @@ https://academic.oup.com/nar/article/40/10/4288/2411520?login=true
 - Manual
 - [cite:@robinson2010]
 - Robinson,09 edgeR a Bioconductor package for differential expression analysis of digitial gene expression data
+- edgeR GLM framework for multifactor RNA-seq: estimates biological variation separately from technical variation, with empirical Bayes gene-wise dispersions that work with few replicates and down-weight genes inconsistent across replicates; also applies to ChIP-seq and DNA methylation count data [cite:@mccarthy2012].
 
 
 **** epicseq                                                       :biotools:
