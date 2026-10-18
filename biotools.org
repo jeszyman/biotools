@@ -5514,6 +5514,7 @@ https://singularity.lbl.gov/install-linux
 - https://www.reddit.com/r/bioinformatics/comments/12cb99z/what_are_some_good_examples_of_wellengineered/
 - https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424
 - http://byronjsmith.com/make-bml/
+- [[id:dfba404c-d4c2-4094-bb86-aa2b95482ea3][AI coding agents in bioinformatics software]]
 *** Bioinformatics visualization
 :PROPERTIES:
 :ID:       DB8463CB-97CB-49E6-8EDD-A5ECA2F140BF
@@ -7007,6 +7008,15 @@ https://www.reddit.com/r/bioinformatics/comments/1g1j4os/complete_machine_learni
 - [[id:de9c6398-4ffe-48bf-9ef9-31028edf9873][cfDNA fragment end motif analysis]]
 - [[id:0b43e09e-52f7-49fb-8796-87168fe57706][cfDNA small variant calling]]
 - A null from an L1-penalised model over hundreds of features at a few dozen samples is not evidence that the features carry no signal: with few informative columns among many noise columns, the inner cross-validation that chooses the penalty shrinks the model to the intercept. Seen [2026-09-21 Mon] in repeat-meth: a lasso on 751 residual features at 27 libraries read AUC 0.56 while single features had d above 1.6; a univariate filter fitted inside each outer training fold (top-k by Welch t on the training samples only, then the lasso) is the fold-honest instrument and is reported beside the full-matrix row ([[file:~/repos/repeat-meth/repeat-meth.org::*Cohort classifier: the checklist every cohort readout must satisfy][repeat-meth checklist, item 14]]).
+*** AI coding agents in bioinformatics software
+:PROPERTIES:
+:ID:       dfba404c-d4c2-4094-bb86-aa2b95482ea3
+:END:
+
+- Coding agents produced usable scientific software when the output could be checked against an external reference, such as byte-identical output, predictions from released model weights, or an existing test suite (eight case studies, including a Rust rewrite of the STAR aligner at 99.8% read-level parity). Agent reports of completion were not reliable evidence. Synthetic test data missed edge cases that real data exposed, and in one study the validation harness itself held the error. The results are contributor-reported and were not independently reproduced [cite:@li2026agentic].
+- The rewrites.bio principles ask that an AI-assisted rewrite of a bioinformatics tool credit the original authors, reproduce the original outputs exactly with any output-changing optimization opt-in, be benchmarked on real data against a named upstream version, disclose AI authorship and how correctness was checked, and be maintained after release. A bug found during a rewrite is confirmed manually with the original tool before it is reported upstream. [[https://seqera.io/blog/rewrites-bio/][Ewels 2026, Seqera]] [[file:~/personal/personal_reading/seqera-rewrites-bio-principles-for-ai-assisted-modernization-of-4983ae47.pdf][pdf]]
+- Related: [[id:1adb7f88-4720-4f1c-bb41-c2923768c6a7][Large language models LLMs]] (BioMysteryBench, Claude on bioinformatics analysis tasks), [[id:271b4d5f-727e-496e-b835-8fe9f8655655][Bioinformatics pipeline]] (pipeline repository module), [[id:eaa783cb-9d06-4763-9a28-b5cfe6c99825][Bioinformatics pipelines and project management and code]], and [[id:146f3266-f634-4728-8172-9ae8b459d0c7][Snakemake Style Guide and Good Practices]]
+- [2026-10-18 Sun] Claude session "afternoon-closeout-oct18": [[elisp:(start-process "claude-resume" nil (expand-file-name "~/.claude/bin/claude-resume") "c4c74f0c-60e4-4baa-866e-8844182e1632" "/home/jeszyman/repos/org")][resume]]
 *** Basic and generalized massively parallel sequencing methods
 :PROPERTIES:
 :ID:       cca285b0-cd5a-4c59-9601-f069512c497f
