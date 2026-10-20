@@ -4640,6 +4640,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 :ID:       a162cfb1-e598-40ea-8beb-228f0b21fc64
 :END:
 - Shallow-WGS tumor fraction has four proposed uses, as a stand-alone prognostic assay, as tumor-fraction dynamics for treatment response, as a low-cost and low-input ctDNA quality check before targeted panel sequencing, and as a base for orthogonal ctDNA features such as homologous recombination deficiency, nucleosome positioning, and cancer-type-specific CNAs. Tumor-fraction quantification is part of commercial ctDNA assays including Guardant360, FoundationOne Liquid CDx, and cf-IMPACT, and the cf-IMPACT group tested shallow-WGS tumor fraction and fragment size for interpreting negative cfDNA results [cite:@ricklesyoung2024].
+  - For treatment response, the 2026 ASCO ctDNA guideline recommends against fractional ctDNA measures, tumor fraction included, as a surrogate of disease burden for treatment decisions outside clinical trials or clinical research, having found no evidence of clinical utility (low evidence, strong) [cite:@lockwood2026ctdna]
 - WES of cfDNA with TITAN or ABSOLUTE can serve as a gold standard for tumor fraction, but it is expensive and depends on adequate tumor DNA [cite:@ricklesyoung2024].
 - Assessment of circulating copy number variant detection for cancer screening: simulation and power calculation framework [cite:@molparia2017]
 - Detection of copy number alterations in cell-free tumor DNA from plasma [cite:@ostrup2017]
