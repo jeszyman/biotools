@@ -4619,6 +4619,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - [[id:cc3e4b92-308d-4323-b18e-1cd07fd6bc32][Molecular assay validation]]
 - [[id:290d7be0-d47b-4055-9180-373ed6f3fce5][Copy-neutral loss of heterozygosity]]
 - [[id:afc0516f-d05e-4d9a-b063-d2b0a03e11b1][cfDNA quality control (QC)]]
+- [[id:7ddd858b-1b7d-45fe-a0ae-76ce10fe6b85][MPNST genetics and molecular biology]]
 ***** Tools and algorithms
 :PROPERTIES:
 :ID:       4ae48ff0-9799-47f6-80ac-7332e911a133
