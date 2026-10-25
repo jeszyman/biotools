@@ -4654,9 +4654,11 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - Integrating genomic features for non-invasive early lung cancer detection: includes CNA features [cite:@chabon2020]
 - Low-pass WGS of circulating cfDNA demonstrates dynamic changes in genomic copy number in squamous lung cancer clinical cohort (proprietary method) [cite:@chen2019cna]
 - Chromosome copy number variation in plasma detects early colorectal cancer: arm-level CNA by z-score [cite:@xu2018crc]
+- Arm-level z-scores on 1p, 1q, 8p, and 8q (GC-corrected 100 kb bin counts summed per arm, |z| > 3 against 32 healthy controls) detected at least one plasma CNA in 76/90 (84.4%) HCC patients, 8/36 (22.2%) patients with HBV cirrhosis, 3/67 (4.5%) HBV carriers without cirrhosis, and 0/32 healthy subjects. Two CNA-positive HBV patients were diagnosed with HCC 3-4 months after the draw. In 12 patients with sequenced tumor, plasma and tumor agreed on 30/48 arms (63%). Ten arms were altered in tumor only, mostly in patients with lower plasma tumor fraction, and 7 in plasma only. Tumor fraction from the deleted arm (or the amplified arm when none was deleted), F = |P_test - P_normal| / (ΔN/2 × P_normal) with a single-copy change assumed, had a median of 2.1% (IQR 1.2-3.8%) and a lower limit of 0.87% [cite:@jiang2015]
 - Chromosomal instability score
   - cfDNA copy number variations in plasma from colorectal cancer patients [cite:@li2017a]
   - Plasma cell-free cancer genome chromosomal instability as biomarker for primary liver cancer [cite:@feng2020]
+- [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
 ***** Reference                                                      :nohelm:
 :PROPERTIES:
 :ID:       7c740b72-3d5a-4b67-b468-1422dd79de8e
@@ -4799,7 +4801,8 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 :PROPERTIES:
 :ID:       e6a5aea2-099f-4fdd-8b7f-6abbb57f1bb0
 :END:
-- Lengthening and shortening of plasma DNA in hepatocellular carcinoma patients: fragment size shifts in HCC reflect tumor-derived cfDNA burden [cite:@jiang2015]
+
+- In plasma WGS of 90 HCC patients, cases with low tumor fraction had a longer size distribution than 32 healthy controls, and the distribution shifted toward shorter fragments as tumor fraction rose. The proportion of fragments below 150 bp correlated positively with tumor fraction (Pearson r = 0.6, P < 0.001), the proportion above 180 bp correlated negatively (r = -0.41, P < 0.001), and the 150-180 bp proportion did not correlate (P = 0.95). The authors proposed, without testing it, that the long population comes from necrosis of non-neoplastic liver around the tumor, which would reconcile earlier PCR reports of increased cfDNA integrity in cancer with short ctDNA [cite:@jiang2015]
 - Single-molecule sequencing enables long cfDNA fragment detection and direct methylation analysis for cancer patients [cite:@luo2022singlemol]
 - Characteristics, origin, and potential for cancer diagnostics of ultrashort plasma cell-free DNA: fragments <100 bp carry distinct epigenomic signatures [cite:@wang2023ultrashort]
 - Ultra-deep WGS with single-stranded library preparation shows ~50% of cfDNA fragments are <120 nt (sub-nucleosomal), systematically absent from standard double-stranded prep; this sub-nucleosomal population is relatively enriched for ctDNA in cancer and likely reflects active TF-bound or nucleosome-free regions [cite:@sanchez2018]
@@ -4813,6 +4816,7 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - [[id:61d07182-2526-484b-a889-b07cb9f0c8de][Fragment length window optimization (frag.org)]]
 - [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
 - [[id:de9485e3-5321-45a9-8720-42ea26d02aab][cfDNA modeling from first principles]]
+- [[id:f53991ba-f4fb-47b9-b33c-2b935619b0e6][cfDNA size distribution]]
 ***** Disease and clinical contexts
 :PROPERTIES:
 :ID:       47afb80f-7112-4c4b-aa19-3ec4d747f21f
@@ -5687,6 +5691,7 @@ https://www.nature.com/articles/s41467-023-38407-7
 :ID:       9c039277-94b1-46cf-81f2-dcedfd63e576
 :END:
 
+- Copy-number-informed size profiling (chromosome arm-level z-score analysis, CAZA) contrasts tumor-derived with non-tumor cfDNA within one plasma sample and needs no mutation calls. Reads from an arm amplified in the tumor are enriched for ctDNA and reads from a deleted arm are depleted of it, so the size profiles of the two arms differ by the size difference between the two sources. Every fragment across tens of Mb of altered genome is informative, whereas a mutation-based contrast uses only the fragments covering mutation sites. In HCC with 8p loss and 8q gain, the cumulative-frequency difference ΔS = S(8q) - S(8p) was positive below 200 bp in every case and peaked at 166 bp (ΔS166, the excess of fragments shorter than 166 bp on the amplified arm). ΔS166 was near 0 in healthy subjects, HBV carriers, and cirrhosis patients, and 1p versus 1q gave the same result [cite:@jiang2015]
 - Foundational characterization of circulating tumor DNA fragment length: ctDNA fragments are shorter than non-tumor cfDNA [cite:@underhill2016]
 - Enhanced cancer detection by cfDNA fragment size analysis: exploiting the size difference between tumor-derived and non-tumor cfDNA to improve ctDNA sensitivity [cite:@mouliere2018]
   - Extension to cerebrospinal fluid: cfDNA fragmentation and copy number alterations detected in CSF from glioma patients [cite:@mouliere2018a]
