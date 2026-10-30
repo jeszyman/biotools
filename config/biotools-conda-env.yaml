@@ -44,3 +44,4 @@ dependencies:
   - bioconductor-txdb.hsapiens.ucsc.hg38.knowngene
   - bioconductor-clusterprofiler
   - bioconductor-org.hs.eg.db
+  - bioconductor-globaltest
