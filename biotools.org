@@ -4738,8 +4738,11 @@ Handling blood contamination of bulk solid-tissue specimens uses a two-pronged s
 - Epigenetic analysis of cfDNA by fragmentomic profiling (FRAGMA) [cite:@zhou2022]
 - Genome-wide cfDNA termini in patients with cancer [cite:@moldovan2021]
 - Jagged ends of urinary cfDNA: characterization and feasibility in bladder cancer detection [cite:@zhou2021]
+- Jaggedness read from methylation data tracks tumor burden in plasma. The fraction of CpG-containing fragments that JEEPERS corrects, integrated over fragment length (AUJCR), rose with NSCLC stage (P = 5.56×10⁻⁹ by two-sided Jonckheere–Terpstra test; 32 controls, 26 stage I, and later-stage cases) and correlated with tumor-informed CAPP-seq mutation AF. AUJCR was also higher in breast and prostate cancer WGBS (66 cases) than in 14 controls. The authors treat AUJCR as a burden proxy with more variance than VAF [cite:@wang2026jeepers]
 - 4-mer end motif features contribute to multimodal fragmentomics classifier discriminating NF1-associated tumor subtypes [cite:@sundby2024ccr]
 - [cite:@golkaram2022]
+- [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
+- [[id:833f276f-f532-475e-8e0e-f4d528078a6b][cfDNA library preparation]]
 ***** Machine learning and language models
 :PROPERTIES:
 :ID:       1cd96fd8-906f-4d5f-9e4e-e55441c78b71
@@ -4999,6 +5002,7 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:55b77210-fcb6-438d-a546-0c3605f6f5c4][Integrated hybrid capture and genome-wide- MAESTRO]]
 - SEQC2 consortium benchmarking of ctDNA sequencing assay analytical validity: multi-site evaluation of variant detection performance across platforms, establishing standards for clinical ctDNA assay validation [cite:@deveson2021]
 - PhasED-seq: phased variant enrichment and detection sequencing for ultra-sensitive ctDNA MRD detection [cite:@kurtz2021phasedseq]
+- Duplex-UMI EM-seq libraries support SNV calling alongside methylation. A C>T seen on both strands is a mutation and a C>T on one strand only is a converted unmethylated C, which lets all 12 base substitutions be called at hotspots. EM-seq allele fractions agreed with tumor-informed CAPP-seq (R > 0.98 across serial samples from one NSCLC patient), and one-third of substitution classes may need ~2× the coverage because of strand-specific conversion effects [cite:@wang2026jeepers]
 - Detection of low-frequency DNA variants by targeted sequencing of the Watson and Crick strands [cite:@cohen2021]
 - Kittyhawk introduces read-centric somatic mutation calling via CNN, classifying individual sequencing reads as cancer variants vs sequencing artifacts independent of depth or VAF; achieves F1 0.961 and provides 30x enrichment at tumor fractions as low as 10^{-4}, enabling de novo mutation detection in early-stage lung cancer cfDNA where conventional locus-centric callers (MuTect, Strelka) fail [cite:@kothenhill2018kittyhawk]
 - cfDNA and ctDNA sequence variant calling
@@ -5011,6 +5015,8 @@ https://www.pnas.org/doi/abs/10.1073/pnas.1519286113
 - [[id:7369daa0-53bf-4b37-a4b0-7119eb3fc946][Tumor mutational burden]]
 - [[id:d11ec8a8-7fa6-4043-89b3-20045e2d339e][Machine learning in genomics and bioinformatics]]
 - [[id:313e7a81-daf8-4cd5-a806-2c3755977222][Minimal residual disease]]
+- [[id:4aedf4d5-04e3-46e4-8156-a2e5b601c9e6][DNA methylation in cancer]]
+- [[id:85e691cc-ebb3-4d74-825b-1c9204fb9c96][EM-seq]]
 
 **** cfDNA tissue of origin discovery
 :PROPERTIES:
@@ -5833,6 +5839,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - Liquid EcoTyper extends cfDNA methylation deconvolution beyond single-cell-type fractions to recover /multicellular/ spatial ecotypes (co-localized assemblies of immune, stromal, and malignant cell states); architecture, training, validation design, and specificity checks in [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]] [cite:@zhang2026]
 - Tumor-tissue-trained sarcoma methylation classifier failed on plasma cfDNA in a pediatric RMS cohort (correct entity prediction in 2/18 samples), prompting a reference-free RefFreeEWAS deconvolution restricted to classifier RMS reference samples + healthy tissues to derive 8 plasma-projectable signatures; the strategy collapses dimensionality before plasma projection and recovered ARMS vs ERMS discrimination at AUC 0.75 [cite:@schad2026rhabdo]
 - Benchmarking of methods for DNA methylome deconvolution [cite:@deridder2024]
+- Jagged-end fill-in biases UXM deconvolution of double-stranded-library cfDNA methylomes. Uncorrected EM-seq from healthy adults (n=13) gave implausibly high epithelial fractions compared with single-stranded-library methylomes (n=18), and after JEEPERS correction the fractions moved toward the single-stranded estimates, most for cell types below 5% of cfDNA (higher Lin's concordance and Pearson correlation). The same correction improved the correlation of pan-mammalian clock 2 methylation age with chronological age (n=39) [cite:@wang2026jeepers]
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 - [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]]
 - Systematic taxonomy of methylation-based cfDNA deconvolution: reference-based methods (MethAtlas/NNLS, CelFiE/EM, cfSort/deep learning) differ in whether they model unknown contributors and whether they operate at CpG-level ratios vs fragment-level methylation patterns; fragment-level approaches (UXM, CelFEER) gain sensitivity for rare cell types by leveraging within-fragment CpG correlation (review) [cite:@vorperian2025celltype]
@@ -5846,6 +5853,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:2bbeb644-af54-4f07-80ad-3584e1e21b04][single-cell RNA sequencing (scRNA-seq)]]
 - MethylBERT, a Transformer model, classifies individual reads as tumor-derived from their methylation pattern and local sequence and estimates tumor cell fraction in bulk samples, outperforming existing deconvolution methods across pattern complexity, read length and coverage; also applied to cell-type deconvolution and liquid-biopsy early detection [cite:@jeong2025].
 - [[id:3f92c60b-c575-419a-95e3-344fd1d5ec0d][Tumor origin, tumor content, tumor fraction]]
+- [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
 ***** 5hmC biomarkers
 :PROPERTIES:
 :ID:       dfdcad09-8447-4096-b139-b0b5bf56cad5
@@ -5885,6 +5893,7 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 :ID:       9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89
 :END:
 - End-repair during double-stranded library preparation artificially reduces inferred CpG methylation globally in cfDNA sequencing data, degrading tissue-of-origin deconvolution accuracy; single-stranded libraries circumvent this artifact [cite:@groth2026]
+  - End repair fills 5′ overhangs with unmethylated C, so the 3′ end of each strand loses its native CpG methylation. In duplex-UMI EM-seq of cfDNA from 3 healthy adults, ~58% of duplexes carried a jagged end on at least one strand, with a mean affected length of ~74 nt. JEEPERS corrects these calls per fragment, using the intact 5′ mate of the duplex or other fragments at the same locus with matching anchor CpGs as the reference, and its sibling mode also runs on WGBS without UMIs. At ~9× depth the mean R1–R2 methylation difference fell below 5%. Fixed 10–30 bp 3′ trimming left a strand-asymmetric bias that still differed significantly from SPLAT-seq, a library prep with no fill-in, whereas JEEPERS output was closer to SPLAT-seq. Code is at https://code.stanford.edu/alizadeh-diehn/jeepers [cite:@wang2026jeepers]
 - WGBS bisulfite conversion introduces technical alterations to cfDNA fragment length distribution, end motifs, and nucleosome positioning signals; fragmentomic features derived from WGBS libraries require correction or separate benchmarking against standard WGS [cite:@li2025]
   - Bears on methylation-length links measured by WGBS: [[id:c66abd39-25fb-436a-8ee3-3623f99d9420][ctDNA fragment length shortening]]
 - Excess DNA input (500 ng-2 ug, the standard protocol amount) into bisulfite conversion produces artifactual LINE-1 and Alu HYPOmethylation; reducing input to 0.5 ng revealed LINE-1 and Alu HYPERmethylation in 407 breast/colon/lung tumors (P<0.001 vs paired normal) and in 296 lung cancer cfDNA samples (P<0.0001 vs 477 controls), reversing the canonical direction [cite:@tran2024bisulfiteinput]
@@ -5898,6 +5907,9 @@ Sources: Nuttall et al. 2025 (Clin Epigenetics); De Abreu et al. 2025 (Epigeneti
 - [[id:6d52cdb4-8611-4fd2-a96e-ecb56f30d758][Tissue deconvolution]]
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 - [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]]
+- [[id:833f276f-f532-475e-8e0e-f4d528078a6b][cfDNA library preparation]]
+- [[id:90bf7e2c-aee9-4cb1-953f-9c7e1e25dab1][Cancer detection methods (cfDNA end motifs and jagged ends)]]
+- [[id:de9c6398-4ffe-48bf-9ef9-31028edf9873][cfDNA fragment end motif analysis]]
 ***** Reference                                                      :nohelm:
 :PROPERTIES:
 :ID:       312f3db6-4f68-455f-8fc8-23925d255d24
@@ -6389,7 +6401,9 @@ CLOCK: [2019-03-13 Wed 10:12]--[2019-03-13 Wed 10:47] =>  0:35
 - [[id:47c4ed56-1dea-48dc-bb25-ddbb0a4cd359][cfDNA tissue of origin discovery]]
 - [[id:c4dde8d6-1a02-42c7-a6b6-786b757fcad1][cfDNA nucleosome profiling]]
 - [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
+- [[id:0b43e09e-52f7-49fb-8796-87168fe57706][cfDNA small variant calling]]
 - Reported in lab meeting: the fragment-length periodicity signal seen in WGS cfDNA was not reproduced in matched EM-seq libraries, so fragmentomic profiles should not be assumed intact after conversion chemistry; contrasts with the EM-seq ~ WGS fragment validation in [cite:@bie2023] ([[file:~/meetings/chaudhuri-lab-meeting/2026-09-04-notes.md][chaudhuri-lab-meeting 2026-09-04]])
+- Incomplete conversion raises an observed beta by about u × (1 − β), where u is the unconverted fraction read from the unmethylated lambda spike-in: about 0.3 points of beta at u = 1.2% and β = 0.75. On Ewing sarcoma cfDNA (rmeth v1.1.0), a library-level exclusion at 1% lambda methylation removed 12 of 17 usable healthy libraries, because the healthy arm was converted less completely as a batch. Subfamily methylation then read AUC 0.663, p 0.28, at 16 against 5; with lambda methylation as a covariate and no exclusion it read 0.969, p 0.001, at 25 against 17 ([[id:4f1cb89d-e335-488a-a891-e35cb635d6a5][Ewing sarcoma plasma on rmeth]], 2026-11-01). See [[id:9a4febeb-30b1-4a91-bf4b-b2ccff0c2f89][Conversion artifacts]]
 *** ENCODE analysis pipelines
 :PROPERTIES:
 :ID:       682d7304-cada-4d95-b492-bafb24081ca7
@@ -10684,6 +10698,7 @@ https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.html
   - Short form: "ichorCNA fits tumor fraction and tumor ploidy together, and each solution is the same fit started from a different guess; it keeps the one with the best likelihood. The known failure is that high tumor fraction on a low-ploidy genome and lower tumor fraction on a diploid genome can fit the same profile. So the review is: make sure solutions starting at different ploidies were run, compare their likelihoods, and ask whether the chosen copy-number states make sense for this tumor."
   - Example: Ewing EW01d recurrence plasma, all four low tumor fraction solutions at TF 0.552, ploidy 1.38, most of the genome at 1 copy ([[file:~/meetings/chaudhuri-bioinfo-huddle/2026-09-30-notes.md][bioinfo huddle 2026-09-30]])
 - Low tumor fraction settings (ichorCNA wiki, Parameter tuning and settings): for samples expected below 5% tumor fraction, --normal "c(0.95,0.99,0.995,0.999)", ploidy 2 only, maxCN 3, subclonal states off. On post-induction Ewing and rhabdomyosarcoma ULP-WGS plasma these settings gave AUC 0.76-0.92 against controls where default settings gave 0.36-0.62 ([[id:aaea7fd8-1e68-4d1a-aacc-6acb3d8bc8e9][EwS RT biomarker]], 2026-10-02)
+- Post-induction Ewing EM-seq plasma, 25 Ewing against 17 healthy, with Lilli Greiner's January runs (500 kb, custom panel of normals): tumor fraction ranked AUC 0.953 without size selection and 0.901 with 90-150 bp size selection, where default-settings runs on the same draws were near chance. rmeth subfamily methylation (0.976), abundance (0.951) and copy number from repeat CpG call density (0.918) did not differ from either run (paired DeLong, all p ≥ 0.17). The healthy arm was prepared separately, so every AUC here carries that batch ([[id:4f1cb89d-e335-488a-a891-e35cb635d6a5][Ewing sarcoma plasma on rmeth]], =/mnt/data/projects/rmeth_ewing_v110/analysis/delong_vs_ichor.tsv= on jeff-beast)
 - Peneder 2021 Ewing cfDNA run: 500 kb windows, the package's internal panel of normals, homozygous deletions off; normal, ploidy and subclonal settings not reported; tumor fraction chosen per sample by visual review of the candidate solutions, not the top-ranked solution [cite:@peneder2021]
 - Detection power comes from genome-wide context: a single bin with 10% depth shift (e.g., CN=3 at 20% TFx) is within noise, but an entire chromosome arm (~50-150 bins) consistently shifted is detectable by the HMM pooling evidence across the segment
 - No matched normal required: model compares "all diploid" (TFx=0) against solutions with CNA; if data is better explained by some bins deviating from diploid, nonzero TFx is preferred
