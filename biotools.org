@@ -5390,6 +5390,7 @@ https://www.google.com/search?q=%22samtools+depth%22+%22wgs%22&oq=%22samtools+de
 - samtools for depth https://www.biostars.org/p/356937/
 
 - mosdepth =--fast-mode= / =-x= skips paired-end overlap correction and internal CIGAR operations. On short-insert libraries (cfDNA ~167 bp, RRBS) with 2x150 bp reads, nearly all fragments overlap and =-x= counts both mates at overlapping positions, inflating reported depth by 70-80%. Default mode (no =-x=) corrects for overlap. When comparing mosdepth depth to per-CpG depth from MethylDackel (which always handles PE overlap), drop =-x= to get comparable numbers.
+- Classifier depth-saturation curves (each library downsampled at random to fixed fractions of its read pairs, then the classifier rerun) need several independent random draws per depth, each doubling's gain reported with its interval across draws, and tested depths that extend below the point where performance first rises above chance. On 129 aerodigestive EM-seq libraries counted to 196 M pairs, one draw gave a 96 to 191 M methylation AUC gain of +0.014 (-0.018 to +0.043), which looked like a plateau. Five draws gave +0.033 (+0.016 to +0.048), still rising. The first run's lowest depth, 2 M pairs, was already above the rise from chance, so it could not show where methylation saturates. Source: [[id:8f9a38eb-a097-4e99-ae8f-999e82101b22][repeat-meth depth extension plan]], entries of [2026-11-08 Sun].
 
 **** Sequencing testing, modeling, and read simulation
 :PROPERTIES:
