@@ -9814,6 +9814,7 @@ https://github.com/Illumina/canvas
 - Spatial EcoTyper (NMF on fused similarity networks of spatial-neighborhood gene-expression) extends Newman-lab digital cytometry to spatial transcriptomics. For deconvolving spatial ecotype abundance from bulk RNA-seq, Spatial EcoTyper outperformed CIBERSORTx, BayesPrism, and DWLS on cross-validation across 10 cancer types and 1,000 pseudo-bulks per type [cite:@zhang2026].
 - See [[id:8151ed0d-4b7b-4506-be44-9838291eec2f][Ecotyper]]
 - [[id:e07fee1b-d7fd-42ce-9639-ff803cfc9c8e][Deconvolution, immunoprofiling/immunophenotyping, cell type enumeration with rnaseq]].
+- CytoTRACE 2 is run separately on each dataset. Its potency scores, other than Relative Order, are calibrated to be comparable across datasets, and the developers recommend no integration or batch correction of the predictions ([[https://cytotrace2.stanford.edu/][CytoTRACE 2 documentation]], read 2026-11-20, raised at [[file:~/meetings/chaudhuri-lab-meeting/2026-11-20-notes.md][lab meeting 2026-11-20]])
 **** clusterProfiler
 :PROPERTIES:
 :ID:       8e4c1fb8-cd52-4fac-900a-4b6e6eb5a28a
