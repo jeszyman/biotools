@@ -1594,6 +1594,13 @@ When new category needed, update schema and increment version.
 - For cfDNA
   - https://generegulation.org/cfDNA/
 - [cite:@peneder2021] has healthy cfDNA WGS data
+- GSA-Human controlled-access requests at CNCB, Beijing (https://ngdc.cncb.ac.cn/gsa-human/), as seen filing HRA003209 from [cite:@bie2023] on [2026-11-22 Sun]
+  - Only the principal investigator of a research group may request data, under their own CNCB account and with a link to an institutional homepage. A lab faculty and staff listing was accepted in place of a personal profile page.
+  - The request form opens only after the "Complete Personal Information" page is submitted. Its phone field takes digits only, and the request title allows only letters, numbers, underscores and spaces.
+  - CNCB activation and password-reset emails reached a Mayo Outlook inbox after a delay. The sign-up page warns that institutional mail filters may block @cncb.ac.cn.
+  - The signing page turns off online signature only when its hidden institute-confirmation field equals 1. Its note "you can only choose Offline signature here" sits in the page text even when that field is empty and both signature types work.
+  - The form did not check who signed. A request signed by the principal investigator alone, with no institution signature, went to administrator review with status "Finished". Whether the data access committee approves such a request is not yet known.
+  - Review runs in two stages, an administrator check of identity and documents and then the dataset's data access committee, and CNCB's requester guide says the system reminds the committee automatically after two weeks.
 ** Bioinformatics style guide
 :PROPERTIES:
 :ID:       8ddb3ced-a572-43cd-82d9-69fe449fe320
