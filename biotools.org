@@ -5103,6 +5103,10 @@ https://www.google.com/search?q=biostars+mouse+human+homology+match+genes&oq=bio
 https://www.biostars.org/p/254848/#:~:text=%22The%20B%2DAllele%20Frequency%20is,alleles%20(e.g.%20AB).%22
 - [[id:8c535c38-9310-4fd0-a8fe-c300639493da][ichorcna]]
 - [[id:21d876e8-8646-4773-91c1-c4385c3218c7][cfDNA copy number calling and CNA-based tumor fraction]]
+- The =cfdna-hap= pipeline (=~/repos/cfdna-hap=) measures copy-neutral LOH in cfDNA by [[id:8314a0aa-7174-4b28-8def-bb0aa4ad69cf][phased-haplotype contrast]] (career.org).
+- Statistical phasing with Beagle 5.5 against the 1000 Genomes panel depended on the depth of the genotype source. On NA12878 chr20, scored against 50,733 heterozygous SNPs phased with her parents, 1x phased none, 5x phased 7.6% with 4.8% switch errors, 10x phased 57% with 0.79%, and 36x phased 95% with 0.50% (=~/repos/cfdna-hap/results/phase-accuracy-na12878-chr20/values.json=).
+- MoChA (=bcftools +mocha=) with its README call filter made no call at 0.5% to 2% tumor fraction and one call at 5%, in mixtures of par0080 tumor DNA into her leukocyte and plasma DNA. Counting reads on the haplotype named by the tumor library detected tumor in 7 or 8 of 8 mixtures at 1% and above and in 5 of 8 at 0.5% (=~/repos/cfdna-hap/results/dilution-par0080/=).
+- MoChA typed the par0080 plasma arms as copy-neutral LOH in one run and as loss in the next, after the README site exclusions were added, which nearly doubled the cell fraction (1p 0.027 to 0.053, 11p 0.066 to 0.123). Its README sample filter also dropped the par0080 tumor library (ichorCNA purity 0.59).
 **** ctDNA burden by cfDNA degragation
 :PROPERTIES:
 :ID:       1c8be64c-2579-4e7b-95bf-578d9c38af3c
